@@ -370,8 +370,8 @@ class CoursesSeeder extends Seeder
                             $variant = CourseVariant::create([
                                 'course_id' => $course->id,
                                 'name' => $value['name'] .' '. $i,
-                                'duration' => $value['duration'],
-                                'price' => $value['price']
+                                'duration' => fake()->numberBetween(10, 60),
+                                'price' => fake()->numberBetween(300, 1800)
                             ]);
                             $this->createLessons($course->id, $variant->id);
                         }

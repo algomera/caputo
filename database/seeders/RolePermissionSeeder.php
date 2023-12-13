@@ -18,6 +18,7 @@ class RolePermissionSeeder extends Seeder
         $admin = Role::create(['name' => 'admin']);
         $doctor = Role::create(['name' => 'doctor']);
         $teacher = Role::create(['name' => 'teacher']);
+        $instructor = Role::create(['name' => 'instructor']);
         $secretary = Role::create(['name' => 'secretary']);
 
         $permissions = [
@@ -65,14 +66,17 @@ class RolePermissionSeeder extends Seeder
         ]);
 
         $teacher->givePermissionTo([
-            'show_guides',
-            'create_guides',
-            'update_guides',
-            'delete_guides',
             'show_theory',
             'create_theory',
             'update_theory',
             'delete_theory',
+        ]);
+
+        $instructor->givePermissionTo([
+            'show_guides',
+            'create_guides',
+            'update_guides',
+            'delete_guides',
         ]);
 
         $secretary->givePermissionTo([

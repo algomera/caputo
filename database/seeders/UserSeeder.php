@@ -26,28 +26,29 @@ class UserSeeder extends Seeder
         ]);
         $superAdmin->assignRole('superAdmin');
 
+        // Admin
         foreach ($schools as $school) {
             $admin = User::create([
-                'school_id' => $school->id,
                 'name' => 'admin'.$school->id,
                 'lastName' => null,
                 'email' => 'admin'.$school->id.'@example.test',
                 'password' => bcrypt('password'),
             ]);
             $admin->assignRole('admin');
+            $admin->schools()->attach($school->id);
         }
 
         // Doctor
         foreach ($schools as $school) {
             for ($u=0; $u < $number ; $u++) {
                 $doctor = User::create([
-                    'school_id' => $school->id,
                     'name' => 'doctor-'.$school->id.$u,
                     'lastName' => null,
                     'email' => 'doctor'.$school->id.$u.'@example.test',
                     'password' => bcrypt('password'),
                 ]);
                 $doctor->assignRole('doctor');
+                $doctor->schools()->attach($school->id);
             }
         }
 
@@ -55,13 +56,27 @@ class UserSeeder extends Seeder
         foreach ($schools as $school) {
             for ($u=0; $u < $number ; $u++) {
                 $teacher = User::create([
-                    'school_id' => $school->id,
                     'name' => 'teacher-'.$school->id.$u,
                     'lastName' => null,
                     'email' => 'teacher'.$school->id.$u.'@example.test',
                     'password' => bcrypt('password'),
                 ]);
                 $teacher->assignRole('teacher');
+                $teacher->schools()->attach($school->id);
+            }
+        }
+
+        // Instructor
+        foreach ($schools as $school) {
+            for ($u=0; $u < $number ; $u++) {
+                $instructor = User::create([
+                    'name' => 'instructor-'.$school->id.$u,
+                    'lastName' => null,
+                    'email' => 'instructor'.$school->id.$u.'@example.test',
+                    'password' => bcrypt('password'),
+                ]);
+                $instructor->assignRole('instructor');
+                $instructor->schools()->attach($school->id);
             }
         }
 
@@ -69,13 +84,13 @@ class UserSeeder extends Seeder
         foreach ($schools as $school) {
             for ($u=0; $u < $number ; $u++) {
                 $secretary = User::create([
-                    'school_id' => $school->id,
                     'name' => 'secretary-'.$school->id.$u,
                     'lastName' => null,
                     'email' => 'secretary'.$school->id.$u.'@example.test',
                     'password' => bcrypt('password'),
                 ]);
                 $secretary->assignRole('secretary');
+                $secretary->schools()->attach($school->id);
             }
         }
     }
