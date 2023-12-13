@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('type');
             $table->string('subject');
             $table->longText('description');
+            $table->string('duration')->nullable();
             $table->timestamps();
         });
     }
