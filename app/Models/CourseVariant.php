@@ -20,14 +20,14 @@ class CourseVariant extends Model
     }
 
     public function lessons(): HasMany {
-        return $this->hasMany(Lesson::class);
+        return $this->hasMany(Lesson::class, 'variant_id');
     }
 
     public function options(): BelongsToMany {
         return $this->belongsToMany(Option::class, 'costs')->using(Cost::class);
     }
 
-    public function getCosts(): MorphToMany {
+    public function getOptions(): MorphToMany {
         return $this->morphToMany(Option::class, 'costs');
     }
 }

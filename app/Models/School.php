@@ -17,8 +17,12 @@ class School extends Model
         return $this->belongsToMany(User::class);
     }
 
-    public function services(): HasMany {
-        return $this->hasMany(Service::class);
+    public function customers(): HasMany {
+        return $this->hasMany(Customer::class);
+    }
+
+    public function services(): BelongsToMany {
+        return $this->belongsToMany(Service::class);
     }
 
 }

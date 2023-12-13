@@ -316,43 +316,47 @@ class CoursesSeeder extends Seeder
             switch ($service->name) {
                 case 'Servizi al conducente':
                     foreach ($service_cond as $value) {
-                        Course::create([
+                        $course = Course::create([
                             'service_id' => $service->id,
                             'name' => $value['name'],
                             'duration' => $value['duration'],
                             'price' => $value['price']
                         ]);
+                        $this->createLessons($course->id, null);
                     }
                     break;
                 case 'Patenti':
                     foreach ($patents as $value) {
-                        Course::create([
+                        $course = Course::create([
                             'service_id' => $service->id,
                             'name' => $value['name'],
                             'duration' => $value['duration'],
                             'price' => $value['price']
                         ]);
+                        $this->createLessons($course->id, null);
                     }
                     break;
                 case 'Formazione professionale':
                     foreach ($trainings as $value) {
-                        Course::create([
+                        $course = Course::create([
                             'service_id' => $service->id,
                             'name' => $value['name'],
                             'label' => $value['label'] ?? null,
                             'duration' => $value['duration'],
                             'price' => $value['price']
                         ]);
+                        $this->createLessons($course->id, null);
                     }
                     break;
                 case 'Patenti professionali':
                     foreach ($prof_patents as $value) {
-                        Course::create([
+                        $course = Course::create([
                             'service_id' => $service->id,
                             'name' => $value['name'],
                             'duration' => $value['duration'],
                             'price' => $value['price']
                         ]);
+                        $this->createLessons($course->id, null);
                     }
                     break;
                 case 'Corsi':

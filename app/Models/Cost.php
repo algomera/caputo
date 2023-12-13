@@ -8,5 +8,4 @@ class Cost extends MorphPivot
 {
     protected $table = 'costs';
     protected $guarded = [];
-
 }

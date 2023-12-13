@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\School;
 use App\Models\Service;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -13,6 +14,8 @@ class ServiceSeeder extends Seeder
      */
     public function run(): void
     {
+        $schools = School::all();
+
         $services = [
             'Servizi al conducente',
             'Patenti',
@@ -22,10 +25,14 @@ class ServiceSeeder extends Seeder
             'Corsi'
         ];
 
-        foreach ($services as $service) {
-            Service::create([
-                'name' => $service
+        foreach ($services as $value) {
+            $service = Service::create([
+                'name' => $value
             ]);
+
+            foreach ($schools as $school) {
+                $service->schools()->attach($school->id);
+            }
         }
     }
 }

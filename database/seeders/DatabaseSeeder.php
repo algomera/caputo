@@ -14,6 +14,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+
         $this->call([
             RolePermissionSeeder::class,
             SchoolSeeder::class,
@@ -23,6 +24,11 @@ class DatabaseSeeder extends Seeder
             OptionSeeder::class,
         ]);
 
-        Customer::factory(10)->create();
+        Customer::factory(30)->create();
+
+        $this->call([
+            identificationDocumentSeeder::class,
+        ]);
+
     }
 }

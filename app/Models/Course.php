@@ -27,7 +27,7 @@ class Course extends Model
         return $this->belongsToMany(Option::class, 'costs')->using(Cost::class);
     }
 
-    public function getCosts(): MorphToMany {
+    public function getOptions(): MorphToMany {
         return $this->morphToMany(Option::class, 'costs');
     }
 }
