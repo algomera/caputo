@@ -30,4 +30,18 @@ class Course extends Model
     public function getOptions(): MorphToMany {
         return $this->morphToMany(Option::class, 'costs');
     }
+
+    public function trainings(): HasMany {
+        return $this->hasMany(Training::class);
+    }
+
+    public function getDurationAttribute() {
+        $lessons = $this->lessons()->get();
+        $duration = 0;
+
+        foreach ($lessons as $lesson) {
+            $duration += $lesson->duration;
+        }
+        return (floor($duration / 60).':'. ($duration % 60));
+    }
 }

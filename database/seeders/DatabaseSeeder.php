@@ -27,6 +27,7 @@ class DatabaseSeeder extends Seeder
         Customer::factory(30)->create();
 
         $this->call([
+            TrainingSeeder::class,
             identificationDocumentSeeder::class,
         ]);
 

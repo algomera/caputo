@@ -6,9 +6,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 
-class Customer extends Model
+class Training extends Model
 {
     use HasFactory;
 
@@ -18,11 +17,15 @@ class Customer extends Model
         return $this->belongsTo(School::class);
     }
 
-    public function identificationDocument(): HasOne {
-        return $this->hasOne(IdentificationDocument::class);
+    public function course(): BelongsTo {
+        return $this->belongsTo(Course::class);
     }
 
-    public function trainings(): BelongsToMany {
-        return $this->belongsToMany(Training::class);
+    public function courseVariant(): BelongsTo {
+        return $this->belongsTo(CourseVariant::class);
+    }
+
+    public function customers(): BelongsToMany {
+        return $this->belongsToMany(Customer::class);
     }
 }
