@@ -2,8 +2,11 @@
 
 namespace Database\Seeders;
 
+use App\Models\Customer;
+use App\Models\DrivingPlanning;
 use App\Models\LessonPlanning;
 use App\Models\Training;
+use App\Models\Vehicle;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -31,5 +34,22 @@ class PlanningSeeder extends Seeder
                 ]);
             }
         }
+
+        $customers = Customer::all();
+        $vehicle = Vehicle::all();
+
+        foreach ($customers as $customer) {
+            $instructors = $customer->school()->first()->instructors()->random()->id;
+            DrivingPlanning::create([
+                'customer_id' => $customer->id,
+                'user_id' => $instructors,
+                'vehicle_id' => $vehicle->random()->id,
+                'begins' => fake()->dateTimeBetween(now(), '+4 week'),
+                'duration' => fake()->randomElement(['1/2', '1', '2']),
+                'welded' => fake()->boolean(),
+            ]);
+        }
+
+
     }
 }

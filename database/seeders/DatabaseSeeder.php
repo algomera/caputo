@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
             ServiceSeeder::class,
             CoursesSeeder::class,
             OptionSeeder::class,
+            VehicleSeeder::class
         ]);
 
         Customer::factory(30)->create();
