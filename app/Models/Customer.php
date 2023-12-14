@@ -23,7 +23,7 @@ class Customer extends Model
     }
 
     public function trainings(): BelongsToMany {
-        return $this->belongsToMany(Training::class);
+        return $this->belongsToMany(Training::class)->withPivot('optionals');
     }
 
     public function chronologies(): HasMany {

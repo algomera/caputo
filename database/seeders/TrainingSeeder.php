@@ -32,7 +32,8 @@ class TrainingSeeder extends Seeder
                     'ends' => fake()->dateTimeBetween('+4 week', '+8 week'),
                 ]);
                 foreach ($customers as $customer) {
-                    $customer->trainings()->attach($training->id);
+                    $optionals = $course->getOptions()->where('type', 'opzionale')->get()->pluck('id')->random(3)->toJson();
+                    $customer->trainings()->attach($training->id, ['optionals' => $optionals]);
                 }
             }
 
@@ -47,7 +48,8 @@ class TrainingSeeder extends Seeder
                     'ends' => fake()->dateTimeBetween('+4 week', '+8 week'),
                 ]);
                 foreach ($customers as $customer) {
-                    $customer->trainings()->attach($training->id);
+                    $optionals = $variant->getOptions()->where('type', 'opzionale')->get()->pluck('id')->random(3)->toJson();
+                    $customer->trainings()->attach($training->id, ['optionals' => $optionals]);
                 }
             }
         }

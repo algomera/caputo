@@ -27,7 +27,7 @@ class Training extends Model
     }
 
     public function customers(): BelongsToMany {
-        return $this->belongsToMany(Customer::class);
+        return $this->belongsToMany(Customer::class)->withPivot('optionals');
     }
 
     public function plannings(): HasMany {
