@@ -33,6 +33,7 @@ class DatabaseSeeder extends Seeder
             ChronologySeeder::class,
             PlanningSeeder::class,
             PaymentSeeder::class,
+            DocumentSeeder::class,
             PresenceSeeder::class,
         ]);
 
