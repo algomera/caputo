@@ -38,4 +38,8 @@ class Customer extends Model
     public function documents(): MorphMany {
         return $this->morphMany(Document::class, 'documentable');
     }
+
+    public function medicals(): HasMany {
+        return $this->hasMany(MedicalPlanning::class);
+    }
 }

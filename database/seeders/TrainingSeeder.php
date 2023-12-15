@@ -35,13 +35,25 @@ class TrainingSeeder extends Seeder
 
                 if ($training->id <= 10) {
                     foreach ($customers as $customer) {
-                        $optionals = $course->getOptions()->where('type', 'opzionale')->get()->pluck('id')->random(3)->toJson();
+                        $costs = $course->getOptions()->where('type', 'Fisso')->get();
+                        $optionals = $course->getOptions()->where('type', 'opzionale')->get()->random(3);
+                        $priceCourse = $course->prices()->where('licenses', null)->first();
+                        $total = $priceCourse->price;
+
+                        foreach ($costs as $cost) {
+                            $total += $cost->price;
+                        }
+                        foreach ($optionals as $optional) {
+                            $total += $optional->price;
+                        }
+
                         registration::create([
                             'training_id' => $training->id,
                             'customer_id' => $customer->id,
                             'type' => fake()->randomElement(['teoria', 'pratica', 'pratica/s.esame']),
                             'transmission' => fake()->randomElement(['manuale', 'automatica']),
-                            'optionals' => $optionals
+                            'optionals' => $optionals->pluck('id')->toJson(),
+                            'price' => $total
                         ]);
                     }
                 }
@@ -60,13 +72,24 @@ class TrainingSeeder extends Seeder
 
                 if ($training->id <= 10) {
                     foreach ($customers as $customer) {
-                        $optionals = $variant->getOptions()->where('type', 'opzionale')->get()->pluck('id')->random(3)->toJson();
+                        $costs = $variant->getOptions()->where('type', 'Fisso')->get();
+                        $optionals = $variant->getOptions()->where('type', 'opzionale')->get()->random(3);
+                        $total = $variant->prices()->where('licenses', null)->first()->pluck('price');
+
+                        foreach ($costs as $cost) {
+                            $total += $cost->price;
+                        }
+                        foreach ($optionals as $optional) {
+                            $total += $optional->price;
+                        }
+
                         registration::create([
                             'training_id' => $training->id,
                             'customer_id' => $customer->id,
                             'type' => fake()->randomElement(['teoria', 'pratica', 'pratica/s.esame']),
                             'transmission' => fake()->randomElement(['manuale', 'automatica']),
-                            'optionals' => $optionals
+                            'optionals' => $optionals->pluck('id')->toJson(),
+                            'price' => $total
                         ]);
                     }
                 }

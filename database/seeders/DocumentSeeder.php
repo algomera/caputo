@@ -34,7 +34,7 @@ class DocumentSeeder extends Seeder
 
         foreach ($chronologies as $chronology) {
             if (str_contains($chronology->title, 'Pagamento')) {
-                $chronology->documents()->create([
+                $chronology->document()->create([
                     'type' => 'Pagamento',
                     'path' => fake()->imageUrl(245, 245, 'Personal', true, 'Payment', false, 'jpg')
                 ]);

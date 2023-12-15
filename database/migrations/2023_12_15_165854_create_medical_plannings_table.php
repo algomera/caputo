@@ -11,14 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('registrations', function (Blueprint $table) {
+        Schema::create('medical_plannings', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('training_id')->constrained()->onDelete('cascade');
             $table->foreignId('customer_id')->constrained()->onDelete('cascade');
-            $table->string('type');
-            $table->string('transmission')->nullable();
-            $table->json('optionals')->nullable();
-            $table->decimal('price')->nullable();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->dateTime('booked');
+            $table->string('protocol')->nullable();
+            $table->boolean('welded')->default(false);
             $table->timestamps();
         });
     }
@@ -28,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('registrations');
+        Schema::dropIfExists('medical_plannings');
     }
 };

@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('vehicle_id')->constrained()->onDelete('cascade');
             $table->string('type');
             $table->dateTime('begins');
+            $table->longText('note')->nullable();
             $table->boolean('welded')->default(false);
             $table->timestamps();
         });
