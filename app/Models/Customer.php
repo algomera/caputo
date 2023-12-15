@@ -22,8 +22,8 @@ class Customer extends Model
         return $this->hasMany(IdentificationDocument::class);
     }
 
-    public function trainings(): BelongsToMany {
-        return $this->belongsToMany(Training::class)->withPivot('optionals');
+    public function registrations(): HasMany {
+        return $this->hasMany(registration::class);
     }
 
     public function chronologies(): HasMany {

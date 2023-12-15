@@ -16,7 +16,6 @@ return new class extends Migration
             $table->foreignId('course_id')->constrained()->onDelete('cascade');
             $table->string('name');
             $table->longText('description')->nullable();
-            $table->decimal('price');
             $table->timestamps();
         });
     }

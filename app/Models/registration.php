@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
-class DrivingPlanning extends Model
+class registration extends Model
 {
     use HasFactory;
 
@@ -17,12 +17,8 @@ class DrivingPlanning extends Model
         return $this->belongsTo(Customer::class);
     }
 
-    public function instructor(): BelongsTo {
-        return $this->belongsTo(User::class);
-    }
-
-    public function vehicle(): BelongsTo {
-        return $this->belongsTo(Vehicle::class);
+    public function training(): BelongsTo {
+        return $this->belongsTo(Training::class);
     }
 
     public function payments(): MorphMany {

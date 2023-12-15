@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Course;
 use App\Models\CourseVariant;
+use App\Models\registration;
 use App\Models\School;
 use App\Models\Training;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -31,9 +32,18 @@ class TrainingSeeder extends Seeder
                     'begins' => now(),
                     'ends' => fake()->dateTimeBetween('+4 week', '+8 week'),
                 ]);
-                foreach ($customers as $customer) {
-                    $optionals = $course->getOptions()->where('type', 'opzionale')->get()->pluck('id')->random(3)->toJson();
-                    $customer->trainings()->attach($training->id, ['optionals' => $optionals]);
+
+                if ($training->id <= 10) {
+                    foreach ($customers as $customer) {
+                        $optionals = $course->getOptions()->where('type', 'opzionale')->get()->pluck('id')->random(3)->toJson();
+                        registration::create([
+                            'training_id' => $training->id,
+                            'customer_id' => $customer->id,
+                            'type' => fake()->randomElement(['teoria', 'pratica', 'pratica/s.esame']),
+                            'transmission' => fake()->randomElement(['manuale', 'automatica']),
+                            'optionals' => $optionals
+                        ]);
+                    }
                 }
             }
 
@@ -47,9 +57,18 @@ class TrainingSeeder extends Seeder
                     'begins' => now(),
                     'ends' => fake()->dateTimeBetween('+4 week', '+8 week'),
                 ]);
-                foreach ($customers as $customer) {
-                    $optionals = $variant->getOptions()->where('type', 'opzionale')->get()->pluck('id')->random(3)->toJson();
-                    $customer->trainings()->attach($training->id, ['optionals' => $optionals]);
+
+                if ($training->id <= 10) {
+                    foreach ($customers as $customer) {
+                        $optionals = $variant->getOptions()->where('type', 'opzionale')->get()->pluck('id')->random(3)->toJson();
+                        registration::create([
+                            'training_id' => $training->id,
+                            'customer_id' => $customer->id,
+                            'type' => fake()->randomElement(['teoria', 'pratica', 'pratica/s.esame']),
+                            'transmission' => fake()->randomElement(['manuale', 'automatica']),
+                            'optionals' => $optionals
+                        ]);
+                    }
                 }
             }
         }

@@ -44,8 +44,8 @@ class PlanningSeeder extends Seeder
                 'customer_id' => $customer->id,
                 'user_id' => $instructors,
                 'vehicle_id' => $vehicle->random()->id,
+                'type' => fake()->randomElement(['notturna', 'extraurbana', 'autostrada']),
                 'begins' => fake()->dateTimeBetween(now(), '+4 week'),
-                'duration' => fake()->randomElement(['1/2', '1', '2']),
                 'welded' => fake()->boolean(),
             ]);
         }

@@ -17,12 +17,12 @@ class PresenceSeeder extends Seeder
         $plannings = LessonPlanning::all();
 
         foreach ($plannings as $planning) {
-            $customers = $planning->training->customers()->get();
+            $registrations = $planning->training->registrations()->get();
 
-            foreach ($customers as $customer) {
+            foreach ($registrations as $registration) {
                 Presence::create([
                     'lesson_planning_id' => $planning->id,
-                    'customer_id' => $customer->id,
+                    'customer_id' => $registration->customer->id,
                     'followed' => fake()->boolean()
                 ]);
             }

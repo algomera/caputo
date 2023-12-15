@@ -16,8 +16,8 @@ return new class extends Migration
             $table->foreignId('customer_id')->constrained()->onDelete('cascade');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('vehicle_id')->constrained()->onDelete('cascade');
+            $table->string('type');
             $table->dateTime('begins');
-            $table->string('duration');
             $table->boolean('welded')->default(false);
             $table->timestamps();
         });

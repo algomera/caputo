@@ -32,6 +32,7 @@ class DatabaseSeeder extends Seeder
             TrainingSeeder::class,
             ChronologySeeder::class,
             PlanningSeeder::class,
+            PaymentSeeder::class,
             PresenceSeeder::class,
         ]);
 

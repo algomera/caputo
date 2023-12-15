@@ -26,8 +26,8 @@ class Training extends Model
         return $this->belongsTo(CourseVariant::class, 'variant_id');
     }
 
-    public function customers(): BelongsToMany {
-        return $this->belongsToMany(Customer::class)->withPivot('optionals');
+    public function registrations(): HasMany {
+        return $this->hasMany(registration::class);
     }
 
     public function plannings(): HasMany {
