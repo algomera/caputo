@@ -20,22 +20,35 @@
         <div class="min-h-screen bg-gray-100">
             @include('layouts.navigation')
 
-            <!-- Page Heading -->
-            @if (isset($header))
-                <header class="bg-white shadow">
-                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                        {{ $header }}
+            <main class="flex">
+                <nav class="h-[calc(100vh-96px)] w-80 bg-white py-6 shadow-md">
+                    <div class="pl-4">
+                        <h2 class="uppercase font-semibold text-xs mb-5">profilo</h2>
+                        <div class="pl-4 space-y-5">
+                            <a href="" class="font-medium text-color-2c2c2c capitalize flex items-center gap-2">
+                                <x-icons name="" />
+                                profilo
+                            </a>
+                            <a href="" class="font-medium text-color-2c2c2c capitalize flex items-center gap-2">
+                                <x-icons name="" />
+                                filiali autoscuole
+                            </a>
+                            <a href="" class="font-medium text-color-2c2c2c capitalize flex items-center gap-2">
+                                <x-icons name="" />
+                                creazioni corsi
+                            </a>
+                        </div>
                     </div>
-                </header>
-            @endif
+                </nav>
 
-            <!-- Page Content -->
-            <main>
-                {{ $slot }}
+                <!-- Page Content -->
+                <div class="w-full p-10">
+                    {{ $slot }}
+                </div>
             </main>
         </div>
         @stack('scripts')
         @livewireScriptConfig
-        @livewire('wire-elements-modal')
+        {{-- @livewire('wire-elements-modal') --}}
     </body>
 </html>

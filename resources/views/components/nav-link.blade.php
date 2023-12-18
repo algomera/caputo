@@ -2,10 +2,15 @@
 
 @php
 $classes = ($active ?? false)
-            ? 'inline-flex items-center px-1 pt-1 border-b-2 border-indigo-400 text-sm font-medium leading-5 text-gray-900 focus:outline-none focus:border-indigo-700 transition duration-150 ease-in-out'
-            : 'inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out';
+            ? 'text-base font-semibold leading-6 text-color-2c2c2c focus:outline-none group'
+            : 'text-base font-light leading-6 text-color-2c2c2c focus:outline-none group';
 @endphp
 
 <a {{ $attributes->merge(['class' => $classes]) }}>
     {{ $slot }}
+    @if ($active)
+        <div class="h-[2px] w-full bg-color-2c2c2c"></div>
+    @else
+        <div class="h-[2px] w-0 bg-color-2c2c2c group-hover:animate-line group-hover:w-full"></div>
+    @endif
 </a>
