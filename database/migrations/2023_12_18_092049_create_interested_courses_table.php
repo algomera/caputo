@@ -11,15 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('registrations', function (Blueprint $table) {
+        Schema::create('interested_courses', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('training_id')->constrained()->onDelete('cascade');
-            $table->boolean('special')->default(false);
             $table->foreignId('customer_id')->constrained()->onDelete('cascade');
-            $table->string('type');
-            $table->string('transmission')->nullable();
-            $table->json('optionals')->nullable();
-            $table->decimal('price')->nullable();
+            $table->foreignId('course_id')->constrained()->onDelete('cascade');
+            $table->foreignId('variant_id')->nullable()->constrained('course_variants')->onDelete('cascade');
+            $table->string('confirm')->nullable();
             $table->timestamps();
         });
     }
@@ -29,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('registrations');
+        Schema::dropIfExists('interested_courses');
     }
 };

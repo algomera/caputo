@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('birth_place')->nullable();
             $table->string('country_of_birth')->nullable();
             $table->string('address');
+            $table->string('civic');
             $table->string('postcode');
             $table->string('fiscal_code');
             $table->string('country');

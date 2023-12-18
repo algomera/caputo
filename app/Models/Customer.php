@@ -42,4 +42,8 @@ class Customer extends Model
     public function medicals(): HasMany {
         return $this->hasMany(MedicalPlanning::class);
     }
+
+    public function interested(): HasMany {
+        return $this->hasMany(InterestedCourses::class);
+    }
 }

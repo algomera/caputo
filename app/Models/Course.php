@@ -39,6 +39,10 @@ class Course extends Model
         return $this->hasMany(Training::class);
     }
 
+    public function interested(): HasMany {
+        return $this->hasMany(InterestedCourses::class);
+    }
+
     public function getDurationAttribute() {
         $lessons = $this->lessons()->get();
         $duration = 0;

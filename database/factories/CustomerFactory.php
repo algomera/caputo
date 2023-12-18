@@ -30,6 +30,7 @@ class CustomerFactory extends Factory
             'birth_place' => fake()->city(),
             'country_of_birth' => fake()->country(),
             'address' => fake()->address(),
+            'civic' => fake()->numberBetween(1, 500),
             'postcode' => fake()->postcode(),
             'fiscal_code' => Person::taxId(),
             'country' => fake()->country(),

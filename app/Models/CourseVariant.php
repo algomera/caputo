@@ -39,6 +39,10 @@ class CourseVariant extends Model
         return $this->hasMany(Training::class, 'variant_id');
     }
 
+    public function interested(): HasMany {
+        return $this->hasMany(InterestedCourses::class);
+    }
+
     public function getDurationAttribute() {
         $lessons = $this->lessons()->get();
         $duration = 0;
