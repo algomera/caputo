@@ -26,13 +26,13 @@
                 @endrole
 
                 <!-- Page Content -->
-                <div class="w-full p-10">
+                <div class="grow max-w-[calc(100vw-288px)] 2xl:max-w-[calc(100vw-340px)] p-10">
                     {{ $slot }}
                 </div>
             </main>
         </div>
         @stack('scripts')
         @livewireScriptConfig
-        {{-- @livewire('wire-elements-modal') --}}
+        @livewire('wire-elements-modal')
     </body>
 </html>

@@ -1,4 +1,4 @@
-<nav class="h-[calc(100vh-96px)] w-[340px] bg-white py-6 shadow-md">
+<nav class="h-[calc(100vh-96px)] w-72 2xl:w-[340px] bg-white py-6 shadow-md">
     <div class="px-4">
         {{-- Profile --}}
         <div>

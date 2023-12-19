@@ -68,4 +68,28 @@
             </g>
         </svg>
         @break
+    @case('delete')
+        <svg xmlns="http://www.w3.org/2000/svg" width="14.039" height="16.332"
+        {{ $attributes->merge(['class']) }} viewBox="0 0 14.039 16.332">
+            <path id="Tracciato_1219" data-name="Tracciato 1219" d="M5285.072-605.168a1.282,1.282,0,0,1-1.281-1.28v-11.335h-1.149V-619.2h14.039v1.416h-1.146v11.335a1.284,1.284,0,0,1-1.283,1.28Zm.134-1.414h8.911v-11.2h-8.911Zm5.467-2.02v-7.174h1.417v7.174Zm-3.442,0v-7.174h1.417v7.174Zm-.007-11.479V-621.5h4.871v1.419Z" transform="translate(-5282.641 621.5)" fill="#e9863e"/>
+        </svg>
+        @break
+    @case('b-edit')
+        <svg xmlns="http://www.w3.org/2000/svg" width="27" height="27"
+        {{ $attributes->merge(['class']) }} viewBox="0 0 27 27">
+            <g id="Raggruppa_742" data-name="Raggruppa 742" transform="translate(-1446 -668)">
+            <rect id="Rettangolo_282" data-name="Rettangolo 282" width="27" height="27" rx="3" transform="translate(1446 668)" fill="#5e53dd" opacity="0.1"/>
+            <path id="Tracciato_56" data-name="Tracciato 56" d="M19.056,4.05a.627.627,0,0,1,.445.184L22.257,6.99a.629.629,0,0,1,0,.89L11.232,18.9l0,0,0,0a.626.626,0,0,1-.279.159L7.1,20.167a.629.629,0,0,1-.778-.778l1.1-3.848a.626.626,0,0,1,.163-.283L18.611,4.234A.627.627,0,0,1,19.056,4.05Zm1.867,3.385L19.056,5.569,17.74,6.884,19.607,8.75Zm-2.2,2.2L16.851,7.773,8.921,15.7l1.867,1.867ZM9.587,18.148,8.343,16.9l-.5,1.742Z" transform="translate(1445.129 669.38)" fill="#5e53dd"/>
+            </g>
+        </svg>
+        @break
+    @case('b-delete')
+        <svg xmlns="http://www.w3.org/2000/svg" width="27" height="27"
+        {{ $attributes->merge(['class']) }} viewBox="0 0 27 27">
+            <g id="Raggruppa_741" data-name="Raggruppa 741" transform="translate(-1446 -668)">
+            <rect id="Rettangolo_282" data-name="Rettangolo 282" width="27" height="27" rx="3" transform="translate(1446 668)" fill="#ffdbc1" opacity="0.5"/>
+            <path id="Tracciato_56" data-name="Tracciato 56" d="M5285.072-605.168a1.282,1.282,0,0,1-1.281-1.28v-11.335h-1.149V-619.2h14.039v1.416h-1.146v11.335a1.284,1.284,0,0,1-1.283,1.28Zm.134-1.414h8.911v-11.2h-8.911Zm5.467-2.02v-7.174h1.417v7.174Zm-3.442,0v-7.174h1.417v7.174Zm-.007-11.479V-621.5h4.871v1.419Z" transform="translate(-3830.16 1294.834)" fill="#e9863e"/>
+            </g>
+        </svg>
+        @break
 @endswitch

@@ -15,7 +15,10 @@ class SchoolSeeder extends Seeder
     {
         for ($s=1; $s < 4 ; $s++) {
             School::create([
-                'name' => 'auto scuola ' . $s
+                'code' => fake()->regexify('[A-Z]{1}[0-9]{5}'),
+                'address' => fake()->address(),
+                'postcode' => fake()->postcode(),
+                'city' => fake()->city(),
             ]);
         }
     }
