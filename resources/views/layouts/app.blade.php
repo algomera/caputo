@@ -17,29 +17,13 @@
         @livewireStyles
     </head>
     <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-100">
+        <div class="min-h-screen bg-color-efefef">
             @include('layouts.navigation')
 
             <main class="flex">
-                <nav class="h-[calc(100vh-96px)] w-80 bg-white py-6 shadow-md">
-                    <div class="pl-4">
-                        <h2 class="uppercase font-semibold text-xs mb-5">profilo</h2>
-                        <div class="pl-4 space-y-5">
-                            <a href="" class="font-medium text-color-2c2c2c capitalize flex items-center gap-2">
-                                <x-icons name="" />
-                                profilo
-                            </a>
-                            <a href="" class="font-medium text-color-2c2c2c capitalize flex items-center gap-2">
-                                <x-icons name="" />
-                                filiali autoscuole
-                            </a>
-                            <a href="" class="font-medium text-color-2c2c2c capitalize flex items-center gap-2">
-                                <x-icons name="" />
-                                creazioni corsi
-                            </a>
-                        </div>
-                    </div>
-                </nav>
+                @role('superAdmin')
+                    <livewire:admin.navbar />
+                @endrole
 
                 <!-- Page Content -->
                 <div class="w-full p-10">

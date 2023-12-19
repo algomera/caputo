@@ -63,4 +63,8 @@ class User extends Authenticatable
     public function medicals(): HasMany {
         return $this->hasMany(MedicalPlanning::class);
     }
+
+    public function isAdmin() {
+        return 'superAdmin' === $this->role->name;
+    }
 }
