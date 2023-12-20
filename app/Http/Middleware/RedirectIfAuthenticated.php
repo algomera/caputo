@@ -23,19 +23,22 @@ class RedirectIfAuthenticated
             if (Auth::guard($guard)->check()) {
                 $role = Auth::user()->role->name;
                 switch ($role) {
-                    case 'superAdmin':
-                        return redirect(RouteServiceProvider::HOME);
-                        break;
                     case 'admin':
                         return redirect(RouteServiceProvider::HOME);
                         break;
-                    case 'doctor':
+                    case 'responsabile sede':
                         return redirect(RouteServiceProvider::HOME);
                         break;
-                    case 'teacher':
+                    case 'medico':
                         return redirect(RouteServiceProvider::HOME);
                         break;
-                    case 'secretary':
+                    case 'insegnante':
+                        return redirect(RouteServiceProvider::HOME);
+                        break;
+                    case 'istruttore':
+                        return redirect(RouteServiceProvider::HOME);
+                        break;
+                    case 'segretaria':
                         return redirect(RouteServiceProvider::HOME);
                         break;
                     default:

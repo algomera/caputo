@@ -14,12 +14,12 @@ class RolePermissionSeeder extends Seeder
      */
     public function run(): void
     {
-        $superAdmin = Role::create(['name' => 'superAdmin']);
-        $admin = Role::create(['name' => 'admin']);
-        $doctor = Role::create(['name' => 'doctor']);
-        $teacher = Role::create(['name' => 'teacher']);
-        $instructor = Role::create(['name' => 'instructor']);
-        $secretary = Role::create(['name' => 'secretary']);
+        $superAdmin = Role::create(['name' => 'admin']);
+        $admin = Role::create(['name' => 'responsabile sede']);
+        $doctor = Role::create(['name' => 'medico']);
+        $teacher = Role::create(['name' => 'insegnante']);
+        $instructor = Role::create(['name' => 'istruttore']);
+        $secretary = Role::create(['name' => 'segretaria']);
 
         $permissions = [
             // section medical visits

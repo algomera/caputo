@@ -55,7 +55,7 @@ class PlanningSeeder extends Seeder
 
         // Medical
         foreach ($customers as $customer) {
-            $doctor = User::role('doctor')->get()->random()->id;
+            $doctor = User::role('medico')->get()->random()->id;
 
             MedicalPlanning::create([
                 'customer_id' => $customer->id,

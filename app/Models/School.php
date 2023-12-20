@@ -20,7 +20,7 @@ class School extends Model
 
     public function teachers() {
         $teacher = $this->users()->whereHas('roles', function ($query) {
-            $query->where('name', 'teacher');
+            $query->where('name', 'insegnante');
         })->get();
 
         return $teacher;
@@ -28,7 +28,7 @@ class School extends Model
 
     public function instructors() {
         $instructor = $this->users()->whereHas('roles', function ($query) {
-            $query->where('name', 'instructor');
+            $query->where('name', 'istruttore');
         })->get();
 
         return $instructor;
@@ -36,7 +36,7 @@ class School extends Model
 
     public function secretaries() {
         $secretary = $this->users()->whereHas('roles', function ($query) {
-            $query->where('name', 'secretary');
+            $query->where('name', 'segretaria');
         })->get();
 
         return $secretary;

@@ -33,7 +33,7 @@
             </div> --}}
         </form>
 
-        <x-primary-button form="login" class="ms-3 bg-color-347af2 w-44 justify-center text-2xl">
+        <x-primary-button form="login" class="ms-3 bg-color-347af2 w-44 justify-center !text-2xl">
             Accedi
         </x-primary-button>
 

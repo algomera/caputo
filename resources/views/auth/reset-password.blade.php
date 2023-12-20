@@ -31,7 +31,7 @@
         </div>
 
         <div class="flex items-center justify-end mt-4">
-            <x-primary-button form="reset" class="bg-color-347af2">
+            <x-primary-button form="reset">
                 Cambia Password
             </x-primary-button>
         </div>

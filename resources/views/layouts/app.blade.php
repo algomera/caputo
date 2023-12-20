@@ -21,7 +21,7 @@
             @include('layouts.navigation')
 
             <main class="flex">
-                @role('superAdmin')
+                @role('admin')
                     <livewire:admin.navbar />
                 @endrole
 

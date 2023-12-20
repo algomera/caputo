@@ -24,7 +24,7 @@ class UserSeeder extends Seeder
             'email' => 'superAdmin@example.test',
             'password' => bcrypt('password'),
         ]);
-        $superAdmin->assignRole('superAdmin');
+        $superAdmin->assignRole('admin');
 
         // Admin
         foreach ($schools as $school) {
@@ -34,21 +34,21 @@ class UserSeeder extends Seeder
                 'email' => 'admin'.$school->id.'@example.test',
                 'password' => bcrypt('password'),
             ]);
-            $admin->assignRole('admin');
+            $admin->assignRole('responsabile sede');
             $admin->schools()->attach($school->id);
         }
 
-        // Doctor
+        // medico
         foreach ($schools as $school) {
             for ($u=0; $u < $number ; $u++) {
-                $doctor = User::create([
-                    'name' => 'doctor-'.$school->id.$u,
+                $medico = User::create([
+                    'name' => 'medico-'.$school->id.$u,
                     'lastName' => null,
-                    'email' => 'doctor'.$school->id.$u.'@example.test',
+                    'email' => 'medico'.$school->id.$u.'@example.test',
                     'password' => bcrypt('password'),
                 ]);
-                $doctor->assignRole('doctor');
-                $doctor->schools()->attach($school->id);
+                $medico->assignRole('medico');
+                $medico->schools()->attach($school->id);
             }
         }
 
@@ -61,7 +61,7 @@ class UserSeeder extends Seeder
                     'email' => 'teacher'.$school->id.$u.'@example.test',
                     'password' => bcrypt('password'),
                 ]);
-                $teacher->assignRole('teacher');
+                $teacher->assignRole('insegnante');
                 $teacher->schools()->attach($school->id);
             }
         }
@@ -75,7 +75,7 @@ class UserSeeder extends Seeder
                     'email' => 'instructor'.$school->id.$u.'@example.test',
                     'password' => bcrypt('password'),
                 ]);
-                $instructor->assignRole('instructor');
+                $instructor->assignRole('istruttore');
                 $instructor->schools()->attach($school->id);
             }
         }
@@ -89,7 +89,7 @@ class UserSeeder extends Seeder
                     'email' => 'secretary'.$school->id.$u.'@example.test',
                     'password' => bcrypt('password'),
                 ]);
-                $secretary->assignRole('secretary');
+                $secretary->assignRole('segretaria');
                 $secretary->schools()->attach($school->id);
             }
         }

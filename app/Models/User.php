@@ -52,11 +52,12 @@ class User extends Authenticatable
 
     public function getRedirectRouteName() {
         return match ($this->role->name) {
-            'superAdmin' => 'dashboard',
             'admin' => 'dashboard',
-            'doctor' => 'dashboard',
-            'teacher' => 'dashboard',
-            'secretary' => 'dashboard',
+            'responsabile sede' => 'dashboard',
+            'medico' => 'dashboard',
+            'insegnante' => 'dashboard',
+            'istruttore' => 'dashboard',
+            'segretaria' => 'dashboard',
         };
     }
 
@@ -65,6 +66,6 @@ class User extends Authenticatable
     }
 
     public function isAdmin() {
-        return 'superAdmin' === $this->role->name;
+        return 'admin' === $this->role->name;
     }
 }
