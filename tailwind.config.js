@@ -51,6 +51,9 @@ export default {
             },
             backgroundImage: {
                 login: "url('/resources/images/login.png')"
+            },
+            animation: {
+                spin_slow: 'spin 5s linear infinite',
             }
         },
     },

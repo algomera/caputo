@@ -1,4 +1,4 @@
-@props(['icon', 'contents'])
+@props(['icon', 'contents', 'routeLink' => false])
 
 <div {{ $attributes->merge(['class']) }} class="relative capitalize" x-data="{ dropOpen: false}">
     <button
@@ -21,5 +21,6 @@
 
             </div>
         @endforeach
+
     </div>
 </div>

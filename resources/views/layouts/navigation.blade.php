@@ -26,15 +26,13 @@
 
             <!-- Settings Dropdown -->
             <div class="flex items-center gap-6">
-                <x-icon-dropdown icon="search" :contents="[]"/>
-
-                <x-icon-dropdown icon="setting" :contents="[]"/>
-
                 <x-icon-dropdown icon="notify" :contents="[]"/>
 
                 <div class="flex items-center gap-2">
-                    <div class="w-12 h-12 rounded-full bg-slate-100 border">
-
+                    <div class="w-12 h-12 rounded-full bg-color-efefef border overflow-hidden flex items-center justify-center shadow-inner">
+                        @if (Auth::user()->image)
+                            <img src="{{ Vite::asset('storage/app/public/'. Auth::user()->image) }}" class="w-full" alt="">
+                        @endif
                     </div>
 
                     <x-dropdown align="right" width="48">
