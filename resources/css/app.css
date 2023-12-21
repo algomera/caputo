@@ -6,6 +6,10 @@
     display: none;
 }
 
+body::-webkit-scrollbar {
+    display: none;
+}
+
 @layer utilities {
     .no-scrollbar::-webkit-scrollbar {
         display: none;

@@ -47,7 +47,8 @@ export default {
                 'color-f4f8ff': '#f4f8ff',
             },
             boxShadow: {
-                'shadow-b': '0px 5px 10px -7px #000000'
+                'shadow-b': '0px 5px 10px -7px #000000',
+                'shadow-card': '0px 0px 10px 2px rgb(0 0 0 / 0.1)',
             },
             backgroundImage: {
                 login: "url('/resources/images/login.png')"

@@ -1,11 +1,11 @@
-<nav x-data="{ open: false }" class="bg-white shadow-md relative z-10">
+<nav x-data="{ open: false }" class="bg-white shadow-md z-10 fixed top-0 w-screen">
     <!-- Primary Navigation Menu -->
     <div class="px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-24">
             <div class="flex">
                 <!-- Navigation Links -->
                 <div class="space-x-8 sm:-my-px sm:flex items-center">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                    <x-nav-link :href="route('service')" :active="request()->routeIs('service*')">
                         Servizi
                     </x-nav-link>
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('')">

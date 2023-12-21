@@ -52,12 +52,12 @@ class User extends Authenticatable
 
     public function getRedirectRouteName() {
         return match ($this->role->name) {
-            'admin' => 'dashboard',
-            'responsabile sede' => 'dashboard',
-            'medico' => 'dashboard',
-            'insegnante' => 'dashboard',
-            'istruttore' => 'dashboard',
-            'segretaria' => 'dashboard',
+            'admin' => 'service',
+            'responsabile sede' => 'service',
+            'medico' => 'service',
+            'insegnante' => 'service',
+            'istruttore' => 'service',
+            'segretaria' => 'service',
         };
     }
 
