@@ -45,6 +45,7 @@ export default {
                 'color-efefef': '#EFEFEF',
                 'color-538ef4': '#538ef4',
                 'color-f4f8ff': '#f4f8ff',
+                'color-808080': '#808080'
             },
             boxShadow: {
                 'shadow-b': '0px 5px 10px -7px #000000',

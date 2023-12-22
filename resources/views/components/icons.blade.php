@@ -13,6 +13,15 @@
             <path id="Icon_ionic-ios-arrow-back" data-name="Icon ionic-ios-arrow-back" d="M14.486,15.577l7.1-7.1a1.341,1.341,0,0,0-1.9-1.894l-8.047,8.041a1.339,1.339,0,0,0-.039,1.85l8.08,8.1a1.341,1.341,0,1,0,1.9-1.894Z" transform="translate(-11.251 -6.194)"/>
         </svg>
         @break
+    @case('arrow_back')
+        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="15.631" height="16.459"
+        {{ $attributes->merge(['class']) }} viewBox="0 0 15.631 16.459">
+            <g id="Icon_feather-arrow-left" data-name="Icon feather-arrow-left" transform="translate(-6.5 -6.086)">
+            <path id="Tracciato_1216" data-name="Tracciato 1216" d="M21.131,18H7.5" transform="translate(0 -3.685)" fill="none" stroke="gray" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+            <path id="Tracciato_1217" data-name="Tracciato 1217" d="M14.315,21.131,7.5,14.315,14.315,7.5" fill="none" stroke="gray" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+            </g>
+        </svg>
+        @break
     @case('notify')
         <svg id="Notifiche" xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="22.189" height="22.108"
         {{ $attributes->merge(['class']) }} viewBox="0 0 22.189 22.108">
