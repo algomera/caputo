@@ -15,7 +15,7 @@
         @case(1)
             <div class="px-10 2xl:px-0">
                 <div class="flex items-center gap-5">
-                    <div wire:click='resetService' class="w-12 h-12 rounded-full shadow-shadow-card flex items-center justify-center cursor-pointer group">
+                    <div wire:click='backStep' class="w-12 h-12 rounded-full shadow-shadow-card flex items-center justify-center cursor-pointer group">
                         <x-icons name="back" class="group-hover:text-color-7a95db" />
                     </div>
                     <h1 class="text-5xl font-bold text-color-7a95db">{{$selectedService->name}}</h1>
