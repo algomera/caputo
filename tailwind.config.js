@@ -14,6 +14,9 @@ export default {
             pattern: /max-w-(sm|md|lg|xl|2xl|3xl|4xl|5xl|6xl|7xl)/,
             variants: ['sm', 'md', 'lg', 'xl', '2xl'],
         },
+        {
+            pattern: /color-./
+        },
     ],
 
 
@@ -45,7 +48,10 @@ export default {
                 'color-efefef': '#EFEFEF',
                 'color-538ef4': '#538ef4',
                 'color-f4f8ff': '#f4f8ff',
-                'color-808080': '#808080'
+                'color-808080': '#808080',
+                'color-f7f7f7': '#f7f7f7',
+                'color-fbfbfb': '#fbfbfb',
+                'color-538ef3': '#538ef3'
             },
             boxShadow: {
                 'shadow-b': '0px 5px 10px -7px #000000',

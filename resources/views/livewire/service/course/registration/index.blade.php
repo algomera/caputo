@@ -15,7 +15,7 @@
             <p class="text-xl font-bold text-color-7a95db">€ ({{ number_format($total, 2 , ',', '.') }})</p>
         </div>
 
-        @foreach ($course->getOptions()->where('type', 'Fisso')->get() as $option )
+        @foreach ($course->getOptions()->where('type', 'fisso')->get() as $option )
             <div class="flex items-end gap-2 my-1">
                 <p class="text-color-2c2c2c">{{$option->name}}</p>
                 <div class="grow h-[1px] bg-color-dfdfdf mb-2"></div>

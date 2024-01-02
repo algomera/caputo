@@ -242,6 +242,8 @@ class CoursesSeeder extends Seeder
                         $course = Course::create([
                             'service_id' => $service->id,
                             'name' => $value['name'],
+                            'description' => fake()->paragraph(),
+                            'absences' => 3
                         ]);
                         $this->createLessons($course->id, null);
                         $this->createPrice($course->id, null);
@@ -252,6 +254,8 @@ class CoursesSeeder extends Seeder
                         $course = Course::create([
                             'service_id' => $service->id,
                             'name' => $value['name'],
+                            'description' => fake()->paragraph(),
+                            'absences' => 3
                         ]);
                         $this->createLessons($course->id, null);
                         $this->createPrice($course->id, null);
@@ -263,6 +267,8 @@ class CoursesSeeder extends Seeder
                             'service_id' => $service->id,
                             'name' => $value['name'],
                             'label' => $value['label'] ?? null,
+                            'description' => fake()->paragraph(),
+                            'absences' => 3
                         ]);
                         $this->createLessons($course->id, null);
                         $this->createPrice($course->id, null);
@@ -273,6 +279,8 @@ class CoursesSeeder extends Seeder
                         $course = Course::create([
                             'service_id' => $service->id,
                             'name' => $value['name'],
+                            'description' => fake()->paragraph(),
+                            'absences' => 3
                         ]);
                         $this->createLessons($course->id, null);
                         $this->createPrice($course->id, null);
@@ -284,6 +292,8 @@ class CoursesSeeder extends Seeder
                             'service_id' => $service->id,
                             'name' => $value['name'],
                             'label' => $value['label'] ?? null,
+                            'description' => fake()->paragraph(),
+                            'absences' => 3
                         ]);
                         $this->createLessons($course->id, null);
                         $this->createPrice($course->id, null);
@@ -291,7 +301,9 @@ class CoursesSeeder extends Seeder
                         for ($i=0; $i < 3; $i++) {
                             $variant = CourseVariant::create([
                                 'course_id' => $course->id,
-                                'name' => $value['name'] .' '. $i
+                                'name' => $value['name'] .' '. $i,
+                                'description' => fake()->paragraph(),
+                                'absences' => 3
                             ]);
                             $this->createLessons($course->id, $variant->id);
                             $this->createPrice($course->id, $variant->id);

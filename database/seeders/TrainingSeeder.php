@@ -35,7 +35,7 @@ class TrainingSeeder extends Seeder
 
                 if ($training->id <= 10) {
                     foreach ($customers as $customer) {
-                        $costs = $course->getOptions()->where('type', 'Fisso')->get();
+                        $costs = $course->getOptions()->where('type', 'fisso')->get();
                         $optionals = $course->getOptions()->where('type', 'opzionale')->get()->random(3);
                         $priceCourse = $course->prices()->where('licenses', null)->first();
                         $total = $priceCourse->price;
@@ -72,7 +72,7 @@ class TrainingSeeder extends Seeder
 
                 if ($training->id <= 10) {
                     foreach ($customers as $customer) {
-                        $costs = $variant->getOptions()->where('type', 'Fisso')->get();
+                        $costs = $variant->getOptions()->where('type', 'fisso')->get();
                         $optionals = $variant->getOptions()->where('type', 'opzionale')->get()->random(3);
                         $total = $variant->prices()->where('licenses', null)->first()->pluck('price');
 

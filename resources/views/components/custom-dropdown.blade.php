@@ -22,7 +22,7 @@
         class="absolute top-[60px] h-0 left-[-30px] z-20 min-w-[240px] text-sm font-medium bg-white shadow-shadow-b overflow-hidden flex flex-col gap-1 duration-300 transition-all"
     >
         @foreach ($options as $option )
-            <a href="{{route($option['route'], ['country_code' => session('country_code')])}}" class="w-full text-slate-300 px-4 py-3 hover:bg-color-2c2c2c hover:text-white cursor-pointer whitespace-nowrap group">
+            <a href="{{route($option['route'])}}" class="w-full text-slate-300 px-4 py-3 hover:bg-color-2c2c2c hover:text-white cursor-pointer whitespace-nowrap group">
                 <span class="group-hover:pl-3 transition-all duration-300">{{$option['name']}}</span>
             </a>
         @endforeach

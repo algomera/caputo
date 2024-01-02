@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('label')->nullable();
             $table->longText('description')->nullable();
+            $table->string('absences')->nullable();
             $table->timestamps();
         });
     }

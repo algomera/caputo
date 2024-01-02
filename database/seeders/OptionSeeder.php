@@ -21,18 +21,18 @@ class OptionSeeder extends Seeder
         $options = [
             [
                 'name' => 'Presentazione domanda in motorizzazione',
-                'type' => 'Fisso',
+                'type' => 'fisso',
                 'price' => 100.00
             ],
             [
                 'name' => '3 sedute di esame (1 possibilità di bocciatura)',
-                'type' => 'Fisso',
+                'type' => 'fisso',
 
                 'price' => 20.00
             ],
             [
                 'name' => 'Stampa foglio rosa a superamento della prova a quiz',
-                'type' => 'Fisso',
+                'type' => 'fisso',
                 'price' => 60.00
             ],
             [
@@ -57,7 +57,7 @@ class OptionSeeder extends Seeder
             ],
             [
                 'name' => 'Guide',
-                'type' => 'opzionale',
+                'type' => 'guide',
                 'price' => 20.00
             ],
         ];

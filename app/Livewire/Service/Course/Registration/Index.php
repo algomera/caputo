@@ -17,7 +17,7 @@ class Index extends Component
     public function mount() {
         $this->total += $this->course->prices()->first()->price;
 
-        foreach ($this->course->getOptions()->where('type', 'Fisso')->get() as  $option) {
+        foreach ($this->course->getOptions()->where('type', 'fisso')->get() as  $option) {
             $this->total += $option->price;
         }
     }
@@ -26,7 +26,7 @@ class Index extends Component
         $this->total = 0;
         $this->total += $this->course->prices()->first()->price;
 
-        foreach ($this->course->getOptions()->where('type', 'Fisso')->get() as  $option) {
+        foreach ($this->course->getOptions()->where('type', 'fisso')->get() as  $option) {
             $this->total += $option->price;
         }
 
