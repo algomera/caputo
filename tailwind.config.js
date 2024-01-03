@@ -51,7 +51,10 @@ export default {
                 'color-808080': '#808080',
                 'color-f7f7f7': '#f7f7f7',
                 'color-fbfbfb': '#fbfbfb',
-                'color-538ef3': '#538ef3'
+                'color-538ef3': '#538ef3',
+                'color-e9863e': '#e9863e',
+                'color-c1efb6': '#c1efb6',
+                'color-afe8df': '#afe8df',
             },
             boxShadow: {
                 'shadow-b': '0px 5px 10px -7px #000000',

@@ -16,14 +16,18 @@
                                 <span>{{$service->name}}</span>
                             </div>
                             <div class="flex items-center gap-3">
-                                <x-icons name="b-edit"
+                                {{-- <x-icons name="b-edit"
                                     class="cursor-pointer"
-                                    wire:click="$dispatch('openModal', { component: 'admin.schools.create-or-update', arguments: {school: {{ $service->id }}, action: 'edit'} })"
-                                />
-                                <x-icons name="b-delete"
+                                    wire:click="$dispatch('openModal', { component: 'admin.service.modals.edit', arguments: {service: {{ $service->id }}} })"
+                                /> --}}
+                                {{-- <x-icons name="b-delete"
+                                    class="cursor-pointer"
+                                    wire:click='delete({{$service->id}})' wire:confirm.prompt="SEI SICURO DI VOLERE ELIMINARE QUESTO SERVIZIO?\n\nScrivi: ({{$service->name}}) per confermare.\n'scrivi cosi come riportato rispettando le lettere in maiuscolo'|{{$service->name}}"
+                                /> --}}
+                                {{-- <x-icons name="b-delete"
                                     class="cursor-pointer"
                                     wire:click="$dispatch('openModal', { component: 'admin.schools.delete', arguments: {school: {{ $service->id }}} })"
-                                />
+                                /> --}}
                                 <div x-show="open != {{ $service->id }}" x-on:click="open = {{ $service->id }}" class="flex items-center justify-end gap-2 px-5 cursor-pointer">
                                     <span>Gestione corsi</span>
                                     <div>
@@ -36,10 +40,6 @@
                                         <x-icons name="chevron_down" class="rotate-180" />
                                     </div>
                                 </div>
-                                {{-- <x-icons name="b-delete"
-                                    class="cursor-pointer"
-                                    wire:click='delete({{$school->id}})' wire:confirm.prompt="Sei sicuro di volere eliminare questa autoscuola?\n\nScrivi ELIMINA per confermare|elimina"
-                                /> --}}
                             </div>
                         </div>
 
@@ -50,18 +50,18 @@
                                         <div class="w-[calc(25%-16px)] flex flex-col gap-2 xl:flex-row items-center justify-between border rounded-md p-3 bg-white">
                                             <span class="capitalize font-medium text-color-545454">{{$course->name}}</span>
                                             <div class="flex items-center gap-2">
-                                                <x-icons name="b-edit"
-                                                    wire:click="$dispatch('openModal', { component: 'admin.schools.users.create-or-update', arguments: {user: {{ $service->id }}, school: {{$course->id}}, action: 'edit'} })"
+                                                <x-icons name="b-edit" class="cursor-pointer hover:brightness-90"
+                                                    wire:click="$dispatch('openModal', { component: 'admin.courses.modals.edit', arguments: {service: {{ $service->id }}, course: {{$course->id}}} })"
                                                 />
-                                                <x-icons name="b-delete"
-                                                    wire:click="$dispatch('openModal', { component: 'admin.schools.users.delete', arguments: {user: {{ $course->id }}} })"
-                                                />
+                                                {{-- <x-icons name="b-delete" class="cursor-pointer hover:brightness-90"
+                                                    wire:click="$dispatch('openModal', { component: 'admin.courses.modals.delete', arguments: {course: {{ $course->id }}} })"
+                                                /> --}}
                                             </div>
                                         </div>
                                     @endforeach
                                 </div>
                             @else
-                                <p class="text-2xl font-semibold text-gray-400 uppercase text-center">Nessun corso prente!..</p>
+                                <p class="text-xl font-semibold text-gray-400 uppercase text-center">Nessun corso prente!..</p>
                             @endif
                         </div>
                     </div>

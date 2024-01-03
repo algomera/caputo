@@ -14,11 +14,11 @@ class VehicleSeeder extends Seeder
     public function run(): void
     {
         $types = [
-            'Auto',
-            'Ciclo motore 50cc',
-            'Ciclo motore 125cc',
-            'Ciclo motore 500cc',
-            'Ciclo motore 650cc',
+            'Automobile',
+            'Ciclomotore 50cc',
+            'Ciclomotore 125cc',
+            'Ciclomotore Min. 35kW',
+            'Ciclomotore Mag. 35kW',
         ];
 
         $transmissions = [
@@ -26,13 +26,15 @@ class VehicleSeeder extends Seeder
             'Automatico'
         ];
 
-        for ($i=0; $i < 10; $i++) {
-            Vehicle::create([
-                'type' => fake()->randomElement($types),
-                'model' => fake()->word(),
-                'transmission' => fake()->randomElement($transmissions),
-                'plate' => fake()->regexify('[A-Z]{5}[0-9]{3}')
-            ]);
+        foreach ($transmissions as $transmission) {
+            foreach ($types as $type) {
+                Vehicle::create([
+                    'type' => $type,
+                    'model' => fake()->word(),
+                    'transmission' => $transmission,
+                    'plate' => fake()->regexify('[A-Z]{2}[0-9]{3}[A-Z]{2}')
+                ]);
+            }
         }
     }
 }

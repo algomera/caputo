@@ -47,7 +47,15 @@ class School extends Model
     }
 
     public function services(): BelongsToMany {
-        return $this->belongsToMany(Service::class);
+        return $this->belongsToMany(Service::class, 'school_service');
+    }
+
+    public function otherServices() {
+        $servicesNotAssociated = Service::whereDoesntHave('schools', function($query) {
+            $query->whereIn('school_id', [$this->id]);
+        })->get();
+
+        return $servicesNotAssociated;
     }
 
     public function trainings(): HasMany {

@@ -4,7 +4,8 @@
         <div class="space-y-1">
             <h2 class="uppercase text-color-538ef4 font-semibold text-xs mb-5">Impostazioni</h2>
             <x-link_nav :href="route('admin.schools')" routeName="admin.schools" name="filiali autoscuole" icon="folders" />
-            <x-drop-link-nav :options="$services" routeName="admin.courses" name="Tutti i Servizi" icon="list" />
+            <x-link_nav :href="route('admin.courses')" routeName="admin.courses" name="Tutti i Servizi" icon="list" />
+            {{-- <x-drop-link-nav :options="$services" routeName="admin.courses" name="Tutti i Servizi" icon="list" /> --}}
             <x-link_nav :href="route('admin.vehicles')" routeName="admin.vehicles" name="Veicoli" icon="list" />
         </div>
 
