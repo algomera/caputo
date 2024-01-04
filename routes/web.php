@@ -2,7 +2,8 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-use App\Livewire\Service\Index as ServiceIndex;
+use App\Livewire\Services\Index as ServiceIndex;
+use App\Livewire\Services\Service\ServiziAlConducente\Index as DriverIndex;
 
 
 
@@ -27,6 +28,7 @@ Route::get('/dashboard', function () {
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/service', [ServiceIndex::class, '__invoke'])->name('service');
+    Route::get('/service/servizi_al_conducente/{service:slug}', [DriverIndex::class, '__invoke'])->name('driver');
 });
 
 Route::middleware('auth')->group(function () {

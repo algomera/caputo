@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Service;
+namespace App\Livewire\Services;
 
 use App\Models\Course;
 use App\Models\Service;
@@ -41,10 +41,15 @@ class Index extends Component
         $this->step += 1;
     }
 
+    public function redirectService($id) {
+        $service = Course::find($id);
+        return redirect()->route('driver', ['service' => $service]);
+    }
+
     public function render()
     {
         $services = Service::all();
-        return view('livewire.service.index', [
+        return view('livewire.services.index', [
             'services' => $services
         ]);
     }

@@ -32,3 +32,36 @@ if (! function_exists('get_icon')) {
         return $icon;
     }
 }
+
+if (! function_exists('get_color')) {
+    function get_color($service) {
+        $color = null;
+
+        switch ($service) {
+            case 'Servizi al conducente':
+                $color = '5e53dd';
+                break;
+            case 'Patenti':
+                $color = '7a95db';
+                break;
+            case 'Formazione professionale':
+                $color = '74d4ff';
+                break;
+            case 'Nautica':
+                $color = 'a6cb0d';
+                break;
+            case 'Patenti professionali':
+                $color = '01bca0';
+                break;
+            case 'Corsi':
+                $color = '017c67';
+                break;
+
+            default:
+                $color = '5e53dd';
+                break;
+        }
+
+        return $color;
+    }
+}

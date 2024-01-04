@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Service\Course\Registration;
+namespace App\Livewire\Services\Training\Registration;
 
 use App\Models\Option;
 use Livewire\Component;
@@ -22,7 +22,7 @@ class Index extends Component
         }
     }
 
-    public function updated($selectedOptions) {
+    public function updated() {
         $this->total = 0;
         $this->total += $this->course->prices()->first()->price;
 
@@ -47,6 +47,6 @@ class Index extends Component
 
     public function render()
     {
-        return view('livewire.service.course.registration.index');
+        return view('livewire.services.training.registration.index');
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Service\Course\Modals;
+namespace App\Livewire\Services\Training\Modals;
 
 use App\Models\Course;
 use LivewireUI\Modal\ModalComponent;
@@ -38,6 +38,6 @@ class RegistrationType extends ModalComponent
 
     public function render()
     {
-        return view('livewire.service.course.modals.registration-type');
+        return view('livewire.services.training.modals.registration-type');
     }
 }

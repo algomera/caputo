@@ -1,7 +1,7 @@
 <div class="p-4 pb-16">
     @if (!$selectedOption)
         <div class="w-full flex justify-between">
-            <h1 class="text-4xl font-semibold text-color-7a95db">Selezionare l'opzione</h1>
+            <h1 @class(["text-4xl font-semibold", 'text-color-'.get_color($course->service->name)])>Selezionare l'opzione</h1>
             <small class="text-gray-400 font-bold">{{$course->name}}</small>
         </div>
 

@@ -7,8 +7,10 @@ use App\Models\CoursePrice;
 use App\Models\CourseVariant;
 use App\Models\Lesson;
 use App\Models\Service;
+use Illuminate\Support\Str;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Stringable;
 
 class CoursesSeeder extends Seeder
 {
@@ -249,6 +251,7 @@ class CoursesSeeder extends Seeder
                             'service_id' => $service->id,
                             'type' => 'service',
                             'name' => $value['name'],
+                            'slug' => Str::slug($value['name']),
                             'description' => fake()->paragraph(),
                             'absences' => 3
                         ]);
@@ -262,6 +265,7 @@ class CoursesSeeder extends Seeder
                             'service_id' => $service->id,
                             'type' => $value['type'] ?? 'training',
                             'name' => $value['name'],
+                            'slug' => Str::slug($value['name']),
                             'description' => fake()->paragraph(),
                             'absences' => 3
                         ]);
@@ -275,6 +279,7 @@ class CoursesSeeder extends Seeder
                             'service_id' => $service->id,
                             'type' => $value['type'] ?? 'service',
                             'name' => $value['name'],
+                            'slug' => Str::slug($value['name']),
                             'label' => $value['label'] ?? null,
                             'description' => fake()->paragraph(),
                             'absences' => 3
@@ -289,6 +294,7 @@ class CoursesSeeder extends Seeder
                             'service_id' => $service->id,
                             'type' => $value['type'] ?? 'training',
                             'name' => $value['name'],
+                            'slug' => Str::slug($value['name']),
                             'description' => fake()->paragraph(),
                             'absences' => 3
                         ]);
@@ -302,6 +308,7 @@ class CoursesSeeder extends Seeder
                             'service_id' => $service->id,
                             'type' => $value['type'] ?? 'training',
                             'name' => $value['name'],
+                            'slug' => Str::slug($value['name']),
                             'label' => $value['label'] ?? null,
                             'description' => fake()->paragraph(),
                             'absences' => 3
