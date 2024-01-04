@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('course_variants', function (Blueprint $table) {
             $table->id();
             $table->foreignId('course_id')->constrained()->onDelete('cascade');
+            $table->string('type')->nullable();
             $table->string('name');
             $table->longText('description')->nullable();
             $table->string('absences')->nullable();

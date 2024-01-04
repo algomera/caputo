@@ -101,6 +101,7 @@ class CoursesSeeder extends Seeder
             ],
             [
                 'name' => 'Guida accompagnata',
+                'type' => 'service'
             ],
             [
                 'name' => 'Patente B1',
@@ -122,9 +123,11 @@ class CoursesSeeder extends Seeder
             ],
             [
                 'name' => 'Recupero punti patente',
+                'type' => 'service'
             ],
             [
                 'name' => 'Revisione patente',
+                'type' => 'service'
             ],
         ];
         $prof_patents = [
@@ -160,6 +163,7 @@ class CoursesSeeder extends Seeder
             ],
             [
                 'name' => 'Revisione patente',
+                'type' => 'service'
             ],
         ];
         $trainings = [
@@ -177,6 +181,7 @@ class CoursesSeeder extends Seeder
             ],
             [
                 'name' => 'Corsi CQC',
+                'type' => 'training'
             ],
             [
                 'name' => 'Revisione CQC',
@@ -232,6 +237,7 @@ class CoursesSeeder extends Seeder
             ],
             [
                 'name' => 'Recupero punti',
+                'type' => 'service'
             ],
         ];
 
@@ -241,6 +247,7 @@ class CoursesSeeder extends Seeder
                     foreach ($service_cond as $value) {
                         $course = Course::create([
                             'service_id' => $service->id,
+                            'type' => 'service',
                             'name' => $value['name'],
                             'description' => fake()->paragraph(),
                             'absences' => 3
@@ -253,6 +260,7 @@ class CoursesSeeder extends Seeder
                     foreach ($patents as $value) {
                         $course = Course::create([
                             'service_id' => $service->id,
+                            'type' => $value['type'] ?? 'training',
                             'name' => $value['name'],
                             'description' => fake()->paragraph(),
                             'absences' => 3
@@ -265,6 +273,7 @@ class CoursesSeeder extends Seeder
                     foreach ($trainings as $value) {
                         $course = Course::create([
                             'service_id' => $service->id,
+                            'type' => $value['type'] ?? 'service',
                             'name' => $value['name'],
                             'label' => $value['label'] ?? null,
                             'description' => fake()->paragraph(),
@@ -278,6 +287,7 @@ class CoursesSeeder extends Seeder
                     foreach ($prof_patents as $value) {
                         $course = Course::create([
                             'service_id' => $service->id,
+                            'type' => $value['type'] ?? 'training',
                             'name' => $value['name'],
                             'description' => fake()->paragraph(),
                             'absences' => 3
@@ -290,6 +300,7 @@ class CoursesSeeder extends Seeder
                     foreach ($courses as $value) {
                         $course = Course::create([
                             'service_id' => $service->id,
+                            'type' => $value['type'] ?? 'training',
                             'name' => $value['name'],
                             'label' => $value['label'] ?? null,
                             'description' => fake()->paragraph(),
@@ -311,9 +322,6 @@ class CoursesSeeder extends Seeder
                     }
                     break;
 
-                default:
-                    # code...
-                    break;
             }
         }
     }
