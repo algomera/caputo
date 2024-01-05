@@ -254,14 +254,30 @@
         </svg>
         @break
     @case('circle')
-    <svg fill="currentColor" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-        {{ $attributes->merge(['class']) }} width="7px" height="7px" viewBox="0 0 31.424 31.425" xml:space="preserve">
-        <g>
-            <path d="M15.712,3.132c6.937,0,12.581,5.644,12.581,12.58c0,6.938-5.645,12.581-12.581,12.581c-6.937,0-12.58-5.645-12.58-12.581
-                C3.132,8.775,8.775,3.132,15.712,3.132 M15.712,0C7.035,0,0,7.034,0,15.712c0,8.679,7.035,15.713,15.712,15.713
-                c8.677,0,15.712-7.034,15.712-15.713C31.425,7.034,24.389,0,15.712,0L15.712,0z"
-            />
-        </g>
-    </svg>
+        <svg fill="currentColor" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+            {{ $attributes->merge(['class']) }} width="7px" height="7px" viewBox="0 0 31.424 31.425" xml:space="preserve">
+            <g>
+                <path d="M15.712,3.132c6.937,0,12.581,5.644,12.581,12.58c0,6.938-5.645,12.581-12.581,12.581c-6.937,0-12.58-5.645-12.58-12.581
+                    C3.132,8.775,8.775,3.132,15.712,3.132 M15.712,0C7.035,0,0,7.034,0,15.712c0,8.679,7.035,15.713,15.712,15.713
+                    c8.677,0,15.712-7.034,15.712-15.713C31.425,7.034,24.389,0,15.712,0L15.712,0z"
+                />
+            </g>
+        </svg>
        @break
+    @case('check')
+        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" stroke="currentColor" width="18.46" height="13.246"
+            {{ $attributes->merge(['class']) }} viewBox="0 0 18.46 13.246">
+            <path id="Tracciato_18" data-name="Tracciato 18" d="M7501.348,544.722l5.214,5.215,11.125-11.125" transform="translate(-7500.287 -537.752)" fill="none" stroke="#5e53dd" stroke-linecap="round" stroke-width="1.5"/>
+        </svg>
+        @break
+    @case('image')
+        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" stroke="currentColor" width="12.909" height="12.909"
+            {{ $attributes->merge(['class']) }} viewBox="0 0 12.909 12.909">
+            <g id="Icon_feather-image" data-name="Icon feather-image" transform="translate(-4 -4)">
+                <path id="Tracciato_12" data-name="Tracciato 12" d="M5.8,4.5h9.106a1.3,1.3,0,0,1,1.3,1.3v9.106a1.3,1.3,0,0,1-1.3,1.3H5.8a1.3,1.3,0,0,1-1.3-1.3V5.8A1.3,1.3,0,0,1,5.8,4.5Z" fill="none" stroke="#2c2c2c" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+                <path id="Tracciato_13" data-name="Tracciato 13" d="M12.06,11.28a.78.78,0,1,1-.78-.78A.78.78,0,0,1,12.06,11.28Z" transform="translate(-3.294 -3.294)" fill="none" stroke="#2c2c2c" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+                <path id="Tracciato_14" data-name="Tracciato 14" d="M18.167,17.6,14.834,15,7.5,20.721" transform="translate(-1.96 -4.513)" fill="none" stroke="#2c2c2c" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+            </g>
+        </svg>
+        @break
 @endswitch

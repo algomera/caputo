@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Livewire\Services\Index as ServiceIndex;
 use App\Livewire\Services\Service\ServiziAlConducente\Index as DriverIndex;
+use App\Livewire\Services\Commons\StepRegister as StepRegister;
 
 
 
@@ -28,7 +29,8 @@ Route::get('/dashboard', function () {
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/service', [ServiceIndex::class, '__invoke'])->name('service');
-    Route::get('/service/servizi_al_conducente/{service:slug}', [DriverIndex::class, '__invoke'])->name('driver');
+    Route::get('/service/servizi_al_conducente/{course:slug}', [DriverIndex::class, '__invoke'])->name('driver');
+    Route::get('/service/servizi_al_conducente/{course:slug}/register', [StepRegister::class, '__invoke'])->name('step.register');
 });
 
 Route::middleware('auth')->group(function () {

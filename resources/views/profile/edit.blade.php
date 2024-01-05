@@ -1,5 +1,5 @@
 <x-app-layout>
-    <div class="flex gap-10">
+    <div class="w-full h-full py-14 2xl:px-28 flex gap-10">
         <div class="grow p-4 sm:p-8 bg-white shadow sm:rounded-lg">
             <div class="max-w-xl">
                 @include('profile.partials.update-profile-information-form')

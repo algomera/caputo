@@ -8,12 +8,12 @@ use Livewire\Attributes\On;
 
 class Index extends Component
 {
-    public Course $service;
+    public Course $course;
     public $step = 0;
     public $patent;
 
-    public function mount($service) {
-        $this->service = $service;
+    public function mount($course) {
+        $this->course = $course;
     }
 
     #[On('backStep')]
@@ -32,7 +32,7 @@ class Index extends Component
     public function dataControl() {
         $this->dispatch('openModal', 'services.service.servizi-al-conducente.modals.data-control',
         [
-            'service' => $this->service->id,
+            'course' => $this->course->id,
             'patent' =>  $this->patent
         ]);
     }

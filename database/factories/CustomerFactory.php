@@ -26,15 +26,23 @@ class CustomerFactory extends Factory
             'name' => fake()->name(),
             'lastName' => fake()->lastName(),
             'sex' => fake()->randomElement(['uomo', 'donna']),
+            //birth
             'date_of_birth' => fake()->date(),
             'birth_place' => fake()->city(),
-            'country_of_birth' => fake()->country(),
+            'country_of_birth' => fake()->regexify('[A-Z]{2}'),
+            //Residences
+            'city' => fake()->city(),
+            'province' => fake()->regexify('[A-Z]{2}'),
+            'postcode' => fake()->postcode(),
+            'toponym' => fake()->word(),
             'address' => fake()->address(),
             'civic' => fake()->numberBetween(1, 500),
-            'postcode' => fake()->postcode(),
             'fiscal_code' => Person::taxId(),
             'country' => fake()->country(),
             'email' => fake()->unique()->safeEmail(),
+            'phone_1' => fake()->phoneNumber(),
+            'phone_2' => fake()->phoneNumber(),
+
         ];
     }
 }

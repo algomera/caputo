@@ -21,11 +21,11 @@ class identificationDocumentSeeder extends Seeder
             IdentificationDocument::create([
                 'customer_id' => $customer->id,
                 'type' => fake()->randomElement(['carta di identita','patente di guida']),
-                'n_document' => Company::vat(),
+                'n_document' => fake()->regexify('[A-Z]{2}[0-9]{7}'),
                 'document_release' => fake()->date(),
                 'document_from' => fake()->word(),
                 'document_expiration' => fake()->date(),
-                'n_patent' => Company::vat(),
+                'n_patent' => fake()->regexify('[A-Z]{2}[0-9]{7}[A-Z]{1}'),
                 'patent_release' => fake()->date(),
                 'patent_from' => fake()->word(),
                 'patent_expiration' => fake()->date(),

@@ -18,12 +18,17 @@ return new class extends Migration
             $table->string('name');
             $table->string('lastName');
             $table->string('sex');
+            //birth
             $table->date('date_of_birth');
             $table->string('birth_place')->nullable();
             $table->string('country_of_birth')->nullable();
+            //Residence
+            $table->string('city');
+            $table->string('province');
+            $table->string('postcode');
+            $table->string('toponym')->nullable();
             $table->string('address');
             $table->string('civic');
-            $table->string('postcode');
             $table->string('fiscal_code');
             $table->string('country');
             $table->string('email')->unique();

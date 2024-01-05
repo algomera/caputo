@@ -42,8 +42,8 @@ class Index extends Component
     }
 
     public function redirectService($id) {
-        $service = Course::find($id);
-        return redirect()->route('driver', ['service' => $service]);
+        $course = Course::find($id);
+        return redirect()->route('driver', ['course' => $course]);
     }
 
     public function render()

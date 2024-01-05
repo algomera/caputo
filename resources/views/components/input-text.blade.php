@@ -1,7 +1,7 @@
 @props(['name', 'width' => '', 'label', 'required' => false, 'type' => 'text', 'placeholder' => '', 'uppercase' => false])
 
 <div @class(["flex flex-col relative", $width ])>
-    <label for="{{ $name }}" class="text-sm font-light text-color-2c2c2c mb-1">
+    <label for="{{ $name }}" class="text-sm font-light text-color-2c2c2c mb-1 w-fit">
         {{$label}} @if ($required)*@endif
     </label>
     <input type="{{$type}}" name="{{ $name }}" {{ $attributes }} placeholder="{{$placeholder}}"

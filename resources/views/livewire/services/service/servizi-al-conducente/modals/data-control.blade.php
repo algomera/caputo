@@ -7,37 +7,37 @@
         <span @class(["font-medium text-green-500"])>{{$message}}</span>
     </p>
 
-    <p @class(["font-medium", 'text-color-'.get_color($service->service->name)])>{{$label}}</p>
+    <p @class(["font-medium", 'text-color-'.get_color($course->service->name)])>{{$label}}</p>
 
     @switch($result)
         @case('next')
-            <x-submit-button wire:click="$dispatch('openModal', { component: 'services.service.servizi-al-conducente.modals.data-control', arguments: {patent: '{{ $patent }}'} })"
-                @class(["m-auto", 'bg-color-'.get_color($service->service->name)])>
+            <x-submit-button wire:click="nextControl"
+                @class(["m-auto", 'bg-color-'.get_color($course->service->name)])>
                 Prosegui
             </x-submit-button>
             @break
         @case('experiment')
             <x-submit-button wire:click="$dispatch('openModal', { component: 'services.service.servizi-al-conducente.modals.data-control', arguments: {patent: '{{ $patent }}'} })"
-                @class(["m-auto", 'bg-color-'.get_color($service->service->name)])>
+                @class(["m-auto", 'bg-color-'.get_color($course->service->name)])>
                 Esperimento di guida
             </x-submit-button>
 
             @break
         @case('end')
             <x-submit-button wire:click="$dispatch('openModal', { component: 'services.service.servizi-al-conducente.modals.data-control', arguments: {patent: '{{ $patent }}'} })"
-                @class(["m-auto", 'bg-color-'.get_color($service->service->name)])>
+                @class(["m-auto", 'bg-color-'.get_color($course->service->name)])>
                 Fine
             </x-submit-button>
 
             @break
         @case('incomplete')
             <x-submit-button wire:click="$dispatch('openModal', { component: 'services.service.servizi-al-conducente.modals.data-control', arguments: {patent: '{{ $patent }}'} })"
-                @class(["m-auto", 'text-color-'.get_color($service->service->name)])>
+                @class(["m-auto", 'text-color-'.get_color($course->service->name)])>
                 Presenta domanda
             </x-submit-button>
 
             <x-submit-button wire:click="$dispatch('openModal', { component: 'services.service.servizi-al-conducente.modals.data-control', arguments: {patent: '{{ $patent }}'} })"
-                @class(["m-auto", 'text-color-'.get_color($service->service->name)])>
+                @class(["m-auto", 'text-color-'.get_color($course->service->name)])>
                 Declassamento
             </x-submit-button>
             @break
