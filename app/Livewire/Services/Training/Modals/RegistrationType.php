@@ -12,6 +12,10 @@ class RegistrationType extends ModalComponent
 
     public function mount($course) {
         $this->course = $course;
+
+        session()->put('course', [
+            'id' => $this->course->id,
+        ]);
     }
 
     public function setOption($option) {
@@ -23,6 +27,12 @@ class RegistrationType extends ModalComponent
     }
 
     public function setType($type) {
+        $session = session()->get('course', []);
+        $session['option'] = $this->selectedOption;
+        $session['registration_type'] = $type;
+
+        session()->put('course', $session);
+
         $this->dispatch('setCourse',
             course: $this->course->id,
             option: $this->selectedOption,

@@ -1,4 +1,4 @@
-<div class="w-full h-full py-14 2xl:px-28">
+<div class="w-full h-full pt-14 2xl:px-28">
     <div class="px-10 2xl:px-0">
         <div class="flex items-center gap-5">
             <div wire:click='back' class="w-12 h-12 rounded-full shadow-shadow-card flex items-center justify-center cursor-pointer group">
@@ -7,7 +7,7 @@
             <h1 @class(["text-5xl font-bold", 'text-color-'.get_color($course->service->name)])>{{$course->name}}</h1>
         </div>
 
-        <div class="px-5 xl:px-16 py-9 mt-14 mx-20 2xl:mx-44">
+        <div class="px-5 xl:px-16 py-9 mt-0 mx-20 2xl:mx-44">
 
             <div class="flex justify-center gap-1">
                 @foreach ($steps as $key => $step)
@@ -31,7 +31,7 @@
                             Inserire i <span class="font-bold">Dati</span> del cliente per proseguire.
                         </p>
 
-                        <div class="flex flex-col gap-8">
+                        <div class="flex flex-col gap-5">
                             <div class="flex flex-wrap gap-2 border rounded-md relative p-4 bg-color-f7f7f7">
                                 <x-input-text wire:model="customerForm.name" width="grow" name="customerForm.name" label="Nome" required="true" />
                                 <x-input-text wire:model="customerForm.lastName" width="grow" name="customerForm.lastName" label="Cognome" required="true" />
@@ -112,7 +112,9 @@
                             <button wire:click="backStep" class="w-fit text-2xl inline-flex items-center px-6 py-2 border border-transparent rounded-md font-light text-color-545454 tracking-widest bg-color-dfdfdf hover:bg-gray-700 hover:text-white active:bg-gray-900 transition ease-in-out duration-150 disabled:opacity-50 disabled:cursor-not-allowed">
                                 Indietro
                             </button>
-                            <x-submit-button wire:click='nextStep' @class(["ml-auto",'bg-color-'.get_color($course->service->name)])>Prosegui</x-submit-button>
+                            @if ($photo)
+                                <x-submit-button wire:click='nextStep' @class(["ml-auto",'bg-color-'.get_color($course->service->name)])>Prosegui</x-submit-button>
+                            @endif
                         </div>
                     </x-container-step>
                 @break
@@ -142,7 +144,9 @@
                             <button wire:click="backStep" class="w-fit text-2xl inline-flex items-center px-6 py-2 border border-transparent rounded-md font-light text-color-545454 tracking-widest bg-color-dfdfdf hover:bg-gray-700 hover:text-white active:bg-gray-900 transition ease-in-out duration-150 disabled:opacity-50 disabled:cursor-not-allowed">
                                 Indietro
                             </button>
-                            <x-submit-button wire:click='nextStep' @class(["ml-auto",'bg-color-'.get_color($course->service->name)])>Prosegui</x-submit-button>
+                            @if ($documents)
+                                <x-submit-button wire:click='nextStep' @class(["ml-auto",'bg-color-'.get_color($course->service->name)])>Prosegui</x-submit-button>
+                            @endif
                         </div>
                     </x-container-step>
                 @break

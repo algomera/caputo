@@ -9,14 +9,19 @@
             <div wire:click='setOption("prima patente")' class="w-full h-24 flex items-center justify-center border rounded-md shadow-shadow-card hover:scale-105 transition-all duration-300 cursor-pointer">
                 <p class="text-lg text-color-2c2c2c">Il candidato si iscrive alla <b>prima patente</b></p>
             </div>
-            <div wire:click='setOption("possessore di patente")' class="w-full h-24 flex items-center justify-center border rounded-md shadow-shadow-card hover:scale-105 transition-all duration-300 cursor-pointer">
-                <p class="text-lg text-color-2c2c2c">Il candidato è possessore di <b>patente A1, B1 o B</b></p>
-            </div>
+            @if ( !in_array(session('course')['id'], [10, 11, 15, 16]))
+                <div wire:click='setOption("possessore di patente")' class="w-full h-24 flex items-center justify-center border rounded-md shadow-shadow-card hover:scale-105 transition-all duration-300 cursor-pointer">
+                    <p class="text-lg text-color-2c2c2c">Il candidato è possessore di <b>patente A1, B1 o B</b></p>
+                </div>
+            @endif
+            @if (session('course')['id'] == 16)
+                <div wire:click='setOption("guida accompagnata")' class="w-full h-24 flex items-center justify-center border rounded-md shadow-shadow-card hover:scale-105 transition-all duration-300 cursor-pointer">
+                    <p class="text-lg text-color-2c2c2c">Possiede l'autorizzazione per la <b>guida accompagnata</b></p>
+                </div>
+
+            @endif
             <div wire:click='setOption("cambio codice")' class="w-full h-24 flex items-center justify-center border rounded-md shadow-shadow-card hover:scale-105 transition-all duration-300 cursor-pointer">
                 <p class="text-lg text-color-2c2c2c">Effettuare il <b>Cambio codice</b></p>
-            </div>
-            <div wire:click='setOption("guida accompagnata")' class="w-full h-24 flex items-center justify-center border rounded-md shadow-shadow-card hover:scale-105 transition-all duration-300 cursor-pointer">
-                <p class="text-lg text-color-2c2c2c">Possiede l'autorizzazione per la <b>guida accompagnata</b></p>
             </div>
         </div>
     @else

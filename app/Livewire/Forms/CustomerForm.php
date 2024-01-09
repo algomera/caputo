@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Storage;
 class CustomerForm extends Form
 {
     public $school_id;
-    public $customer;
+    public Customer $customer;
     public $newCustomer;
     public $currentStep = 1;
 
@@ -85,7 +85,7 @@ class CustomerForm extends Form
     }
 
     public function setCustomer($customer) {
-        $this->customer = Customer::find($customer);
+        $this->customer = $customer;
         $this->name = $this->customer->name;
         $this->lastName = $this->customer->lastName;
         $this->sex = $this->customer->sex;
@@ -140,12 +140,12 @@ class CustomerForm extends Form
         }
     }
 
-    public function signature($signature) {
+    public function signature($path) {
         $this->newCustomer->documents()->updateOrCreate(
             ['type' => 'firma'],
             [
                 'type' => 'firma',
-                'path' => $signature
+                'path' => $path
             ]
         );
     }

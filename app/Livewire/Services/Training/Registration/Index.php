@@ -4,6 +4,7 @@ namespace App\Livewire\Services\Training\Registration;
 
 use App\Models\Option;
 use Livewire\Component;
+use Livewire\Attributes\On;
 
 class Index extends Component
 {
@@ -20,6 +21,17 @@ class Index extends Component
         foreach ($this->course->getOptions()->where('type', 'fisso')->get() as  $option) {
             $this->total += $option->price;
         }
+    }
+
+    public function rules() {
+        return [
+            'transmission' => 'required'
+        ];
+    }
+    public function messages() {
+        return [
+            'transmission.required' => 'Scelta obbligatoria'
+        ];
     }
 
     public function updated() {
@@ -40,9 +52,23 @@ class Index extends Component
         $this->dispatch('backStep');
     }
 
+    #[On('removeSupport')]
+    public function removeSupport() {
+        $this->selectedOptions = array_diff($this->selectedOptions, ["7"]);
+        $this->dispatch('closeModal');
+    }
+
     public function next() {
-        // Todo concludere questo step....
-        dd($this->course, $this->option, $this->type, $this->selectedOptions, $this->transmission);
+        $this->validate();
+
+        $session = session()->get('course', []);
+        $session['selected_cost'] = $this->selectedOptions;
+        $session['transmission'] = $this->transmission;
+        session()->put('course', $session);
+
+        return redirect()->route('step.register', [
+            'course' => $this->course,
+        ]);
     }
 
     public function render()

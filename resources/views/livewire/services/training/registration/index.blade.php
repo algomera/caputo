@@ -7,7 +7,20 @@
     </div>
 
     <div class="bg-white shadow border px-16 py-9 mt-10 mx-44">
-        <h3 class="text-2xl font-medium text-color-2c2c2c">Il candidato si iscrive alla prima patente A1</h3>
+        @switch(session()->get('course')['option'])
+            @case('prima patente')
+                <h3 class="text-2xl font-medium text-color-2c2c2c">Il candidato si iscrive alla prima patente A1</h3>
+            @break
+            @case('possessore di patente')
+                <h3 class="text-2xl font-medium text-color-2c2c2c">Il candidato e gia possessore di altra patente</h3>
+            @break
+            @case('cambio codice')
+                <h3 class="text-2xl font-medium text-color-2c2c2c">Il candidato si iscrive effetuando un cambio codice</h3>
+            @break
+            @case('guida accompagnata')
+                <h3 class="text-2xl font-medium text-color-2c2c2c">Il candidato e in possesso di autorizzazione alla guida accompagnata</h3>
+            @break
+        @endswitch
 
         <div class="flex items-end gap-2 my-8">
             <p @class(["text-xl font-bold", 'text-color-'.get_color($course->service->name)])>Iscrizione</p>
@@ -25,7 +38,17 @@
 
         @foreach ($course->getOptions()->where('type', 'opzionale')->get() as $option )
             <div class="flex items-end gap-2 my-1">
-                <x-custom-checkbox wire:model.live="selectedOptions" name="option_{{ $option->id}}" value="{{ $option->id }}" label="{{$option->name}}"/>
+                @if ($option->id == 7 AND array_search('7', $selectedOptions) === false)
+                    <x-custom-checkbox
+                        wire:click="$dispatch('openModal', { component: 'services.training.modals.audio-support'})"
+                        wire:model.live="selectedOptions"
+                        name="option_{{ $option->id}}"
+                        value="{{ $option->id }}"
+                        label="{{$option->name}}"
+                    />
+                @else
+                    <x-custom-checkbox wire:model.live="selectedOptions" name="option_{{ $option->id}}" value="{{ $option->id }}" label="{{$option->name}}"/>
+                @endif
                 <div class="grow h-[1px] bg-color-dfdfdf mb-2"></div>
                 <p class="text-color-2c2c2c">{{$option->price}} €</p>
             </div>

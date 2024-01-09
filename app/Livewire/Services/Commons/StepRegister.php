@@ -63,8 +63,8 @@ class StepRegister extends Component
         }
     }
 
-    public function setNewCustomer($customer) {
-
+    public function setCustomer($customer) {
+        $this->customerForm->setCustomer($customer);
     }
 
     public function backStep() {
@@ -74,32 +74,47 @@ class StepRegister extends Component
     public function nextStep() {
         $this->customerForm->setSchool(auth()->user()->schools()->first()->id);
 
-        if ($this->customerForm->currentStep == 1) {
-            $this->customerForm->store();
-            $this->customerForm->currentStep += 1;
-        } elseif ($this->customerForm->currentStep == 2) {
-            $this->customerForm->store();
-            $this->customerForm->currentStep += 1;
-        } elseif ($this->customerForm->currentStep == 3) {
-            if ($this->photo) {
-                $this->customerForm->photo($this->photo);
-            }
-            $this->customerForm->currentStep += 1;
-        } elseif ($this->customerForm->currentStep == 4) {
-            if ($this->documents) {
-                $this->customerForm->documents($this->documents);
-            }
-            $this->customerForm->currentStep += 1;
-        } elseif ($this->customerForm->currentStep == 5) {
-            if ($this->signature) {
-                $this->customerForm->signature($this->pathSignature);
-            }
-            $this->customerForm->currentStep += 1;
-        } elseif (count($this->steps) <= $this->customerForm->currentStep) {
-            dd('registrazione completata');
-            $this->dispatch('customer');
-        } else {
-            $this->customerForm->currentStep += 1;
+        switch ($this->customerForm->currentStep) {
+            case '1':
+                $this->customerForm->store();
+                $this->customerForm->currentStep += 1;
+                break;
+            case '2':
+                $this->customerForm->store();
+                $this->customerForm->currentStep += 1;
+                break;
+            case '3':
+                if ($this->photo) {
+                    $this->customerForm->photo($this->photo);
+                }
+                $this->customerForm->currentStep += 1;
+                break;
+            case '4':
+                if ($this->documents) {
+                    $this->customerForm->documents($this->documents);
+                }
+                $this->customerForm->currentStep += 1;
+                break;
+            case '5':
+                if ($this->signature) {
+                    $this->customerForm->signature($this->pathSignature);
+                }
+                $this->customerForm->currentStep += 1;
+                if (count($this->steps) <= $this->customerForm->currentStep) {
+                    dd('registrazione completata');
+                    $this->dispatch('customer');
+                }
+                break;
+            case '6':
+                $this->customerForm->currentStep += 1;
+                if (count($this->steps) <= $this->customerForm->currentStep) {
+                    dd('registrazione completata');
+                    $this->dispatch('customer');
+                }
+                break;
+            case '7':
+                # code...
+                break;
         }
     }
 
