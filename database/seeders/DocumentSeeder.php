@@ -18,8 +18,8 @@ class DocumentSeeder extends Seeder
         $customers = Customer::all();
         $chronologies = Chronology::all();
         $documents = [
-            'Fototessera',
-            'Firma',
+            'fototessera',
+            'firma',
             'documenti di riconoscimento'
         ];
 

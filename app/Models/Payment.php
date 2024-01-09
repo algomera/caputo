@@ -18,7 +18,7 @@ class Payment extends Model
 	}
 
     public function registration(): BelongsTo {
-        return $this->belongsTo(registration::class, 'paymentable_id');
+        return $this->belongsTo(Registration::class, 'paymentable_id');
     }
 
     public function driving(): BelongsTo {

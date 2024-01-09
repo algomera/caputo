@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\DrivingPlanning;
 use App\Models\MedicalPlanning;
-use App\Models\Payment;
 use App\Models\registration;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -16,7 +15,7 @@ class PaymentSeeder extends Seeder
      */
     public function run(): void
     {
-        $registrations = registration::all();
+        $registrations = Registration::all();
         $drivings = DrivingPlanning::all();
         $medicals = MedicalPlanning::all();
 

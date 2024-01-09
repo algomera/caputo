@@ -27,7 +27,7 @@ class Training extends Model
     }
 
     public function registrations(): HasMany {
-        return $this->hasMany(registration::class);
+        return $this->hasMany(Registration::class);
     }
 
     public function plannings(): HasMany {

@@ -47,7 +47,7 @@ class TrainingSeeder extends Seeder
                             $total += $optional->price;
                         }
 
-                        registration::create([
+                        Registration::create([
                             'training_id' => $training->id,
                             'customer_id' => $customer->id,
                             'type' => fake()->randomElement(['teoria', 'pratica', 'pratica/s.esame']),
@@ -83,7 +83,7 @@ class TrainingSeeder extends Seeder
                             $total += $optional->price;
                         }
 
-                        registration::create([
+                        Registration::create([
                             'training_id' => $training->id,
                             'customer_id' => $customer->id,
                             'type' => fake()->randomElement(['teoria', 'pratica', 'pratica/s.esame']),

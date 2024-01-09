@@ -22,7 +22,6 @@ class CustomerFactory extends Factory
 
         return [
             'school_id' => fake()->numberBetween(1, $school->count()),
-            'photo' => fake()->imageUrl(245, 245, 'persons', true, 'fototessera', false, 'jpg'),
             'name' => fake()->name(),
             'lastName' => fake()->lastName(),
             'sex' => fake()->randomElement(['uomo', 'donna']),

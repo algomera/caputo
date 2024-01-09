@@ -24,7 +24,7 @@ class Customer extends Model
     }
 
     public function registrations(): HasMany {
-        return $this->hasMany(registration::class);
+        return $this->hasMany(Registration::class);
     }
 
     public function chronologies(): HasMany {

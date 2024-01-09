@@ -20,6 +20,7 @@ class Index extends Component
     public function setService($id) {
         $this->selectedService = Service::find($id);
         $this->courses = $this->selectedService->courses()->get();
+        session()->put('serviceName', $this->selectedService->name);
         $this->step += 1;
     }
 

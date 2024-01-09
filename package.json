@@ -17,6 +17,7 @@
     },
     "dependencies": {
         "@alpinejs/focus": "^3.13.3",
-        "@alpinejs/mask": "^3.13.3"
+        "@alpinejs/mask": "^3.13.3",
+        "signature_pad": "^4.1.7"
     }
 }

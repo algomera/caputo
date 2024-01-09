@@ -1,4 +1,4 @@
-<div class="w-full h-full py-14 2xl:px-28">
+<div class="w-full h-full py-14 px-10 2xl:px-28">
 
     @switch($step)
         @case(0)
