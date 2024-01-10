@@ -3,30 +3,23 @@
 namespace App\Livewire\Services\Training\Modals;
 
 use App\Livewire\Forms\CustomerForm;
+use Illuminate\Support\Facades\Validator;
 use App\Models\Course;
 use LivewireUI\Modal\ModalComponent;
 
 class GetFiscalCode extends ModalComponent
 {
-    // public CustomerForm $customerForm;
+    public CustomerForm $customerForm;
 
     public $fiscalCode;
     public $message = null;
 
-    public function rules() {
-        return [
-            'fiscalCode' => 'required'
-        ];
-    }
-
-    public function messages() {
-        return [
-            'fiscalCode.required' => "Il campo non può essere vuoto"
-        ];
-    }
-
     public function verifyData() {
-        $this->validate();
+        Validator::make(
+            ['fiscalCode' => $this->fiscalCode],
+            ['fiscalCode' => 'required'],
+            ['required' => 'Il campo non può essere vuoto']
+        )->validate();
 
         if ($this->message) {
             $this->next();
