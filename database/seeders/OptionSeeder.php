@@ -41,6 +41,12 @@ class OptionSeeder extends Seeder
                 'price' => 20.00
             ],
             [
+                'name' => 'Tutti i bollettini cambio codice',
+                'type' => 'opzionale',
+                'option' => 'cambio codice',
+                'price' => 10.20
+            ],
+            [
                 'name' => 'Certificato medico con marca da bollo',
                 'type' => 'opzionale',
                 'price' => 64.40
@@ -66,6 +72,7 @@ class OptionSeeder extends Seeder
             $option = Option::create([
                 'name' => $value['name'],
                 'type' => $value['type'],
+                'option' => $value['option'] ?? 'iscrizione',
                 'price' => $value['price']
             ]);
 

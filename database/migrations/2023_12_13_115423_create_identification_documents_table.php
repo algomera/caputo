@@ -19,10 +19,6 @@ return new class extends Migration
             $table->date('document_release');
             $table->string('document_from');
             $table->date('document_expiration');
-            $table->string('n_patent')->nullable();
-            $table->date('patent_release')->nullable();
-            $table->string('patent_from')->nullable();
-            $table->date('patent_expiration')->nullable();
             $table->json('qualification')->nullable();
             $table->timestamps();
         });

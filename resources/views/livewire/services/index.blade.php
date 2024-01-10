@@ -56,3 +56,24 @@
         @default
     @endswitch
 </div>
+
+@push('scripts')
+    <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('signaturePad', () => ({
+                signaturePadInstance: null,
+                init(){
+                    this.signaturePadInstance = new SignaturePad(this.$refs.signature_canvas);
+                },
+                clearSignature(){
+                    this.signaturePadInstance.clear();
+                },
+                uploadSignature(){
+                    @this.set('signature', this.signaturePadInstance.toDataURL('image/png'));
+                    @this.call('getSignature');
+                }
+            }))
+        })
+    </script>
+@endpush
+

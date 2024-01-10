@@ -23,7 +23,11 @@ class StepRegister extends Component
     public $signature;
     public $pathSignature;
     public $documents = [];
+    public $documentUploaded = false;
+    public $scanUploaded = false;
+    public $scans = [];
     public $steps = [];
+    public $typePatents = ['AM', 'A1', 'A2', 'A', 'B1','B', 'C1', 'C', 'D1', 'D', 'BE', 'C1E', 'CE', 'D1E', 'DE'];
 
     public function mount($course) {
         $this->course = $course;
@@ -47,8 +51,9 @@ class StepRegister extends Component
             $this->steps= [
                 'dati',
                 'recapiti',
-                'fototessera',
+                'documenti',
                 'scansioni',
+                'fototessera',
                 'firma',
                 'anamnestico'
             ];
@@ -56,8 +61,9 @@ class StepRegister extends Component
             $this->steps = [
                 'dati',
                 'recapiti',
-                'fototessera',
+                'documenti',
                 'scansioni',
+                'fototessera',
                 'firma',
             ];
         }
@@ -75,27 +81,33 @@ class StepRegister extends Component
         $this->customerForm->setSchool(auth()->user()->schools()->first()->id);
 
         switch ($this->customerForm->currentStep) {
-            case '1':
+            case '1': //Dati
                 $this->customerForm->store();
                 $this->customerForm->currentStep += 1;
                 break;
-            case '2':
+            case '2': //Recapiti
                 $this->customerForm->store();
                 $this->customerForm->currentStep += 1;
                 break;
-            case '3':
-                if ($this->photo) {
-                    $this->customerForm->photo($this->photo);
-                }
-                $this->customerForm->currentStep += 1;
-                break;
-            case '4':
+            case '3': //Documenti
                 if ($this->documents) {
                     $this->customerForm->documents($this->documents);
                 }
                 $this->customerForm->currentStep += 1;
                 break;
-            case '5':
+            case '4': //Scansioni
+                if ($this->scans) {
+                    $this->customerForm->scans($this->scans);
+                }
+                $this->customerForm->currentStep += 1;
+                break;
+            case '5': //Fototessera
+                if ($this->photo) {
+                    $this->customerForm->photo($this->photo);
+                }
+                $this->customerForm->currentStep += 1;
+                break;
+            case '6': //Firma
                 if ($this->signature) {
                     $this->customerForm->signature($this->pathSignature);
                 }
@@ -105,16 +117,58 @@ class StepRegister extends Component
                     $this->dispatch('customer');
                 }
                 break;
-            case '6':
+            case '7': //Jolly
                 $this->customerForm->currentStep += 1;
                 if (count($this->steps) <= $this->customerForm->currentStep) {
                     dd('registrazione completata');
                     $this->dispatch('customer');
                 }
                 break;
-            case '7':
+            case '8':
                 # code...
                 break;
+        }
+    }
+
+    public function addDocument() {
+        $this->documents[] = ['type' => ''];
+    }
+
+    public function updated($property) {
+        if (str_contains($property,'documents')) {
+            foreach ($this->documents as $key => $value) {
+                if ($value['type'] != 'patente') {
+                    unset($this->documents[$key]['qualification']);
+                }
+
+                if (count($this->documents[$key]) == 6 AND $value['type'] == 'patente') {
+                    $this->documentUploaded = true;
+                } elseif (count($this->documents[$key]) == 5 AND $value['type'] != 'patente') {
+                    $this->documentUploaded = true;
+                } else {
+                    $this->documentUploaded = false;
+                }
+            }
+        }
+
+        if ($property == "scans") {
+            $this->scanUploaded = true;
+        }
+    }
+
+    public function removeDocument($key) {
+        unset($this->documents[$key]);
+
+        if (count($this->documents) < 1) {
+            $this->documentUploaded = false;
+        }
+    }
+
+    public function removeScan($key) {
+        unset($this->scans[$key]);
+
+        if (count($this->scans) < 1) {
+            $this->scanUploaded = false;
         }
     }
 

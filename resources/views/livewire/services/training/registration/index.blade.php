@@ -36,30 +36,44 @@
             </div>
         @endforeach
 
-        @foreach ($course->getOptions()->where('type', 'opzionale')->get() as $option )
-            <div class="flex items-end gap-2 my-1">
-                @if ($option->id == 7 AND array_search('7', $selectedOptions) === false)
-                    <x-custom-checkbox
-                        wire:click="$dispatch('openModal', { component: 'services.training.modals.audio-support'})"
-                        wire:model.live="selectedOptions"
-                        name="option_{{ $option->id}}"
-                        value="{{ $option->id }}"
-                        label="{{$option->name}}"
-                    />
-                @else
+        @if (session()->get('course')['option'] == 'cambio codice')
+            @foreach ($course->getOptions()->where('type', 'opzionale')->where('option', 'cambio codice')->get() as $option )
+                <div class="flex items-end gap-2 my-1">
                     <x-custom-checkbox wire:model.live="selectedOptions" name="option_{{ $option->id}}" value="{{ $option->id }}" label="{{$option->name}}"/>
-                @endif
-                <div class="grow h-[1px] bg-color-dfdfdf mb-2"></div>
-                <p class="text-color-2c2c2c">{{$option->price}} €</p>
-            </div>
-        @endforeach
+                    <div class="grow h-[1px] bg-color-dfdfdf mb-2"></div>
+                    <p class="text-color-2c2c2c">{{$option->price}} €</p>
+                </div>
+            @endforeach
+        @endif
 
-        <div class="flex items-end gap-2 mt-8 mb-2">
-            <p @class(["text-xl font-bold", 'text-color-'.get_color($course->service->name)])>Corso</p>
-            <div class="grow h-[2px] bg-color-dfdfdf mb-2"></div>
-            <p @class(["text-xl font-bold", 'text-color-'.get_color($course->service->name)])>{{$course->prices()->first()->price}} €</p>
-        </div>
-        <p>{{$course->description}}</p>
+        @if (session()->get('course')['option'] == 'prima patente')
+            @foreach ($course->getOptions()->where('type', 'opzionale')->where('option', 'iscrizione')->get() as $option )
+                <div class="flex items-end gap-2 my-1">
+                    @if ($option->id == 8 AND array_search('8', $selectedOptions) === false)
+                        <x-custom-checkbox
+                            wire:click="$dispatch('openModal', { component: 'services.training.modals.audio-support'})"
+                            wire:model.live="selectedOptions"
+                            name="option_{{ $option->id}}"
+                            value="{{ $option->id }}"
+                            label="{{$option->name}}"
+                        />
+                    @else
+                        <x-custom-checkbox wire:model.live="selectedOptions" name="option_{{ $option->id}}" value="{{ $option->id }}" label="{{$option->name}}"/>
+                    @endif
+                    <div class="grow h-[1px] bg-color-dfdfdf mb-2"></div>
+                    <p class="text-color-2c2c2c">{{$option->price}} €</p>
+                </div>
+            @endforeach
+        @endif
+
+        @if (session()->get('course')['registration_type'] == 'teoria')
+            <div class="flex items-end gap-2 mt-8 mb-2">
+                <p @class(["text-xl font-bold", 'text-color-'.get_color($course->service->name)])>Corso</p>
+                <div class="grow h-[2px] bg-color-dfdfdf mb-2"></div>
+                <p @class(["text-xl font-bold", 'text-color-'.get_color($course->service->name)])>{{$course->prices()->first()->price}} €</p>
+            </div>
+            <p>{{$course->description}}</p>
+        @endif
 
         <div class="mb-2 space-y-1">
             <div class="flex items-end gap-2 mt-8 mb-2">
@@ -67,7 +81,7 @@
                 <div class="grow h-[2px] bg-color-dfdfdf mb-2"></div>
                 <p @class(["text-xl font-bold", 'text-color-'.get_color($course->service->name)])>{{$course->getOptions()->where('type', 'guide')->first()->price}} €</p>
             </div>
-            <p>Non ci sono guide obbligatorie, selezionare l’opzione per il <b>cambio</b></p>
+            <p>Non ci sono guide obbligatorie.</p>
             <x-custom-radio wire:model='transmission' label="Cambio automatico" name="transmission" value="automatico" />
             <x-custom-radio wire:model='transmission' label="Cambio manuale" name="transmission" value="manuale" />
         </div>

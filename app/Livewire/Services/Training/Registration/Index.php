@@ -16,7 +16,9 @@ class Index extends Component
     public $total = 0;
 
     public function mount() {
-        $this->total += $this->course->prices()->first()->price;
+        if (session()->get('course')['registration_type'] != 'guide') {
+            $this->total += $this->course->prices()->first()->price;
+        }
 
         foreach ($this->course->getOptions()->where('type', 'fisso')->get() as  $option) {
             $this->total += $option->price;
@@ -54,7 +56,7 @@ class Index extends Component
 
     #[On('removeSupport')]
     public function removeSupport() {
-        $this->selectedOptions = array_diff($this->selectedOptions, ["7"]);
+        $this->selectedOptions = array_diff($this->selectedOptions, ["8"]);
         $this->dispatch('closeModal');
     }
 
@@ -66,9 +68,11 @@ class Index extends Component
         $session['transmission'] = $this->transmission;
         session()->put('course', $session);
 
-        return redirect()->route('step.register', [
-            'course' => $this->course,
-        ]);
+        if (session()->get('course')['option'] != 'cambio codice') {
+            $this->dispatch('openModal', 'services.training.modals.get-fiscal-code');
+        } else {
+            $this->dispatch('openModal', 'services.training.modals.remind-t-t2112');
+        }
     }
 
     public function render()

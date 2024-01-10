@@ -132,7 +132,20 @@ class CustomerForm extends Form
 
     public function documents($documents) {
         foreach ($documents as $document) {
-            $path = Storage::putFile('customers/customer-'.$this->newCustomer->id, $document);
+            $this->newCustomer->identificationDocuments()->create([
+                'type' => $document['type'],
+                'n_document' => $document['n_document'],
+                'document_release' => $document['document_release'],
+                'document_from' => $document['document_from'],
+                'document_expiration' => $document['document_expiration'],
+                'qualification' => json_encode($document['qualification']) ?? null
+            ]);
+        }
+    }
+
+    public function scans($scans) {
+        foreach ($scans as $scan) {
+            $path = Storage::putFile('customers/customer-'.$this->newCustomer->id, $scan);
             $this->newCustomer->documents()->create([
                 'type' => 'documenti di riconoscimento',
                 'path' => $path

@@ -6,15 +6,21 @@ use App\Models\Course;
 use App\Models\Service;
 use Livewire\Component;
 use Livewire\Attributes\On;
+use App\Livewire\Forms\CustomerForm;
+use Illuminate\Support\Facades\Storage;
 
 class Index extends Component
 {
+    public CustomerForm $customerForm;
+
     public $step = 0;
     public $selectedService = null;
     public $courses = null;
     public $course;
     public $option;
     public $type;
+    public $signature;
+    public $pathSignature;
 
 
     public function setService($id) {
@@ -45,6 +51,14 @@ class Index extends Component
     public function redirectService($id) {
         $course = Course::find($id);
         return redirect()->route('driver', ['course' => $course]);
+    }
+
+    public function getSignature() {
+        // TODO qui di dovra creare il customer e salvare la firma in storage
+        // $customer = $this->customerForm->newCustomer;
+        // $this->pathSignature = Storage::putFileAs('customers/customer-'.$customer->id, $this->signature, 'firma.png');
+        $this->dispatch('uploadedSignature');
+        $this->dispatch('closeModal');
     }
 
     public function render()

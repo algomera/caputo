@@ -107,15 +107,6 @@
             </g>
         </svg>
         @break
-    @case('alert')
-        <svg width="70px" height="70px"
-        {{ $attributes->merge(['class']) }} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path opacity="0.1" d="M10.2501 5.147L3.64909 17.0287C2.9085 18.3618 3.87244 20 5.39741 20H18.5994C20.1243 20 21.0883 18.3618 20.3477 17.0287L13.7467 5.147C12.9847 3.77538 11.0121 3.77538 10.2501 5.147Z" fill="#323232"/>
-            <path d="M12 10V13" stroke="#323232" stroke-width="2" stroke-linecap="round"/>
-            <path d="M12 16V15.9888" stroke="#323232" stroke-width="2" stroke-linecap="round"/>
-            <path d="M10.2515 5.147L3.65056 17.0287C2.90997 18.3618 3.8739 20 5.39887 20H18.6008C20.1258 20 21.0897 18.3618 20.3491 17.0287L13.7482 5.147C12.9861 3.77538 11.0135 3.77538 10.2515 5.147Z" stroke="#323232" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        @break
     @case('drive')
         <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" stroke="currentColor" width="75.859" height="73.032"
         {{ $attributes->merge(['class']) }} viewBox="0 0 75.859 73.032">
@@ -277,6 +268,16 @@
                 <path id="Tracciato_12" data-name="Tracciato 12" d="M5.8,4.5h9.106a1.3,1.3,0,0,1,1.3,1.3v9.106a1.3,1.3,0,0,1-1.3,1.3H5.8a1.3,1.3,0,0,1-1.3-1.3V5.8A1.3,1.3,0,0,1,5.8,4.5Z" fill="none" stroke="#2c2c2c" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
                 <path id="Tracciato_13" data-name="Tracciato 13" d="M12.06,11.28a.78.78,0,1,1-.78-.78A.78.78,0,0,1,12.06,11.28Z" transform="translate(-3.294 -3.294)" fill="none" stroke="#2c2c2c" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
                 <path id="Tracciato_14" data-name="Tracciato 14" d="M18.167,17.6,14.834,15,7.5,20.721" transform="translate(-1.96 -4.513)" fill="none" stroke="#2c2c2c" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+            </g>
+        </svg>
+        @break
+    @case('alert')
+        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" stroke="currentColor" width="52" height="46.5"
+            {{ $attributes->merge(['class']) }} viewBox="0 0 52 46.5">
+            <g id="Raggruppa_493" data-name="Raggruppa 493" transform="translate(-934 -395)">
+            <path id="Poligono_1" data-name="Poligono 1" d="M23.4,4.5a3,3,0,0,1,5.2,0l20.8,36A3,3,0,0,1,46.8,45H5.2a3,3,0,0,1-2.6-4.5Z" transform="translate(934 395)" fill="none" stroke="#ffb205" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
+            <path id="Poligono_2" data-name="Poligono 2" d="M23.4,4.5a3,3,0,0,1,5.2,0l20.8,36A3,3,0,0,1,46.8,45H5.2a3,3,0,0,1-2.6-4.5Z" transform="translate(934 395)" fill="#ffb205" opacity="0.2"/>
+            <text id="_" data-name="!" transform="translate(957 433)" fill="#ffb205" font-size="24" font-family="NeueHaasUnicaW1G-Medium, Neue Haas Unica W1G" font-weight="500"><tspan x="0" y="0">!</tspan></text>
             </g>
         </svg>
         @break

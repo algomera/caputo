@@ -20,15 +20,19 @@ class identificationDocumentSeeder extends Seeder
         foreach ($customers as $customer) {
             IdentificationDocument::create([
                 'customer_id' => $customer->id,
-                'type' => fake()->randomElement(['carta di identita','patente di guida']),
+                'type' => 'carta di identita',
                 'n_document' => fake()->regexify('[A-Z]{2}[0-9]{7}'),
                 'document_release' => fake()->date(),
                 'document_from' => fake()->word(),
                 'document_expiration' => fake()->date(),
-                'n_patent' => fake()->regexify('[A-Z]{2}[0-9]{7}[A-Z]{1}'),
-                'patent_release' => fake()->date(),
-                'patent_from' => fake()->word(),
-                'patent_expiration' => fake()->date(),
+            ]);
+            IdentificationDocument::create([
+                'customer_id' => $customer->id,
+                'type' => 'patente di guida',
+                'n_document' => fake()->regexify('[A-Z]{2}[0-9]{7}'),
+                'document_release' => fake()->date(),
+                'document_from' => fake()->word(),
+                'document_expiration' => fake()->date(),
                 'qualification' => json_encode(['A','B'])
             ]);
         }

@@ -49,10 +49,10 @@
                                 <x-input-text wire:model="customerForm.country" width="grow" name="customerForm.country" label="Cittadinanza" required="true" />
                             </div>
                             <div class="flex flex-wrap gap-2 border rounded-md relative p-4 bg-color-f7f7f7">
-                                <x-input-text wire:model="customerForm.city" width="w-1/4" name="customerForm.city" label="Citta" required="true" />
-                                <x-input-text x-mask="aa" wire:model="customerForm.province" width="w-1/4" name="customerForm.province" label="Provincia" uppercase="uppercase" required="true" />
                                 <x-input-text wire:model="customerForm.address" width="grow" name="customerForm.address" label="Via/Piazza" required="true" />
                                 <x-input-text x-mask="99999" wire:model="customerForm.civic" width="w-1/12" name="customerForm.civic" label="Civico" required="true" />
+                                <x-input-text wire:model="customerForm.city" width="w-1/4" name="customerForm.city" label="Citta" required="true" />
+                                <x-input-text x-mask="aa" wire:model="customerForm.province" width="w-1/4" name="customerForm.province" label="Provincia" uppercase="uppercase" required="true" />
                                 <x-input-text x-mask="99999" wire:model="customerForm.postcode" width="w-1/12" name="customerForm.postcode" label="Cap" required="true" />
                             </div>
                         </div>
@@ -60,6 +60,7 @@
                         <x-submit-button wire:click='nextStep' @class(["ml-auto",'bg-color-'.get_color($course->service->name)])>Prosegui</x-submit-button>
                     </x-container-step>
                 @break
+
             {{-- Recapiti --}}
                 @case(2)
                     <x-container-step>
@@ -84,8 +85,107 @@
                         </div>
                     </x-container-step>
                 @break
-            {{-- Fototessera --}}
+
+            {{-- Documenti --}}
                 @case(3)
+                    <x-container-step>
+                        <div class="flex justify-between gap-5">
+                            <p class="text-xl font-light text-color-2c2c2c">
+                                Inserire i dati dei documenti
+                            </p>
+                            <x-submit-button wire:click='addDocument' @class(["ml-auto text-sm",'bg-color-'.get_color($course->service->name).'/70'])>+ Documento</x-submit-button>
+                        </div>
+
+                        @if (count($documents) > 0)
+                            @foreach ($documents as $key => $document )
+                            <div class="flex items-end gap-5">
+                                <div class="flex items-center grow gap-3 relative">
+                                    <x-custom-select wire:model.live="documents.{{$key}}.type" name="documents.{{$key}}.type" label="Tipologia" width="grow" >
+                                        <option value="">Seleziona</option>
+                                        <option value="patente" class="capitalize">patente</option>
+                                        <option value="carta di identita" class="capitalize">carta di identita</option>
+                                        <option value="passaporto" class="capitalize">passaporto</option>
+                                    </x-custom-select>
+                                    <x-input-text wire:model.live="documents.{{$key}}.n_document" width="grow" name="documents.{{$key}}.n_document" uppercase="uppercase" label="Numero documento" />
+                                    <x-input-text type="date" wire:model.live="documents.{{$key}}.document_release" width="grow" name="documents.{{$key}}.document_release" label="Rilasciato il" />
+                                    <x-input-text wire:model.live="documents.{{$key}}.document_from" width="grow" name="documents.{{$key}}.document_from" uppercase="capitalize" label="Ente di rilascio" />
+                                    <x-input-text type="date" wire:model.live="documents.{{$key}}.document_expiration" width="grow" name="documents.{{$key}}.document_expiration" label="Scadenza" />
+                                    @if ($documents[$key]['type'] == 'patente')
+                                        <x-custom-select multiple wire:model.live="documents.{{$key}}.qualification" name="documents.{{$key}}.type" label="Qualifiche" width="grow" >
+                                            @foreach ($typePatents as $patent )
+                                                <option value="{{$patent}}" class="capitalize">{{$patent}}</option>
+                                            @endforeach
+                                        </x-custom-select>
+                                        @if (array_key_exists('qualification', $documents[$key]))
+                                            <div class="absolute -bottom-5 right-0 font-semibold text-gray-400">
+                                                @foreach ($documents[$key]['qualification'] as $qualification)
+                                                    <span> {{$qualification}} </span>
+                                                @endforeach
+                                            </div>
+                                        @endif
+                                    @endif
+                                </div>
+                                <x-icons wire:click="removeDocument({{$key}})" name="delete" class="mb-5 cursor-pointer" />
+                            </div>
+                            @endforeach
+                        @endif
+
+                        <div class="flex justify-between">
+                            <button wire:click="backStep" class="w-fit text-2xl inline-flex items-center px-6 py-2 border border-transparent rounded-md font-light text-color-545454 tracking-widest bg-color-dfdfdf hover:bg-gray-700 hover:text-white active:bg-gray-900 transition ease-in-out duration-150 disabled:opacity-50 disabled:cursor-not-allowed">
+                                Indietro
+                            </button>
+                            @if ($documentUploaded)
+                                <x-submit-button wire:click='nextStep' @class(["ml-auto",'bg-color-'.get_color($course->service->name)])>Prosegui</x-submit-button>
+                            @endif
+                        </div>
+                    </x-container-step>
+                @break
+
+            {{-- Scansioni --}}
+                @case(4)
+                    <x-container-step>
+                        <p class="text-xl font-light text-color-2c2c2c">
+                            Caricare la scansione della <span class="font-bold">patente, carta d’identità</span> e il <span class="font-bold">codice fiscale</span>, altrimenti cliccare “inserire in seguito”
+                        </p>
+
+                        <div class="flex items-start justify-between gap-20">
+                            <div class="flex flex-col gap-2">
+                                <x-input-files multiple wire:model="scans" text="Carica Scansioni" color="{{get_color($course->service->name)}}" name="scans"  preview="scans_uploaded" />
+                                <span wire:click="nextStep" class="text-color-2c2c2c underline cursor-pointer">Inserisci in seguito</span>
+
+                                <div class="text-gray-500 mt-5">
+                                    <small class="block">Cittadino extra-comunitario caricare il permesso di soggiorno</small>
+                                    <small>Cittadino comunitario caricare il certificato di residenza</small>
+                                </div>
+                            </div>
+
+                            <div class="flex flex-col gap-1 grow max-w-lg relative py-4 border">
+                                <p @class(["font-bold mb-5 pl-4",'text-color-'.get_color($course->service->name)])>File Caricati</p>
+                                @if ($scans)
+                                    @foreach ($scans as $key => $scan)
+                                        <div @class(["flex items-center px-4 py-1", ($key < count($scans)-1) ? 'border-b': ''])>
+                                            <x-icons name="circle" class="mr-2" />
+                                            <span class="font-medium text-gray-400">{{$scan->getClientOriginalName()}}</span>
+                                            <x-icons wire:click="removeScan({{$key}})" name="delete" class="ml-auto cursor-pointer" />
+                                        </div>
+                                    @endforeach
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="flex justify-between">
+                            <button wire:click="backStep" class="w-fit text-2xl inline-flex items-center px-6 py-2 border border-transparent rounded-md font-light text-color-545454 tracking-widest bg-color-dfdfdf hover:bg-gray-700 hover:text-white active:bg-gray-900 transition ease-in-out duration-150 disabled:opacity-50 disabled:cursor-not-allowed">
+                                Indietro
+                            </button>
+                            @if ($scanUploaded)
+                                <x-submit-button wire:click='nextStep' @class(["ml-auto",'bg-color-'.get_color($course->service->name)])>Prosegui</x-submit-button>
+                            @endif
+                        </div>
+                    </x-container-step>
+                @break
+
+            {{-- Fototessera --}}
+                @case(5)
                     <x-container-step>
                         <p class="text-xl font-light text-color-2c2c2c">
                             Caricare la fototessera, altrimenti cliccare “inserire in seguito”
@@ -97,12 +197,12 @@
                                 <span wire:click="nextStep" class="text-color-2c2c2c underline cursor-pointer">Inserisci in seguito</span>
                             </div>
                             @if ($photo)
-                            <div class="flex flex-col gap-1 relative">
-                                <img class="w-20 h-24 border shadow" src="{{ $photo->temporaryUrl() }}">
-                                <div class="absolute -bottom-5 font-medium text-gray-400">{{$photo->getClientOriginalName()}}</div>
+                            <div class="flex items-center gap-3">
+                                <img class="w-28 h-36 border" src="{{ $photo->temporaryUrl() }}">
+                                <div class="font-medium text-gray-400">{{$photo->getClientOriginalName()}}</div>
                             </div>
                             @else
-                            <div class="w-20 h-24 border shadow flex items-center justify-center">
+                            <div class="w-28 h-36 border flex items-center justify-center">
                                 <x-icons name="image" class="w-10 h-10 opacity-30"/>
                             </div>
                             @endif
@@ -118,43 +218,12 @@
                         </div>
                     </x-container-step>
                 @break
-            {{-- Scansioni --}}
-                @case(4)
-                    <x-container-step>
-                        <p class="text-xl font-light text-color-2c2c2c">
-                            Caricare la scansione della <span class="font-bold">patente, carta d’identità</span> e il <span class="font-bold">codice fiscale</span>, altrimenti cliccare “inserire in seguito”
-                        </p>
 
-                        <div class="flex gap-8">
-                            <div class="flex flex-col gap-2">
-                                <x-input-files multiple wire:model="documents" text="Carica Documenti" color="{{get_color($course->service->name)}}" name="documents"  preview="documents_uploaded" />
-                                <span wire:click="nextStep" class="text-color-2c2c2c underline cursor-pointer">Inserisci in seguito</span>
-                            </div>
-
-                            @if ($documents)
-                                <div class="flex flex-col gap-1 relative">
-                                    @foreach ($documents as $document)
-                                        <span class="font-medium text-gray-400">{{$document->getClientOriginalName()}}</span>
-                                    @endforeach
-                                </div>
-                            @endif
-                        </div>
-
-                        <div class="flex justify-between">
-                            <button wire:click="backStep" class="w-fit text-2xl inline-flex items-center px-6 py-2 border border-transparent rounded-md font-light text-color-545454 tracking-widest bg-color-dfdfdf hover:bg-gray-700 hover:text-white active:bg-gray-900 transition ease-in-out duration-150 disabled:opacity-50 disabled:cursor-not-allowed">
-                                Indietro
-                            </button>
-                            @if ($documents)
-                                <x-submit-button wire:click='nextStep' @class(["ml-auto",'bg-color-'.get_color($course->service->name)])>Prosegui</x-submit-button>
-                            @endif
-                        </div>
-                    </x-container-step>
-                @break
             {{-- Firma --}}
-                @case(5)
+                @case(6)
                     <x-container-step>
                         <p class="text-xl font-light text-color-2c2c2c">
-                            Caricare la firma e salvare, per proseguire.
+                            Caricare la firma del cliente e salvare, per proseguire.
                         </p>
 
                         <div class="w-fit flex items-start gap-5 relative text-gray-400">
@@ -179,7 +248,7 @@
                     </x-container-step>
                 @break
             {{-- Jolly --}}
-                @case(6)
+                @case(7)
                     <x-container-step>
                         <div class="flex justify-between">
                             <button wire:click="backStep" class="w-fit text-2xl inline-flex items-center px-6 py-2 border border-transparent rounded-md font-light text-color-545454 tracking-widest bg-color-dfdfdf hover:bg-gray-700 hover:text-white active:bg-gray-900 transition ease-in-out duration-150 disabled:opacity-50 disabled:cursor-not-allowed">
