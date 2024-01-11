@@ -17,7 +17,7 @@ class Index extends Component
     public $selectedService = null;
     public $courses = null;
     public $course;
-    public $option;
+    public $branch;
     public $type;
     public $signature;
     public $pathSignature;
@@ -43,14 +43,19 @@ class Index extends Component
     #[On('setCourse')]
     public function setCourse($course, $option, $type) {
         $this->course = Course::find($course);
-        $this->option = $option;
+        $this->branch = $option;
         $this->type = $type;
         $this->step += 1;
     }
 
     public function redirectService($id) {
         $course = Course::find($id);
-        return redirect()->route('driver', ['course' => $course]);
+
+        session()->put('course', [
+            'id' => $id,
+        ]);
+
+        return redirect()->route('service.driver', ['course' => $course]);
     }
 
     public function getSignature() {

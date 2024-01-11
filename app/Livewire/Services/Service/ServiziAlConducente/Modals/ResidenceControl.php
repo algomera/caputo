@@ -19,7 +19,7 @@ class ResidenceControl extends ModalComponent
     public function next() {
         session()->put('patent', $this->customer['patent']);
 
-        return redirect()->route('step.register', [
+        return redirect()->route('service.step.register', [
             'course' => $this->course,
         ]);
     }

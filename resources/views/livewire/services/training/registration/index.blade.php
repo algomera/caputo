@@ -8,14 +8,14 @@
 
     <div class="bg-white shadow border px-16 py-9 mt-10 mx-44">
         @switch(session()->get('course')['option'])
-            @case('prima patente')
-                <h3 class="text-2xl font-medium text-color-2c2c2c">Il candidato si iscrive alla prima patente A1</h3>
+            @case('iscrizione')
+                <h3 class="text-2xl font-medium text-color-2c2c2c">Il candidato effettua prima iscrizione a {{$course->name}}</h3>
             @break
             @case('possessore di patente')
                 <h3 class="text-2xl font-medium text-color-2c2c2c">Il candidato e gia possessore di altra patente</h3>
             @break
             @case('cambio codice')
-                <h3 class="text-2xl font-medium text-color-2c2c2c">Il candidato si iscrive effetuando un cambio codice</h3>
+                <h3 class="text-2xl font-medium text-color-2c2c2c">Il candidato si iscrive effettuando un cambio codice</h3>
             @break
             @case('guida accompagnata')
                 <h3 class="text-2xl font-medium text-color-2c2c2c">Il candidato e in possesso di autorizzazione alla guida accompagnata</h3>
@@ -28,7 +28,7 @@
             <p @class(["text-xl font-bold", 'text-color-'.get_color($course->service->name)])>€ ({{ number_format($total, 2 , ',', '.') }})</p>
         </div>
 
-        @foreach ($course->getOptions()->where('type', 'fisso')->get() as $option )
+        @foreach ($course->getOptions()->where('type', 'fisso')->where('option', $branch)->get() as $option )
             <div class="flex items-end gap-2 my-1">
                 <p class="text-color-2c2c2c">{{$option->name}}</p>
                 <div class="grow h-[1px] bg-color-dfdfdf mb-2"></div>
@@ -36,35 +36,23 @@
             </div>
         @endforeach
 
-        @if (session()->get('course')['option'] == 'cambio codice')
-            @foreach ($course->getOptions()->where('type', 'opzionale')->where('option', 'cambio codice')->get() as $option )
-                <div class="flex items-end gap-2 my-1">
+        @foreach ($course->getOptions()->where('type', 'opzionale')->where('option', $branch)->get() as $option )
+            <div class="flex items-end gap-2 my-1">
+                @if ($option->id == 12 AND array_search('12', $selectedOptions) === false)
+                    <x-custom-checkbox
+                        wire:click="$dispatch('openModal', { component: 'services.training.modals.audio-support'})"
+                        wire:model.live="selectedOptions"
+                        name="option_{{ $option->id}}"
+                        value="{{ $option->id }}"
+                        label="{{$option->name}}"
+                    />
+                @else
                     <x-custom-checkbox wire:model.live="selectedOptions" name="option_{{ $option->id}}" value="{{ $option->id }}" label="{{$option->name}}"/>
-                    <div class="grow h-[1px] bg-color-dfdfdf mb-2"></div>
-                    <p class="text-color-2c2c2c">{{$option->price}} €</p>
-                </div>
-            @endforeach
-        @endif
-
-        @if (session()->get('course')['option'] == 'prima patente')
-            @foreach ($course->getOptions()->where('type', 'opzionale')->where('option', 'iscrizione')->get() as $option )
-                <div class="flex items-end gap-2 my-1">
-                    @if ($option->id == 8 AND array_search('8', $selectedOptions) === false)
-                        <x-custom-checkbox
-                            wire:click="$dispatch('openModal', { component: 'services.training.modals.audio-support'})"
-                            wire:model.live="selectedOptions"
-                            name="option_{{ $option->id}}"
-                            value="{{ $option->id }}"
-                            label="{{$option->name}}"
-                        />
-                    @else
-                        <x-custom-checkbox wire:model.live="selectedOptions" name="option_{{ $option->id}}" value="{{ $option->id }}" label="{{$option->name}}"/>
-                    @endif
-                    <div class="grow h-[1px] bg-color-dfdfdf mb-2"></div>
-                    <p class="text-color-2c2c2c">{{$option->price}} €</p>
-                </div>
-            @endforeach
-        @endif
+                @endif
+                <div class="grow h-[1px] bg-color-dfdfdf mb-2"></div>
+                <p class="text-color-2c2c2c">{{$option->price}} €</p>
+            </div>
+        @endforeach
 
         @if (session()->get('course')['registration_type'] == 'teoria')
             <div class="flex items-end gap-2 mt-8 mb-2">

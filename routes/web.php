@@ -29,8 +29,8 @@ Route::get('/dashboard', function () {
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/service', [ServiceIndex::class, '__invoke'])->name('service');
-    Route::get('/service/servizi_al_conducente/{course:slug}', [DriverIndex::class, '__invoke'])->name('driver');
-    Route::get('/service/servizi_al_conducente/{course:slug}/register', [StepRegister::class, '__invoke'])->name('step.register');
+    Route::get('/service/servizi_al_conducente/{course:slug}', [DriverIndex::class, '__invoke'])->name('service.driver');
+    Route::get('/service/servizi_al_conducente/{course:slug}/register', [StepRegister::class, '__invoke'])->name('service.step.register');
 });
 
 Route::middleware('auth')->group(function () {

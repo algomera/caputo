@@ -19,6 +19,17 @@ class RegistrationType extends ModalComponent
     }
 
     public function setOption($option) {
+        if ($option == 'possessore di patente') {
+            $this->addSession($option, 'guide');
+
+            $this->dispatch('setCourse',
+                course: $this->course->id,
+                option: 'iscrizione',
+                type  : 'guide'
+            );
+            return $this->closeModal();
+        }
+
         $this->selectedOption = $option;
     }
 
@@ -27,11 +38,7 @@ class RegistrationType extends ModalComponent
     }
 
     public function setType($type) {
-        $session = session()->get('course', []);
-        $session['option'] = $this->selectedOption;
-        $session['registration_type'] = $type;
-
-        session()->put('course', $session);
+        $this->addSession($this->selectedOption, $type);
 
         $this->dispatch('setCourse',
             course: $this->course->id,
@@ -39,6 +46,13 @@ class RegistrationType extends ModalComponent
             type  : $type
         );
         $this->closeModal();
+    }
+
+    public function addSession($option, $type) {
+        $session = session()->get('course', []);
+        $session['option'] = $option;
+        $session['registration_type'] = $type;
+        session()->put('course', $session);
     }
 
     public static function modalMaxWidth(): string

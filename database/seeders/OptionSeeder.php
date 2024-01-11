@@ -25,9 +25,20 @@ class OptionSeeder extends Seeder
                 'price' => 100.00
             ],
             [
+                'name' => 'Presentazione della richiestadi cambio codice',
+                'type' => 'fisso',
+                'option' => 'cambio codice',
+                'price' => 50.00
+            ],
+            [
                 'name' => '3 sedute di esame (1 possibilità di bocciatura)',
                 'type' => 'fisso',
-
+                'price' => 20.00
+            ],
+            [
+                'name' => 'Sedute di esame',
+                'type' => 'fisso',
+                'option' => 'cambio codice',
                 'price' => 20.00
             ],
             [
@@ -36,8 +47,20 @@ class OptionSeeder extends Seeder
                 'price' => 60.00
             ],
             [
+                'name' => 'Stampa foglio rosa',
+                'type' => 'fisso',
+                'option' => 'cambio codice',
+                'price' => 30.00
+            ],
+            [
                 'name' => 'Tutti i bollettini postali',
                 'type' => 'opzionale',
+                'price' => 20.00
+            ],
+            [
+                'name' => 'bollettino per la richiesta di cambio codice',
+                'type' => 'fisso',
+                'option' => 'cambio codice',
                 'price' => 20.00
             ],
             [

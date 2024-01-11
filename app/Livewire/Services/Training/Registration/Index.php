@@ -9,18 +9,24 @@ use Livewire\Attributes\On;
 class Index extends Component
 {
     public $course;
-    public $option;
+    public $branch;
     public $type;
     public $transmission;
     public $selectedOptions = [];
     public $total = 0;
 
     public function mount() {
-        if (session()->get('course')['registration_type'] != 'guide') {
-            $this->total += $this->course->prices()->first()->price;
+        if (session()->get('course')['registration_type'] == 'teoria') {
+            if (session()->get('course')['option'] == 'possessore di patente') {
+                $this->total += $this->course->prices()->whereJsonContains('licenses', 'A1')->first()->price;
+            } else {
+                $this->total += $this->course->prices()->where('licenses', null)->first()->price;
+            }
+        } elseif (session()->get('course')['registration_type'] == 'guide') {
+            //
         }
 
-        foreach ($this->course->getOptions()->where('type', 'fisso')->get() as  $option) {
+        foreach ($this->course->getOptions()->where('type', 'fisso')->where('option', $this->branch)->get() as  $option) {
             $this->total += $option->price;
         }
     }
@@ -38,9 +44,12 @@ class Index extends Component
 
     public function updated() {
         $this->total = 0;
-        $this->total += $this->course->prices()->first()->price;
 
-        foreach ($this->course->getOptions()->where('type', 'fisso')->get() as  $option) {
+        if (session()->get('course')['registration_type'] == 'teoria') {
+            $this->total += $this->course->prices()->first()->price;
+        }
+
+        foreach ($this->course->getOptions()->where('type', 'fisso')->where('option', $this->branch)->get() as  $option) {
             $this->total += $option->price;
         }
 
@@ -56,7 +65,7 @@ class Index extends Component
 
     #[On('removeSupport')]
     public function removeSupport() {
-        $this->selectedOptions = array_diff($this->selectedOptions, ["8"]);
+        $this->selectedOptions = array_diff($this->selectedOptions, ["12"]);
         $this->dispatch('closeModal');
     }
 

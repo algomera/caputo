@@ -25,7 +25,7 @@
 
                     <div class="flex gap-3 items-center">
                         <x-input-text wire:model="lastName" width="w-1/4" name="patent" label="Cognome" uppercase="uppercase" required="true" />
-                        <x-input-text wire:model="dateOfBirth" width="w-1/4" name="patent" label="Data di nascita" uppercase="uppercase" required="true" />
+                        <x-input-text x-mask="99/99/9999" wire:model="dateOfBirth" width="w-1/4" name="patent" label="Data di nascita" uppercase="uppercase" required="true" />
                         <x-input-text x-mask="aa9999999a" wire:model.live="patent" width="w-1/4" name="patent" label="N. Patente" uppercase="uppercase" required="true" />
                         <span class="uppercase text-sm text-gray-400">{{$patent}}</span>
                     </div>

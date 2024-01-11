@@ -91,43 +91,47 @@
                     <x-container-step>
                         <div class="flex justify-between gap-5">
                             <p class="text-xl font-light text-color-2c2c2c">
-                                Inserire i dati dei documenti
+                                Aggiungere documento e compilare i dati
                             </p>
                             <x-submit-button wire:click='addDocument' @class(["ml-auto text-sm",'bg-color-'.get_color($course->service->name).'/70'])>+ Documento</x-submit-button>
                         </div>
 
                         @if (count($documents) > 0)
+                        <div class="flex gap-5 overflow-hidden overflow-x-auto pb-5">
                             @foreach ($documents as $key => $document )
                             <div class="flex items-end gap-5">
-                                <div class="flex items-center grow gap-3 relative">
-                                    <x-custom-select wire:model.live="documents.{{$key}}.type" name="documents.{{$key}}.type" label="Tipologia" width="grow" >
-                                        <option value="">Seleziona</option>
-                                        <option value="patente" class="capitalize">patente</option>
-                                        <option value="carta di identita" class="capitalize">carta di identita</option>
-                                        <option value="passaporto" class="capitalize">passaporto</option>
-                                    </x-custom-select>
-                                    <x-input-text wire:model.live="documents.{{$key}}.n_document" width="grow" name="documents.{{$key}}.n_document" uppercase="uppercase" label="Numero documento" />
-                                    <x-input-text type="date" wire:model.live="documents.{{$key}}.document_release" width="grow" name="documents.{{$key}}.document_release" label="Rilasciato il" />
-                                    <x-input-text wire:model.live="documents.{{$key}}.document_from" width="grow" name="documents.{{$key}}.document_from" uppercase="capitalize" label="Ente di rilascio" />
-                                    <x-input-text type="date" wire:model.live="documents.{{$key}}.document_expiration" width="grow" name="documents.{{$key}}.document_expiration" label="Scadenza" />
+                                <div class="w-fit flex gap-3 border rounded-md p-4 relative bg-color-f7f7f7 shadow">
+                                    <div class="flex flex-col gap-3">
+                                        <x-custom-select wire:model.live="documents.{{$key}}.type" name="documents.{{$key}}.type" label="Tipologia" width="grow" >
+                                            <option value="">Seleziona</option>
+                                            <option value="patente" class="capitalize">patente</option>
+                                            <option value="carta di identita" class="capitalize">carta di identita</option>
+                                            <option value="passaporto" class="capitalize">passaporto</option>
+                                        </x-custom-select>
+                                        <x-input-text wire:model.live="documents.{{$key}}.n_document" width="grow" name="documents.{{$key}}.n_document" uppercase="uppercase" label="Numero documento" />
+                                        <x-input-text type="date" wire:model.live="documents.{{$key}}.document_release" width="grow" name="documents.{{$key}}.document_release" label="Rilasciato il" />
+                                        <x-input-text wire:model.live="documents.{{$key}}.document_from" width="grow" name="documents.{{$key}}.document_from" uppercase="capitalize" label="Ente di rilascio" />
+                                        <x-input-text type="date" wire:model.live="documents.{{$key}}.document_expiration" width="grow" name="documents.{{$key}}.document_expiration" label="Scadenza" />
+                                    </div>
                                     @if ($documents[$key]['type'] == 'patente')
-                                        <x-custom-select multiple wire:model.live="documents.{{$key}}.qualification" name="documents.{{$key}}.type" label="Qualifiche" width="grow" >
+                                        <x-custom-select multiple wire:model.live="documents.{{$key}}.qualification" name="documents.{{$key}}.type" label="Qualifiche" width="grow" height="!min-h-[calc(100%-10px)]" >
                                             @foreach ($typePatents as $patent )
                                                 <option value="{{$patent}}" class="capitalize">{{$patent}}</option>
                                             @endforeach
                                         </x-custom-select>
-                                        @if (array_key_exists('qualification', $documents[$key]))
-                                            <div class="absolute -bottom-5 right-0 font-semibold text-gray-400">
+                                        {{-- @if (array_key_exists('qualification', $documents[$key]))
+                                            <div class="absolute -bottom-8 left-0 font-semibold text-gray-400 flex gap-1">
                                                 @foreach ($documents[$key]['qualification'] as $qualification)
                                                     <span> {{$qualification}} </span>
                                                 @endforeach
                                             </div>
-                                        @endif
+                                        @endif --}}
                                     @endif
+                                    <x-icons wire:click="removeDocument({{$key}})" name="delete" class="mb-5 cursor-pointer absolute top-2 right-2" />
                                 </div>
-                                <x-icons wire:click="removeDocument({{$key}})" name="delete" class="mb-5 cursor-pointer" />
                             </div>
                             @endforeach
+                        </div>
                         @endif
 
                         <div class="flex justify-between">
@@ -150,7 +154,7 @@
 
                         <div class="flex items-start justify-between gap-20">
                             <div class="flex flex-col gap-2">
-                                <x-input-files multiple wire:model="scans" text="Carica Scansioni" color="{{get_color($course->service->name)}}" name="scans"  preview="scans_uploaded" />
+                                <x-input-files multiple wire:model="scans" text="Carica Scansioni" color="{{get_color($course->service->name)}}" name="scans"  preview="scans_uploaded" icon="upload" />
                                 <span wire:click="nextStep" class="text-color-2c2c2c underline cursor-pointer">Inserisci in seguito</span>
 
                                 <div class="text-gray-500 mt-5">
@@ -164,11 +168,13 @@
                                 @if ($scans)
                                     @foreach ($scans as $key => $scan)
                                         <div @class(["flex items-center px-4 py-1", ($key < count($scans)-1) ? 'border-b': ''])>
-                                            <x-icons name="circle" class="mr-2" />
+                                            <x-icons name="file" class="mr-2" />
                                             <span class="font-medium text-gray-400">{{$scan->getClientOriginalName()}}</span>
-                                            <x-icons wire:click="removeScan({{$key}})" name="delete" class="ml-auto cursor-pointer" />
+                                            <x-icons wire:click="removeScan({{$key}})" name="file_delete" class="ml-auto cursor-pointer" />
                                         </div>
                                     @endforeach
+                                @else
+                                    <p class="font-semibold text-gray-400 pl-4">Nessun file presente</p>
                                 @endif
                             </div>
                         </div>
@@ -193,7 +199,7 @@
 
                         <div class="flex gap-8">
                             <div class="flex flex-col gap-2">
-                                <x-input-files wire:model.live="photo" text="Carica Fototessera" color="{{get_color($course->service->name)}}" name="photo" preview="fototessera_uploaded" />
+                                <x-input-files wire:model.live="photo" text="Carica Fototessera" color="{{get_color($course->service->name)}}" name="photo" preview="fototessera_uploaded" icon="image" />
                                 <span wire:click="nextStep" class="text-color-2c2c2c underline cursor-pointer">Inserisci in seguito</span>
                             </div>
                             @if ($photo)
@@ -202,8 +208,8 @@
                                 <div class="font-medium text-gray-400">{{$photo->getClientOriginalName()}}</div>
                             </div>
                             @else
-                            <div class="w-28 h-36 border flex items-center justify-center">
-                                <x-icons name="image" class="w-10 h-10 opacity-30"/>
+                            <div class="w-28 h-36 border border-color-dfdfdf rounded-md flex items-center justify-center">
+                                <x-icons name="default_photo" />
                             </div>
                             @endif
                         </div>
@@ -226,35 +232,74 @@
                             Caricare la firma del cliente e salvare, per proseguire.
                         </p>
 
-                        <div class="w-fit flex items-start gap-5 relative text-gray-400">
-                            <button wire:click="$dispatch('openModal', { component: 'services.commons.modals.signature'})"
-                            @class(["p-3 rounded-md flex items-center gap-8 cursor-pointer w-fit", 'bg-color-'.get_color($course->service->name).'/20'])>
-                                @if ($signature)
-                                    <span class="text-color-2c2c2c font-light">Firma Caricata</span>
-                                    <x-icons name="check" />
-                                @else
-                                    <span class="text-color-2c2c2c font-light">Carica Firma</span>
-                                    <x-icons name="image" />
-                                @endif
-                            </button>
-                        </div>
+                        <button wire:click="$dispatch('openModal', { component: 'services.commons.modals.signature'})"
+                        @class(["p-3 rounded-md flex items-center gap-8 cursor-pointer w-fit", 'bg-color-'.get_color($course->service->name).'/20'])>
+                            @if ($signature)
+                                <span class="text-color-2c2c2c font-light">Firma Caricata</span>
+                                <x-icons name="check" />
+                            @else
+                                <span class="text-color-2c2c2c font-light">Carica Firma</span>
+                                <x-icons name="signature" />
+                            @endif
+                        </button>
 
                         <div class="flex justify-between">
                             <button wire:click="backStep" class="w-fit text-2xl inline-flex items-center px-6 py-2 border border-transparent rounded-md font-light text-color-545454 tracking-widest bg-color-dfdfdf hover:bg-gray-700 hover:text-white active:bg-gray-900 transition ease-in-out duration-150 disabled:opacity-50 disabled:cursor-not-allowed">
                                 Indietro
                             </button>
-                            <x-submit-button wire:click='nextStep' @class(["ml-auto",'bg-color-'.get_color($course->service->name)])>Prosegui</x-submit-button>
+                            @if ($signature)
+                                <x-submit-button wire:click='nextStep' @class(["ml-auto",'bg-color-'.get_color($course->service->name)])>Prosegui</x-submit-button>
+                            @endif
                         </div>
                     </x-container-step>
                 @break
             {{-- Jolly --}}
                 @case(7)
                     <x-container-step>
+                        <p class="text-xl font-light text-color-2c2c2c">
+                            Caricare la firma, la <span class="font-bold">carta d’identità</span> e il <span class="font-bold">codice fiscale</span> del genitore/tutore
+                        </p>
+
+                        <div class="flex items-start justify-between gap-20">
+                            <div class="flex flex-col gap-2">
+                                <button wire:click="$dispatch('openModal', { component: 'services.commons.modals.signature', arguments: {signature: 'parent'} })"
+                                @class(["p-3 rounded-md flex items-center gap-8 cursor-pointer", 'bg-color-'.get_color($course->service->name).'/20'])>
+                                    @if ($parentSignature)
+                                        <span class="text-color-2c2c2c font-light">Firma Caricata</span>
+                                        <x-icons name="check" />
+                                    @else
+                                        <span class="text-color-2c2c2c font-light">Carica Firma</span>
+                                        <x-icons name="signature" />
+                                    @endif
+                                </button>
+
+                                <x-input-files multiple wire:model="parentScans" text="Carica Scansioni" color="{{get_color($course->service->name)}}" name="parentScans"  preview="scans_uploaded" icon="upload" />
+                                <span wire:click="nextStep" class="text-color-2c2c2c underline cursor-pointer">Inserisci in seguito</span>
+                            </div>
+
+                            <div class="flex flex-col gap-1 grow max-w-lg relative py-4 border">
+                                <p @class(["font-bold mb-5 pl-4",'text-color-'.get_color($course->service->name)])>File Caricati</p>
+                                @if ($parentScans)
+                                    @foreach ($scans as $key => $scan)
+                                        <div @class(["flex items-center px-4 py-1", ($key < count($scans)-1) ? 'border-b': ''])>
+                                            <x-icons name="file" class="mr-2" />
+                                            <span class="font-medium text-gray-400">{{$scan->getClientOriginalName()}}</span>
+                                            <x-icons wire:click="removeScan({{$key}})" name="file_delete" class="ml-auto cursor-pointer" />
+                                        </div>
+                                    @endforeach
+                                @else
+                                    <p class="font-semibold text-gray-400 pl-4">Nessun file presente</p>
+                                @endif
+                            </div>
+                        </div>
+
                         <div class="flex justify-between">
                             <button wire:click="backStep" class="w-fit text-2xl inline-flex items-center px-6 py-2 border border-transparent rounded-md font-light text-color-545454 tracking-widest bg-color-dfdfdf hover:bg-gray-700 hover:text-white active:bg-gray-900 transition ease-in-out duration-150 disabled:opacity-50 disabled:cursor-not-allowed">
                                 Indietro
                             </button>
-                            <x-submit-button wire:click='nextStep' @class(["ml-auto",'bg-color-'.get_color($course->service->name)])>Prosegui</x-submit-button>
+                            @if ($parentSignature)
+                                <x-submit-button wire:click='nextStep' @class(["ml-auto",'bg-color-'.get_color($course->service->name)])>Prosegui</x-submit-button>
+                            @endif
                         </div>
                     </x-container-step>
                 @break
@@ -276,6 +321,10 @@
                 },
                 uploadSignature(){
                     @this.set('signature', this.signaturePadInstance.toDataURL('image/png'));
+                    @this.call('getSignature');
+                },
+                uploadParentSignature() {
+                    @this.set('parentSignature', this.signaturePadInstance.toDataURL('image/png'));
                     @this.call('getSignature');
                 }
             }))

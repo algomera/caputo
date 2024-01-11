@@ -15,9 +15,15 @@
                 Cancella
             </button>
 
-            <x-submit-button x-on:click="uploadSignature" @class(["bg-color-".get_color(session()->get('serviceName'))])>
-                Salva
-            </x-submit-button>
+            @if ($signature == 'parent')
+                <x-submit-button x-on:click="uploadParentSignature" @class(["bg-color-".get_color(session()->get('serviceName'))])>
+                    Salva
+                </x-submit-button>
+            @else
+                <x-submit-button x-on:click="uploadSignature" @class(["bg-color-".get_color(session()->get('serviceName'))])>
+                    Salva
+                </x-submit-button>
+            @endif
         </div>
     </div>
 </div>

@@ -21,11 +21,14 @@ class StepRegister extends Component
     public $customer = null;
     public $photo;
     public $signature;
+    public $parentSignature;
     public $pathSignature;
     public $documents = [];
     public $documentUploaded = false;
-    public $scanUploaded = false;
     public $scans = [];
+    public $parentScans = [];
+    public $scanUploaded = false;
+    public $parentScanUploaded = false;
     public $steps = [];
     public $typePatents = ['AM', 'A1', 'A2', 'A', 'B1','B', 'C1', 'C', 'D1', 'D', 'BE', 'C1E', 'CE', 'D1E', 'DE'];
 
@@ -33,7 +36,7 @@ class StepRegister extends Component
         $this->course = $course;
 
         if (session('patent')) {
-            $this->patent = IdentificationDocument::where('n_patent', session()->get('patent'))->first();
+            $this->patent = IdentificationDocument::where('n_document', session()->get('patent'))->first();
 
             if ($this->patent) {
                 $this->customer = Customer::find($this->patent->customer_id);
@@ -66,6 +69,10 @@ class StepRegister extends Component
                 'fototessera',
                 'firma',
             ];
+        }
+
+        if (session()->get('course')['id'] == '10') {
+            $this->steps[] = 'dati genitore/tutore';
         }
     }
 
@@ -112,15 +119,19 @@ class StepRegister extends Component
                     $this->customerForm->signature($this->pathSignature);
                 }
                 $this->customerForm->currentStep += 1;
-                if (count($this->steps) <= $this->customerForm->currentStep) {
-                    dd('registrazione completata');
+                if ($this->customerForm->currentStep > count($this->steps)) {
+                    dd('registrazione completata', $this->customerForm->currentStep);
                     $this->dispatch('customer');
                 }
                 break;
             case '7': //Jolly
+                if ($this->parentSignature) {
+                    $this->customerForm->signature($this->pathSignature);
+                }
+
                 $this->customerForm->currentStep += 1;
-                if (count($this->steps) <= $this->customerForm->currentStep) {
-                    dd('registrazione completata');
+                if ($this->customerForm->currentStep > count($this->steps)) {
+                    dd('registrazione completata', $this->customerForm->currentStep);
                     $this->dispatch('customer');
                 }
                 break;
@@ -135,15 +146,16 @@ class StepRegister extends Component
     }
 
     public function updated($property) {
+
         if (str_contains($property,'documents')) {
             foreach ($this->documents as $key => $value) {
                 if ($value['type'] != 'patente') {
                     unset($this->documents[$key]['qualification']);
                 }
 
-                if (count($this->documents[$key]) == 6 AND $value['type'] == 'patente') {
+                if (count($this->documents[$key]) == 6 AND $value['type'] != '' AND $value['type'] == 'patente') {
                     $this->documentUploaded = true;
-                } elseif (count($this->documents[$key]) == 5 AND $value['type'] != 'patente') {
+                } elseif (count($this->documents[$key]) == 5 AND $value['type'] != '' AND $value['type'] != 'patente') {
                     $this->documentUploaded = true;
                 } else {
                     $this->documentUploaded = false;
@@ -153,6 +165,9 @@ class StepRegister extends Component
 
         if ($property == "scans") {
             $this->scanUploaded = true;
+        }
+        if ($property == "parentScan") {
+            $this->parentScanUploaded = true;
         }
     }
 
@@ -172,9 +187,21 @@ class StepRegister extends Component
         }
     }
 
+    public function removeParentScan($key) {
+        unset($this->scans[$key]);
+
+        if (count($this->parentScan) < 1) {
+            $this->parentScanUploaded = false;
+        }
+    }
+
     public function getSignature() {
         $customer = $this->customerForm->newCustomer;
-        $this->pathSignature = Storage::putFileAs('customers/customer-'.$customer->id, $this->signature, 'firma.png');
+        if ($this->customerForm->currentStep == 6) {
+            $this->pathSignature = Storage::putFileAs('customers/customer-'.$customer->id, $this->signature, 'firma.png');
+        } elseif ($this->customerForm->currentStep == 7) {
+            $this->pathSignature = Storage::putFileAs('customers/customer-'.$customer->id, $this->parentSignature, 'firma_genitore.png');
+        }
         $this->dispatch('closeModal');
     }
 

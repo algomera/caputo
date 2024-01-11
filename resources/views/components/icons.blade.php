@@ -281,4 +281,45 @@
             </g>
         </svg>
         @break
+    @case('file')
+        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" stroke="currentColor" width="9.007" height="11.084"
+            {{ $attributes->merge(['class']) }} viewBox="0 0 9.007 11.084">
+            <g id="Icon_feather-file" data-name="Icon feather-file" transform="translate(-5.65 -2.65)">
+            <path id="Tracciato_936" data-name="Tracciato 936" d="M10.673,3H7.038A1.038,1.038,0,0,0,6,4.038v8.307a1.038,1.038,0,0,0,1.038,1.038h6.231a1.038,1.038,0,0,0,1.038-1.038V6.634Z" fill="none" stroke="#2c2c2c" stroke-linecap="round" stroke-linejoin="round" stroke-width="0.7"/>
+            <path id="Tracciato_937" data-name="Tracciato 937" d="M19.5,3V6.634h3.634" transform="translate(-8.827)" fill="none" stroke="#2c2c2c" stroke-linecap="round" stroke-linejoin="round" stroke-width="0.7"/>
+            </g>
+        </svg>
+        @break
+    @case('file_delete')
+        <svg xmlns="http://www.w3.org/2000/svg" width="10" height="15"
+            {{ $attributes->merge(['class']) }} viewBox="0 0 7.462 9.594">
+            <path id="Icon_material-delete" data-name="Icon material-delete" d="M8.033,13.028A1.069,1.069,0,0,0,9.1,14.094h4.264a1.069,1.069,0,0,0,1.066-1.066v-6.4h-6.4Zm6.929-8H13.1L12.564,4.5H9.9l-.533.533H7.5V6.1h7.462Z" transform="translate(-7.5 -4.5)"/>
+        </svg>
+        @break
+    @case('default_photo')
+        <svg xmlns="http://www.w3.org/2000/svg" width="47.425" height="47.425"
+            {{ $attributes->merge(['class']) }} viewBox="0 0 47.425 47.425">
+            <g id="Icon_feather-image" data-name="Icon feather-image" transform="translate(-4 -4)">
+            <path id="Tracciato_12" data-name="Tracciato 12" d="M9.636,4.5H45.587a5.136,5.136,0,0,1,5.136,5.136V45.587a5.136,5.136,0,0,1-5.136,5.136H9.636A5.136,5.136,0,0,1,4.5,45.587V9.636A5.136,5.136,0,0,1,9.636,4.5Z" fill="none" stroke="#afafaf" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+            <path id="Tracciato_13" data-name="Tracciato 13" d="M16.66,13.58a3.08,3.08,0,1,1-3.08-3.08A3.08,3.08,0,0,1,16.66,13.58Z" transform="translate(4.684 4.684)" fill="none" stroke="#afafaf" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+            <path id="Tracciato_14" data-name="Tracciato 14" d="M49.617,25.266,36.455,15,7.5,37.586" transform="translate(1.107 13.137)" fill="none" stroke="#afafaf" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+            </g>
+        </svg>
+        @break
+    @case('upload')
+        <svg xmlns="http://www.w3.org/2000/svg" width="12.886" height="12.886"
+            {{ $attributes->merge(['class']) }} viewBox="0 0 12.886 12.886">
+            <g id="Icon_feather-download" data-name="Icon feather-download" transform="translate(-4 -4)">
+            <path id="Tracciato_40" data-name="Tracciato 40" d="M16.386,22.5v2.641a1.321,1.321,0,0,1-1.321,1.321H5.821A1.321,1.321,0,0,1,4.5,25.141V22.5" transform="translate(0 -10.076)" fill="none" stroke="#2c2c2c" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+            <path id="Tracciato_41" data-name="Tracciato 41" d="M10.5,18.3,13.8,15l3.3,3.3" transform="translate(-3.358 -10.5)" fill="none" stroke="#2c2c2c" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+            <path id="Tracciato_42" data-name="Tracciato 42" d="M18,4.5v7.924" transform="translate(-7.557 0)" fill="none" stroke="#2c2c2c" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+            </g>
+        </svg>
+        @break
+    @case('signature')
+        <svg class="svg-icon" fill="currentColor" stroke="currentColor" style="width: 2em; height: 1em;vertical-align: middle;overflow: hidden;color:black;"
+            {{ $attributes->merge(['class']) }} viewBox="0 0 2048 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
+            <path d="M1834.666667 355.555556l-164.977778-164.977778-412.444445 415.288889L1422.222222 768l412.444445-412.444444z m19.911111-19.911112l91.022222-91.022222c11.377778-11.377778 11.377778-31.288889 0-42.666666l-122.311111-122.311112c-11.377778-11.377778-31.288889-11.377778-42.666667 0L1689.6 170.666667l164.977778 164.977777zM1237.333333 625.777778l-22.755555 22.755555c-2.844444 2.844444-5.688889 5.688889-5.688889 11.377778L1109.333333 918.755556l258.844445-99.555556c2.844444-2.844444 8.533333-2.844444 11.377778-5.688889l22.755555-22.755555-164.977778-164.977778zM1865.955556 39.822222l122.311111 122.311111c34.133333 34.133333 34.133333 88.177778 0 122.311111l-568.888889 566.044445c-8.533333 8.533333-19.911111 14.222222-31.288889 19.911111l-290.133333 110.933333c-22.755556 8.533333-48.355556-2.844444-56.888889-25.6-2.844444-11.377778-2.844444-19.911111 0-31.288889l110.933333-290.133333c5.688889-11.377778 11.377778-22.755556 19.911111-31.288889L1743.644444 39.822222c34.133333-34.133333 88.177778-34.133333 122.311112 0zM426.666667 796.444444c25.6-5.688889 48.355556-17.066667 108.088889-39.822222h2.844444c122.311111-45.511111 162.133333-51.2 193.422222-31.288889 36.977778 22.755556 39.822222 59.733333 31.288889 133.688889v5.688889c-5.688889 48.355556-5.688889 68.266667 0 73.955556 11.377778 14.222222 153.6-28.444444 159.288889-5.688889 5.688889 22.755556-170.666667 82.488889-204.8 42.666666-19.911111-25.6-22.755556-48.355556-11.377778-116.622222V853.333333c5.688889-51.2 8.533333-68.266667-11.377778-79.644444-19.911111-8.533333-227.555556 73.955556-253.155555 82.488889-48.355556 11.377778-79.644444 5.688889-93.866667-22.755556-14.222222-25.6-2.844444-48.355556 25.6-88.177778 8.533333-11.377778 19.911111-25.6 36.977778-45.511111 5.688889-5.688889 31.288889-39.822222 39.822222-48.355555 14.222222-17.066667 22.755556-28.444444 31.288889-42.666667 34.133333-42.666667 48.355556-79.644444 51.2-99.555555 2.844444-19.911111 2.844444-31.288889-14.222222-39.822223-48.355556-22.755556-193.422222 34.133333-457.955556 153.6-14.222222 5.688889-31.288889-5.688889-39.822222-25.6-8.533333-22.755556 0-48.355556 14.222222-54.044444 284.444444-128 443.733333-164.977778 514.844445-133.688889 48.355556 19.911111 62.577778 62.577778 51.2 110.933333-8.533333 34.133333-31.288889 73.955556-68.266667 122.311111-11.377778 14.222222-19.911111 28.444444-34.133333 42.666667-8.533333 8.533333-36.977778 42.666667-39.822222 48.355556-14.222222 17.066667-25.6 31.288889-34.133334 42.666666-14.222222 8.533333-8.533333 22.755556 2.844445 19.911111z"  />
+        </svg>
+        @break
 @endswitch

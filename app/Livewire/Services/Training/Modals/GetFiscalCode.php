@@ -27,7 +27,7 @@ class GetFiscalCode extends ModalComponent
 
         $this->message = 'Nessuna marca operativa trovata';
 
-        //Todo in caso di ritorno dati registrare un nuovo customer e salvare id in sessione
+        //Todo in caso di ritorno dati positivo registrare un nuovo customer e salvare id in sessione
     }
 
     public function storeCustomer() {
@@ -40,7 +40,7 @@ class GetFiscalCode extends ModalComponent
         } else {
             $course = Course::find(session()->get('course')['id']);
 
-            return redirect()->route('step.register', [
+            return redirect()->route('service.step.register', [
                 'course' => $course,
             ]);
         }

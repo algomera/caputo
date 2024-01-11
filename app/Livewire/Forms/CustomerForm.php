@@ -138,7 +138,7 @@ class CustomerForm extends Form
                 'document_release' => $document['document_release'],
                 'document_from' => $document['document_from'],
                 'document_expiration' => $document['document_expiration'],
-                'qualification' => json_encode($document['qualification']) ?? null
+                'qualification' => array_key_exists('qualification', $document) ? json_encode($document['qualification']) : null
             ]);
         }
     }
