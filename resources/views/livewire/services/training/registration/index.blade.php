@@ -37,21 +37,29 @@
         @endforeach
 
         @foreach ($course->getOptions()->where('type', 'opzionale')->where('option', $branch)->get() as $option )
-            <div class="flex items-end gap-2 my-1">
-                @if ($option->id == 12 AND array_search('12', $selectedOptions) === false)
-                    <x-custom-checkbox
-                        wire:click="$dispatch('openModal', { component: 'services.training.modals.audio-support'})"
-                        wire:model.live="selectedOptions"
-                        name="option_{{ $option->id}}"
-                        value="{{ $option->id }}"
-                        label="{{$option->name}}"
-                    />
-                @else
+            @if (session()->get('course')['registration_type'] == 'guide' AND $option->name != 'Supporto audio')
+                <div class="flex items-end gap-2 my-1">
                     <x-custom-checkbox wire:model.live="selectedOptions" name="option_{{ $option->id}}" value="{{ $option->id }}" label="{{$option->name}}"/>
-                @endif
-                <div class="grow h-[1px] bg-color-dfdfdf mb-2"></div>
-                <p class="text-color-2c2c2c">{{$option->price}} €</p>
-            </div>
+                    <div class="grow h-[1px] bg-color-dfdfdf mb-2"></div>
+                    <p class="text-color-2c2c2c">{{$option->price}} €</p>
+                </div>
+            @elseif (session()->get('course')['registration_type'] == 'teoria')
+                <div class="flex items-end gap-2 my-1">
+                    @if ($option->id == 12 AND array_search('12', $selectedOptions) === false)
+                        <x-custom-checkbox
+                            wire:click="$dispatch('openModal', { component: 'services.training.modals.audio-support'})"
+                            wire:model.live="selectedOptions"
+                            name="option_{{ $option->id}}"
+                            value="{{ $option->id }}"
+                            label="{{$option->name}}"
+                        />
+                    @else
+                        <x-custom-checkbox wire:model.live="selectedOptions" name="option_{{ $option->id}}" value="{{ $option->id }}" label="{{$option->name}}"/>
+                    @endif
+                    <div class="grow h-[1px] bg-color-dfdfdf mb-2"></div>
+                    <p class="text-color-2c2c2c">{{$option->price}} €</p>
+                </div>
+            @endif
         @endforeach
 
         @if (session()->get('course')['registration_type'] == 'teoria')
