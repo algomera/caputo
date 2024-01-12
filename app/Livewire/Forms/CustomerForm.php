@@ -73,8 +73,8 @@ class CustomerForm extends Form
                 'city.required' => 'Campo richiesto',
                 'province.required' => 'Campo richiesto',
                 'address.required' => 'Campo richiesto',
-                'civic.required' => 'Campo richiesto',
-                'postcode.required' => 'Campo richiesto',
+                'civic.required' => 'Richiesto',
+                'postcode.required' => 'Richiesto',
             ];
         } elseif ($this->currentStep == 2) {
             return [
@@ -108,14 +108,32 @@ class CustomerForm extends Form
         $this->school_id = $id;
     }
 
-    public function store() {
-        $this->validate();
-
-        if ($this->currentStep == 1) {
-            $this->newCustomer = Customer::create($this->validate());
-        } elseif ($this->currentStep == 2) {
-            $this->newCustomer->update($this->validate());
+    public function validation() {
+        if ($this->currentStep <= 2) {
+            $this->validate();
         }
+    }
+
+    public function store() {
+        $this->newCustomer = Customer::create([
+            'school_id' => $this->school_id,
+            'name' => $this->name,
+            'lastName' => $this->lastName,
+            'sex' => $this->sex,
+            'fiscal_code' => $this->fiscal_code,
+            'date_of_birth' => $this->date_of_birth,
+            'birth_place' => $this->birth_place,
+            'country_of_birth' => $this->country_of_birth,
+            'country' => $this->country,
+            'city' => $this->city,
+            'province' => $this->province,
+            'address' => $this->address,
+            'civic' => $this->civic,
+            'postcode' => $this->postcode,
+            'email' => $this->email,
+            'phone_1' => $this->phone_1,
+            'phone_2' => $this->phone_2,
+        ]);
     }
 
     public function photo($photo) {
@@ -145,9 +163,19 @@ class CustomerForm extends Form
 
     public function scans($scans) {
         foreach ($scans as $scan) {
-            $path = Storage::putFile('customers/customer-'.$this->newCustomer->id, $scan);
+            $path = Storage::putFileAs('customers/customer-'.$this->newCustomer->id, $scan, str_replace(' ', '_', $scan->getClientOriginalName()));
             $this->newCustomer->documents()->create([
                 'type' => 'documenti di riconoscimento',
+                'path' => $path
+            ]);
+        }
+    }
+
+    public function parentScans($scans) {
+        foreach ($scans as $scan) {
+            $path = Storage::putFileAs('customers/customer-'.$this->newCustomer->id.'/parent', $scan, str_replace(' ', '_', $scan->getClientOriginalName()));
+            $this->newCustomer->documents()->create([
+                'type' => 'documenti di riconoscimento genitori',
                 'path' => $path
             ]);
         }
@@ -158,6 +186,16 @@ class CustomerForm extends Form
             ['type' => 'firma'],
             [
                 'type' => 'firma',
+                'path' => $path
+            ]
+        );
+    }
+
+    public function parentSignature($path) {
+        $this->newCustomer->documents()->updateOrCreate(
+            ['type' => 'firma genitore'],
+            [
+                'type' => 'firma genitore',
                 'path' => $path
             ]
         );

@@ -41,9 +41,9 @@ class Index extends Component
     }
 
     #[On('setCourse')]
-    public function setCourse($course, $option, $type) {
+    public function setCourse($course, $branch, $type) {
         $this->course = Course::find($course);
-        $this->branch = $option;
+        $this->branch = $branch;
         $this->type = $type;
         $this->step += 1;
     }
@@ -56,6 +56,28 @@ class Index extends Component
         ]);
 
         return redirect()->route('service.driver', ['course' => $course]);
+    }
+
+    public function next($id) {
+        if ($id == 14) {
+            $this->addSession('guida accompagnata', 'guide');
+
+            $this->dispatch('setCourse',
+                course: $id,
+                branch: 'guida accompagnata',
+                type  : session()->get('course')['registration_type']
+            );
+        }
+    }
+
+    public function addSession($option, $type, $except = null) {
+        $session = session()->get('course', []);
+        $session['option'] = $option;
+        $session['registration_type'] = $type;
+        if ($except) {
+            $session['conseguimento'] = $except;
+        }
+        session()->put('course', $session);
     }
 
     public function getSignature() {

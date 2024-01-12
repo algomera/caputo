@@ -45,7 +45,7 @@
                 </div>
             @elseif (session()->get('course')['registration_type'] == 'teoria')
                 <div class="flex items-end gap-2 my-1">
-                    @if ($option->id == 12 AND array_search('12', $selectedOptions) === false)
+                    @if ($option->id == 17 AND array_search('17', $selectedOptions) === false)
                         <x-custom-checkbox
                             wire:click="$dispatch('openModal', { component: 'services.training.modals.audio-support'})"
                             wire:model.live="selectedOptions"
@@ -77,7 +77,13 @@
                 <div class="grow h-[2px] bg-color-dfdfdf mb-2"></div>
                 <p @class(["text-xl font-bold", 'text-color-'.get_color($course->service->name)])>{{$course->getOptions()->where('type', 'guide')->first()->price}} €</p>
             </div>
-            <p>Non ci sono guide obbligatorie.</p>
+            @if (array_key_exists('conseguimento', session()->get('course')))
+                <p>Ci sono guide obbligatorie.</p>
+            @elseif (session()->get('course')['id'] == 14)
+                <p>Ci sono 10 guide obbligatorie.</p>
+            @else
+                <p>Non ci sono guide obbligatorie.</p>
+            @endif
             <x-custom-radio wire:model='transmission' label="Cambio automatico" name="transmission" value="automatico" />
             <x-custom-radio wire:model='transmission' label="Cambio manuale" name="transmission" value="manuale" />
         </div>

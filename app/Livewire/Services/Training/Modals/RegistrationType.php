@@ -19,15 +19,22 @@ class RegistrationType extends ModalComponent
     }
 
     public function setOption($option) {
-        if ($option == 'possessore di patente') {
-            $this->addSession($option, 'guide');
+        if (session()->get('course')['id'] == 10 AND $option == 'iscrizione') {
+            $this->addSession($option, 'teoria');
 
             $this->dispatch('setCourse',
                 course: $this->course->id,
-                option: 'iscrizione',
-                type  : 'guide'
+                branch: $option,
+                type  : session()->get('course')['registration_type']
             );
             return $this->closeModal();
+        }
+
+        if ($option == 'possessore di patente') {
+            $this->addSession($option, 'guide');
+            $this->selectedOption = 'guide';
+        } else {
+            $this->addSession($option, $option);
         }
 
         $this->selectedOption = $option;
@@ -38,20 +45,27 @@ class RegistrationType extends ModalComponent
     }
 
     public function setType($type) {
-        $this->addSession($this->selectedOption, $type);
+        if ($type == 'guide/s.esame') {
+            $this->addSession($this->selectedOption, 'guide', 's.esame');
+        } else {
+            $this->addSession($this->selectedOption, $type);
+        }
 
         $this->dispatch('setCourse',
             course: $this->course->id,
-            option: $this->selectedOption,
-            type  : $type
+            branch: $this->selectedOption,
+            type  : session()->get('course')['registration_type']
         );
         $this->closeModal();
     }
 
-    public function addSession($option, $type) {
+    public function addSession($option, $type, $except = null) {
         $session = session()->get('course', []);
         $session['option'] = $option;
         $session['registration_type'] = $type;
+        if ($except) {
+            $session['conseguimento'] = $except;
+        }
         session()->put('course', $session);
     }
 

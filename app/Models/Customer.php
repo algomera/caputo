@@ -39,6 +39,22 @@ class Customer extends Model
         return $this->morphMany(Document::class, 'documentable');
     }
 
+    public function customerDocuments(): MorphMany {
+        return $this->morphMany(Document::class, 'documentable')->where('type', 'documenti di riconoscimento');
+    }
+
+    public function parentDocuments(): MorphMany {
+        return $this->morphMany(Document::class, 'documentable')->where('type', 'documenti di riconoscimento genitori');
+    }
+
+    public function customerSignature(): MorphMany {
+        return $this->morphMany(Document::class, 'documentable')->where('type', 'firma');
+    }
+
+    public function parentSignature(): MorphMany {
+        return $this->morphMany(Document::class, 'documentable')->where('type', 'firma genitore');
+    }
+
     public function medicals(): HasMany {
         return $this->hasMany(MedicalPlanning::class);
     }

@@ -17,13 +17,11 @@ class Index extends Component
 
     public function mount() {
         if (session()->get('course')['registration_type'] == 'teoria') {
-            if (session()->get('course')['option'] == 'possessore di patente') {
-                $this->total += $this->course->prices()->whereJsonContains('licenses', 'A1')->first()->price;
-            } else {
-                $this->total += $this->course->prices()->where('licenses', null)->first()->price;
-            }
+            $this->total += $this->course->prices()->where('licenses', null)->first()->price;
         } elseif (session()->get('course')['registration_type'] == 'guide') {
-            //
+            // if (session()->get('course')['option'] != 'possessore di patente') {
+            //     $this->total += $this->course->prices()->where('licenses', null)->first()->price;
+            // }
         }
 
         foreach ($this->course->getOptions()->where('type', 'fisso')->where('option', $this->branch)->get() as  $option) {
@@ -65,7 +63,7 @@ class Index extends Component
 
     #[On('removeSupport')]
     public function removeSupport() {
-        $this->selectedOptions = array_diff($this->selectedOptions, ["12"]);
+        $this->selectedOptions = array_diff($this->selectedOptions, ["17"]);
         $this->dispatch('closeModal');
     }
 

@@ -24,11 +24,19 @@
                 <div class="flex flex-wrap items-center justify-center gap-x-7 gap-y-12 mt-28">
                     @foreach ($courses as $course )
                         @if ($course->type == 'training')
-                            <div wire:click="$dispatch('openModal', { component: 'services.training.modals.registration-type', arguments: {course: {{ $course->id }}} })"
-                                class="min-w-[345px] h-24 shadow-shadow-card flex items-center justify-center hover:scale-105 transition-all duration-300 cursor-pointer"
-                            >
-                                <span class="text-2xl font-light text-color-2c2c2c">{{$course->name}}</span>
-                            </div>
+                            @if ($course->id != 14)
+                                <div wire:click="$dispatch('openModal', { component: 'services.training.modals.registration-type', arguments: {course: {{ $course->id }}} })"
+                                    class="min-w-[345px] h-24 shadow-shadow-card flex items-center justify-center hover:scale-105 transition-all duration-300 cursor-pointer"
+                                >
+                                    <span class="text-2xl font-light text-color-2c2c2c">{{$course->name}}</span>
+                                </div>
+                            @else
+                                <div wire:click="next({{$course->id}})"
+                                    class="min-w-[345px] h-24 shadow-shadow-card flex items-center justify-center hover:scale-105 transition-all duration-300 cursor-pointer"
+                                >
+                                    <span class="text-2xl font-light text-color-2c2c2c">{{$course->name}}</span>
+                                </div>
+                            @endif
                         @elseif ($course->type == 'service')
                             <div wire:click="redirectService({{$course->id}})"
                                 class="min-w-[345px] h-24 shadow-shadow-card flex items-center justify-center hover:scale-105 transition-all duration-300 cursor-pointer"

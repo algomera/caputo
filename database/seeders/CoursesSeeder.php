@@ -103,7 +103,6 @@ class CoursesSeeder extends Seeder
             ],
             [
                 'name' => 'Guida accompagnata',
-                'type' => 'service'
             ],
             [
                 'name' => 'Patente B1',

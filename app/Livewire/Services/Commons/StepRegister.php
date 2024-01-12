@@ -71,8 +71,12 @@ class StepRegister extends Component
             ];
         }
 
-        if (session()->get('course')['id'] == '10') {
+        if (in_array(session()->get('course')['id'], ['10','11','14','15'])) {
             $this->steps[] = 'dati genitore/tutore';
+        }
+
+        if (session()->get('course')['id'] == 14) {
+            $this->steps[] = 'dati accompagnatori';
         }
     }
 
@@ -85,59 +89,37 @@ class StepRegister extends Component
     }
 
     public function nextStep() {
-        $this->customerForm->setSchool(auth()->user()->schools()->first()->id);
+        if ($this->customerForm->currentStep == count($this->steps)) {
+            $this->customerForm->setSchool(auth()->user()->schools()->first()->id);
+            $this->customerForm->store();
+            $customer = $this->customerForm->newCustomer;
 
-        switch ($this->customerForm->currentStep) {
-            case '1': //Dati
-                $this->customerForm->store();
-                $this->customerForm->currentStep += 1;
-                break;
-            case '2': //Recapiti
-                $this->customerForm->store();
-                $this->customerForm->currentStep += 1;
-                break;
-            case '3': //Documenti
-                if ($this->documents) {
-                    $this->customerForm->documents($this->documents);
-                }
-                $this->customerForm->currentStep += 1;
-                break;
-            case '4': //Scansioni
-                if ($this->scans) {
-                    $this->customerForm->scans($this->scans);
-                }
-                $this->customerForm->currentStep += 1;
-                break;
-            case '5': //Fototessera
-                if ($this->photo) {
-                    $this->customerForm->photo($this->photo);
-                }
-                $this->customerForm->currentStep += 1;
-                break;
-            case '6': //Firma
-                if ($this->signature) {
-                    $this->customerForm->signature($this->pathSignature);
-                }
-                $this->customerForm->currentStep += 1;
-                if ($this->customerForm->currentStep > count($this->steps)) {
-                    dd('registrazione completata', $this->customerForm->currentStep);
-                    $this->dispatch('customer');
-                }
-                break;
-            case '7': //Jolly
-                if ($this->parentSignature) {
-                    $this->customerForm->signature($this->pathSignature);
-                }
+            if ($this->documents) {
+                $this->customerForm->documents($this->documents);
+            }
+            if ($this->scans) {
+                $this->customerForm->scans($this->scans);
+            }
+            if ($this->photo) {
+                $this->customerForm->photo($this->photo);
+            }
+            if ($this->signature) {
+                $this->pathSignature = Storage::putFileAs('customers/customer-'.$customer->id, $this->signature, 'firma.png');
+                $this->customerForm->signature($this->pathSignature);
+            }
+            if ($this->parentSignature) {
+                $this->pathSignature = Storage::putFileAs('customers/customer-'.$customer->id.'/parent', $this->parentSignature, 'firma_genitore.png');
+                $this->customerForm->parentSignature($this->pathSignature);
+            }
+            if ($this->parentScans) {
+                $this->customerForm->parentScans($this->parentScans);
+            }
 
-                $this->customerForm->currentStep += 1;
-                if ($this->customerForm->currentStep > count($this->steps)) {
-                    dd('registrazione completata', $this->customerForm->currentStep);
-                    $this->dispatch('customer');
-                }
-                break;
-            case '8':
-                # code...
-                break;
+            dd('registrazione completata', $this->customerForm->currentStep);
+            $this->dispatch('customerCreated');
+        } else {
+            $this->customerForm->validation();
+            $this->customerForm->currentStep += 1;
         }
     }
 
@@ -146,23 +128,35 @@ class StepRegister extends Component
     }
 
     public function updated($property) {
-
         if (str_contains($property,'documents')) {
-            foreach ($this->documents as $key => $value) {
-                if ($value['type'] != 'patente') {
+            foreach ($this->documents as $key => $document) {
+                if ($document['type'] != 'patente') {
                     unset($this->documents[$key]['qualification']);
                 }
-
-                if (count($this->documents[$key]) == 6 AND $value['type'] != '' AND $value['type'] == 'patente') {
-                    $this->documentUploaded = true;
-                } elseif (count($this->documents[$key]) == 5 AND $value['type'] != '' AND $value['type'] != 'patente') {
+                if (count($this->documents[$key]) == 6 AND $document['type'] != '' AND $document['type'] == 'patente') {
+                    foreach ($document as $key => $value) {
+                        if ($value == '') {
+                            return $this->documentUploaded = false;
+                        }
+                        if (array_key_exists('qualification', $document)) {
+                            if (count($document['qualification']) < 1) {
+                                return $this->documentUploaded = false;
+                            }
+                        }
+                        $this->documentUploaded = true;
+                    }
+                } elseif (count($this->documents[$key]) == 5 AND $document['type'] != '' AND $document['type'] != 'patente') {
+                    foreach ($document as $key => $value) {
+                        if ($value == '') {
+                            return $this->documentUploaded = false;
+                        }
+                    }
                     $this->documentUploaded = true;
                 } else {
                     $this->documentUploaded = false;
                 }
             }
         }
-
         if ($property == "scans") {
             $this->scanUploaded = true;
         }
@@ -188,21 +182,11 @@ class StepRegister extends Component
     }
 
     public function removeParentScan($key) {
-        unset($this->scans[$key]);
+        unset($this->parentScans[$key]);
 
-        if (count($this->parentScan) < 1) {
+        if (count($this->parentScans) < 1) {
             $this->parentScanUploaded = false;
         }
-    }
-
-    public function getSignature() {
-        $customer = $this->customerForm->newCustomer;
-        if ($this->customerForm->currentStep == 6) {
-            $this->pathSignature = Storage::putFileAs('customers/customer-'.$customer->id, $this->signature, 'firma.png');
-        } elseif ($this->customerForm->currentStep == 7) {
-            $this->pathSignature = Storage::putFileAs('customers/customer-'.$customer->id, $this->parentSignature, 'firma_genitore.png');
-        }
-        $this->dispatch('closeModal');
     }
 
     public function changeStep($index) {

@@ -14,7 +14,7 @@ class RemindTT2112 extends ModalComponent
 
     public static function modalMaxWidth(): string
     {
-        return '4xl';
+        return 'lg';
     }
 
     public function render()

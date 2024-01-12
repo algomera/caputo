@@ -25,20 +25,8 @@ class OptionSeeder extends Seeder
                 'price' => 100.00
             ],
             [
-                'name' => 'Presentazione della richiestadi cambio codice',
-                'type' => 'fisso',
-                'option' => 'cambio codice',
-                'price' => 50.00
-            ],
-            [
                 'name' => '3 sedute di esame (1 possibilità di bocciatura)',
                 'type' => 'fisso',
-                'price' => 20.00
-            ],
-            [
-                'name' => 'Sedute di esame',
-                'type' => 'fisso',
-                'option' => 'cambio codice',
                 'price' => 20.00
             ],
             [
@@ -47,15 +35,22 @@ class OptionSeeder extends Seeder
                 'price' => 60.00
             ],
             [
+                'name' => 'Presentazione della richiesta di cambio codice',
+                'type' => 'fisso',
+                'option' => 'cambio codice',
+                'price' => 50.00
+            ],
+            [
+                'name' => 'Sedute di esame',
+                'type' => 'fisso',
+                'option' => 'cambio codice',
+                'price' => 20.00
+            ],
+            [
                 'name' => 'Stampa foglio rosa',
                 'type' => 'fisso',
                 'option' => 'cambio codice',
                 'price' => 30.00
-            ],
-            [
-                'name' => 'Tutti i bollettini postali',
-                'type' => 'opzionale',
-                'price' => 20.00
             ],
             [
                 'name' => 'bollettino per la richiesta di cambio codice',
@@ -64,10 +59,45 @@ class OptionSeeder extends Seeder
                 'price' => 20.00
             ],
             [
-                'name' => 'Tutti i bollettini cambio codice',
+                'name' => 'Presentazione domanda in motorizzazione',
+                'type' => 'fisso',
+                'option' => 'possessore di patente',
+                'price' => 100.0
+            ],
+            [
+                'name' => '3 sedute di esame (1 possibilità di bocciatura)',
+                'type' => 'fisso',
+                'option' => 'possessore di patente',
+                'price' => 20.0
+            ],
+            [
+                'name' => 'Stampa foglio rosa',
+                'type' => 'fisso',
+                'option' => 'possessore di patente',
+                'price' => 20.0
+            ],
+            [
+                'name' => 'Presentazione domanda in motorizzazione',
+                'type' => 'fisso',
+                'option' => 'guida accompagnata',
+                'price' => 100.0
+            ],
+            [
+                'name' => 'Tutti i bollettini postali',
+                'type' => 'fisso',
+                'option' => 'guida accompagnata',
+                'price' => 20.0
+            ],
+            [
+                'name' => 'Rilascio attestato',
+                'type' => 'fisso',
+                'option' => 'guida accompagnata',
+                'price' => 60.0
+            ],
+            [
+                'name' => 'Tutti i bollettini postali',
                 'type' => 'opzionale',
-                'option' => 'cambio codice',
-                'price' => 10.20
+                'price' => 20.00
             ],
             [
                 'name' => 'Certificato medico con marca da bollo',
@@ -83,6 +113,24 @@ class OptionSeeder extends Seeder
                 'name' => 'Supporto audio',
                 'type' => 'opzionale',
                 'price' => 00.00
+            ],
+            [
+                'name' => 'Tutti i bollettini cambio codice',
+                'type' => 'opzionale',
+                'option' => 'cambio codice',
+                'price' => 10.20
+            ],
+            [
+                'name' => 'Tutti i bollettini postali',
+                'type' => 'opzionale',
+                'option' => 'possessore di patente',
+                'price' => 20.0
+            ],
+            [
+                'name' => 'Certificato medico con marca da bollo',
+                'type' => 'opzionale',
+                'option' => 'possessore di patente',
+                'price' => 20.0
             ],
             [
                 'name' => 'Guide',

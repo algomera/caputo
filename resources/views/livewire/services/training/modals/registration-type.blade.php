@@ -14,6 +14,11 @@
                     <p class="text-lg text-color-2c2c2c">Il candidato è possessore di <b>patente A1, B1 o B</b></p>
                 </div>
             @endif
+            @if ( in_array(session('course')['id'], [16]))
+                <div wire:click='setOption("possessore di patente")' class="w-full h-24 flex items-center justify-center border rounded-md shadow-shadow-card hover:scale-105 transition-all duration-300 cursor-pointer">
+                    <p class="text-lg text-color-2c2c2c">Il candidato è possessore di <b>patente A1, A2, A o B1</b></p>
+                </div>
+            @endif
             @if (session('course')['id'] == 16)
                 <div wire:click='setOption("guida accompagnata")' class="w-full h-24 flex items-center justify-center border rounded-md shadow-shadow-card hover:scale-105 transition-all duration-300 cursor-pointer">
                     <p class="text-lg text-color-2c2c2c">Possiede l'autorizzazione per la <b>guida accompagnata</b></p>
@@ -34,9 +39,11 @@
         </div>
 
         <div class="flex flex-wrap items-center justify-center gap-5 py-24">
-            <div wire:click='setType("teoria")' class="px-24 h-24 flex items-center justify-center border rounded-md shadow-lg hover:scale-105 transition-all duration-300 cursor-pointer">
-                <p class="text-lg text-color-2c2c2c whitespace-nowrap">Gestione teoria</p>
-            </div>
+            @if (session()->get('course')['registration_type'] != 'guide')
+                <div wire:click='setType("teoria")' class="px-24 h-24 flex items-center justify-center border rounded-md shadow-lg hover:scale-105 transition-all duration-300 cursor-pointer">
+                    <p class="text-lg text-color-2c2c2c whitespace-nowrap">Gestione teoria</p>
+                </div>
+            @endif
             <div wire:click='setType("guide")' class="px-24 h-24 flex items-center justify-center border rounded-md shadow-lg hover:scale-105 transition-all duration-300 cursor-pointer">
                 <p class="text-lg text-color-2c2c2c whitespace-nowrap">Gestione guide</p>
             </div>

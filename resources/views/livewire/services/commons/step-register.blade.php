@@ -257,7 +257,7 @@
                 @case(7)
                     <x-container-step>
                         <p class="text-xl font-light text-color-2c2c2c">
-                            Caricare la firma, la <span class="font-bold">carta d’identità</span> e il <span class="font-bold">codice fiscale</span> del genitore/tutore
+                            Caricare la <span class="font-bold">firma</span>, la <span class="font-bold">carta d’identità</span> e il <span class="font-bold">codice fiscale</span> del genitore/tutore
                         </p>
 
                         <div class="flex items-start justify-between gap-20">
@@ -280,11 +280,11 @@
                             <div class="flex flex-col gap-1 grow max-w-lg relative py-4 border">
                                 <p @class(["font-bold mb-5 pl-4",'text-color-'.get_color($course->service->name)])>File Caricati</p>
                                 @if ($parentScans)
-                                    @foreach ($scans as $key => $scan)
-                                        <div @class(["flex items-center px-4 py-1", ($key < count($scans)-1) ? 'border-b': ''])>
+                                    @foreach ($parentScans as $key => $parentScan)
+                                        <div @class(["flex items-center px-4 py-1", ($key < count($parentScans)-1) ? 'border-b': ''])>
                                             <x-icons name="file" class="mr-2" />
-                                            <span class="font-medium text-gray-400">{{$scan->getClientOriginalName()}}</span>
-                                            <x-icons wire:click="removeScan({{$key}})" name="file_delete" class="ml-auto cursor-pointer" />
+                                            <span class="font-medium text-gray-400">{{$parentScan->getClientOriginalName()}}</span>
+                                            <x-icons wire:click="removeParentScan({{$key}})" name="file_delete" class="ml-auto cursor-pointer" />
                                         </div>
                                     @endforeach
                                 @else
@@ -321,11 +321,11 @@
                 },
                 uploadSignature(){
                     @this.set('signature', this.signaturePadInstance.toDataURL('image/png'));
-                    @this.call('getSignature');
+                    @this.dispatch('closeModal');
                 },
                 uploadParentSignature() {
                     @this.set('parentSignature', this.signaturePadInstance.toDataURL('image/png'));
-                    @this.call('getSignature');
+                    @this.dispatch('closeModal');
                 }
             }))
         })
