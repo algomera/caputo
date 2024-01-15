@@ -91,10 +91,10 @@
                                                 <div class="flex flex-wrap gap-x-8 gap-y-4 mt-5">
                                                     @foreach ($school->users()->get() as $user)
                                                         <div class="relative border p-3 pr-10 shadow bg-white">
-                                                            <x-icons name="b-edit" class="absolute top-3 right-3"
+                                                            <x-icons name="b-edit" class="absolute top-3 right-3 cursor-pointer"
                                                                 wire:click="$dispatch('openModal', { component: 'admin.schools.users.create-or-update', arguments: {user: {{ $user->id }}, school: {{$school->id}}, action: 'edit'} })"
                                                             />
-                                                            <x-icons name="delete" class="absolute top-10 right-3"
+                                                            <x-icons name="delete" class="absolute top-10 right-3 cursor-pointer"
                                                                 wire:click="$dispatch('openModal', { component: 'admin.schools.users.delete', arguments: {user: {{ $user->id }}} })"
                                                             />
                                                             <p class="capitalize font-medium text-color-545454 mb-2">{{$user->name}} {{$user->lastName}}</p>

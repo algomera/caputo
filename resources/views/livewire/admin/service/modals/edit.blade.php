@@ -13,7 +13,7 @@
             <button wire:click="$dispatch('closeModal')" class="w-fit text-2xl inline-flex items-center px-6 py-2 bg-white border border-gray-200 text-gray-600 rounded hover:bg-gray-200 active:bg-gray-200 disabled:opacity-50 font-bold tracking-widestfocus:bg-gray-700 transition ease-in-out duration-150">
                 Annulla
             </button>
-            <x-submit-button wire:click="remove">Conferma</x-submit-button>
+            <x-submit-button wire:click="remove" class="bg-red-500">Conferma</x-submit-button>
         </div>
     @else
         <p class="text-color-2c2c2c text-2xl">
@@ -31,7 +31,7 @@
             <button wire:click="$dispatch('closeModal')" class="w-fit text-2xl inline-flex items-center px-6 py-2 bg-white border border-gray-200 text-gray-600 rounded hover:bg-gray-200 active:bg-gray-200 disabled:opacity-50 font-bold tracking-widestfocus:bg-gray-700 transition ease-in-out duration-150">
                 Annulla
             </button>
-            <x-submit-button wire:click="add">Aggiungi</x-submit-button>
+            <x-submit-button wire:click="add" class="bg-color-347af2">Aggiungi</x-submit-button>
         </div>
     @endif
 </div>

@@ -27,6 +27,6 @@
     </div>
 
     <div class="ml-auto">
-        <x-submit-button wire:click='next'>Salva</x-submit-button>
+        <x-submit-button wire:click='next' class="bg-color-347af2">Salva</x-submit-button>
     </div>
 </div>

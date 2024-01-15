@@ -30,6 +30,17 @@ class RegistrationType extends ModalComponent
             return $this->closeModal();
         }
 
+        if (session()->get('course')['id'] == 16 AND $option == 'possessore di patente' OR $option == 'guida accompagnata') {
+            $this->addSession($option, 'guide');
+
+            $this->dispatch('setCourse',
+                course: $this->course->id,
+                branch: $option,
+                type  : session()->get('course')['registration_type']
+            );
+            return $this->closeModal();
+        }
+
         if ($option == 'possessore di patente') {
             $this->addSession($option, 'guide');
             $this->selectedOption = 'guide';

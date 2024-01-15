@@ -19,6 +19,6 @@
     <textarea wire:model="courseForm.description" name="courseForm.description" id="" cols="30" rows="5" class="w-full border-color-dfdfdf rounded-md"></textarea>
 
     <div class="ml-auto">
-        <x-submit-button wire:click='update'>Salva</x-submit-button>
+        <x-submit-button wire:click='update' class="bg-color-347af2">Salva</x-submit-button>
     </div>
 </div>
