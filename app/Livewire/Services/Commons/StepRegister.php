@@ -6,7 +6,7 @@ use App\Livewire\Forms\CustomerForm;
 use App\Models\Course;
 use App\Models\Customer;
 use App\Models\IdentificationDocument;
-use Illuminate\Support\Facades\Storage;
+use Livewire\Attributes\On;
 use Livewire\WithFileUploads;
 use Livewire\Component;
 
@@ -72,11 +72,11 @@ class StepRegister extends Component
         }
 
         if (in_array(session()->get('course')['id'], ['10','11','14','15'])) {
-            $this->steps[] = 'dati genitore/tutore';
+            $this->steps[] = 'genitore/tutore';
         }
 
         if (session()->get('course')['id'] == 14) {
-            $this->steps[] = 'dati accompagnatori';
+            $this->steps[] = 'accompagnatori';
         }
     }
 
@@ -88,11 +88,11 @@ class StepRegister extends Component
         $this->customerForm->currentStep -= 1;
     }
 
+    #[On('nextStep')]
     public function nextStep() {
         if ($this->customerForm->currentStep == count($this->steps)) {
             $this->customerForm->setSchool(auth()->user()->schools()->first()->id);
-            $this->customerForm->store();
-            $customer = $this->customerForm->newCustomer;
+            // $this->customerForm->store();
 
             if ($this->documents) {
                 $this->customerForm->documents($this->documents);
@@ -100,23 +100,22 @@ class StepRegister extends Component
             if ($this->scans) {
                 $this->customerForm->scans($this->scans);
             }
+            if ($this->parentScans) {
+                $this->customerForm->parentScans($this->parentScans);
+            }
             if ($this->photo) {
                 $this->customerForm->photo($this->photo);
             }
             if ($this->signature) {
-                $this->pathSignature = Storage::putFileAs('customers/customer-'.$customer->id, $this->signature, 'firma.png');
-                $this->customerForm->signature($this->pathSignature);
+                $this->customerForm->signature($this->signature);
             }
             if ($this->parentSignature) {
-                $this->pathSignature = Storage::putFileAs('customers/customer-'.$customer->id.'/parent', $this->parentSignature, 'firma_genitore.png');
-                $this->customerForm->parentSignature($this->pathSignature);
+                $this->customerForm->parentSignature($this->parentSignature);
             }
-            if ($this->parentScans) {
-                $this->customerForm->parentScans($this->parentScans);
-            }
+            $this->dispatch('creatingCustomer');
 
-            dd('registrazione completata', $this->customerForm->currentStep);
-            $this->dispatch('customerCreated');
+            // dd('registrazione completata', $this->customerForm->currentStep);
+            // $this->dispatch('customerCreated');
         } else {
             $this->customerForm->validation();
             $this->customerForm->currentStep += 1;

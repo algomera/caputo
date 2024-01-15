@@ -8,9 +8,11 @@ use LivewireUI\Modal\ModalComponent;
 class Signature extends ModalComponent
 {
     public $signature;
+    public $key;
 
-    public function mount($signature = null) {
+    public function mount($signature = null, $key = null) {
         $this->signature = $signature;
+        $this->$key = $key;
     }
 
     public static function modalMaxWidth(): string

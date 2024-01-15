@@ -303,6 +303,10 @@
                         </div>
                     </x-container-step>
                 @break
+            {{-- Accompagnatori --}}
+                @case(8)
+                    <livewire:services.commons.partials.companions />
+                @break
             @endswitch
         </div>
     </div>
@@ -326,7 +330,11 @@
                 uploadParentSignature() {
                     @this.set('parentSignature', this.signaturePadInstance.toDataURL('image/png'));
                     @this.dispatch('closeModal');
-                }
+                },
+                uploadCompanionSignature(key) {
+                    @this.dispatch('setCompanionSignature', {companion: key, signature: this.signaturePadInstance.toDataURL('image/png')});
+                    @this.dispatch('closeModal');
+                },
             }))
         })
     </script>

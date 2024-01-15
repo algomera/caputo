@@ -60,7 +60,11 @@ class Index extends Component
 
     public function next($id) {
         if ($id == 14) {
-            $this->addSession('guida accompagnata', 'guide');
+            session()->put('course', [
+                'id' => $id,
+                'option' => 'guida accompagnata',
+                'registration_type' => 'guide'
+            ]);
 
             $this->dispatch('setCourse',
                 course: $id,

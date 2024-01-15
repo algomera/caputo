@@ -18,7 +18,11 @@
                 <h3 class="text-2xl font-medium text-color-2c2c2c">Il candidato si iscrive effettuando un cambio codice</h3>
             @break
             @case('guida accompagnata')
-                <h3 class="text-2xl font-medium text-color-2c2c2c">Il candidato e in possesso di autorizzazione alla guida accompagnata</h3>
+                @if (session()->get('course')['id'] != 14)
+                    <h3 class="text-2xl font-medium text-color-2c2c2c">Il candidato e in possesso di autorizzazione alla guida accompagnata</h3>
+                    @else
+                    <h3 class="text-2xl font-medium text-color-2c2c2c capitalize">{{session()->get('course')['option']}}</h3>
+                @endif
             @break
         @endswitch
 

@@ -19,6 +19,10 @@
                 <x-submit-button x-on:click="uploadParentSignature" @class(["bg-color-".get_color(session()->get('serviceName'))])>
                     Salva
                 </x-submit-button>
+            @elseif ($signature == 'companion')
+                <x-submit-button x-on:click="uploadCompanionSignature({{$key}})" @class(["bg-color-".get_color(session()->get('serviceName'))])>
+                    Salva
+                </x-submit-button>
             @else
                 <x-submit-button x-on:click="uploadSignature" @class(["bg-color-".get_color(session()->get('serviceName'))])>
                     Salva
