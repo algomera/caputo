@@ -2,7 +2,6 @@
 
 namespace App\Livewire\Services\Commons\Modals;
 
-use Livewire\Attributes\On;
 use LivewireUI\Modal\ModalComponent;
 
 class Signature extends ModalComponent

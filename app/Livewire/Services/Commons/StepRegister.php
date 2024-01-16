@@ -6,8 +6,11 @@ use App\Livewire\Forms\CustomerForm;
 use App\Models\Course;
 use App\Models\Customer;
 use App\Models\IdentificationDocument;
+use App\Models\InterestedCourses;
+use App\Models\Registration;
 use Livewire\WithFileUploads;
 use Livewire\Component;
+use Livewire\Attributes\On;
 
 class StepRegister extends Component
 {
@@ -30,24 +33,9 @@ class StepRegister extends Component
     public $parentScanUploaded = false;
     public $steps = [];
     public $typePatents = ['AM', 'A1', 'A2', 'A', 'B1','B', 'C1', 'C', 'D1', 'D', 'BE', 'C1E', 'CE', 'D1E', 'DE'];
-    public $companions = [
-        1 => [
-            'signature' => null,
-            'scans' => []
-        ],
-        2 => [
-            'signature' => null,
-            'scans' => []
-        ],
-        3 => [
-            'signature' => null,
-            'scans' => []
-        ],
-    ];
+    public $companions = null;
 
-    public function mount($course) {
-        $this->course = $course;
-
+    public function mount() {
         if (session('patent')) {
             $this->patent = IdentificationDocument::where('n_document', session()->get('patent'))->first();
 
@@ -63,7 +51,8 @@ class StepRegister extends Component
     }
 
     public function setSteps() {
-        if ($this->course->type == 'service') {
+        $course = Course::find(session()->get('course')['id']);
+        if ($course->type == 'service') {
             $this->steps= [
                 'dati',
                 'recapiti',
@@ -84,12 +73,26 @@ class StepRegister extends Component
             ];
         }
 
-        if (in_array(session()->get('course')['id'], ['10','11','14','15'])) {
+        if (in_array($course->id, ['10','11','14','15'])) {
             $this->steps[] = 'genitore/tutore';
         }
 
-        if (session()->get('course')['id'] == 14) {
+        if ($course->id == 14) {
             $this->steps[] = 'accompagnatori';
+            $this->companions = [
+                1 => [
+                    'signature' => null,
+                    'scans' => []
+                ],
+                2 => [
+                    'signature' => null,
+                    'scans' => []
+                ],
+                3 => [
+                    'signature' => null,
+                    'scans' => []
+                ],
+            ];
         }
     }
 
@@ -102,53 +105,89 @@ class StepRegister extends Component
     }
 
     public function nextStep() {
+        $this->dispatch('openModal', 'services.commons.modals.registration');
         if ($this->customerForm->currentStep == count($this->steps)) {
-            $this->customerForm->setSchool(auth()->user()->schools()->first()->id);
-            $this->customerForm->store();
-
-            if ($this->documents) {
-                $this->customerForm->documents($this->documents);
-            }
-            if ($this->scans) {
-                $this->customerForm->scans($this->scans);
-            }
-            if ($this->parentScans) {
-                $this->customerForm->parentScans($this->parentScans);
-            }
-            if ($this->photo) {
-                $this->customerForm->photo($this->photo);
-            }
-            if ($this->signature) {
-                $this->customerForm->signature($this->signature);
-            }
-            if ($this->parentSignature) {
-                $this->customerForm->parentSignature($this->parentSignature);
-            }
-            if ($this->companions) {
-                $signatures = [];
-                $scans = [];
-
-                foreach ($this->companions as $key => $companion) {
-                    if ($companion['signature'] != null) {
-                        $signatures[$key] = $companion['signature'];
-                    }
-                    if (count($companion['scans']) > 0) {
-                        foreach ($companion['scans'] as $scan) {
-                            $scans[$key] = $scan;
-                        }
-                    }
-                }
-
-                $this->customerForm->companionsSignature($signatures);
-                $this->customerForm->companionsScans($scans);
-            }
-
-            dd('registrazione completata', $this->customerForm->currentStep);
-            $this->dispatch('customerCreated');
         } else {
             $this->customerForm->validation();
             $this->customerForm->currentStep += 1;
         }
+    }
+
+    #[On('newRegistration')]
+    public function registration($id, $type, $variant = null) {
+        $this->customerForm->setSchool(auth()->user()->schools()->first()->id);
+        $this->customerForm->store();
+
+        if ($this->documents) {
+            $this->customerForm->documents($this->documents);
+        }
+        if ($this->scans) {
+            $this->customerForm->scans($this->scans);
+        }
+        if ($this->parentScans) {
+            $this->customerForm->parentScans($this->parentScans);
+        }
+        if ($this->photo) {
+            $this->customerForm->photo($this->photo);
+        }
+        if ($this->signature) {
+            $this->customerForm->signature($this->signature);
+        }
+        if ($this->parentSignature) {
+            $this->customerForm->parentSignature($this->parentSignature);
+        }
+        if ($this->companions) {
+            $signatures = [];
+            $scans = [];
+
+            foreach ($this->companions as $key => $companion) {
+                if ($companion['signature'] != null) {
+                    $signatures[$key] = $companion['signature'];
+                }
+                if (count($companion['scans']) > 0) {
+                    foreach ($companion['scans'] as $scan) {
+                        $scans[$key] = $scan;
+                    }
+                }
+            }
+
+            $this->customerForm->companionsSignature($signatures);
+            $this->customerForm->companionsScans($scans);
+        }
+
+        if ($type == 'esistente') {
+            Registration::create([
+                'training_id' => $id,
+                'customer_id' => $this->customerForm->newCustomer->id,
+                'type' => session()->get('course')['registration_type'],
+                'transmission' => session()->get('course')['transmission'],
+                'optionals' => json_encode(session()->get('course')['selected_cost']),
+                'price' => session()->get('course')['price']
+            ]);
+        } elseif ($type == 'interessato') {
+            if ($variant) {
+                InterestedCourses::create([
+                    'customer_id' => $this->customerForm->newCustomer->id,
+                    'course_id' => session()->get('course')['id'],
+                    'variant_id' => $variant,
+                    'confirm' => 'in attesa'
+                ]);
+            } else {
+                InterestedCourses::create([
+                    'customer_id' => $this->customerForm->newCustomer->id,
+                    'course_id' => session()->get('course')['id'],
+                    'confirm' => 'in attesa'
+                ]);
+            }
+        }
+
+        foreach (session()->get('course')['selected_cost'] as $key => $cost) {
+            if ($cost == 15) {
+                dd('Va reinderizzato per fissare la visita medica');
+            }
+        }
+        dd('registrazione completata', $this->customerForm->currentStep);
+        $this->dispatch('customerCreated');
     }
 
     public function addDocument() {

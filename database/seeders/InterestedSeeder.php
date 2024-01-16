@@ -28,10 +28,11 @@ class InterestedSeeder extends Seeder
                     'confirm' => fake()->randomElement(['in attesa', 'confermato'])
                 ]);
             }
-            foreach ($courseVariant->random(3) as $course) {
+            foreach ($courseVariant->random(3) as $variant) {
                 InterestedCourses::create([
                     'customer_id' => $customer->id,
-                    'course_id' => $course->id,
+                    'course_id' => $variant->course->id,
+                    'variant_id' => $variant->id,
                     'confirm' => fake()->randomElement(['in attesa', 'confermato'])
                 ]);
             }

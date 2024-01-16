@@ -35,6 +35,14 @@ class Customer extends Model
         return $this->hasMany(Presence::class);
     }
 
+    public function medicals(): HasMany {
+        return $this->hasMany(MedicalPlanning::class);
+    }
+
+    public function interested(): HasMany {
+        return $this->hasMany(InterestedCourses::class);
+    }
+
     public function documents(): MorphMany {
         return $this->morphMany(Document::class, 'documentable');
     }
@@ -44,7 +52,11 @@ class Customer extends Model
     }
 
     public function parentDocuments(): MorphMany {
-        return $this->morphMany(Document::class, 'documentable')->where('type', 'documenti di riconoscimento genitori');
+        return $this->morphMany(Document::class, 'documentable')->where('type', 'documenti di riconoscimento genitore');
+    }
+
+    public function companionDocuments(): MorphMany {
+        return $this->morphMany(Document::class, 'documentable')->where('type', 'like', '%'.'documenti di riconoscimento accompagnatore'.'%');
     }
 
     public function customerSignature(): MorphMany {
@@ -55,11 +67,7 @@ class Customer extends Model
         return $this->morphMany(Document::class, 'documentable')->where('type', 'firma genitore');
     }
 
-    public function medicals(): HasMany {
-        return $this->hasMany(MedicalPlanning::class);
-    }
-
-    public function interested(): HasMany {
-        return $this->hasMany(InterestedCourses::class);
+    public function companionsSignatures(): MorphMany {
+        return $this->morphMany(Document::class, 'documentable')->where('type', 'like', '%'.'firma accompagnatore'.'%');
     }
 }

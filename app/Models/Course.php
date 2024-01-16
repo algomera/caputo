@@ -23,6 +23,10 @@ class Course extends Model
         return $this->hasMany(CoursePrice::class);
     }
 
+    public function variants(): HasMany {
+        return $this->hasMany(CourseVariant::class);
+    }
+
     public function lessons(): HasMany {
         return $this->hasMany(Lesson::class);
     }

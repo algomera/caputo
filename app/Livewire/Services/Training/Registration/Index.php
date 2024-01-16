@@ -73,6 +73,7 @@ class Index extends Component
         $session = session()->get('course', []);
         $session['selected_cost'] = $this->selectedOptions;
         $session['transmission'] = $this->transmission;
+        $session['price'] = $this->total;
         session()->put('course', $session);
 
         if (session()->get('course')['option'] != 'cambio codice') {

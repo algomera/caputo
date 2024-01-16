@@ -270,6 +270,19 @@ class CoursesSeeder extends Seeder
                         ]);
                         $this->createLessons($course->id, null);
                         $this->createPrice($course->id, null);
+
+                        for ($i=0; $i < 3; $i++) {
+                            $variant = CourseVariant::create([
+                                'course_id' => $course->id,
+                                'type' => $value['type'] ?? 'training',
+                                'name' => $value['name'] .' '. $i,
+                                'slug' => Str::slug($value['name'] .' '. $i),
+                                'description' => fake()->paragraph(),
+                                'absences' => 3
+                            ]);
+                            $this->createLessons($course->id, $variant->id);
+                            $this->createPrice($course->id, $variant->id);
+                        }
                     }
                     break;
                 case 'Formazione professionale':
@@ -318,7 +331,9 @@ class CoursesSeeder extends Seeder
                         for ($i=0; $i < 3; $i++) {
                             $variant = CourseVariant::create([
                                 'course_id' => $course->id,
+                                'type' => $value['type'] ?? 'training',
                                 'name' => $value['name'] .' '. $i,
+                                'slug' => Str::slug($value['name'] .' '. $i),
                                 'description' => fake()->paragraph(),
                                 'absences' => 3
                             ]);

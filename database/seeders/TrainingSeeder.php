@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Course;
 use App\Models\CourseVariant;
-use App\Models\registration;
+use App\Models\Registration;
 use App\Models\School;
 use App\Models\Training;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;

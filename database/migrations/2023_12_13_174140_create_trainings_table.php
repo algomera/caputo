@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignId('variant_id')->nullable()->constrained('course_variants')->onDelete('cascade');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->date('begins');
-            $table->date('ends');
+            $table->date('ends')->nullable();
             $table->timestamps();
         });
     }

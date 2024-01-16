@@ -1,0 +1,187 @@
+<div class="p-4 pb-16">
+    @if (!$selectedOption)
+        <div class="w-full flex justify-between">
+            <h1 @class(["text-4xl font-semibold", 'text-color-'.get_color($course->service->name)])>Registrazione al corso</h1>
+            <small class="text-gray-400 font-bold">{{$course->name}}</small>
+        </div>
+
+        <div class="m-auto flex flex-col gap-4 px-56 mt-16">
+            @if (count($trainings) > 0)
+                <div wire:click='setOption("esistente")' class="w-full h-24 flex items-center justify-center border rounded-md shadow-shadow-card hover:scale-105 transition-all duration-300 cursor-pointer">
+                    <p class="text-lg text-color-2c2c2c">Iserisci a <b>corso esistente</b></p>
+                </div>
+            @endif
+            @if (count($course->variants()->get()) > 0)
+                <div wire:click='setOption("interessato")' class="w-full h-24 flex items-center justify-center border rounded-md shadow-shadow-card hover:scale-105 transition-all duration-300 cursor-pointer">
+                    <p class="text-lg text-color-2c2c2c">Inserisci come <b>interessato al corso</b></p>
+                </div>
+            @else
+                <div wire:click="putRegistration({{$course->id}}, 'interessato')" class="w-full h-24 flex items-center justify-center border rounded-md shadow-shadow-card hover:scale-105 transition-all duration-300 cursor-pointer">
+                    <p class="text-lg text-color-2c2c2c">Inserisci come <b>interessato al corso ({{$course->name}})</b></p>
+                </div>
+            @endif
+        </div>
+    @endif
+
+    @if ($selectedOption == 'esistente')
+        <div class="flex flex-col gap-5">
+            <div class="w-full flex justify-between">
+                <h1 @class(["text-4xl font-semibold", 'text-color-'.get_color($course->service->name)])>Seleziona il corso</h1>
+                <div wire:click='resetOption' class="flex items-center gap-2 group cursor-pointer ">
+                    <x-icons name="arrow_back" class="group-hover:-translate-x-1 transition-all duration-300" />
+                    <span class="text-lg text-color-808080 group-hover:underline">Indietro</span>
+                </div>
+            </div>
+
+            <button wire:click='setOption("nuovo")' class="ml-auto w-fit px-6 py-2 bg-color-01a53a/60 text-white rounded-md font-semibold">+ corso</button>
+
+            <table class="min-w-full divide-y divide-gray-200 border">
+                <thead>
+                    <tr class="text-center text-color-545454">
+                        <th scope="col" class="border-r py-3.5 px-3 hidden xl:table-cell">
+                            ID
+                        </th>
+                        <th scope="col" class="border-r py-3.5 px-3 2xl:max-w-none">
+                            Corso
+                        </th>
+                        <th scope="col" class="border-r py-3.5 px-3 2xl:max-w-none">
+                            Insegnante
+                        </th>
+                        <th scope="col" class="border-r px-3 py-3.5">
+                            Inizio
+                        </th>
+                        <th scope="col" class="border-r px-3 py-3.5">
+                            Fine
+                        </th>
+                        <th scope="col" class="border-r px-3 py-3.5 hidden xl:table-cell">
+                            N° Lezioni
+                        </th>
+                        <th scope="col" class="border-r px-3 py-3.5">
+                            Tot. (H:M)
+                        </th>
+                        <th scope="col" class="border-r px-3 py-3.5 hidden xl:table-cell">
+                            Ass. consentite
+                        </th>
+                        <th scope="col" class="px-3 py-3.5 text-center">Azioni</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200 bg-white">
+                    @foreach($trainings as $training)
+                        <tr class="text-center">
+                            <td class="border-r whitespace-nowrap py-4 pl-4 pr-3 font-bold text-color-347af2 uppercase hidden xl:table-cell">{{$training->id}}</td>
+                            <td class="border-r whitespace-nowrap text-left py-4 pl-4 pr-3 font-light text-color-2c2c2c capitalize 2xl:max-w-none truncate">
+                                @if ($training->variant_id != null)
+                                    {{$training->courseVariant->name}}
+                                @else
+                                    {{$training->course->name}}
+                                @endif
+                            </td>
+                            <td class="border-r whitespace-nowrap text-left py-4 pl-4 pr-3 font-light text-color-2c2c2c capitalize 2xl:max-w-none truncate">{{$training->user->name}} {{$training->user->lastName}}</td>
+                            <td class="border-r whitespace-nowrap px-3 py-4 font-light text-color-2c2c2c capitalize">{{date("d/m/Y", strtotime($training->begins))}}</td>
+                            <td class="border-r whitespace-nowrap px-3 py-4 font-light text-color-2c2c2c">{{date("d/m/Y", strtotime($training->ends))}}</td>
+                            <td class="border-r whitespace-nowrap px-3 py-4 font-light text-color-2c2c2c hidden xl:table-cell">{{count($training->course->lessons)}}</td>
+                            <td class="border-r whitespace-nowrap px-3 py-4 font-light text-color-2c2c2c">{{$training->course->duration}}</td>
+                            <td class="border-r whitespace-nowrap px-3 py-4 font-light text-color-2c2c2c hidden xl:table-cell">{{$training->course->absences}}</td>
+                            <td class="whitespace-nowrap px-3 py-4 text-sm font-light text-color-2c2c2c">
+                                <div class="flex items-center justify-center gap-2 px-5">
+                                    <button wire:click="putRegistration({{$training->id}}, '{{$selectedOption}}')" @class(["px-6 py-1 text-lg font-semibold text-white rounded-full ", 'bg-color-'.get_color($course->service->name)])>Inserisci</button>
+                                </div>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    @endif
+
+    @if ($selectedOption == 'interessato')
+        <div>
+            <div class="w-full flex justify-between">
+                <h1 @class(["text-4xl font-semibold", 'text-color-'.get_color($course->service->name)])>Seleziona il corso</h1>
+                <div wire:click='resetOption' class="flex items-center gap-2 group cursor-pointer ">
+                    <x-icons name="arrow_back" class="group-hover:-translate-x-1 transition-all duration-300" />
+                    <span class="text-lg text-color-808080 group-hover:underline">Indietro</span>
+                </div>
+            </div>
+
+            <table class="min-w-full divide-y divide-gray-200 border mt-5">
+                <thead>
+                    <tr class="text-center text-color-545454">
+                        <th scope="col" class="text-left border-r py-3.5 px-3 2xl:max-w-none">
+                            Corso
+                        </th>
+                        <th scope="col" class="border-r px-3 py-3.5 hidden xl:table-cell">
+                            N° Lezioni
+                        </th>
+                        <th scope="col" class="border-r px-3 py-3.5">
+                            Tot. (H:M)
+                        </th>
+                        <th scope="col" class="border-r px-3 py-3.5 hidden xl:table-cell">
+                            Ass. consentite
+                        </th>
+                        <th scope="col" class="px-3 py-3.5 text-center">Azioni</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200 bg-white">
+                    <tr class="text-center">
+                        <td class="border-r whitespace-nowrap text-left py-4 pl-4 pr-3 font-light text-color-2c2c2c capitalize 2xl:max-w-none truncate">{{$course->name}}</td>
+                        <td class="border-r whitespace-nowrap px-3 py-4 font-light text-color-2c2c2c hidden xl:table-cell">{{count($course->lessons)}}</td>
+                        <td class="border-r whitespace-nowrap px-3 py-4 font-light text-color-2c2c2c">{{$course->duration}}</td>
+                        <td class="border-r whitespace-nowrap px-3 py-4 font-light text-color-2c2c2c hidden xl:table-cell">{{$course->absences}}</td>
+                        <td class="whitespace-nowrap px-3 py-4 text-sm font-light text-color-2c2c2c">
+                            <div class="flex items-center justify-center gap-2 px-5">
+                                <button wire:click="putRegistration({{$course->id}}, '{{$selectedOption}}')" @class(["px-6 py-1 text-lg font-semibold text-white rounded-full ", 'bg-color-'.get_color($course->service->name)])>Inserisci</button>
+                            </div>
+                        </td>
+                    </tr>
+                    @foreach($course->variants()->get() as $variant)
+                        <tr class="text-center">
+                            <td class="border-r whitespace-nowrap text-left py-4 pl-4 pr-3 font-light text-color-2c2c2c capitalize 2xl:max-w-none truncate">{{$variant->name}}</td>
+                            <td class="border-r whitespace-nowrap px-3 py-4 font-light text-color-2c2c2c hidden xl:table-cell">{{count($variant->lessons)}}</td>
+                            <td class="border-r whitespace-nowrap px-3 py-4 font-light text-color-2c2c2c">{{$variant->duration}}</td>
+                            <td class="border-r whitespace-nowrap px-3 py-4 font-light text-color-2c2c2c hidden xl:table-cell">{{$variant->absences}}</td>
+                            <td class="whitespace-nowrap px-3 py-4 text-sm font-light text-color-2c2c2c">
+                                <div class="flex items-center justify-center gap-2 px-5">
+                                    <button wire:click="putRegistration({{$variant->id}}, '{{$selectedOption}}', 'variant')" @class(["px-6 py-1 text-lg font-semibold text-white rounded-full ", 'bg-color-'.get_color($course->service->name)])>Inserisci</button>
+                                </div>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    @endif
+
+    @if ($selectedOption == 'nuovo')
+        <div class="flex flex-col gap-8">
+            <div class="w-full flex justify-between">
+                <h1 @class(["text-4xl font-semibold", 'text-color-'.get_color($course->service->name)])>Seleziona e compila i campi</h1>
+                <div wire:click='resetOption' class="flex items-center gap-2 group cursor-pointer ">
+                    <x-icons name="arrow_back" class="group-hover:-translate-x-1 transition-all duration-300" />
+                    <span class="text-lg text-color-808080 group-hover:underline">Indietro</span>
+                </div>
+            </div>
+
+            <div class="flex gap-2 border rounded-md relative p-4 bg-color-f7f7f7">
+                @if (count($course->variants()->get()) > 0)
+                    <x-custom-select wire:model="trainingCourseVariant" name="trainingCourseVariant" label="Corso" width="grow" required="true">
+                        <option value="">{{$course->name}}</option>
+                        @foreach ($course->variants()->get() as $variant)
+                            <option value="{{$variant->id}}" class="capitalize">{{$variant->name}}</option> 
+                        @endforeach
+                    </x-custom-select>                    
+                @endif
+                <x-custom-select wire:model="trainingUser" name="trainingUser" label="Insegnante" width="grow" required="true">
+                    <option value="">Seleziona</option>
+                    @foreach ($users as $user )
+                        <option value="{{$user->id}}" class="capitalize">{{$user->name}} {{$user->lastName}}</option> 
+                    @endforeach
+                </x-custom-select>
+                <x-input-text type="date" wire:model="trainingBegins" width="grow" name="trainingBegins" label="Inizio corso" required="true" />
+                <x-input-text type="date" wire:model="trainingEnds" width="grow" name="trainingEnds" label="Fine corso"  />
+            </div>
+
+            <x-submit-button wire:click='createTraining' @class(["ml-auto",'bg-color-'.get_color(session()->get('serviceName'))])>Crea corso</x-submit-button>
+        </div>
+    @endif
+</div>

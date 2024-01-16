@@ -26,6 +26,10 @@ class Training extends Model
         return $this->belongsTo(CourseVariant::class, 'variant_id');
     }
 
+    public function user(): BelongsTo {
+        return $this->belongsTo(User::class);
+    }
+
     public function registrations(): HasMany {
         return $this->hasMany(Registration::class);
     }
