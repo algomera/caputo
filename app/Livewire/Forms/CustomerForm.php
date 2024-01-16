@@ -7,7 +7,6 @@ use Livewire\Attributes\Validate;
 use Livewire\Form;
 use Illuminate\Support\Facades\Storage;
 
-
 class CustomerForm extends Form
 {
     public $school_id;
@@ -104,12 +103,6 @@ class CustomerForm extends Form
         $this->phone_2 = $this->customer->phone_2;
     }
 
-    public function setNewCustomer() {
-        if (session()->get('newCustomer')) {
-            $this->newCustomer = Customer::find(session()->get('newCustomer'));
-        }
-    }
-
     public function setSchool($id) {
         $this->school_id = $id;
     }
@@ -140,7 +133,6 @@ class CustomerForm extends Form
             'phone_1' => $this->phone_1,
             'phone_2' => $this->phone_2,
         ]);
-        session()->put('newCustomer', $this->newCustomer->id);
     }
 
     public function photo($photo) {
@@ -157,7 +149,6 @@ class CustomerForm extends Form
     }
 
     public function documents($documents) {
-        $this->setNewCustomer();
         foreach ($documents as $document) {
             $this->newCustomer->identificationDocuments()->create([
                 'type' => $document['type'],
@@ -171,7 +162,6 @@ class CustomerForm extends Form
     }
 
     public function scans($scans) {
-        $this->setNewCustomer();
         foreach ($scans as $scan) {
             $path = Storage::putFileAs('customers/customer-'.$this->newCustomer->id, $scan, str_replace(' ', '_', $scan->getClientOriginalName()));
             $this->newCustomer->documents()->create([
@@ -182,7 +172,6 @@ class CustomerForm extends Form
     }
 
     public function parentScans($scans) {
-        $this->setNewCustomer();
         foreach ($scans as $scan) {
             $path = Storage::putFileAs('customers/customer-'.$this->newCustomer->id.'/parent', $scan, str_replace(' ', '_', $scan->getClientOriginalName()));
             $this->newCustomer->documents()->create([
@@ -193,7 +182,6 @@ class CustomerForm extends Form
     }
 
     public function companionsScans($scans) {
-        $this->setNewCustomer();
         foreach ($scans as $key => $scan) {
             $path = Storage::putFileAs('customers/customer-'.$this->newCustomer->id.'/companions/'.'companion-'.$key, $scan, str_replace(' ', '_', $scan->getClientOriginalName()));
             $this->newCustomer->documents()->create([
@@ -204,7 +192,6 @@ class CustomerForm extends Form
     }
 
     public function signature($signature) {
-        $this->setNewCustomer();
         $path = Storage::putFileAs('customers/customer-'.$this->newCustomer->id, $signature, 'firma.png');
         $this->newCustomer->documents()->updateOrCreate(
             ['type' => 'firma'],
@@ -216,7 +203,6 @@ class CustomerForm extends Form
     }
 
     public function parentSignature($signature) {
-        $this->setNewCustomer();
         $path = Storage::putFileAs('customers/customer-'.$this->newCustomer->id.'/parent', $signature, 'firma_genitore.png');
         $this->newCustomer->documents()->updateOrCreate(
             ['type' => 'firma genitore'],
@@ -228,7 +214,6 @@ class CustomerForm extends Form
     }
 
     public function companionsSignature($signatures) {
-        $this->setNewCustomer();
         foreach ($signatures as $key => $signature) {
             $path = Storage::putFileAs('customers/customer-'.$this->newCustomer->id.'/companions/'.'companion-'.$key, $signature, 'firma_accompagnatore-'.$key.'.png');
 

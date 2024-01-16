@@ -2,9 +2,9 @@
     <div class="px-10 2xl:px-0">
         <div class="flex items-center gap-5">
             <div wire:click='back' class="w-12 h-12 rounded-full shadow-shadow-card flex items-center justify-center cursor-pointer group">
-                <x-icons name="back" @class(["transition-all duration-300 group-hover:-translate-x-1", 'group-hover:text-color-'.get_color($course->service->name)]) />
+                <x-icons name="back" @class(["transition-all duration-300 group-hover:-translate-x-1", 'group-hover:text-color-'.get_color(session()->get('serviceName'))]) />
             </div>
-            <h1 @class(["text-5xl font-bold", 'text-color-'.get_color($course->service->name)])>{{$course->name}}</h1>
+            <h1 @class(["text-5xl font-bold", 'text-color-'.get_color(session()->get('serviceName'))])>{{$course->name}}</h1>
         </div>
 
         <div class="px-5 xl:px-16 py-9 mt-0 mx-20 2xl:mx-44">
@@ -12,13 +12,13 @@
             <div class="flex justify-center gap-1">
                 @foreach ($steps as $key => $step)
                     <x-steps
-                        color="{{$this->customerForm->currentStep >= $key+1 ? get_color($course->service->name) : 'afafaf'}}"
+                        color="{{$this->customerForm->currentStep >= $key+1 ? get_color(session()->get('serviceName')) : 'afafaf'}}"
                         currentStep="{{$this->customerForm->currentStep}}"
                         number="{{$key+1}}"
                         step="{{$step}}"
                     />
                     @if ($key+1 < count($steps) )
-                        <div @class(["h-1 grow max-w-[138px] rounded-full shadow mt-4", $this->customerForm->currentStep >= $key+2 ? 'bg-color-'.get_color($course->service->name) : 'bg-color-afafaf'])></div>
+                        <div @class(["h-1 grow max-w-[138px] rounded-full shadow mt-4", $this->customerForm->currentStep >= $key+2 ? 'bg-color-'.get_color(session()->get('serviceName')) : 'bg-color-afafaf'])></div>
                     @endif
                 @endforeach
             </div>
@@ -57,7 +57,7 @@
                             </div>
                         </div>
 
-                        <x-submit-button wire:click='nextStep' @class(["ml-auto",'bg-color-'.get_color($course->service->name)])>Prosegui</x-submit-button>
+                        <x-submit-button wire:click='nextStep' @class(["ml-auto",'bg-color-'.get_color(session()->get('serviceName'))])>Prosegui</x-submit-button>
                     </x-container-step>
                 @break
 
@@ -81,7 +81,7 @@
                             <button wire:click="backStep" class="w-fit text-2xl inline-flex items-center px-6 py-2 border border-transparent rounded-md font-light text-color-545454 tracking-widest bg-color-dfdfdf hover:bg-gray-700 hover:text-white active:bg-gray-900 transition ease-in-out duration-150 disabled:opacity-50 disabled:cursor-not-allowed">
                                 Indietro
                             </button>
-                            <x-submit-button wire:click='nextStep' @class(["ml-auto",'bg-color-'.get_color($course->service->name)])>Prosegui</x-submit-button>
+                            <x-submit-button wire:click='nextStep' @class(["ml-auto",'bg-color-'.get_color(session()->get('serviceName'))])>Prosegui</x-submit-button>
                         </div>
                     </x-container-step>
                 @break
@@ -93,7 +93,7 @@
                             <p class="text-xl font-light text-color-2c2c2c">
                                 Aggiungere documento e compilare i dati
                             </p>
-                            <x-submit-button wire:click='addDocument' @class(["ml-auto text-sm",'bg-color-'.get_color($course->service->name).'/70'])>+ Documento</x-submit-button>
+                            <x-submit-button wire:click='addDocument' @class(["ml-auto text-sm",'bg-color-'.get_color(session()->get('serviceName')).'/70'])>+ Documento</x-submit-button>
                         </div>
 
                         @if (count($documents) > 0)
@@ -139,7 +139,7 @@
                                 Indietro
                             </button>
                             @if ($documentUploaded)
-                                <x-submit-button wire:click='nextStep' @class(["ml-auto",'bg-color-'.get_color($course->service->name)])>Prosegui</x-submit-button>
+                                <x-submit-button wire:click='nextStep' @class(["ml-auto",'bg-color-'.get_color(session()->get('serviceName'))])>Prosegui</x-submit-button>
                             @endif
                         </div>
                     </x-container-step>
@@ -154,7 +154,7 @@
 
                         <div class="flex items-start justify-between gap-20">
                             <div class="flex flex-col gap-2">
-                                <x-input-files multiple wire:model="scans" text="Carica Scansioni" color="{{get_color($course->service->name)}}" name="scans"  preview="scans_uploaded" icon="upload" />
+                                <x-input-files multiple wire:model="scans" text="Carica Scansioni" color="{{get_color(session()->get('serviceName'))}}" name="scans"  preview="scans_uploaded" icon="upload" />
                                 <span wire:click="nextStep" class="text-color-2c2c2c underline cursor-pointer">Inserisci in seguito</span>
 
                                 <div class="text-gray-500 mt-5">
@@ -164,7 +164,7 @@
                             </div>
 
                             <div class="flex flex-col gap-1 grow max-w-lg relative py-4 border">
-                                <p @class(["font-bold mb-5 pl-4",'text-color-'.get_color($course->service->name)])>File Caricati</p>
+                                <p @class(["font-bold mb-5 pl-4",'text-color-'.get_color(session()->get('serviceName'))])>File Caricati</p>
                                 @if ($scans)
                                     @foreach ($scans as $key => $scan)
                                         <div @class(["flex items-center px-4 py-1", ($key < count($scans)-1) ? 'border-b': ''])>
@@ -184,7 +184,7 @@
                                 Indietro
                             </button>
                             @if ($scanUploaded)
-                                <x-submit-button wire:click='nextStep' @class(["ml-auto",'bg-color-'.get_color($course->service->name)])>Prosegui</x-submit-button>
+                                <x-submit-button wire:click='nextStep' @class(["ml-auto",'bg-color-'.get_color(session()->get('serviceName'))])>Prosegui</x-submit-button>
                             @endif
                         </div>
                     </x-container-step>
@@ -199,7 +199,7 @@
 
                         <div class="flex gap-8">
                             <div class="flex flex-col gap-2">
-                                <x-input-files wire:model.live="photo" text="Carica Fototessera" color="{{get_color($course->service->name)}}" name="photo" preview="fototessera_uploaded" icon="image" />
+                                <x-input-files wire:model.live="photo" text="Carica Fototessera" color="{{get_color(session()->get('serviceName'))}}" name="photo" preview="fototessera_uploaded" icon="image" />
                                 <span wire:click="nextStep" class="text-color-2c2c2c underline cursor-pointer">Inserisci in seguito</span>
                             </div>
                             @if ($photo)
@@ -219,7 +219,7 @@
                                 Indietro
                             </button>
                             @if ($photo)
-                                <x-submit-button wire:click='nextStep' @class(["ml-auto",'bg-color-'.get_color($course->service->name)])>Prosegui</x-submit-button>
+                                <x-submit-button wire:click='nextStep' @class(["ml-auto",'bg-color-'.get_color(session()->get('serviceName'))])>Prosegui</x-submit-button>
                             @endif
                         </div>
                     </x-container-step>
@@ -233,7 +233,7 @@
                         </p>
 
                         <button wire:click="$dispatch('openModal', { component: 'services.commons.modals.signature'})"
-                        @class(["p-3 rounded-md flex items-center gap-8 cursor-pointer w-fit", 'bg-color-'.get_color($course->service->name).'/20'])>
+                        @class(["p-3 rounded-md flex items-center gap-8 cursor-pointer w-fit", 'bg-color-'.get_color(session()->get('serviceName')).'/20'])>
                             @if ($signature)
                                 <span class="text-color-2c2c2c font-light">Firma Caricata</span>
                                 <x-icons name="check" />
@@ -248,11 +248,12 @@
                                 Indietro
                             </button>
                             @if ($signature)
-                                <x-submit-button wire:click='nextStep' @class(["ml-auto",'bg-color-'.get_color($course->service->name)])>Prosegui</x-submit-button>
+                                <x-submit-button wire:click='nextStep' @class(["ml-auto",'bg-color-'.get_color(session()->get('serviceName'))])>Prosegui</x-submit-button>
                             @endif
                         </div>
                     </x-container-step>
                 @break
+
             {{-- Jolly --}}
                 @case(7)
                     <x-container-step>
@@ -263,7 +264,7 @@
                         <div class="flex items-start justify-between gap-20">
                             <div class="flex flex-col gap-2">
                                 <button wire:click="$dispatch('openModal', { component: 'services.commons.modals.signature', arguments: {signature: 'parent'} })"
-                                @class(["p-3 rounded-md flex items-center gap-8 cursor-pointer", 'bg-color-'.get_color($course->service->name).'/20'])>
+                                @class(["p-3 rounded-md flex items-center gap-8 cursor-pointer", 'bg-color-'.get_color(session()->get('serviceName')).'/20'])>
                                     @if ($parentSignature)
                                         <span class="text-color-2c2c2c font-light">Firma Caricata</span>
                                         <x-icons name="check" />
@@ -273,12 +274,12 @@
                                     @endif
                                 </button>
 
-                                <x-input-files multiple wire:model="parentScans" text="Carica Scansioni" color="{{get_color($course->service->name)}}" name="parentScans"  preview="scans_uploaded" icon="upload" />
+                                <x-input-files multiple wire:model="parentScans" text="Carica Scansioni" color="{{get_color(session()->get('serviceName'))}}" name="parentScans"  preview="scans_uploaded" icon="upload" />
                                 <span wire:click="nextStep" class="text-color-2c2c2c underline cursor-pointer">Inserisci in seguito</span>
                             </div>
 
                             <div class="flex flex-col gap-1 grow max-w-lg relative py-4 border">
-                                <p @class(["font-bold mb-5 pl-4",'text-color-'.get_color($course->service->name)])>File Caricati</p>
+                                <p @class(["font-bold mb-5 pl-4",'text-color-'.get_color(session()->get('serviceName'))])>File Caricati</p>
                                 @if ($parentScans)
                                     @foreach ($parentScans as $key => $parentScan)
                                         <div @class(["flex items-center px-4 py-1", ($key < count($parentScans)-1) ? 'border-b': ''])>
@@ -298,14 +299,73 @@
                                 Indietro
                             </button>
                             @if ($parentSignature)
-                                <x-submit-button wire:click='nextStep' @class(["ml-auto",'bg-color-'.get_color($course->service->name)])>Prosegui</x-submit-button>
+                                <x-submit-button wire:click='nextStep' @class(["ml-auto",'bg-color-'.get_color(session()->get('serviceName'))])>Prosegui</x-submit-button>
                             @endif
                         </div>
                     </x-container-step>
                 @break
+
             {{-- Accompagnatori --}}
                 @case(8)
-                    <livewire:services.commons.partials.companions />
+                    <div class="w-full flex flex-col items-end gap-5 mt-5">
+                        <div class="w-full flex flex-col items-center gap-5">
+                            @foreach ($companions as $key => $companion)
+                                <div class="w-full p-4 bg-white flex flex-col gap-2">
+                                    <p class="text-xl font-bold capitalize text-color-2c2c2c">
+                                        accompagnatore {{$key}}
+                                    </p>
+                                    <div class="flex border-t">
+                                        <div class="flex flex-col gap-2 pt-2 pr-5 mr-5 border-r">
+                                            <p>Caricare la <span class="font-bold">firma</span> dell'Accompagnatore</p>
+                                            <button wire:click="$dispatch('openModal', { component: 'services.commons.modals.signature', arguments: {signature: 'companion', key: {{$key}}} })"
+                                            @class(["w-fit p-3 rounded-md flex items-center gap-8 cursor-pointer", 'bg-color-'.get_color(session()->get('serviceName')).'/20'])>
+                                                @if ($companion['signature'])
+                                                    <span class="text-color-2c2c2c font-light">Firma Caricata</span>
+                                                    <x-icons name="check" />
+                                                @else
+                                                    <span class="text-color-2c2c2c font-light">Carica Firma</span>
+                                                    <x-icons name="signature" />
+                                                @endif
+                                            </button>
+
+                                            <span wire:click="nextStep" class="text-color-2c2c2c underline cursor-pointer">Inserisci in seguito</span>
+                                        </div>
+
+                                        <div class="grow flex gap-5 justify-between pt-2">
+                                            <div class="flex flex-col gap-2">
+                                                <p>Caricare la <span class="font-bold">carta di Identità</span> e il <span class="font-bold">codice fiscale</span> dell'Accompagnatore</p>
+                                                <x-input-files multiple wire:model="companions.{{$key}}.scans" text="Carica Scansioni" color="{{get_color(session()->get('serviceName'))}}" name="companion.{{$key}}.scans"  preview="scans_uploaded" icon="upload" />
+                                                <span wire:click="nextStep" class="text-color-2c2c2c underline cursor-pointer">Inserisci in seguito</span>
+                                            </div>
+
+                                            <div class="flex flex-col gap-1 grow max-w-lg relative py-4 border">
+                                                <p @class(["font-bold mb-5 pl-4",'text-color-'.get_color(session()->get('serviceName'))])>File Caricati</p>
+                                                @if ($companion['scans'])
+                                                    @foreach ($companion['scans'] as $number => $scan)
+                                                        <div @class(["flex items-center px-4 py-1", ($key < count($companion['scans'])-1) ? 'border-b': ''])>
+                                                            <x-icons name="file" class="mr-2" />
+                                                            <span class="font-medium text-gray-400">{{$scan->getClientOriginalName()}}</span>
+                                                            <x-icons wire:click="removeCompanionScan({{$key}}, {{$number}})" name="file_delete" class="ml-auto cursor-pointer" />
+                                                        </div>
+                                                    @endforeach
+                                                @else
+                                                    <p class="font-semibold text-gray-400 pl-4">Nessun file presente</p>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+
+
+                        <div class="flex gap-5 justify-between">
+                            <button wire:click="backStep" class="w-fit text-2xl inline-flex items-center px-6 py-2 border border-transparent rounded-md font-light text-color-545454 tracking-widest bg-color-dfdfdf hover:bg-gray-700 hover:text-white active:bg-gray-900 transition ease-in-out duration-150 disabled:opacity-50 disabled:cursor-not-allowed">
+                                Indietro
+                            </button>
+                            <x-submit-button wire:click='nextStep' @class(["ml-auto",'bg-color-'.get_color(session()->get('serviceName'))])>Prosegui</x-submit-button>
+                        </div>
+                    </div>
                 @break
             @endswitch
         </div>
@@ -332,7 +392,7 @@
                     @this.dispatch('closeModal');
                 },
                 uploadCompanionSignature(key) {
-                    @this.dispatch('setCompanionSignature', {companion: key, signature: this.signaturePadInstance.toDataURL('image/png')});
+                    @this.set('companions.'+key+'.signature', this.signaturePadInstance.toDataURL('image/png'));
                     @this.dispatch('closeModal');
                 },
             }))

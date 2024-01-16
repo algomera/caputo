@@ -6,7 +6,6 @@ use App\Livewire\Forms\CustomerForm;
 use App\Models\Course;
 use App\Models\Customer;
 use App\Models\IdentificationDocument;
-use Livewire\Attributes\On;
 use Livewire\WithFileUploads;
 use Livewire\Component;
 
@@ -31,6 +30,20 @@ class StepRegister extends Component
     public $parentScanUploaded = false;
     public $steps = [];
     public $typePatents = ['AM', 'A1', 'A2', 'A', 'B1','B', 'C1', 'C', 'D1', 'D', 'BE', 'C1E', 'CE', 'D1E', 'DE'];
+    public $companions = [
+        1 => [
+            'signature' => null,
+            'scans' => []
+        ],
+        2 => [
+            'signature' => null,
+            'scans' => []
+        ],
+        3 => [
+            'signature' => null,
+            'scans' => []
+        ],
+    ];
 
     public function mount($course) {
         $this->course = $course;
@@ -88,11 +101,10 @@ class StepRegister extends Component
         $this->customerForm->currentStep -= 1;
     }
 
-    #[On('nextStep')]
     public function nextStep() {
         if ($this->customerForm->currentStep == count($this->steps)) {
             $this->customerForm->setSchool(auth()->user()->schools()->first()->id);
-            // $this->customerForm->store();
+            $this->customerForm->store();
 
             if ($this->documents) {
                 $this->customerForm->documents($this->documents);
@@ -112,10 +124,27 @@ class StepRegister extends Component
             if ($this->parentSignature) {
                 $this->customerForm->parentSignature($this->parentSignature);
             }
-            $this->dispatch('creatingCustomer');
+            if ($this->companions) {
+                $signatures = [];
+                $scans = [];
 
-            // dd('registrazione completata', $this->customerForm->currentStep);
-            // $this->dispatch('customerCreated');
+                foreach ($this->companions as $key => $companion) {
+                    if ($companion['signature'] != null) {
+                        $signatures[$key] = $companion['signature'];
+                    }
+                    if (count($companion['scans']) > 0) {
+                        foreach ($companion['scans'] as $scan) {
+                            $scans[$key] = $scan;
+                        }
+                    }
+                }
+
+                $this->customerForm->companionsSignature($signatures);
+                $this->customerForm->companionsScans($scans);
+            }
+
+            dd('registrazione completata', $this->customerForm->currentStep);
+            $this->dispatch('customerCreated');
         } else {
             $this->customerForm->validation();
             $this->customerForm->currentStep += 1;
@@ -186,6 +215,10 @@ class StepRegister extends Component
         if (count($this->parentScans) < 1) {
             $this->parentScanUploaded = false;
         }
+    }
+
+    public function removeCompanionScan($key, $number) {
+        unset($this->companions[$key]['scans'][$number]);
     }
 
     public function changeStep($index) {
