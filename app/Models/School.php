@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 class School extends Model
 {
@@ -56,6 +57,14 @@ class School extends Model
         })->get();
 
         return $servicesNotAssociated;
+    }
+
+    public function registrations(): HasManyThrough {
+        return $this->hasManyThrough(Registration::class, Training::class);
+    }
+
+    public function medicalVisits(): HasManyThrough {
+        return $this->hasManyThrough(Registration::class, Training::class)->whereJsonContains('optionals', '15')->with('customer', 'course', 'medicalPlanning');
     }
 
     public function trainings(): HasMany {

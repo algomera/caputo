@@ -28,3 +28,19 @@ select{
 select::-webkit-scrollbar { /*For WebKit Browsers*/
     width: 0;
 }
+
+.customHead {
+    display:table;
+    width:100%;
+    table-layout:fixed;
+}
+.customBody {
+    display:block;
+    max-height:480px;
+    overflow-y:scroll;
+}
+.customBody tr {
+    display:table;
+    width:100%;
+    table-layout:fixed;
+}

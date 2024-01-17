@@ -13,8 +13,8 @@ class MedicalPlanning extends Model
 
     protected $guarded = [];
 
-    public function customer(): BelongsTo {
-        return $this->belongsTo(Customer::class);
+    public function registration(): BelongsTo {
+        return $this->belongsTo(Registration::class);
     }
 
     public function user(): BelongsTo {

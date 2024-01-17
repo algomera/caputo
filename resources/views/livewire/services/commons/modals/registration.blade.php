@@ -10,6 +10,10 @@
                 <div wire:click='setOption("esistente")' class="w-full h-24 flex items-center justify-center border rounded-md shadow-shadow-card hover:scale-105 transition-all duration-300 cursor-pointer">
                     <p class="text-lg text-color-2c2c2c">Iserisci a <b>corso esistente</b></p>
                 </div>
+            @else
+                <div wire:click='setOption("nuovo")' class="w-full h-24 flex items-center justify-center border rounded-md shadow-shadow-card hover:scale-105 transition-all duration-300 cursor-pointer">
+                    <p class="text-lg text-color-2c2c2c">Crea un nuovo <b>corso ({{$course->name}})</b></p>
+                </div>
             @endif
             @if (count($course->variants()->get()) > 0)
                 <div wire:click='setOption("interessato")' class="w-full h-24 flex items-center justify-center border rounded-md shadow-shadow-card hover:scale-105 transition-all duration-300 cursor-pointer">
@@ -62,6 +66,9 @@
                         <th scope="col" class="border-r px-3 py-3.5 hidden xl:table-cell">
                             Ass. consentite
                         </th>
+                        <th scope="col" class="border-r px-3 py-3.5 hidden xl:table-cell">
+                            N° Iscritti
+                        </th>
                         <th scope="col" class="px-3 py-3.5 text-center">Azioni</th>
                     </tr>
                 </thead>
@@ -78,10 +85,17 @@
                             </td>
                             <td class="border-r whitespace-nowrap text-left py-4 pl-4 pr-3 font-light text-color-2c2c2c capitalize 2xl:max-w-none truncate">{{$training->user->name}} {{$training->user->lastName}}</td>
                             <td class="border-r whitespace-nowrap px-3 py-4 font-light text-color-2c2c2c capitalize">{{date("d/m/Y", strtotime($training->begins))}}</td>
-                            <td class="border-r whitespace-nowrap px-3 py-4 font-light text-color-2c2c2c">{{date("d/m/Y", strtotime($training->ends))}}</td>
+                            <td class="border-r whitespace-nowrap px-3 py-4 font-light text-color-2c2c2c">
+                                @if ($training->ends)
+                                    {{date("d/m/Y", strtotime($training->ends))}}
+                                @else
+                                    <x-icons name="loop" class="m-auto h-5 w-6" />
+                                @endif
+                            </td>
                             <td class="border-r whitespace-nowrap px-3 py-4 font-light text-color-2c2c2c hidden xl:table-cell">{{count($training->course->lessons)}}</td>
                             <td class="border-r whitespace-nowrap px-3 py-4 font-light text-color-2c2c2c">{{$training->course->duration}}</td>
                             <td class="border-r whitespace-nowrap px-3 py-4 font-light text-color-2c2c2c hidden xl:table-cell">{{$training->course->absences}}</td>
+                            <td class="border-r whitespace-nowrap px-3 py-4 font-light text-color-2c2c2c hidden xl:table-cell">{{count($training->registrations()->get())}}</td>
                             <td class="whitespace-nowrap px-3 py-4 text-sm font-light text-color-2c2c2c">
                                 <div class="flex items-center justify-center gap-2 px-5">
                                     <button wire:click="putRegistration({{$training->id}}, '{{$selectedOption}}')" @class(["px-6 py-1 text-lg font-semibold text-white rounded-full ", 'bg-color-'.get_color($course->service->name)])>Inserisci</button>

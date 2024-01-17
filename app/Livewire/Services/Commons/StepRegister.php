@@ -7,6 +7,7 @@ use App\Models\Course;
 use App\Models\Customer;
 use App\Models\IdentificationDocument;
 use App\Models\InterestedCourses;
+use App\Models\MedicalPlanning;
 use App\Models\Registration;
 use Livewire\WithFileUploads;
 use Livewire\Component;
@@ -156,7 +157,7 @@ class StepRegister extends Component
         }
 
         if ($type == 'esistente') {
-            Registration::create([
+            $registration = Registration::create([
                 'training_id' => $id,
                 'customer_id' => $this->customerForm->newCustomer->id,
                 'type' => session()->get('course')['registration_type'],
@@ -164,6 +165,14 @@ class StepRegister extends Component
                 'optionals' => json_encode(session()->get('course')['selected_cost']),
                 'price' => session()->get('course')['price']
             ]);
+            foreach (session()->get('course')['selected_cost'] as $key => $cost) {
+                if ($cost == 15) {
+                    MedicalPlanning::create([
+                        'registration_id' => $registration->id
+                    ]);
+                    return redirect()->route('visits.index');
+                }
+            }    
         } elseif ($type == 'interessato') {
             if ($variant) {
                 InterestedCourses::create([
@@ -181,13 +190,7 @@ class StepRegister extends Component
             }
         }
 
-        foreach (session()->get('course')['selected_cost'] as $key => $cost) {
-            if ($cost == 15) {
-                dd('Va reinderizzato per fissare la visita medica');
-            }
-        }
         dd('registrazione completata', $this->customerForm->currentStep);
-        $this->dispatch('customerCreated');
     }
 
     public function addDocument() {

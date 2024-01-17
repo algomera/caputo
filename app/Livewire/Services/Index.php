@@ -6,22 +6,15 @@ use App\Models\Course;
 use App\Models\Service;
 use Livewire\Component;
 use Livewire\Attributes\On;
-use App\Livewire\Forms\CustomerForm;
-use Illuminate\Support\Facades\Storage;
 
 class Index extends Component
 {
-    public CustomerForm $customerForm;
-
     public $step = 0;
     public $selectedService = null;
     public $courses = null;
     public $course;
     public $branch;
     public $type;
-    public $signature;
-    public $pathSignature;
-
 
     public function setService($id) {
         $this->selectedService = Service::find($id);
@@ -33,11 +26,6 @@ class Index extends Component
     #[On('backStep')]
     public function backStep() {
         $this->step -= 1;
-    }
-
-    #[On('nextStep')]
-    public function nextStep() {
-        $this->step += 1;
     }
 
     #[On('setCourse')]
@@ -66,11 +54,7 @@ class Index extends Component
                 'registration_type' => 'guide'
             ]);
 
-            $this->dispatch('setCourse',
-                course: $id,
-                branch: 'guida accompagnata',
-                type  : session()->get('course')['registration_type']
-            );
+            $this->setCourse($id,'guida accompagnata', session()->get('course')['registration_type']);
         }
     }
 
@@ -82,14 +66,6 @@ class Index extends Component
             $session['conseguimento'] = $except;
         }
         session()->put('course', $session);
-    }
-
-    public function getSignature() {
-        // TODO qui di dovra creare il customer e salvare la firma in storage
-        // $customer = $this->customerForm->newCustomer;
-        // $this->pathSignature = Storage::putFileAs('customers/customer-'.$customer->id, $this->signature, 'firma.png');
-        $this->dispatch('uploadedSignature');
-        $this->dispatch('closeModal');
     }
 
     public function render()

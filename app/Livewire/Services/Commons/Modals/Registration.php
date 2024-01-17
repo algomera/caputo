@@ -20,7 +20,9 @@ class Registration extends ModalComponent
 
     public function mount() {
         $this->course = Course::find(session()->get('course')['id']);
-        $this->trainings = Training::where('school_id', auth()->user()->schools()->first()->id)->where('course_id', $this->course->id)->get();
+        $loopTrainings = Training::where('school_id', auth()->user()->schools()->first()->id)->where('course_id', $this->course->id)->where('ends', null)->get();
+        $trainings = Training::where('school_id', auth()->user()->schools()->first()->id)->where('course_id', $this->course->id)->where('ends', '>', now()->format('Y-m-d'))->get();
+        $this->trainings = $loopTrainings->merge($trainings);
     }
 
     public function rules() {

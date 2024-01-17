@@ -33,6 +33,13 @@ class TrainingSeeder extends Seeder
                     'ends' => fake()->dateTimeBetween('+4 week', '+8 week'),
                 ]);
 
+                $trainingLoop = Training::create([
+                    'school_id' => $school->id,
+                    'course_id' => $course->id,
+                    'user_id' => $teachers->random()->id,
+                    'begins' => now(),
+                ]);
+
                 if ($training->id <= 10) {
                     foreach ($customers as $customer) {
                         $costs = $course->getOptions()->where('type', 'fisso')->get();
@@ -55,6 +62,15 @@ class TrainingSeeder extends Seeder
                             'optionals' => $optionals->pluck('id')->toJson(),
                             'price' => $total
                         ]);
+
+                        Registration::create([
+                            'training_id' => $trainingLoop->id,
+                            'customer_id' => $customer->id,
+                            'type' => fake()->randomElement(['teoria', 'pratica', 'pratica/s.esame']),
+                            'transmission' => fake()->randomElement(['manuale', 'automatica']),
+                            'optionals' => $optionals->pluck('id')->toJson(),
+                            'price' => $total
+                        ]);
                     }
                 }
             }
@@ -62,6 +78,15 @@ class TrainingSeeder extends Seeder
             foreach ($courseVariant as $variant) {
                 $customers = $school->customers()->get()->random(3);
                 $training = Training::create([
+                    'school_id' => $school->id,
+                    'course_id' => $variant->course->id,
+                    'variant_id' => $variant->id,
+                    'user_id' => $teachers->random()->id,
+                    'begins' => now(),
+                    'ends' => fake()->dateTimeBetween('+4 week', '+8 week'),
+                ]);
+
+                $trainingLoop = Training::create([
                     'school_id' => $school->id,
                     'course_id' => $variant->course->id,
                     'variant_id' => $variant->id,
@@ -85,6 +110,15 @@ class TrainingSeeder extends Seeder
 
                         Registration::create([
                             'training_id' => $training->id,
+                            'customer_id' => $customer->id,
+                            'type' => fake()->randomElement(['teoria', 'pratica', 'pratica/s.esame']),
+                            'transmission' => fake()->randomElement(['manuale', 'automatica']),
+                            'optionals' => $optionals->pluck('id')->toJson(),
+                            'price' => $total
+                        ]);
+
+                        Registration::create([
+                            'training_id' => $trainingLoop->id,
                             'customer_id' => $customer->id,
                             'type' => fake()->randomElement(['teoria', 'pratica', 'pratica/s.esame']),
                             'transmission' => fake()->randomElement(['manuale', 'automatica']),

@@ -6,6 +6,7 @@ use App\Models\Customer;
 use App\Models\DrivingPlanning;
 use App\Models\LessonPlanning;
 use App\Models\MedicalPlanning;
+use App\Models\School;
 use App\Models\Training;
 use App\Models\User;
 use App\Models\Vehicle;
@@ -20,6 +21,7 @@ class PlanningSeeder extends Seeder
     public function run(): void
     {
         $customers = Customer::all();
+        $schools = School::all();
 
         // Lessons
         $trainings = Training::all()->take(10);
@@ -54,16 +56,18 @@ class PlanningSeeder extends Seeder
         }
 
         // Medical
-        foreach ($customers as $customer) {
-            $doctor = User::role('medico')->get()->random()->id;
-
-            MedicalPlanning::create([
-                'customer_id' => $customer->id,
-                'user_id' => $doctor,
-                'booked' => fake()->dateTimeBetween(now(), '+4 week'),
-                'protocol' => fake()->regexify('[A-Z]{2}[0-9]{7}[A-Z]{2}'),
-                'welded' => fake()->boolean(),
-            ]);
+        foreach ($schools as $school) {
+            foreach ($school->medicalVisits()->get() as $visit) {
+                $doctor = User::role('medico')->get()->random()->id;
+    
+                MedicalPlanning::create([
+                    'registration_id' => $visit->id,
+                    'user_id' => $doctor,
+                    'booked' => fake()->dateTimeBetween(now(), '+4 week'),
+                    'protocol' => fake()->regexify('[A-Z]{2}[0-9]{7}[A-Z]{2}'),
+                    'welded' => fake()->boolean(),
+                ]);
+            }
         }
     }
 }
