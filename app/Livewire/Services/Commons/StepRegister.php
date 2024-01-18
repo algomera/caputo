@@ -56,7 +56,6 @@ class StepRegister extends Component
         if ($course->type == 'service') {
             $this->steps= [
                 'dati',
-                'recapiti',
                 'documenti',
                 'scansioni',
                 'fototessera',
@@ -66,7 +65,6 @@ class StepRegister extends Component
         } else {
             $this->steps = [
                 'dati',
-                'recapiti',
                 'documenti',
                 'scansioni',
                 'fototessera',
@@ -106,8 +104,8 @@ class StepRegister extends Component
     }
 
     public function nextStep() {
-        $this->dispatch('openModal', 'services.commons.modals.registration');
         if ($this->customerForm->currentStep == count($this->steps)) {
+            $this->dispatch('openModal', 'services.commons.modals.registration');
         } else {
             $this->customerForm->validation();
             $this->customerForm->currentStep += 1;

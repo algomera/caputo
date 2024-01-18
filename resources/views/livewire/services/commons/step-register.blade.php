@@ -12,18 +12,18 @@
             <div class="flex justify-center gap-1">
                 @foreach ($steps as $key => $step)
                     <x-steps
-                        color="{{$this->customerForm->currentStep >= $key+1 ? get_color(session()->get('serviceName')) : 'afafaf'}}"
-                        currentStep="{{$this->customerForm->currentStep}}"
+                        color="{{$customerForm->currentStep >= $key+1 ? get_color(session()->get('serviceName')) : 'afafaf'}}"
+                        currentStep="{{$customerForm->currentStep}}"
                         number="{{$key+1}}"
                         step="{{$step}}"
                     />
                     @if ($key+1 < count($steps) )
-                        <div @class(["h-1 grow max-w-[138px] rounded-full shadow mt-4", $this->customerForm->currentStep >= $key+2 ? 'bg-color-'.get_color(session()->get('serviceName')) : 'bg-color-afafaf'])></div>
+                        <div @class(["h-1 grow max-w-[138px] rounded-full shadow mt-4", $customerForm->currentStep >= $key+2 ? 'bg-color-'.get_color(session()->get('serviceName')) : 'bg-color-afafaf'])></div>
                     @endif
                 @endforeach
             </div>
 
-            @switch($this->customerForm->currentStep)
+            @switch($customerForm->currentStep)
             {{-- Dati --}}
                 @case(1)
                     <x-container-step>
@@ -32,7 +32,7 @@
                         </p>
 
                         <div class="flex flex-col gap-5">
-                            <div class="flex flex-wrap gap-2 border rounded-md relative p-4 bg-color-f7f7f7">
+                            <div class="flex flex-wrap gap-2 relative ">
                                 <x-input-text wire:model="customerForm.name" width="grow" name="customerForm.name" label="Nome" required="true" />
                                 <x-input-text wire:model="customerForm.lastName" width="grow" name="customerForm.lastName" label="Cognome" required="true" />
                                 <x-custom-select wire:model="customerForm.sex" name="customerForm.sex" label="Sesso" width="w-1/4" required="true">
@@ -42,18 +42,23 @@
                                 </x-custom-select>
                                 <x-input-text x-mask="aaaaaa99a99a999a" wire:model="customerForm.fiscal_code" width="grow" name="customerForm.fiscal_code" label="Codice Fiscale" uppercase="uppercase" required="true" />
                             </div>
-                            <div class="flex flex-wrap gap-2 border rounded-md relative p-4 bg-color-f7f7f7">
+                            <div class="flex flex-wrap gap-2 relative ">
                                 <x-input-text type="date" wire:model="customerForm.date_of_birth" width="w-1/4" name="customerForm.date_of_birth" label="Nato il" required="true" />
-                                <x-input-text wire:model="customerForm.birth_place" width="grow" name="customerForm.birth_place" label="Luogo di nascita" required="true" />
+                                <x-input-text wire:model="customerForm.birth_place" width="grow" name="customerForm.birth_place" label="Luogo di nascita" uppercase="capitalize" required="true" />
                                 <x-input-text x-mask="aa" wire:model="customerForm.country_of_birth" width="grow" name="customerForm.country_of_birth" label="Provincia di nascita" uppercase="uppercase" required="true" />
                                 <x-input-text wire:model="customerForm.country" width="grow" name="customerForm.country" label="Cittadinanza" required="true" />
                             </div>
-                            <div class="flex flex-wrap gap-2 border rounded-md relative p-4 bg-color-f7f7f7">
+                            <div class="flex flex-wrap gap-2 relative ">
                                 <x-input-text wire:model="customerForm.address" width="grow" name="customerForm.address" label="Via/Piazza" required="true" />
                                 <x-input-text x-mask="99999" wire:model="customerForm.civic" width="w-1/12" name="customerForm.civic" label="Civico" required="true" />
                                 <x-input-text wire:model="customerForm.city" width="w-1/4" name="customerForm.city" label="Citta" required="true" />
                                 <x-input-text x-mask="aa" wire:model="customerForm.province" width="w-1/4" name="customerForm.province" label="Provincia" uppercase="uppercase" required="true" />
                                 <x-input-text x-mask="99999" wire:model="customerForm.postcode" width="w-1/12" name="customerForm.postcode" label="Cap" required="true" />
+                            </div>
+                            <div class="flex flex-wrap gap-2 relative">
+                                <x-input-text type="email" wire:model="customerForm.email" width="w-1/4" name="customerForm.email" label="Email" required="true" />
+                                <x-input-text x-mask="999 9999999" wire:model="customerForm.phone_1" width="w-1/4" name="customerForm.phone_1" label="1° Cellulare" required="true" />
+                                <x-input-text x-mask="999 9999999" wire:model="customerForm.phone_2" width="w-1/4" name="customerForm.phone_2" label="2° Cellulare" />
                             </div>
                         </div>
 
@@ -61,33 +66,8 @@
                     </x-container-step>
                 @break
 
-            {{-- Recapiti --}}
-                @case(2)
-                    <x-container-step>
-                        <p class="text-xl font-light text-color-2c2c2c">
-                            Inserire email e un numero di cellulare per proseguire.
-                        </p>
-
-                        <div class="flex flex-col gap-2">
-                            <div class="flex items-center gap-3">
-                                <x-input-text type="email" wire:model.live="customerForm.email" width="w-1/4" name="customerForm.email" label="Email" required="true" />
-                                <x-input-text x-mask="999 9999999" wire:model.live="customerForm.phone_1" width="w-1/4" name="customerForm.phone_1" label="1° Cellulare" required="true" />
-                                <x-input-text x-mask="999 9999999" wire:model.live="customerForm.phone_2" width="w-1/4" name="customerForm.phone_2" label="2° Cellulare" />
-                            </div>
-                        </div>
-
-
-                        <div class="flex justify-between">
-                            <button wire:click="backStep" class="w-fit text-2xl inline-flex items-center px-6 py-2 border border-transparent rounded-md font-light text-color-545454 tracking-widest bg-color-dfdfdf hover:bg-gray-700 hover:text-white active:bg-gray-900 transition ease-in-out duration-150 disabled:opacity-50 disabled:cursor-not-allowed">
-                                Indietro
-                            </button>
-                            <x-submit-button wire:click='nextStep' @class(["ml-auto",'bg-color-'.get_color(session()->get('serviceName'))])>Prosegui</x-submit-button>
-                        </div>
-                    </x-container-step>
-                @break
-
             {{-- Documenti --}}
-                @case(3)
+                @case(2)
                     <x-container-step>
                         <div class="flex justify-between gap-5">
                             <p class="text-xl font-light text-color-2c2c2c">
@@ -146,7 +126,7 @@
                 @break
 
             {{-- Scansioni --}}
-                @case(4)
+                @case(3)
                     <x-container-step>
                         <p class="text-xl font-light text-color-2c2c2c">
                             Caricare la scansione della <span class="font-bold">patente, carta d’identità</span> e il <span class="font-bold">codice fiscale</span>, altrimenti cliccare “inserire in seguito”
@@ -191,7 +171,7 @@
                 @break
 
             {{-- Fototessera --}}
-                @case(5)
+                @case(4)
                     <x-container-step>
                         <p class="text-xl font-light text-color-2c2c2c">
                             Caricare la fototessera, altrimenti cliccare “inserire in seguito”
@@ -226,7 +206,7 @@
                 @break
 
             {{-- Firma --}}
-                @case(6)
+                @case(5)
                     <x-container-step>
                         <p class="text-xl font-light text-color-2c2c2c">
                             Caricare la firma del cliente e salvare, per proseguire.
@@ -255,7 +235,7 @@
                 @break
 
             {{-- Jolly --}}
-                @case(7)
+                @case(6)
                     <x-container-step>
                         <p class="text-xl font-light text-color-2c2c2c">
                             Caricare la <span class="font-bold">firma</span>, la <span class="font-bold">carta d’identità</span> e il <span class="font-bold">codice fiscale</span> del genitore/tutore
@@ -306,7 +286,7 @@
                 @break
 
             {{-- Accompagnatori --}}
-                @case(8)
+                @case(7)
                     <div class="w-full flex flex-col items-end gap-5 mt-5">
                         <div class="w-full flex flex-col items-center gap-5">
                             @foreach ($companions as $key => $companion)

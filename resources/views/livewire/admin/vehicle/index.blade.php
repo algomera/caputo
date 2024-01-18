@@ -7,17 +7,17 @@
 
         <button wire:click="$dispatch('openModal', { component: 'admin.vehicle.modals.create-or-update', arguments: {vehicle: null, action: 'create'} })" class="px-4 py-2 my-10 bg-color-c9defa rounded-md shadow-md text-lg text-color-2c2c2c">+ Aggiungi veicolo</button>
 
-        <div class="w-full max-h-[calc(100vh-440px)] bg-color-fbfbfb p-5 border shadow overflow-auto no-scrollbar">
+        <div class="w-full bg-color-fbfbfb p-5 border shadow overflow-auto no-scrollbar">
             <table x-data="{open: null}" class="min-w-full divide-y divide-gray-200 border-b">
-                <thead>
+                <thead class="customHead">
                     <tr class="text-center">
-                        <th scope="col" class="w-[200px] px-5 py-2 font-light text-color-545454 sm:pl-6">
+                        <th scope="col" class="px-5 py-2 font-light text-color-545454 sm:pl-6">
                             Tipo Veicolo
                         </th>
-                        <th scope="col" class="px-5 py-2 font-light text-color-545454 sm:pl-6 max-w-[200px] 2xl:max-w-none">
+                        <th scope="col" class="px-5 py-2 font-light text-color-545454 sm:pl-6 2xl:max-w-none">
                             Modello
                         </th>
-                        <th scope="col" class="w-[200px] px-5 py-2 font-light text-color-545454 hidden xl:table-cell">
+                        <th scope="col" class="px-5 py-2 font-light text-color-545454 hidden xl:table-cell">
                             Cambio
                         </th>
                         <th scope="col" class="px-5 py-2 text-left font-light text-color-545454 hidden xl:table-cell">
@@ -28,7 +28,7 @@
                         </th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-gray-200 bg-white">
+                <tbody class="divide-y divide-gray-200 bg-white customBody no-scrollbar !max-h-[390px]">
                     @if ($vehicles->count() > 0)
                         @foreach($vehicles as $vehicle)
                             <tr class="text-center even:bg-color-fbfbfb">

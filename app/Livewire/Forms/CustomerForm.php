@@ -32,55 +32,45 @@ class CustomerForm extends Form
     public $phone_2;
 
     public function rules() {
-        if ($this->currentStep == 1) {
-            return [
-                'school_id' => 'nullable',
-                'name' => 'required',
-                'lastName' => 'required',
-                'sex' => 'required',
-                'fiscal_code' => 'required',
-                'date_of_birth' => 'required',
-                'birth_place' => 'required',
-                'country_of_birth' => 'required',
-                'country' => 'required',
-                'city' => 'required',
-                'province' => 'required',
-                'address' => 'required',
-                'civic' => 'required',
-                'postcode' => 'required',
-            ];
-        } elseif ($this->currentStep == 2) {
-            return [
-                'email' => 'required',
-                'phone_1' => 'required',
-                'phone_2' => 'nullable',
-            ];
-        }
+        return [
+            'school_id' => 'nullable',
+            'name' => 'required',
+            'lastName' => 'required',
+            'sex' => 'required',
+            'fiscal_code' => 'required',
+            'date_of_birth' => 'required',
+            'birth_place' => 'required',
+            'country_of_birth' => 'required',
+            'country' => 'required',
+            'city' => 'required',
+            'province' => 'required',
+            'address' => 'required',
+            'civic' => 'required',
+            'postcode' => 'required',
+            'email' => 'required',
+            'phone_1' => 'required',
+            'phone_2' => 'nullable',
+        ];
     }
 
     public function messages() {
-        if ($this->currentStep == 1) {
-            return [
-                'name.required' => 'Campo richiesto',
-                'lastName.required' => 'Campo richiesto',
-                'sex.required' => 'Campo richiesto',
-                'fiscal_code.required' => 'Campo richiesto',
-                'date_of_birth.required' => 'Campo richiesto',
-                'birth_place.required' => 'Campo richiesto',
-                'country_of_birth.required' => 'Campo richiesto',
-                'country.required' => 'Campo richiesto',
-                'city.required' => 'Campo richiesto',
-                'province.required' => 'Campo richiesto',
-                'address.required' => 'Campo richiesto',
-                'civic.required' => 'Richiesto',
-                'postcode.required' => 'Richiesto',
-            ];
-        } elseif ($this->currentStep == 2) {
-            return [
-                'email.required' => 'Campo richiesto',
-                'phone_1.required' => 'Campo richiesto',
-            ];
-        }
+        return [
+            'name.required' => 'Campo richiesto',
+            'lastName.required' => 'Campo richiesto',
+            'sex.required' => 'Campo richiesto',
+            'fiscal_code.required' => 'Campo richiesto',
+            'date_of_birth.required' => 'Campo richiesto',
+            'birth_place.required' => 'Campo richiesto',
+            'country_of_birth.required' => 'Campo richiesto',
+            'country.required' => 'Campo richiesto',
+            'city.required' => 'Campo richiesto',
+            'province.required' => 'Campo richiesto',
+            'address.required' => 'Campo richiesto',
+            'civic.required' => 'Richiesto',
+            'postcode.required' => 'Richiesto',
+            'email.required' => 'Email richiesta',
+            'phone_1.required' => 'Campo richiesto',
+        ];
     }
 
     public function setCustomer($customer) {
@@ -108,7 +98,7 @@ class CustomerForm extends Form
     }
 
     public function validation() {
-        if ($this->currentStep <= 2) {
+        if ($this->currentStep <= 1) {
             $this->validate();
         }
     }
@@ -136,7 +126,6 @@ class CustomerForm extends Form
     }
 
     public function photo($photo) {
-        $this->setNewCustomer();
         $path = Storage::putFileAs('customers/customer-'.$this->newCustomer->id, $photo, 'fototessera.png');
 
         $this->newCustomer->documents()->updateOrCreate(

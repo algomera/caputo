@@ -64,7 +64,7 @@ class School extends Model
     }
 
     public function medicalVisits(): HasManyThrough {
-        return $this->hasManyThrough(Registration::class, Training::class)->whereJsonContains('optionals', '15')->with('customer', 'course', 'medicalPlanning');
+        return $this->hasManyThrough(Registration::class, Training::class)->whereJsonContains('optionals', 15)->with('customer', 'course', 'medicalPlanning');
     }
 
     public function trainings(): HasMany {

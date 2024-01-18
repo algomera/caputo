@@ -65,6 +65,7 @@ class PlanningSeeder extends Seeder
                     'user_id' => $doctor,
                     'booked' => fake()->dateTimeBetween(now(), '+4 week'),
                     'protocol' => fake()->regexify('[A-Z]{2}[0-9]{7}[A-Z]{2}'),
+                    'expiration' => now()->addMonth(3),
                     'welded' => fake()->boolean(),
                 ]);
             }

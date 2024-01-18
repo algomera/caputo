@@ -49,7 +49,7 @@
                 </div>
             @elseif (session()->get('course')['registration_type'] == 'teoria')
                 <div class="flex items-end gap-2 my-1">
-                    @if ($option->id == 17 AND array_search('17', $selectedOptions) === false)
+                    @if ($option->id == 17 AND array_search(17, $selectedOptions) === false)
                         <x-custom-checkbox
                             wire:click="$dispatch('openModal', { component: 'services.training.modals.audio-support'})"
                             wire:model.live="selectedOptions"

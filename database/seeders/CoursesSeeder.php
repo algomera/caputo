@@ -62,183 +62,234 @@ class CoursesSeeder extends Seeder
         $service_cond = [
             [
                 'name' => 'Conferma patente',
+                'type_visit' => 'rinnovo'
             ],
             [
                 'name' => 'Duplicato per declassamento',
+                'type_visit' => 'rinnovo'
             ],
             [
                 'name' => 'Duplicato per deterioramento',
+                'type_visit' => 'rinnovo'
             ],
             [
                 'name' => 'Duplicato per smarrimento',
+                'type_visit' => 'rinnovo'
             ],
             [
                 'name' => 'Conversione militare',
+                'type_visit' => 'rinnovo'
             ],
             [
                 'name' => 'Conversione patente estera',
+                'type_visit' => 'rinnovo'
             ],
             [
                 'name' => 'Permesso internazionale',
+                'type_visit' => 'rinnovo'
             ],
             [
                 'name' => 'Carta del conducente',
+                'type_visit' => 'rinnovo'
             ],
             [
                 'name' => 'Esperimento guida',
+                'type_visit' => 'rinnovo'
             ],
         ];
         $patents = [
             [
                 'name' => 'Patente AM',
+                'type_visit' => 'rilascio'
             ],
             [
                 'name' => 'Patente A1',
+                'type_visit' => 'rilascio'
             ],
             [
                 'name' => 'Patente A2',
+                'type_visit' => 'rilascio'
             ],
             [
                 'name' => 'Patente A',
+                'type_visit' => 'rilascio'
             ],
             [
                 'name' => 'Guida accompagnata',
+                'type_visit' => 'rilascio'
             ],
             [
                 'name' => 'Patente B1',
+                'type_visit' => 'rilascio'
             ],
             [
                 'name' => 'Patente B',
+                'type_visit' => 'rilascio'
             ],
             [
                 'name' => 'Patente B codice 96',
+                'type_visit' => 'rilascio'
             ],
             [
                 'name' => 'Patente BE',
+                'type_visit' => 'rilascio'
             ],
             [
                 'name' => 'Guide di perfezionamento',
+                'type_visit' => 'rilascio'
             ],
             [
                 'name' => 'Patente speciali',
+                'type_visit' => 'rilascio'
             ],
             [
                 'name' => 'Recupero punti patente',
-                'type' => 'service'
+                'type' => 'service',
+                'type_visit' => 'rilascio'
             ],
             [
                 'name' => 'Revisione patente',
-                'type' => 'service'
+                'type' => 'service',
+                'type_visit' => 'rinnovo'
             ],
         ];
         $prof_patents = [
             [
                 'name' => 'Patente C1',
+                'type_visit' => 'rilascio'
             ],
             [
                 'name' => 'Patente C1E',
+                'type_visit' => 'rilascio'
             ],
             [
                 'name' => 'Patente C',
+                'type_visit' => 'rilascio'
             ],
             [
                 'name' => 'Patente CE',
+                'type_visit' => 'rilascio'
             ],
             [
                 'name' => 'Patente D1',
+                'type_visit' => 'rilascio'
             ],
             [
                 'name' => 'Patente D1E',
+                'type_visit' => 'rilascio'
             ],
             [
                 'name' => 'Patente D',
+                'type_visit' => 'rilascio'
             ],
             [
                 'name' => 'Patente DE',
+                'type_visit' => 'rilascio'
             ],
             [
                 'name' => 'Guide di perfezionamento',
+                'type_visit' => 'rilascio'
             ],
             [
                 'name' => 'Patenti speciali',
+                'type_visit' => 'rilascio'
             ],
             [
                 'name' => 'Revisione patente',
-                'type' => 'service'
+                'type' => 'service',
+                'type_visit' => 'rinnovo'
             ],
         ];
         $trainings = [
             [
                 'name' => 'Rilascio CQC',
+                'type_visit' => 'rilascio'
             ],
             [
                 'name' => 'Estensione CQC',
+                'type_visit' => 'rilascio'
             ],
             [
                 'name' => 'Rinnovo CQC',
+                'type_visit' => 'rilascio'
             ],
             [
                 'name' => 'Recupero punti CQC',
+                'type_visit' => 'rinnovo'
             ],
             [
                 'name' => 'Corsi CQC',
-                'type' => 'training'
+                'type' => 'training',
+                'type_visit' => 'rilascio'
             ],
             [
                 'name' => 'Revisione CQC',
                 'label' =>  'scaduta da più di 3 anni',
+                'type_visit' => 'rinnovo'
             ],
             [
                 'name' => 'Revisione CQC',
                 'label' =>  'per azzeramento punti',
-
+                'type_visit' => 'rinnovo'
             ],
             [
                 'name' => 'Rilascio ADR',
+                'type_visit' => 'rilascio'
             ],
             [
                 'name' => 'Rinnovo ADR',
+                'type_visit' => 'rinnovo'
             ],
             [
                 'name' => 'Rilascio KB',
+                'type_visit' => 'rilascio'
             ],
             [
                 'name' => 'Rinnovo KB',
+                'type_visit' => 'rinnovo'
             ],
         ];
         $courses = [
             [
                 'name' => 'Attestati di formazione',
+                'type_visit' => 'rilascio'
             ],
             [
                 'name' => 'Accesso alla professione',
                 'label' => 'merci',
+                'type_visit' => 'rilascio'
             ],
             [
                 'name' => 'Accesso alla professione',
                 'label' => 'persone',
+                'type_visit' => 'rilascio'
             ],
             [
                 'name' => 'Insegnanti scuola guida',
+                'type_visit' => 'rilascio'
             ],
             [
                 'name' => 'Istruttore scuola guida',
+                'type_visit' => 'rilascio'
             ],
             [
                 'name' => 'Buon uso del cronotachigrafo',
                 'label' =>  'scaduta da più di 3 anni',
+                'type_visit' => 'rilascio'
             ],
             [
                 'name' => 'Ispettori della revisione',
                 'label' =>  'per azzeramento punti',
-
+                'type_visit' => 'rilascio'
             ],
             [
                 'name' => 'Corsi CQC',
+                'type_visit' => 'rilascio'
             ],
             [
                 'name' => 'Recupero punti',
-                'type' => 'service'
+                'type' => 'service',
+                'type_visit' => 'rinnovo'
             ],
         ];
 
@@ -252,6 +303,7 @@ class CoursesSeeder extends Seeder
                             'name' => $value['name'],
                             'slug' => Str::slug($value['name']),
                             'description' => fake()->paragraph(),
+                            'type_visit' => $value['type_visit'],
                             'absences' => 3
                         ]);
                         $this->createLessons($course->id, null);
@@ -266,6 +318,7 @@ class CoursesSeeder extends Seeder
                             'name' => $value['name'],
                             'slug' => Str::slug($value['name']),
                             'description' => fake()->paragraph(),
+                            'type_visit' => $value['type_visit'],
                             'absences' => 3
                         ]);
                         $this->createLessons($course->id, null);
@@ -278,6 +331,7 @@ class CoursesSeeder extends Seeder
                                 'name' => $value['name'] .' '. $i,
                                 'slug' => Str::slug($value['name'] .' '. $i),
                                 'description' => fake()->paragraph(),
+                                'type_visit' => $value['type_visit'],
                                 'absences' => 3
                             ]);
                             $this->createLessons($course->id, $variant->id);
@@ -294,6 +348,7 @@ class CoursesSeeder extends Seeder
                             'slug' => Str::slug($value['name']),
                             'label' => $value['label'] ?? null,
                             'description' => fake()->paragraph(),
+                            'type_visit' => $value['type_visit'],
                             'absences' => 3
                         ]);
                         $this->createLessons($course->id, null);
@@ -308,6 +363,7 @@ class CoursesSeeder extends Seeder
                             'name' => $value['name'],
                             'slug' => Str::slug($value['name']),
                             'description' => fake()->paragraph(),
+                            'type_visit' => $value['type_visit'],
                             'absences' => 3
                         ]);
                         $this->createLessons($course->id, null);
@@ -323,6 +379,7 @@ class CoursesSeeder extends Seeder
                             'slug' => Str::slug($value['name']),
                             'label' => $value['label'] ?? null,
                             'description' => fake()->paragraph(),
+                            'type_visit' => $value['type_visit'],
                             'absences' => 3
                         ]);
                         $this->createLessons($course->id, null);
@@ -335,6 +392,7 @@ class CoursesSeeder extends Seeder
                                 'name' => $value['name'] .' '. $i,
                                 'slug' => Str::slug($value['name'] .' '. $i),
                                 'description' => fake()->paragraph(),
+                                'type_visit' => $value['type_visit'],
                                 'absences' => 3
                             ]);
                             $this->createLessons($course->id, $variant->id);

@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
@@ -30,6 +31,10 @@ class Registration extends Model
 
     public function course() {
         return $this->BelongsToThrough(Course::class, Training::class);
+    }
+
+    public function school() {
+        return $this->BelongsToThrough(School::class, Training::class);
     }
 
     public function payments(): MorphMany {

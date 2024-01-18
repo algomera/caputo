@@ -18,6 +18,7 @@ return new class extends Migration
             $table->dateTime('booked')->nullable();
             $table->string('protocol')->nullable();
             $table->boolean('welded')->default(false);
+            $table->date('expiration')->nullable();
             $table->timestamps();
         });
     }

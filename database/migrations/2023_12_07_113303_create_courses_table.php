@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('label')->nullable();
             $table->string('slug')->nullable();
             $table->longText('description')->nullable();
+            $table->string('type_visit')->nullable();
             $table->string('absences')->nullable();
             $table->timestamps();
         });

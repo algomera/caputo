@@ -63,7 +63,7 @@ class Index extends Component
 
     #[On('removeSupport')]
     public function removeSupport() {
-        $this->selectedOptions = array_diff($this->selectedOptions, ["17"]);
+        $this->selectedOptions = array_diff($this->selectedOptions, [17]);
         $this->dispatch('closeModal');
     }
 
@@ -71,7 +71,10 @@ class Index extends Component
         $this->validate();
 
         $session = session()->get('course', []);
-        $session['selected_cost'] = $this->selectedOptions;
+        $session['selected_cost'] = [];
+        foreach ($this->selectedOptions as $optionId) {
+            $session['selected_cost'][] = intval($optionId);
+        }
         $session['transmission'] = $this->transmission;
         $session['price'] = $this->total;
         session()->put('course', $session);
