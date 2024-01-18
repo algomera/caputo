@@ -334,4 +334,14 @@
             <path id="Icon_feather-message-circle" data-name="Icon feather-message-circle" d="M21.959,12.745a8.128,8.128,0,0,1-.873,3.686,8.245,8.245,0,0,1-7.372,4.559,8.128,8.128,0,0,1-3.686-.873L4.5,21.959,6.343,16.43a8.128,8.128,0,0,1-.873-3.686,8.245,8.245,0,0,1,4.559-7.372A8.128,8.128,0,0,1,13.714,4.5H14.2a8.225,8.225,0,0,1,7.76,7.76Z" transform="translate(-3.75 -3.75)" fill="none" stroke="#2c2c2c" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
         </svg>
         @break
+    @case('show')
+        <svg xmlns="http://www.w3.org/2000/svg" width="20.608" height="20.608"
+            {{ $attributes->merge(['class']) }} viewBox="0 0 20.608 20.608">
+            <g id="Icon_feather-external-link" data-name="Icon feather-external-link" transform="translate(-3.75 -3.439)">
+            <path id="Tracciato_1180" data-name="Tracciato 1180" d="M20.164,16.31v6.266a2.089,2.089,0,0,1-2.089,2.089H6.589A2.089,2.089,0,0,1,4.5,22.576V11.089A2.089,2.089,0,0,1,6.589,9h6.266" transform="translate(0 -1.367)" fill="none" stroke="#2c2c2c" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
+            <path id="Tracciato_1181" data-name="Tracciato 1181" d="M22.5,4.5h6.266v6.266" transform="translate(-5.469)" fill="none" stroke="#2c2c2c" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
+            <path id="Tracciato_1182" data-name="Tracciato 1182" d="M15,15.987,26.487,4.5" transform="translate(-3.19)" fill="none" stroke="#2c2c2c" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
+            </g>
+        </svg>
+        @break
 @endswitch

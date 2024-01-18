@@ -112,7 +112,7 @@
                     @endforeach
                 @else
                     <tr>
-                        <td colspan="6" class="text-center text-gray-400 font-bold text-lg py-5 underline">Nessus record trovato...</td>
+                        <td colspan="6" class="text-center text-gray-400 font-bold text-lg py-5 underline">Nessun record trovato...</td>
                     </tr>
                 @endif
             </tbody>

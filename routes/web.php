@@ -6,6 +6,8 @@ use App\Livewire\Services\Index as ServiceIndex;
 use App\Livewire\Services\Service\ServiziAlConducente\Index as DriverIndex;
 use App\Livewire\Services\Commons\StepRegister as StepRegister;
 use App\Livewire\MedicalVisits\Index as MedicalVisitIndex;
+use App\Livewire\Registry\Index as RegistryIndex;
+use App\Livewire\Registry\Show as RegistryShow;
 
 
 
@@ -33,6 +35,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/service/servizi_al_conducente/{course:slug}', [DriverIndex::class, '__invoke'])->name('service.driver');
     Route::get('/service/patenti/{course:slug}/register', [StepRegister::class, '__invoke'])->name('service.step.register');
     Route::get('/visite-mediche', [MedicalVisitIndex::class, '__invoke'])->name('visits.index');
+    Route::get('/anagrafica', [RegistryIndex::class, '__invoke'])->name('registry.index');
+    Route::get('/anagrafica/{customer}', [RegistryShow::class, '__invoke'])->name('registry.show');
 });
 
 Route::middleware('auth')->group(function () {

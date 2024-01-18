@@ -16,10 +16,6 @@ class Index extends Component
     public $code = '';
 
 
-    public function updating() {
-
-    }
-
     #[On('visitModified')]
     public function render()
     {
@@ -30,9 +26,6 @@ class Index extends Component
             })
             ->whereHas('customer', function($q) {
                 $q->filter('lastName', $this->lastName);
-            })
-            ->whereHas('customer', function($q) {
-                $q->filter('phone_1', $this->phone);
             })
             ->whereHas('customer', function($q) {
                 $q->filter('phone_1', $this->phone);
@@ -52,9 +45,6 @@ class Index extends Component
             })
             ->whereHas('customer', function($q) {
                 $q->filter('lastName', $this->lastName);
-            })
-            ->whereHas('customer', function($q) {
-                $q->filter('phone_1', $this->phone);
             })
             ->whereHas('customer', function($q) {
                 $q->filter('phone_1', $this->phone);

@@ -8,7 +8,7 @@
                     <x-nav-link :href="route('service')" :active="request()->routeIs('service*')">
                         Servizi
                     </x-nav-link>
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('')">
+                    <x-nav-link :href="route('registry.index')" :active="request()->routeIs('registry*')">
                         Anagrafica
                     </x-nav-link>
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('')">

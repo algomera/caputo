@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Storage;
 class CustomerForm extends Form
 {
     public $school_id;
-    public Customer $customer;
+    public $customer;
     public $newCustomer;
     public $currentStep = 1;
 
@@ -74,7 +74,7 @@ class CustomerForm extends Form
     }
 
     public function setCustomer($customer) {
-        $this->customer = $customer;
+        $this->customer = Customer::find($customer);
         $this->name = $this->customer->name;
         $this->lastName = $this->customer->lastName;
         $this->sex = $this->customer->sex;
