@@ -75,22 +75,26 @@ class CustomerForm extends Form
 
     public function setCustomer($customer) {
         $this->customer = Customer::find($customer);
-        $this->name = $this->customer->name;
-        $this->lastName = $this->customer->lastName;
-        $this->sex = $this->customer->sex;
-        $this->fiscal_code = $this->customer->fiscal_code;
-        $this->date_of_birth = $this->customer->date_of_birth;
-        $this->birth_place = $this->customer->birth_place;
-        $this->country_of_birth = $this->customer->country_of_birth;
-        $this->country = $this->customer->country;
-        $this->city = $this->customer->city;
-        $this->province = $this->customer->province;
-        $this->address = $this->customer->address;
-        $this->civic = $this->customer->civic;
-        $this->postcode = $this->customer->postcode;
-        $this->email = $this->customer->email;
-        $this->phone_1 = $this->customer->phone_1;
-        $this->phone_2 = $this->customer->phone_2;
+        $this->fill(
+            $this->customer->only(
+                'name',
+                'lastName',
+                'sex',
+                'fiscal_code',
+                'date_of_birth',
+                'birth_place',
+                'country_of_birth',
+                'country',
+                'city',
+                'province',
+                'address',
+                'civic',
+                'postcode',
+                'email',
+                'phone_1',
+                'phone_2',
+            )
+        );
     }
 
     public function setSchool($id) {
@@ -126,15 +130,27 @@ class CustomerForm extends Form
     }
 
     public function photo($photo) {
-        $path = Storage::putFileAs('customers/customer-'.$this->newCustomer->id, $photo, 'fototessera.png');
+        if ($this->customer) {
+            $path = Storage::putFileAs('customers/customer-'.$this->customer->id, $photo, 'fototessera.png');
 
-        $this->newCustomer->documents()->updateOrCreate(
-            ['type' => 'fototessera'],
-            [
-                'type' => 'fototessera',
-                'path' => $path
-            ]
-        );
+            $this->customer->documents()->updateOrCreate(
+                ['type' => 'fototessera'],
+                [
+                    'type' => 'fototessera',
+                    'path' => $path
+                ]
+            );
+        } elseif ($this->newCustomer) {
+            $path = Storage::putFileAs('customers/customer-'.$this->newCustomer->id, $photo, 'fototessera.png');
+
+            $this->newCustomer->documents()->updateOrCreate(
+                ['type' => 'fototessera'],
+                [
+                    'type' => 'fototessera',
+                    'path' => $path
+                ]
+            );
+        }
     }
 
     public function documents($documents) {

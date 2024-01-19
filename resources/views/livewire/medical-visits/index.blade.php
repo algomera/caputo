@@ -46,6 +46,9 @@
                         Stato visita
                     </th>
                     <th scope="col" class="px-3 py-3.5 font-light">
+                        N° Protocollo
+                    </th>
+                    <th scope="col" class="px-3 py-3.5 font-light">
                         Telefono 1
                     </th>
                     <th scope="col" class="px-3 py-3.5 font-light hidden xl:table-cell">
@@ -85,20 +88,25 @@
                                 </div>
                             </td>
                             <td class="border-r-2 border-color-efefef px-3 py-4 text-color-2c2c2c">
+                                @if ($visit->medicalPlanning->booked)
+                                    @if (now() > $visit->medicalPlanning->booked)
+                                        <p class="font-medium">Eseguita</p>
+                                    @else
+                                        <div>
+                                            <small class="block">Fissata il</small>
+                                            <span class="text-color-17489f text-sm font-medium ">{{date("d/m/Y - H:i", strtotime($visit->medicalPlanning->booked))}}</span>
+                                        </div>
+                                    @endif
+                                @else
+                                    <p class="font-medium">Da Fissare</p>
+                                @endif
+                            </td>
+                            <td class="border-r-2 border-color-efefef px-3 py-4 text-color-2c2c2c">
                                 @if ($visit->medicalPlanning->protocol)
                                     <div>
                                         <small class="block">N° Protocollo</small>
                                         <span class="text-color-17489f text-sm font-medium ">{{$visit->medicalPlanning->protocol}}</span>
                                     </div>
-                                @else 
-                                    @if ($visit->medicalPlanning->booked)
-                                        <div>
-                                            <small class="block">Fissata il</small>
-                                            <span class="text-color-17489f text-sm font-medium ">{{date("d/m/Y - H:i", strtotime($visit->medicalPlanning->booked))}}</span>
-                                        </div>
-                                    @else
-                                        <p class="font-medium">Da Fissare</p>
-                                    @endif
                                 @endif
                             </td>
                             <td class="border-r-2 border-color-efefef px-3 py-4 text-color-2c2c2c">{{$visit->customer->phone_1}}</td>

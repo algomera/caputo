@@ -18,16 +18,25 @@ class DocumentSeeder extends Seeder
         $customers = Customer::all();
         $chronologies = Chronology::all();
         $documents = [
-            'fototessera',
-            'firma',
-            'documenti di riconoscimento'
+            [
+                'type' => 'fototessera',
+                'path' =>  '/resources/images/photo.png'
+            ],
+            [
+                'type' => 'firma',
+                'path' =>  '/resources/images/signature.png'
+            ],
+            [
+                'type' => 'documenti di riconoscimento',
+                'path' =>  '/resources/images/c.id.jpg'
+            ],
         ];
 
         foreach ($customers as $customer) {
             foreach ($documents as $document) {
                 $customer->documents()->create([
-                    'type' => $document,
-                    'path' => fake()->imageUrl(245, 245, 'Personal', true, 'Document', false, 'jpg')
+                    'type' => $document['type'],
+                    'path' => $document['path']
                 ]);
             }
         }

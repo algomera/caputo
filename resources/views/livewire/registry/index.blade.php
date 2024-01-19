@@ -43,9 +43,6 @@
                     <th scope="col" class="px-3 py-3.5 font-light hidden xl:table-cell">
                         Telefono 2
                     </th>
-                    <th scope="col" class="px-3 py-3.5 font-light">
-                        Messaggio
-                    </th>
                     <th scope="col" class="px-3 py-3.5 font-light hidden xl:table-cell">
                         Utente
                     </th>
@@ -70,13 +67,6 @@
                             </td>
                             <td class="border-r-2 border-color-efefef px-3 py-4 text-color-2c2c2c">{{$customer->phone_1}}</td>
                             <td class="border-r-2 border-color-efefef px-3 py-4 text-color-2c2c2c hidden xl:table-cell">{{$customer->phone_2}}</td>
-                            <td class="border-r-2 px-3 py-4 text-color-2c2c2c hidden xl:table-cell">
-                                <div class="w-fit m-auto">
-                                    <button class="bg-color-347af2/30 flex items-center justify-center px-3 py-2 rounded-full">
-                                        <x-icons name="message" class="w-5" />
-                                    </button>
-                                </div>
-                            </td>
                             <td class="px-3 py-4 text-color-2c2c2c hidden xl:table-cell">
                                 <div class="w-fit m-auto">
                                     <button wire:click="show({{$customer->id}})" class="bg-color-347af2/30 flex items-center justify-center px-3 py-2 rounded-full">

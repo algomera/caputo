@@ -22,6 +22,10 @@ class Customer extends Model
         return $this->hasMany(IdentificationDocument::class);
     }
 
+    public function patent() {
+        return $this->identificationDocuments()->where('type', 'patente di guida')->first();
+    }
+
     public function registrations(): HasMany {
         return $this->hasMany(Registration::class);
     }
@@ -44,6 +48,10 @@ class Customer extends Model
 
     public function documents(): MorphMany {
         return $this->morphMany(Document::class, 'documentable');
+    }
+
+    public function photo() {
+        return $this->documents()->where('type', 'fototessera');
     }
 
     public function customerDocuments(): MorphMany {
