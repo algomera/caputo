@@ -56,13 +56,13 @@
                                     </td>
                                     <td class="whitespace-nowrap px-3 py-4 text-sm font-light text-color-2c2c2c">
                                         <div x-show="school != {{ $school->id }}" x-on:click="school = {{ $school->id }}" class="flex items-center justify-end gap-2 px-5 cursor-pointer">
-                                            <span>Gestione utenti</span>
+                                            <span>Gestione</span>
                                             <div>
                                                 <x-icons name="chevron_down" />
                                             </div>
                                         </div>
                                         <div x-show="school == {{ $school->id }}" x-on:click="school = null" class="flex items-center justify-end gap-2 px-5 cursor-pointer">
-                                            <span>Gestione utenti</span>
+                                            <span>Gestione</span>
                                             <div>
                                                 <x-icons name="chevron_down" class="rotate-180" />
                                             </div>

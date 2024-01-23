@@ -11,15 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('medical_plannings', function (Blueprint $table) {
+        Schema::create('pink_sheets', function (Blueprint $table) {
             $table->id();
             $table->foreignId('registration_id')->constrained()->onDelete('cascade');
-            $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade');
-            $table->dateTime('booked')->nullable();
-            $table->string('protocol')->nullable();
-            $table->dateTime('protocol_release')->nullable();
-            $table->date('protocol_expiration')->nullable();
-            $table->boolean('welded')->default(false);
+            $table->date('release');
+            $table->date('expiration');
             $table->timestamps();
         });
     }
@@ -29,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('medical_plannings');
+        Schema::dropIfExists('pink_sheets');
     }
 };

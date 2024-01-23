@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('identification_documents', function (Blueprint $table) {
             $table->id();
             $table->foreignId('customer_id')->constrained('customers')->onDelete('cascade');
-            $table->string('type');
+            $table->foreignId('identification_type_id')->constrained('identification_types')->onDelete('cascade');
             $table->string('n_document');
             $table->date('document_release');
             $table->string('document_from');

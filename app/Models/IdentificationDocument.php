@@ -15,4 +15,8 @@ class IdentificationDocument extends Model
     public function customer(): BelongsTo {
         return $this->belongsTo(Customer::class);
     }
+
+    public function identificationType(): BelongsTo {
+        return $this->belongsTo(IdentificationType::class);
+    }
 }

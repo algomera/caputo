@@ -6,6 +6,7 @@ use Livewire\Component;
 use App\Livewire\Forms\CustomerForm;
 use App\Livewire\Forms\DocumentForm;
 use Livewire\WithFileUploads;
+use Livewire\Attributes\On;
 
 
 class Show extends Component
@@ -14,21 +15,17 @@ class Show extends Component
 
     public CustomerForm $customerForm;
     public DocumentForm $documentForm;
+    public $registrations;
+    public $documents;
     public $modify = false;
     public $photo;
 
-    public $types;
-    public $document = null;
-    public $n_document;
-    public $document_release;
-    public $document_from;
-    public $document_expiration;
-
+    #[On('updateDocument')]
     public function mount($customer) {
         $this->customerForm->setCustomer($customer);
         $this->documentForm->setPatent($customer);
         $this->documentForm->getDocuments($customer);
-        $this->setDocument();
+        $this->registrations = $this->customerForm->customer->registrations()->where('state', 'aperta')->with('medicalPlanning', 'course', 'pinkSheet')->get();
     }
 
     public function updated($property) {
@@ -40,27 +37,13 @@ class Show extends Component
         }
     }
 
-    public function setDocument() {
-        $this->types = $this->documentForm->documents->pluck('type');
-
-        if ($this->document) {
-            $document = $this->documentForm->documents->where('type', $this->document)->first();
-            $this->n_document = $document->n_document;
-            $this->document_release = $document->document_release;
-            $this->document_from = $document->document_from;
-            $this->document_expiration = $document->document_expiration;
-        } else {
-            $this->n_document = $this->documentForm->documents->first()->n_document;
-            $this->document_release = $this->documentForm->documents->first()->document_release;
-            $this->document_from = $this->documentForm->documents->first()->document_from;
-            $this->document_expiration = $this->documentForm->documents->first()->document_expiration;
-        }
-    }
-
     public function save() {
+        $this->customerForm->update();
+
         if ($this->photo) {
             $this->customerForm->photo($this->photo);
         }
+        $this->modify = false;
     }
 
     public function back() {

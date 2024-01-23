@@ -6,6 +6,7 @@ use App\Livewire\Forms\CustomerForm;
 use App\Models\Course;
 use App\Models\Customer;
 use App\Models\IdentificationDocument;
+use App\Models\IdentificationType;
 use App\Models\InterestedCourses;
 use App\Models\MedicalPlanning;
 use App\Models\Registration;
@@ -34,6 +35,7 @@ class StepRegister extends Component
     public $parentScanUploaded = false;
     public $steps = [];
     public $typePatents = ['AM', 'A1', 'A2', 'A', 'B1','B', 'C1', 'C', 'D1', 'D', 'BE', 'C1E', 'CE', 'D1E', 'DE'];
+    public $typeDocuments = [];
     public $companions = null;
 
     public function mount() {
@@ -43,6 +45,13 @@ class StepRegister extends Component
             if ($this->patent) {
                 $this->customer = Customer::find($this->patent->customer_id);
             }
+        }
+        foreach (IdentificationType::all() as $type) {
+            $this->typeDocuments[] = [
+                'id' => $type->id,
+                'name' => $type->name,
+                'disabled' => false
+            ];
         }
         $this->setSteps();
     }
@@ -170,7 +179,7 @@ class StepRegister extends Component
                     ]);
                     return redirect()->route('visits.index');
                 }
-            }    
+            }
         } elseif ($type == 'interessato') {
             if ($variant) {
                 InterestedCourses::create([
@@ -192,38 +201,15 @@ class StepRegister extends Component
     }
 
     public function addDocument() {
-        $this->documents[] = ['type' => ''];
+        $this->verifyTypeDocument();
+        $this->documents[] = ['identification_type_id' => ''];
+        $this->validateDocument();
     }
 
     public function updated($property) {
         if (str_contains($property,'documents')) {
-            foreach ($this->documents as $key => $document) {
-                if ($document['type'] != 'patente') {
-                    unset($this->documents[$key]['qualification']);
-                }
-                if (count($this->documents[$key]) == 6 AND $document['type'] != '' AND $document['type'] == 'patente') {
-                    foreach ($document as $key => $value) {
-                        if ($value == '') {
-                            return $this->documentUploaded = false;
-                        }
-                        if (array_key_exists('qualification', $document)) {
-                            if (count($document['qualification']) < 1) {
-                                return $this->documentUploaded = false;
-                            }
-                        }
-                        $this->documentUploaded = true;
-                    }
-                } elseif (count($this->documents[$key]) == 5 AND $document['type'] != '' AND $document['type'] != 'patente') {
-                    foreach ($document as $key => $value) {
-                        if ($value == '') {
-                            return $this->documentUploaded = false;
-                        }
-                    }
-                    $this->documentUploaded = true;
-                } else {
-                    $this->documentUploaded = false;
-                }
-            }
+            $this->verifyTypeDocument();
+            $this->validateDocument();
         }
         if ($property == "scans") {
             $this->scanUploaded = true;
@@ -235,9 +221,53 @@ class StepRegister extends Component
 
     public function removeDocument($key) {
         unset($this->documents[$key]);
+        $this->verifyTypeDocument();
+        $this->validateDocument();
 
         if (count($this->documents) < 1) {
             $this->documentUploaded = false;
+        }
+    }
+
+    public function verifyTypeDocument() {
+        foreach ($this->typeDocuments as $key => $type) {
+            $matchingId = collect($this->documents)->firstWhere('identification_type_id', $type['id']);
+
+            if ($matchingId) {
+                $this->typeDocuments[$key]['disabled'] = true;
+            } else {
+                $this->typeDocuments[$key]['disabled'] = false;
+            }
+        }
+    }
+
+    public function validateDocument() {
+        foreach ($this->documents as $key => $document) {
+            if ($document['identification_type_id'] != 2) {
+                unset($this->documents[$key]['qualification']);
+            }
+            if (count($this->documents[$key]) == 6 AND $document['identification_type_id'] != '' AND $document['identification_type_id'] == 2) {
+                foreach ($document as $key => $value) {
+                    if ($value == '') {
+                        return $this->documentUploaded = false;
+                    }
+                    if (array_key_exists('qualification', $document)) {
+                        if (count($document['qualification']) < 1) {
+                            return $this->documentUploaded = false;
+                        }
+                    }
+                    $this->documentUploaded = true;
+                }
+            } elseif (count($this->documents[$key]) == 5 AND $document['identification_type_id'] != '' AND $document['identification_type_id'] != 2) {
+                foreach ($document as $key => $value) {
+                    if ($value == '') {
+                        return $this->documentUploaded = false;
+                    }
+                }
+                $this->documentUploaded = true;
+            } else {
+                $this->documentUploaded = false;
+            }
         }
     }
 

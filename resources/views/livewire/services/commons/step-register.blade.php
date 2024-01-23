@@ -82,18 +82,18 @@
                             <div class="flex items-end gap-5">
                                 <div class="w-fit flex gap-3 border rounded-md p-4 relative bg-color-f7f7f7 shadow">
                                     <div class="flex flex-col gap-3">
-                                        <x-custom-select wire:model.live="documents.{{$key}}.type" name="documents.{{$key}}.type" label="Tipologia" width="grow" >
+                                        <x-custom-select wire:model.live="documents.{{$key}}.identification_type_id" name="documents.{{$key}}.identification_type_id" label="Tipologia" width="grow" >
                                             <option value="">Seleziona</option>
-                                            <option value="patente" class="capitalize">patente</option>
-                                            <option value="carta di identita" class="capitalize">carta di identita</option>
-                                            <option value="passaporto" class="capitalize">passaporto</option>
+                                            @foreach ($typeDocuments as $type )
+                                                <option @if($type['disabled']) disabled @endif value="{{$type['id']}}" class="capitalize">{{$type['name']}}</option>
+                                            @endforeach
                                         </x-custom-select>
                                         <x-input-text wire:model.live="documents.{{$key}}.n_document" width="grow" name="documents.{{$key}}.n_document" uppercase="uppercase" label="Numero documento" />
                                         <x-input-text type="date" wire:model.live="documents.{{$key}}.document_release" width="grow" name="documents.{{$key}}.document_release" label="Rilasciato il" />
                                         <x-input-text wire:model.live="documents.{{$key}}.document_from" width="grow" name="documents.{{$key}}.document_from" uppercase="capitalize" label="Ente di rilascio" />
                                         <x-input-text type="date" wire:model.live="documents.{{$key}}.document_expiration" width="grow" name="documents.{{$key}}.document_expiration" label="Scadenza" />
                                     </div>
-                                    @if ($documents[$key]['type'] == 'patente')
+                                    @if ($documents[$key]['identification_type_id'] == 2)
                                         <x-custom-select multiple wire:model.live="documents.{{$key}}.qualification" name="documents.{{$key}}.type" label="Qualifiche" width="grow" height="!min-h-[calc(100%-10px)]" >
                                             @foreach ($typePatents as $patent )
                                                 <option value="{{$patent}}" class="capitalize">{{$patent}}</option>

@@ -33,7 +33,6 @@ class CustomerForm extends Form
 
     public function rules() {
         return [
-            'school_id' => 'nullable',
             'name' => 'required',
             'lastName' => 'required',
             'sex' => 'required',
@@ -137,7 +136,7 @@ class CustomerForm extends Form
                 ['type' => 'fototessera'],
                 [
                     'type' => 'fototessera',
-                    'path' => $path
+                    'path' => 'storage/app/'.$path
                 ]
             );
         } elseif ($this->newCustomer) {
@@ -147,7 +146,7 @@ class CustomerForm extends Form
                 ['type' => 'fototessera'],
                 [
                     'type' => 'fototessera',
-                    'path' => $path
+                    'path' => 'storage/app/'.$path
                 ]
             );
         }
@@ -156,7 +155,7 @@ class CustomerForm extends Form
     public function documents($documents) {
         foreach ($documents as $document) {
             $this->newCustomer->identificationDocuments()->create([
-                'type' => $document['type'],
+                'identification_type_id' => $document['identification_type_id'],
                 'n_document' => $document['n_document'],
                 'document_release' => $document['document_release'],
                 'document_from' => $document['document_from'],
@@ -171,7 +170,7 @@ class CustomerForm extends Form
             $path = Storage::putFileAs('customers/customer-'.$this->newCustomer->id, $scan, str_replace(' ', '_', $scan->getClientOriginalName()));
             $this->newCustomer->documents()->create([
                 'type' => 'documenti di riconoscimento',
-                'path' => $path
+                'path' => 'storage/app/'.$path
             ]);
         }
     }
@@ -181,7 +180,7 @@ class CustomerForm extends Form
             $path = Storage::putFileAs('customers/customer-'.$this->newCustomer->id.'/parent', $scan, str_replace(' ', '_', $scan->getClientOriginalName()));
             $this->newCustomer->documents()->create([
                 'type' => 'documenti di riconoscimento genitori',
-                'path' => $path
+                'path' => 'storage/app/'.$path
             ]);
         }
     }
@@ -191,7 +190,7 @@ class CustomerForm extends Form
             $path = Storage::putFileAs('customers/customer-'.$this->newCustomer->id.'/companions/'.'companion-'.$key, $scan, str_replace(' ', '_', $scan->getClientOriginalName()));
             $this->newCustomer->documents()->create([
                 'type' => 'documenti di riconoscimento accompagnatore-'.$key,
-                'path' => $path
+                'path' => 'storage/app/'.$path
             ]);
         }
     }
@@ -202,7 +201,7 @@ class CustomerForm extends Form
             ['type' => 'firma'],
             [
                 'type' => 'firma',
-                'path' => $path
+                'path' => 'storage/app/'.$path
             ]
         );
     }
@@ -213,7 +212,7 @@ class CustomerForm extends Form
             ['type' => 'firma genitore'],
             [
                 'type' => 'firma genitore',
-                'path' => $path
+                'path' => 'storage/app/'.$path
             ]
         );
     }
@@ -226,7 +225,7 @@ class CustomerForm extends Form
                 ['type' => 'firma accompagnatore-'.$key],
                 [
                     'type' => 'firma accompagnatore-'.$key,
-                    'path' => $path
+                    'path' => 'storage/app/'.$path
                 ]
             );
         }
@@ -235,6 +234,5 @@ class CustomerForm extends Form
     public function update() {
         $this->validate();
         $this->customer->update($this->validate());
-        $this->reset();
     }
 }

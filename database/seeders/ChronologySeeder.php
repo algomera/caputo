@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\chronology;
-use App\Models\Customer;
+use App\Models\Registration;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -14,7 +14,7 @@ class ChronologySeeder extends Seeder
      */
     public function run(): void
     {
-        $customers = Customer::all();
+        $registrations = Registration::all();
 
         $title = [
             'Pagamento PagoPa',
@@ -26,10 +26,10 @@ class ChronologySeeder extends Seeder
             'Consegna Patente'
         ];
 
-        foreach ($customers as $customer) {
+        foreach ($registrations as $registration) {
             for ($i=0; $i < 5; $i++) {
                 Chronology::create([
-                    'customer_id' => $customer->id,
+                    'registration_id' => $registration->id,
                     'title' => fake()->randomElement($title),
                     'content' => fake()->paragraph()
                 ]);

@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('transmission')->nullable();
             $table->json('optionals')->nullable();
             $table->decimal('price')->nullable();
+            $table->string('state')->default('aperta');
             $table->timestamps();
         });
     }

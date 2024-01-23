@@ -18,20 +18,24 @@ class Customer extends Model
         return $this->belongsTo(School::class);
     }
 
+    public function patent() {
+        return $this->identificationDocuments()->where('identification_type_id', 2)->first();
+    }
+
     public function identificationDocuments(): HasMany {
         return $this->hasMany(IdentificationDocument::class);
     }
 
-    public function patent() {
-        return $this->identificationDocuments()->where('type', 'patente di guida')->first();
+    public function otherIdentificationDocuments() {
+        $typeDocuments = IdentificationType::whereDoesntHave('identificationDocuments', function($query) {
+            $query->whereIn('customer_id', [$this->id]);
+        })->get();
+
+        return $typeDocuments;
     }
 
     public function registrations(): HasMany {
         return $this->hasMany(Registration::class);
-    }
-
-    public function chronologies(): HasMany {
-        return $this->hasMany(Chronology::class);
     }
 
     public function presences(): HasMany {

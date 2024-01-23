@@ -28,6 +28,7 @@ class DatabaseSeeder extends Seeder
         Customer::factory(30)->create();
 
         $this->call([
+            IdentificationTypeSeeder::class,
             identificationDocumentSeeder::class,
             TrainingSeeder::class,
             InterestedSeeder::class,
@@ -36,6 +37,7 @@ class DatabaseSeeder extends Seeder
             PaymentSeeder::class,
             DocumentSeeder::class,
             PresenceSeeder::class,
+            PinkSheetSeeder::class
         ]);
 
     }

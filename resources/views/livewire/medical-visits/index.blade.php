@@ -78,7 +78,7 @@
                                         @else
                                             <button wire:click="$dispatch('openModal', { component: 'medical-visits.modals.payment-visit', arguments: {registration: {{$visit->id}}} })" class="underline font-light text-color-2c2c2c bg-color-347af2/30 rounded-full px-3 py-1">Genera</button>
                                         @endif
-                                        
+
                                     @endif
                                 </div>
                             </td>
@@ -112,8 +112,8 @@
                             <td class="border-r-2 border-color-efefef px-3 py-4 text-color-2c2c2c">{{$visit->customer->phone_1}}</td>
                             <td class="border-r-2 border-color-efefef px-3 py-4 text-color-2c2c2c hidden xl:table-cell">{{$visit->customer->phone_2}}</td>
                             <td class="px-3 py-4 text-color-2c2c2c hidden xl:table-cell">
-                                @if ($visit->medicalPlanning->expiration)
-                                    {{date("d/m/Y", strtotime($visit->medicalPlanning->expiration))}}                                    
+                                @if ($visit->medicalPlanning->protocol_expiration)
+                                    {{date("d/m/Y", strtotime($visit->medicalPlanning->protocol_expiration))}}
                                 @endif
                             </td>
                         </tr>

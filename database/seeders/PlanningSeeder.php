@@ -59,13 +59,14 @@ class PlanningSeeder extends Seeder
         foreach ($schools as $school) {
             foreach ($school->medicalVisits()->get() as $visit) {
                 $doctor = User::role('medico')->get()->random()->id;
-    
+
                 MedicalPlanning::create([
                     'registration_id' => $visit->id,
                     'user_id' => $doctor,
                     'booked' => fake()->dateTimeBetween(now(), '+4 week'),
                     'protocol' => fake()->regexify('[A-Z]{2}[0-9]{7}[A-Z]{2}'),
-                    'expiration' => now()->addMonth(3),
+                    'protocol_release' => now(),
+                    'protocol_expiration' => now()->addMonth(3),
                     'welded' => fake()->boolean(),
                 ]);
             }

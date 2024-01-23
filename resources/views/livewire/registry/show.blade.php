@@ -4,7 +4,7 @@
         <div wire:click='back' class="w-12 h-12 rounded-full shadow-shadow-card flex items-center justify-center cursor-pointer group">
             <x-icons name="back" class="transition-all duration-300 group-hover:-translate-x-1" />
         </div>
-        <h1 class="text-5xl font-bold text-color-17489f capitalize">{{$customerForm->name}}</h1>
+        <h1 class="text-5xl font-bold text-color-17489f capitalize">{{$customerForm->lastName}} {{$customerForm->name}}</h1>
     </div>
 
     <div class="mt-10 p-4 w-full flex flex-col gap-4 shadow-shadow-card bg-color-f7f7f7">
@@ -25,6 +25,7 @@
                 @endif
             </div>
         </div>
+
         {{-- Dati Customer --}}
         <div class="w-full inline-flex gap-5 border-b pb-4">
             @if ($photo)
@@ -85,36 +86,93 @@
                 </div>
             </div>
         </div>
+
         {{-- Firma e Documenti --}}
-        <div class="w-full flex items-end gap-5">
+        <div class="w-full flex items-start gap-5 relative">
             @if ($customerForm->customer->customerSignature())
             <div>
                 <p class="text-sm font-light text-color-2c2c2c mb-1 w-fit ml-2">Firma digitale</p>
-                <img class="w-64 h-36 bg-white shadow-shadow-card" src="{{Vite::asset($customerForm->customer->customerSignature()->first()->path)}}" alt="">
+                <div class="w-64 h-36 bg-white flex items-center shadow-shadow-card">
+                    <img class="w-full" src="{{Vite::asset($customerForm->customer->customerSignature()->first()->path)}}" alt="">
+                </div>
             </div>
             @endif
             <div class="grow space-y-3">
-                <div class="w-full flex items-center gap-2">
+                <div class="w-full flex items-end gap-2">
                     <x-input-text disabled="{{!$modify}}" wire:model="documentForm.n_document" width="w-1/6" name="documentForm.n_document" label="N. Patente" />
                     <x-input-text disabled="{{!$modify}}" type="date" wire:model="documentForm.document_release" width="w-1/6" name="documentForm.document_release" label="Rilasciata il" />
                     <x-input-text disabled="{{!$modify}}" wire:model="documentForm.document_from" width="w-1/6" name="documentForm.document_from" label="Ente di rilascio" />
                     <x-input-text disabled="{{!$modify}}" type="date" wire:model="documentForm.document_expiration" width="w-1/6" name="documentForm.document_expiration" label="Scade il" />
-                    <x-input-text disabled="{{!$modify}}" wire:model="documentForm.qualification" width="w-1/6" name="documentForm.qualification" label="Abilitazioni" />
+                    <x-input-text disabled wire:model="documentForm.qualification" width="w-1/6" name="documentForm.qualification" label="Abilitazioni" />
+                    {{-- @if ($modify)
+                    <div wire:click="$dispatch('openModal', { component: 'registry.modals.document', arguments: {customer: {{$customerForm->customer->id}}, document: {{$documentForm->patent->id}}, action: 'edit'} })" class="hover:scale-105 transition-all duration-300 cursor-pointer">
+                        <x-icons name="b-edit" />
+                    </div>
+                    @endif --}}
                 </div>
-                <div class="w-full flex items-center gap-2">
-                    <x-custom-select wire:model.live="document" name="document" label="Tipo Documento" width="w-1/6" >
-                        @foreach ($types as $type )
-                            <option value="{{$type}}" class="capitalize">{{$type}}</option>
-                        @endforeach
-                    </x-custom-select>
-                    <x-input-text disabled="{{!$modify}}" wire:model.live="n_document" width="w-1/6" name="n_document" label="N. Documento" />
-                    <x-input-text disabled="{{!$modify}}" type="date" wire:model="document_release" width="w-1/6" name="document_release" label="Rilasciata il" />
-                    <x-input-text disabled="{{!$modify}}" wire:model="document_from" width="w-1/6" name="document_from" label="Ente di rilascio" />
-                    <x-input-text disabled="{{!$modify}}" type="date" wire:model="document_expiration" width="w-1/6" name="document_expiration" label="Scade il" />
-                </div>
-
+                @if (count($documentForm->documents) > 0)
+                    @foreach ($documentForm->documents as $document )
+                        <div class="w-full flex items-end gap-2">
+                            <x-fake-input width="w-1/6" label="Tipo Documento" uppercase="capitalize">{{$document->identificationType->name}}</x-fake-input>
+                            <x-fake-input width="w-1/6" label="N. Documento" uppercase="uppercase">{{$document->n_document}}</x-fake-input>
+                            <x-fake-input width="w-1/6" label="Rilasciato il">{{$document->document_release}}</x-fake-input>
+                            <x-fake-input width="w-1/6" label="Ente di rilascio" uppercase="capitalize">{{$document->document_from}}</x-fake-input>
+                            <x-fake-input width="w-1/6" label="Scade il">{{$document->document_expiration}}</x-fake-input>
+                            @if ($modify)
+                            <div class="flex gap-1">
+                                <div wire:click="$dispatch('openModal', { component: 'registry.modals.document', arguments: {customer: {{$customerForm->customer->id}}, document: {{$document->id}}, action: 'edit'} })" class="hover:scale-105 transition-all duration-300 cursor-pointer">
+                                    <x-icons name="b-edit" />
+                                </div>
+                                @role('admin')
+                                <div wire:click="$dispatch('openModal', { component: 'registry.modals.delete-document', arguments: {document: {{$document->id}}} })" class="hover:scale-105 transition-all duration-300 cursor-pointer">
+                                    <x-icons name="b-delete" />
+                                </div>
+                                @endrole
+                            </div>
+                            @endif
+                        </div>
+                    @endforeach
+                @endif
             </div>
+            @if ($modify)
+                <div wire:click="$dispatch('openModal', { component: 'registry.modals.document', arguments: {customer: {{$customerForm->customer->id}}} })"
+                    class="absolute top-0 right-0 w-fit px-4 py-1 text-color-2c2c2c font-medium capitalize rounded-full bg-color-01a53a/30 hover:scale-105 transition-all duration-300 cursor-pointer">
+                    + documento
+                </div>
+            @endif
         </div>
+
+        {{-- Iscrizioni aperte --}}
+        @if (count($registrations) > 0)
+            @foreach ($registrations as $registration)
+                <div class="w-full flex flex-col items-start gap-5 border-t pt-4 relative">
+                    <div class="flex gap-5">
+                        <p>Tipo di iscrizione: <span @class(["font-bold", 'text-color-'. get_color($registration->course->service->name)])>{{$registration->course->name}}</span></p>
+                        <button class="px-4 py-1 text-color-2c2c2c font-medium capitalize rounded-full bg-color-ffb205/30 hover:scale-105 transition-all duration-300">continua accettazione</button>
+                        <button class="px-4 py-1 text-color-2c2c2c font-medium capitalize rounded-full bg-color-ffb205/30 hover:scale-105 transition-all duration-300">cronologia pratica</button>
+                    </div>
+
+                    <div class="flex items-center gap-2">
+                        <x-fake-input width="grow 2xl:w-48" label="Stato della richiesta" uppercase="uppercase">{{$registration->state}}</x-fake-input>
+                        <x-fake-input width="grow 2xl:w-48" label="Codice Statino" uppercase="uppercase">??</x-fake-input>
+                        @if ($registration->medicalPlanning)
+                            <x-fake-input width="grow 2xl:w-48" label="N. Protocollo" uppercase="uppercase">{{$registration->medicalPlanning->protocol ?? '---'}}</x-fake-input>
+                            <x-fake-input width="grow 2xl:w-48" label="Emissione Protocollo">{{$registration->medicalPlanning->protocol_release ? date("d/m/Y", strtotime($registration->medicalPlanning->protocol_release)) : '---'}}</x-fake-input>
+                            <x-fake-input width="grow 2xl:w-48" label="Scadenza Protocollo">{{$registration->medicalPlanning->protocol_expiration ? date("d/m/Y", strtotime($registration->medicalPlanning->protocol_expiration)) : '---'}}</x-fake-input>
+                            <x-fake-input width="grow 2xl:w-48" label="Visita medica">{{$registration->medicalPlanning->booked}}</x-fake-input>
+                        @endif
+                    </div>
+                    @if ($registration->pinkSheet)
+                        <div class="flex items-center gap-2">
+                            <x-fake-input width="grow 2xl:w-48" label="Emissione Foglio Rosa">{{date("d/m/Y", strtotime($registration->pinkSheet->release))}}</x-fake-input>
+                            <x-fake-input width="grow 2xl:w-48" label="Scadenza Foglio Rosa">{{date("d/m/Y", strtotime($registration->pinkSheet->expiration))}}</x-fake-input>
+                            <x-fake-input width="grow 2xl:w-48" label="Data Registrazione">{{date("d/m/Y", strtotime($registration->created_at))}}</x-fake-input>
+                            <x-fake-input width="grow 2xl:w-48" label="N. Registrazione">{{$registration->id}}</x-fake-input>
+                        </div>
+                    @endif
+                </div>
+            @endforeach
+        @endif
     </div>
 </div>
 
