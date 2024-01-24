@@ -16,12 +16,14 @@
                 </div>
             @endif
             @if (count($course->variants()->get()) > 0)
-                <div wire:click='setOption("interessato")' class="w-full h-24 flex items-center justify-center border rounded-md shadow-shadow-card hover:scale-105 transition-all duration-300 cursor-pointer">
+                <div wire:click='setOption("interessato")' class="w-full h-24 flex flex-col gap-1 items-center justify-center border rounded-md shadow-shadow-card hover:scale-105 transition-all duration-300 cursor-pointer">
                     <p class="text-lg text-color-2c2c2c">Inserisci come <b>interessato al corso</b></p>
+                    <small>(Verranno salvati solo i dati relativi al cliente)</small>
                 </div>
             @else
-                <div wire:click="putRegistration({{$course->id}}, 'interessato')" class="w-full h-24 flex items-center justify-center border rounded-md shadow-shadow-card hover:scale-105 transition-all duration-300 cursor-pointer">
+                <div wire:click="putRegistration({{$course->id}}, 'interessato')" class="w-full h-24 flex flex-col gap-1 items-center justify-center border rounded-md shadow-shadow-card hover:scale-105 transition-all duration-300 cursor-pointer">
                     <p class="text-lg text-color-2c2c2c">Inserisci come <b>interessato al corso ({{$course->name}})</b></p>
+                    <small>(Verranno salvati solo i dati relativi al cliente)</small>
                 </div>
             @endif
         </div>
@@ -181,14 +183,14 @@
                     <x-custom-select wire:model="trainingCourseVariant" name="trainingCourseVariant" label="Corso" width="grow" required="true">
                         <option value="">{{$course->name}}</option>
                         @foreach ($course->variants()->get() as $variant)
-                            <option value="{{$variant->id}}" class="capitalize">{{$variant->name}}</option> 
+                            <option value="{{$variant->id}}" class="capitalize">{{$variant->name}}</option>
                         @endforeach
-                    </x-custom-select>                    
+                    </x-custom-select>
                 @endif
                 <x-custom-select wire:model="trainingUser" name="trainingUser" label="Insegnante" width="grow" required="true">
                     <option value="">Seleziona</option>
                     @foreach ($users as $user )
-                        <option value="{{$user->id}}" class="capitalize">{{$user->name}} {{$user->lastName}}</option> 
+                        <option value="{{$user->id}}" class="capitalize">{{$user->name}} {{$user->lastName}}</option>
                     @endforeach
                 </x-custom-select>
                 <x-input-text type="date" wire:model="trainingBegins" width="grow" name="trainingBegins" label="Inizio corso" required="true" />

@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Chronology;
 use App\Models\Customer;
 use App\Models\Document;
+use App\Models\Registration;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -15,6 +16,7 @@ class DocumentSeeder extends Seeder
      */
     public function run(): void
     {
+        $registrations = Registration::all();
         $customers = Customer::all();
         $chronologies = Chronology::all();
         $documents = [
@@ -38,6 +40,17 @@ class DocumentSeeder extends Seeder
                     'type' => $document['type'],
                     'path' => $document['path']
                 ]);
+            }
+        }
+
+        foreach ($registrations as $registration) {
+            foreach ($documents as $document) {
+                if ($document['type'] != 'fototessera') {
+                    $registration->documents()->create([
+                        'type' => $document['type'],
+                        'path' => $document['path']
+                    ]);
+                }
             }
         }
 

@@ -13,6 +13,7 @@
         "livewire/livewire": "^3.2",
         "spatie/laravel-permission": "^6.1",
         "staudenmeir/belongs-to-through": "^2.5",
+        "staudenmeir/eloquent-has-many-deep": "^1.7",
         "wire-elements/modal": "^2.0"
     },
     "require-dev": {

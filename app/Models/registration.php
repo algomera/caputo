@@ -29,23 +29,31 @@ class Registration extends Model
         return $this->HasOne(MedicalPlanning::class);
     }
 
-    public function course() {
-        return $this->BelongsToThrough(Course::class, Training::class);
-    }
-
-    public function school() {
-        return $this->BelongsToThrough(School::class, Training::class);
-    }
-
-    public function payments(): MorphMany {
-        return $this->morphMany(Payment::class, 'paymentable');
-    }
-
     public function pinkSheet(): HasOne {
         return $this->hasOne(PinkSheet::class);
     }
 
     public function chronologies(): HasMany {
         return $this->hasMany(Chronology::class);
+    }
+
+    public function drivingPlanning(): HasMany {
+        return $this->hasMany(DrivingPlanning::class);
+    }
+
+    public function payments(): MorphMany {
+        return $this->morphMany(Payment::class, 'paymentable');
+    }
+
+    public function documents(): MorphMany {
+        return $this->morphMany(Document::class, 'documentable');
+    }
+
+    public function course() {
+        return $this->BelongsToThrough(Course::class, Training::class);
+    }
+
+    public function school() {
+        return $this->BelongsToThrough(School::class, Training::class);
     }
 }

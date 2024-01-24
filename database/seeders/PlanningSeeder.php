@@ -6,6 +6,7 @@ use App\Models\Customer;
 use App\Models\DrivingPlanning;
 use App\Models\LessonPlanning;
 use App\Models\MedicalPlanning;
+use App\Models\Registration;
 use App\Models\School;
 use App\Models\Training;
 use App\Models\User;
@@ -21,6 +22,7 @@ class PlanningSeeder extends Seeder
     public function run(): void
     {
         $customers = Customer::all();
+        $registrations = Registration::all();
         $schools = School::all();
 
         // Lessons
@@ -43,10 +45,10 @@ class PlanningSeeder extends Seeder
 
         // Driving
         $vehicle = Vehicle::all();
-        foreach ($customers as $customer) {
-            $instructors = $customer->school()->first()->instructors()->random()->id;
+        foreach ($registrations as $registration) {
+            $instructors = $registration->school()->first()->instructors()->random()->id;
             DrivingPlanning::create([
-                'customer_id' => $customer->id,
+                'registration_id' => $registration->id,
                 'user_id' => $instructors,
                 'vehicle_id' => $vehicle->random()->id,
                 'type' => fake()->randomElement(['notturna', 'extraurbana', 'autostrada']),

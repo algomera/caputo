@@ -122,7 +122,7 @@ class StepRegister extends Component
     }
 
     #[On('newRegistration')]
-    public function registration($id, $type, $variant = null) {
+    public function registration($trainingId, $type, $variant = null) {
         $this->customerForm->setSchool(auth()->user()->schools()->first()->id);
         $this->customerForm->store();
 
@@ -132,53 +132,46 @@ class StepRegister extends Component
         if ($this->scans) {
             $this->customerForm->scans($this->scans);
         }
-        if ($this->parentScans) {
-            $this->customerForm->parentScans($this->parentScans);
-        }
         if ($this->photo) {
             $this->customerForm->photo($this->photo);
         }
         if ($this->signature) {
             $this->customerForm->signature($this->signature);
         }
-        if ($this->parentSignature) {
-            $this->customerForm->parentSignature($this->parentSignature);
-        }
-        if ($this->companions) {
-            $signatures = [];
-            $scans = [];
-
-            foreach ($this->companions as $key => $companion) {
-                if ($companion['signature'] != null) {
-                    $signatures[$key] = $companion['signature'];
-                }
-                if (count($companion['scans']) > 0) {
-                    foreach ($companion['scans'] as $scan) {
-                        $scans[$key] = $scan;
-                    }
-                }
-            }
-
-            $this->customerForm->companionsSignature($signatures);
-            $this->customerForm->companionsScans($scans);
-        }
 
         if ($type == 'esistente') {
             $registration = Registration::create([
-                'training_id' => $id,
+                'training_id' => $trainingId,
                 'customer_id' => $this->customerForm->newCustomer->id,
                 'type' => session()->get('course')['registration_type'],
                 'transmission' => session()->get('course')['transmission'],
                 'optionals' => json_encode(session()->get('course')['selected_cost']),
                 'price' => session()->get('course')['price']
             ]);
-            foreach (session()->get('course')['selected_cost'] as $key => $cost) {
-                if ($cost == 15) {
-                    MedicalPlanning::create([
-                        'registration_id' => $registration->id
-                    ]);
-                    return redirect()->route('visits.index');
+
+            if ($this->parentScans) {
+                $this->customerForm->parentScans($this->parentScans, $registration->id);
+            }
+            if ($this->parentSignature) {
+                $this->customerForm->parentSignature($this->parentSignature, $registration->id);
+            }
+            if ($this->companions) {
+                $signatures = [];
+                $scans = [];
+
+                foreach ($this->companions as $key => $companion) {
+                    if ($companion['signature'] != null) {
+                        $signatures[$key] = $companion['signature'];
+                    }
+                    if (count($companion['scans']) > 0) {
+                        foreach ($companion['scans'] as $scan) {
+                            $scans[$key] = $scan;
+                        }
+                    }
                 }
+
+                $this->customerForm->companionsSignature($signatures, $registration->id);
+                $this->customerForm->companionsScans($scans, $registration->id);
             }
         } elseif ($type == 'interessato') {
             if ($variant) {
@@ -194,6 +187,17 @@ class StepRegister extends Component
                     'course_id' => session()->get('course')['id'],
                     'confirm' => 'in attesa'
                 ]);
+            }
+        }
+
+        //TODO va implentata la parte pagamenti prima di esssere reinderizzato
+
+        foreach (session()->get('course')['selected_cost'] as $key => $cost) {
+            if ($cost == 15) {
+                MedicalPlanning::create([
+                    'registration_id' => $registration->id
+                ]);
+                return redirect()->route('visits.index');
             }
         }
 

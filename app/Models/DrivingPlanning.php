@@ -10,11 +10,16 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 class DrivingPlanning extends Model
 {
     use HasFactory;
+    use \Znck\Eloquent\Traits\BelongsToThrough;
 
     protected $guarded = [];
 
-    public function customer(): BelongsTo {
-        return $this->belongsTo(Customer::class);
+    public function customer() {
+        return $this->BelongsToThrough(Customer::class, Registration::class);
+    }
+
+    public function registration(): BelongsTo {
+        return $this->belongsTo(Registration::class);
     }
 
     public function instructor(): BelongsTo {

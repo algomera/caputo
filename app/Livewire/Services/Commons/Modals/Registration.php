@@ -3,7 +3,6 @@
 namespace App\Livewire\Services\Commons\Modals;
 
 use App\Models\Course;
-use App\Models\CourseVariant;
 use App\Models\Training;
 use App\Models\User;
 use LivewireUI\Modal\ModalComponent;
@@ -62,8 +61,8 @@ class Registration extends ModalComponent
         $this->selectedOption = null;
     }
 
-    public function putRegistration($id, $type, $variant = null) {
-        $this->dispatch('newRegistration', $id, $type, $variant);
+    public function putRegistration($trainingId, $type, $variant = null) {
+        $this->dispatch('newRegistration', $trainingId, $type, $variant);
     }
 
     public static function modalMaxWidth(): string

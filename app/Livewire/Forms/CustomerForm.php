@@ -3,6 +3,7 @@
 namespace App\Livewire\Forms;
 
 use App\Models\Customer;
+use App\Models\Registration;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
 use Illuminate\Support\Facades\Storage;
@@ -175,20 +176,24 @@ class CustomerForm extends Form
         }
     }
 
-    public function parentScans($scans) {
+    public function parentScans($scans, $registrationId) {
+        $registration = Registration::find($registrationId);
+
         foreach ($scans as $scan) {
             $path = Storage::putFileAs('customers/customer-'.$this->newCustomer->id.'/parent', $scan, str_replace(' ', '_', $scan->getClientOriginalName()));
-            $this->newCustomer->documents()->create([
+            $registration->documents()->create([
                 'type' => 'documenti di riconoscimento genitori',
                 'path' => 'storage/app/'.$path
             ]);
         }
     }
 
-    public function companionsScans($scans) {
+    public function companionsScans($scans, $registrationId) {
+        $registration = Registration::find($registrationId);
+
         foreach ($scans as $key => $scan) {
             $path = Storage::putFileAs('customers/customer-'.$this->newCustomer->id.'/companions/'.'companion-'.$key, $scan, str_replace(' ', '_', $scan->getClientOriginalName()));
-            $this->newCustomer->documents()->create([
+            $registration->documents()->create([
                 'type' => 'documenti di riconoscimento accompagnatore-'.$key,
                 'path' => 'storage/app/'.$path
             ]);
@@ -206,9 +211,11 @@ class CustomerForm extends Form
         );
     }
 
-    public function parentSignature($signature) {
+    public function parentSignature($signature, $registrationId) {
+        $registration = Registration::find($registrationId);
+
         $path = Storage::putFileAs('customers/customer-'.$this->newCustomer->id.'/parent', $signature, 'firma_genitore.png');
-        $this->newCustomer->documents()->updateOrCreate(
+        $registration->documents()->updateOrCreate(
             ['type' => 'firma genitore'],
             [
                 'type' => 'firma genitore',
@@ -217,11 +224,13 @@ class CustomerForm extends Form
         );
     }
 
-    public function companionsSignature($signatures) {
+    public function companionsSignature($signatures, $registrationId) {
+        $registration = Registration::find($registrationId);
+
         foreach ($signatures as $key => $signature) {
             $path = Storage::putFileAs('customers/customer-'.$this->newCustomer->id.'/companions/'.'companion-'.$key, $signature, 'firma_accompagnatore-'.$key.'.png');
 
-            $this->newCustomer->documents()->updateOrCreate(
+            $registration->documents()->updateOrCreate(
                 ['type' => 'firma accompagnatore-'.$key],
                 [
                     'type' => 'firma accompagnatore-'.$key,

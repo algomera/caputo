@@ -17,6 +17,7 @@
             </div>
             <div class="flex items-center gap-2">
                 <button wire:click="$dispatch('openModal', { component: 'registry.modals.chronology', arguments: {customer: {{$customerForm->customer->id}}} })" class="px-4 py-1 text-color-2c2c2c font-medium capitalize rounded-full bg-color-ffb205/30 hover:scale-105 transition-all duration-300">Cronologia generale</button>
+                <button wire:click="$dispatch('openModal', { component: 'registry.modals.scans', arguments: {customer: {{$customerForm->customer->id}}} })" class="px-4 py-1 text-color-2c2c2c font-medium capitalize rounded-full bg-color-ffb205/30 hover:scale-105 transition-all duration-300">Scansioni</button>
                 @if ($modify)
                     <button wire:click="$set('modify', false)" class="px-4 py-1 text-color-2c2c2c font-medium capitalize rounded-full bg-red-500/60 hover:scale-105 transition-all duration-300">Disabilita Modifica</button>
                     <button wire:click="save" class="px-4 py-1 text-color-2c2c2c font-medium capitalize rounded-full bg-color-01a53a/30 hover:scale-105 transition-all duration-300">Salva</button>
@@ -57,27 +58,27 @@
             @endif
             <div class="grow space-y-3">
                 <div class="w-full flex items-center gap-2">
-                    <x-input-text disabled="{{!$modify}}" wire:model="customerForm.name" width="grow" name="customerForm.name" label="Nome" />
-                    <x-input-text disabled="{{!$modify}}" wire:model="customerForm.lastName" width="grow" name="customerForm.lastName" label="Cognome" />
+                    <x-input-text disabled="{{!$modify}}" wire:model="customerForm.name" width="2xl:grow" name="customerForm.name" label="Nome" />
+                    <x-input-text disabled="{{!$modify}}" wire:model="customerForm.lastName" width="2xl:grow" name="customerForm.lastName" label="Cognome" />
                     <x-custom-select disabled="{{!$modify}}" wire:model="customerForm.sex" name="customerForm.sex" label="Sesso" width="w-fit" >
                         <option value="">Seleziona</option>
                         <option value="donna" class="capitalize">donna</option>
                         <option value="uomo" class="capitalize">uomo</option>
                     </x-custom-select>
                     <x-input-text disabled="{{!$modify}}" type="date" wire:model="customerForm.date_of_birth" width="w-fit" name="customerForm.date_of_birth" label="Nato il" />
-                    <x-input-text disabled="{{!$modify}}" wire:model="customerForm.birth_place" width="grow" name="customerForm.birth_place" label="Luogo di nascita" uppercase="capitalize" />
+                    <x-input-text disabled="{{!$modify}}" wire:model="customerForm.birth_place" width="2xl:grow" name="customerForm.birth_place" label="Luogo di nascita" uppercase="capitalize" />
                     <x-input-text disabled="{{!$modify}}" x-mask="aa" wire:model="customerForm.country_of_birth" width="w-fit" name="customerForm.country_of_birth" label="Provincia di nascita" uppercase="uppercase" />
                 </div>
 
                 <div class="w-full flex items-center gap-2">
                     <x-input-text disabled="{{!$modify}}" x-mask="aaaaaa99a99a999a" wire:model="customerForm.fiscal_code" width="w-fit" name="customerForm.fiscal_code" label="Codice Fiscale" uppercase="uppercase" />
                     <x-input-text disabled="{{!$modify}}" wire:model="customerForm.city" width="w-fit" name="customerForm.city" label="Citta" />
-                    <x-input-text disabled="{{!$modify}}" wire:model="customerForm.address" width="grow" name="customerForm.address" label="Via/Piazza" />
+                    <x-input-text disabled="{{!$modify}}" wire:model="customerForm.address" width="2xl:grow" name="customerForm.address" label="Via/Piazza" />
                     <x-input-text disabled="{{!$modify}}" x-mask="99999" wire:model="customerForm.civic" width="w-20" name="customerForm.civic" label="Civico" />
                     <x-input-text disabled="{{!$modify}}" x-mask="aa" wire:model="customerForm.province" width="w-20" name="customerForm.province" label="Provincia" uppercase="uppercase" />
                     <x-input-text disabled="{{!$modify}}" x-mask="99999" wire:model="customerForm.postcode" width="w-20" name="customerForm.postcode" label="Cap" />
-                    <x-input-text disabled="{{!$modify}}" wire:model="customerForm.country" width="w-fit" name="customerForm.country" label="Cittadinanza" />
-                    <x-input-text disabled="{{!$modify}}" wire:model="customerForm.aire" width="w-fit" name="customerForm.aire" label="Iscritto Aire" />
+                    <x-input-text disabled="{{!$modify}}" wire:model="customerForm.country" width="2xl:grow" name="customerForm.country" label="Cittadinanza" />
+                    <x-input-text disabled="{{!$modify}}" wire:model="customerForm.aire" width="2xl:grow" name="customerForm.aire" label="Iscritto Aire" />
                 </div>
                 <div class="flex items-center gap-2">
                     <x-input-text disabled="{{!$modify}}" x-mask="999 9999999" wire:model="customerForm.phone_1" width="w-1/4" name="customerForm.phone_1" label="1° Cellulare" />
@@ -146,9 +147,10 @@
         @if (count($registrations) > 0)
             @foreach ($registrations as $registration)
                 <div class="w-full flex flex-col items-start gap-5 border-t pt-4 relative">
-                    <div class="flex gap-5">
-                        <p>Tipo di iscrizione: <span @class(["font-bold", 'text-color-'. get_color($registration->course->service->name)])>{{$registration->course->name}}</span></p>
+                    <div class="flex gap-2">
+                        <p class="mr-5">Tipo di iscrizione: <span @class(["font-bold", 'text-color-'. get_color($registration->course->service->name)])>{{$registration->course->name}}</span></p>
                         <button class="px-4 py-1 text-color-2c2c2c font-medium capitalize rounded-full bg-color-ffb205/30 hover:scale-105 transition-all duration-300">continua accettazione</button>
+                        <button wire:click="$dispatch('openModal', { component: 'registry.modals.scans', arguments: {registration: {{$registration->id}}} })" class="px-4 py-1 text-color-2c2c2c font-medium capitalize rounded-full bg-color-ffb205/30 hover:scale-105 transition-all duration-300">Scansioni/Firme</button>
                         <button wire:click="$dispatch('openModal', { component: 'registry.modals.chronology', arguments: {registration: {{$registration->id}}} })" class="px-4 py-1 text-color-2c2c2c font-medium capitalize rounded-full bg-color-ffb205/30 hover:scale-105 transition-all duration-300">cronologia pratica</button>
                     </div>
 
