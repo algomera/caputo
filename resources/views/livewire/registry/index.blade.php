@@ -15,7 +15,7 @@
 
     <div class="p-11 pt-5 bg-color-f7f7f7 shadow-shadow-card mt-5 relative">
         @if (count($customers) > 0)
-            <small class="absolute right-2 top-2 text-gray-400 font-bold">Record trovati: {{count($customers)}}</small>            
+            <small class="absolute right-2 top-2 text-gray-400 font-bold">Record trovati: {{count($customers)}}</small>
         @endif
         <table class="min-w-full divide-y-2 divide-color-efefef border-b-2 border-color-efefef">
             <thead class="customHead">
@@ -31,7 +31,7 @@
                     <th scope="col" class="px-3 py-3.5 font-light">
                         Nome
                     </th>
-                    <th scope="col" class="px-3 py-3.5 font-light">
+                    <th scope="col" class="px-3 py-3.5 font-light hidden xl:table-cell">
                         Data di nascita
                     </th>
                     <th scope="col" class="px-3 py-3.5 font-light">
@@ -43,12 +43,12 @@
                     <th scope="col" class="px-3 py-3.5 font-light hidden xl:table-cell">
                         Telefono 2
                     </th>
-                    <th scope="col" class="px-3 py-3.5 font-light hidden xl:table-cell">
+                    <th scope="col" class="px-3 py-3.5 font-light">
                         Utente
                     </th>
                 </tr>
             </thead>
-            <tbody class="bg-white customBody no-scrollbar !max-h-[470px]"> 
+            <tbody class="bg-white customBody no-scrollbar !max-h-[470px]">
                 @if ($customers->count() > 0)
                     @foreach($customers as $customer)
                         <tr class="text-center even:bg-color-f7f7f7">
@@ -57,17 +57,17 @@
                             @endrole
                             <td class="border-r-2 border-color-efefef py-4 px-3 text-color-2c2c2c capitalize">{{$customer->lastName}}</td>
                             <td class="border-r-2 border-color-efefef px-3 py-4 text-color-2c2c2c capitalize">{{$customer->name}}</td>
-                            <td class="border-r-2 border-color-efefef py-4 px-3">{{date("d/m/Y", strtotime($customer->date_of_birth))}}</td>
+                            <td class="border-r-2 border-color-efefef py-4 px-3 hidden xl:table-cell">{{date("d/m/Y", strtotime($customer->date_of_birth))}}</td>
                             <td class="border-r-2 border-color-efefef px-3 py-4 text-color-2c2c2c">
-                                <div class="w-fit m-auto"> 
-                                    <button class="bg-color-347af2/30 flex items-center justify-center px-3 py-2 rounded-full">
+                                <div class="w-fit m-auto">
+                                    <button wire:click="$dispatch('openModal', { component: 'registry.modals.chronology', arguments: {customer: {{$customer->id}}} })" class="bg-color-347af2/30 flex items-center justify-center px-3 py-2 rounded-full">
                                         <x-icons name="show" class="w-5" />
                                     </button>
                                 </div>
                             </td>
                             <td class="border-r-2 border-color-efefef px-3 py-4 text-color-2c2c2c">{{$customer->phone_1}}</td>
                             <td class="border-r-2 border-color-efefef px-3 py-4 text-color-2c2c2c hidden xl:table-cell">{{$customer->phone_2}}</td>
-                            <td class="px-3 py-4 text-color-2c2c2c hidden xl:table-cell">
+                            <td class="px-3 py-4 text-color-2c2c2c">
                                 <div class="w-fit m-auto">
                                     <button wire:click="show({{$customer->id}})" class="bg-color-347af2/30 flex items-center justify-center px-3 py-2 rounded-full">
                                         <x-icons name="show" class="w-5" />
@@ -86,4 +86,3 @@
     </div>
 
 </div>
- 

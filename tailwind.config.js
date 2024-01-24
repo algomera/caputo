@@ -17,6 +17,10 @@ export default {
         {
             pattern: /color-./
         },
+        {
+            pattern: /max-w-screen/,
+            variants: ['sm', 'md', 'lg', 'xl', '2xl'],
+        }
     ],
 
 
