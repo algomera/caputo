@@ -1,6 +1,6 @@
 <div class="px-14 py-8 flex flex-col gap-4">
     @if ($action)
-        <h1 class="text-3xl font-bold text-color-17489f capitalize mb-5">{{$documentForm->document->identificationType->name}}</h1>
+        <h1 class="text-3xl font-bold text-color-17489f capitalize mb-5">{{$documentForm->identificationDocument->identificationType->name}}</h1>
     @else
         <h1 class="text-3xl font-bold text-color-17489f capitalize mb-5">Nuovo Documento</h1>
     @endif

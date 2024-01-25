@@ -19,28 +19,12 @@ class Customer extends Model
         return $this->belongsTo(School::class);
     }
 
-    public function patent() {
-        return $this->identificationDocuments()->where('identification_type_id', 2)->first();
-    }
-
     public function identificationDocuments(): HasMany {
         return $this->hasMany(IdentificationDocument::class);
     }
 
-    public function otherIdentificationDocuments() {
-        $typeDocuments = IdentificationType::whereDoesntHave('identificationDocuments', function($query) {
-            $query->whereIn('customer_id', [$this->id]);
-        })->get();
-
-        return $typeDocuments;
-    }
-
     public function registrations(): HasMany {
         return $this->hasMany(Registration::class);
-    }
-
-    public function chronologies(): HasManyThrough {
-        return $this->HasManyThrough(Chronology::class, Registration::class);
     }
 
     public function presences(): HasMany {
@@ -59,8 +43,8 @@ class Customer extends Model
         return $this->morphMany(Document::class, 'documentable');
     }
 
-    public function photo() {
-        return $this->documents()->where('type', 'fototessera');
+    public function chronologies(): MorphMany {
+        return $this->MorphMany(Chronology::class, 'chronology');
     }
 
     public function customerDocuments(): MorphMany {
@@ -85,5 +69,21 @@ class Customer extends Model
 
     public function companionsSignatures(): MorphMany {
         return $this->morphMany(Document::class, 'documentable')->where('type', 'like', '%'.'firma accompagnatore'.'%');
+    }
+
+    public function photo() {
+        return $this->documents()->where('type', 'fototessera');
+    }
+
+    public function patent() {
+        return $this->identificationDocuments()->where('identification_type_id', 2)->first();
+    }
+
+    public function otherIdentificationDocuments() {
+        $typeDocuments = IdentificationType::whereDoesntHave('identificationDocuments', function($query) {
+            $query->whereIn('customer_id', [$this->id]);
+        })->get();
+
+        return $typeDocuments;
     }
 }

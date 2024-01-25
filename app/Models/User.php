@@ -46,6 +46,10 @@ class User extends Authenticatable
        return $this->belongsToMany(School::class);
     }
 
+    public function medicals(): HasMany {
+        return $this->hasMany(MedicalPlanning::class);
+    }
+
     public function getRoleAttribute() {
         return $this->roles[0];
     }
@@ -59,10 +63,6 @@ class User extends Authenticatable
             'istruttore' => 'service',
             'segretaria' => 'service',
         };
-    }
-
-    public function medicals(): HasMany {
-        return $this->hasMany(MedicalPlanning::class);
     }
 
     public function isAdmin() {

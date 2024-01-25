@@ -5,7 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class Chronology extends Model
 {
@@ -14,15 +16,15 @@ class Chronology extends Model
 
     protected $guarded = [];
 
-    public function customer() {
-        return $this->BelongsToThrough(Customer::class, Registration::class);
+    public function chronology(): MorphTo {
+        return $this->morphTo();
     }
 
     public function registration(): BelongsTo {
-        return $this->belongsTo(Registration::class);
+        return $this->BelongsTo(Registration::class);
     }
 
-    public function document(): MorphOne {
-        return $this->morphOne(Document::class, 'documentable');
+    public function customer(): BelongsTo {
+        return $this->belongsTo(Customer::class);
     }
 }

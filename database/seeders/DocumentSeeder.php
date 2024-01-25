@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Chronology;
 use App\Models\Customer;
 use App\Models\Document;
+use App\Models\Payment;
 use App\Models\Registration;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -18,7 +19,8 @@ class DocumentSeeder extends Seeder
     {
         $registrations = Registration::all();
         $customers = Customer::all();
-        $chronologies = Chronology::all();
+        $payments = Payment::all();
+
         $documents = [
             [
                 'type' => 'fototessera',
@@ -54,13 +56,11 @@ class DocumentSeeder extends Seeder
             }
         }
 
-        foreach ($chronologies as $chronology) {
-            if (str_contains($chronology->title, 'Pagamento')) {
-                $chronology->document()->create([
-                    'type' => 'Pagamento',
-                    'path' => fake()->imageUrl(245, 245, 'Personal', true, 'Payment', false, 'jpg')
-                ]);
-            }
+        foreach ($payments as $payment) {
+            $payment->documents()->create([
+                'type' => 'Pagamento',
+                'path' => fake()->imageUrl(245, 245, 'Personal', true, 'Payment', false, 'jpg')
+            ]);
         }
     }
 }

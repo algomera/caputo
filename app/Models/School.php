@@ -19,6 +19,26 @@ class School extends Model
         return $this->belongsToMany(User::class);
     }
 
+    public function services(): BelongsToMany {
+        return $this->belongsToMany(Service::class, 'school_service');
+    }
+
+    public function customers(): HasMany {
+        return $this->hasMany(Customer::class);
+    }
+
+    public function trainings(): HasMany {
+        return $this->hasMany(Training::class);
+    }
+
+    public function registrations(): HasManyThrough {
+        return $this->hasManyThrough(Registration::class, Training::class);
+    }
+
+    public function medicalVisits(): HasManyThrough {
+        return $this->hasManyThrough(Registration::class, Training::class)->whereJsonContains('optionals', 15)->with('customer', 'course', 'medicalPlanning');
+    }
+
     public function teachers() {
         $teacher = $this->users()->whereHas('roles', function ($query) {
             $query->where('name', 'insegnante');
@@ -43,14 +63,6 @@ class School extends Model
         return $secretary;
     }
 
-    public function customers(): HasMany {
-        return $this->hasMany(Customer::class);
-    }
-
-    public function services(): BelongsToMany {
-        return $this->belongsToMany(Service::class, 'school_service');
-    }
-
     public function otherServices() {
         $servicesNotAssociated = Service::whereDoesntHave('schools', function($query) {
             $query->whereIn('school_id', [$this->id]);
@@ -58,17 +70,4 @@ class School extends Model
 
         return $servicesNotAssociated;
     }
-
-    public function registrations(): HasManyThrough {
-        return $this->hasManyThrough(Registration::class, Training::class);
-    }
-
-    public function medicalVisits(): HasManyThrough {
-        return $this->hasManyThrough(Registration::class, Training::class)->whereJsonContains('optionals', 15)->with('customer', 'course', 'medicalPlanning');
-    }
-
-    public function trainings(): HasMany {
-        return $this->hasMany(Training::class);
-    }
-
 }

@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('chronologies', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('registration_id')->constrained()->onDelete('cascade');
+            $table->string('chronology_type');
+            $table->integer('chronology_id');
             $table->string('title');
             $table->longText('content')->nullable();
             $table->timestamps();

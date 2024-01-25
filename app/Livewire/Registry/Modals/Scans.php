@@ -5,18 +5,37 @@ namespace App\Livewire\Registry\Modals;
 use App\Models\Customer;
 use App\Models\Registration;
 use LivewireUI\Modal\ModalComponent;
+use Livewire\WithFileUploads;
+use App\Livewire\Forms\CustomerForm;
+use Livewire\Attributes\On;
 
 class Scans extends ModalComponent
 {
-    public $scans;
-    public $registration;
+    use WithFileUploads;
 
+    public CustomerForm $customerForm;
+    public $customer;
+
+    public $registration;
+    public $scans;
+    public $newScan;
+
+    #[On('updateScan')]
     public function mount($customer = null, $registration = null) {
         if ($customer) {
-            $this->scans = Customer::find($customer)->documents()->whereNotIn('type', ['fototessera', 'firma'])->get();
+            $this->customer = Customer::find($customer);
+            $this->scans = $this->customer->documents()->whereNotIn('type', ['fototessera', 'firma'])->get();
         } elseif ($registration) {
-            $this->scans = Registration::find($registration)->documents()->get();
             $this->registration = Registration::find($registration)->course->name;
+            $this->scans = Registration::find($registration)->documents()->get();
+            $this->dispatch('selectedRegistration', $registration);
+        }
+    }
+
+    public function updated($property) {
+        if ($property == 'newScan') {
+            $this->customerForm->newScan($this->customer->id, $this->newScan);
+            $this->mount($this->customer->id);
         }
     }
 

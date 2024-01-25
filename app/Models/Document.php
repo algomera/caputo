@@ -18,10 +18,14 @@ class Document extends Model
 	}
 
     public function customer(): BelongsTo {
-        return $this->belongsTo(Customer::class);
+        return $this->belongsTo(Customer::class, 'documentable_id');
     }
 
-    public function chronology(): BelongsTo {
-        return $this->belongsTo(Chronology::class);
+    public function payment(): BelongsTo {
+        return $this->belongsTo(Payment::class, 'documentable_id');
+    }
+
+    public function registration(): BelongsTo {
+        return $this->belongsTo(Registration::class, 'documentable_id');
     }
 }

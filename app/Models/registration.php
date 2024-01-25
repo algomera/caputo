@@ -33,10 +33,6 @@ class Registration extends Model
         return $this->hasOne(PinkSheet::class);
     }
 
-    public function chronologies(): HasMany {
-        return $this->hasMany(Chronology::class);
-    }
-
     public function drivingPlanning(): HasMany {
         return $this->hasMany(DrivingPlanning::class);
     }
@@ -47,6 +43,10 @@ class Registration extends Model
 
     public function documents(): MorphMany {
         return $this->morphMany(Document::class, 'documentable');
+    }
+
+    public function chronologies(): MorphMany {
+        return $this->MorphMany(Chronology::class, 'chronology');
     }
 
     public function course() {

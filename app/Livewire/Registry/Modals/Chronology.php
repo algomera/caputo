@@ -20,9 +20,9 @@ class Chronology extends ModalComponent
         }
     }
 
-    public static function modalMaxWidthClass(): string
+    public static function modalMaxWidth(): string
     {
-        return 'max-w-screen-xl 2xl:max-w-screen-2xl';
+        return '4xl';
     }
 
     public function render()

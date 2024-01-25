@@ -19,6 +19,10 @@ class Course extends Model
         return $this->belongsTo(Service::class);
     }
 
+    public function options(): BelongsToMany {
+        return $this->belongsToMany(Option::class, 'costs')->using(Cost::class);
+    }
+
     public function prices(): HasMany {
         return $this->hasMany(CoursePrice::class);
     }
@@ -31,20 +35,16 @@ class Course extends Model
         return $this->hasMany(Lesson::class);
     }
 
-    public function options(): BelongsToMany {
-        return $this->belongsToMany(Option::class, 'costs')->using(Cost::class);
-    }
-
-    public function getOptions(): MorphToMany {
-        return $this->morphToMany(Option::class, 'costs');
-    }
-
     public function trainings(): HasMany {
         return $this->hasMany(Training::class);
     }
 
     public function interested(): HasMany {
         return $this->hasMany(InterestedCourses::class);
+    }
+
+    public function getOptions(): MorphToMany {
+        return $this->morphToMany(Option::class, 'costs');
     }
 
     public function getDurationAttribute() {

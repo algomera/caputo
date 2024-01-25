@@ -15,7 +15,7 @@ class DeleteDocument extends ModalComponent
     }
 
     public function delete() {
-        $customer = $this->documentForm->document->customer_id;
+        $customer = $this->documentForm->identificationDocument->customer_id;
         $this->documentForm->delete();
 
         $this->closeModalWithEvents([

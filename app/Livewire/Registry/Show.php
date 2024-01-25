@@ -8,7 +8,6 @@ use App\Livewire\Forms\DocumentForm;
 use Livewire\WithFileUploads;
 use Livewire\Attributes\On;
 
-
 class Show extends Component
 {
     use WithFileUploads;
@@ -16,9 +15,11 @@ class Show extends Component
     public CustomerForm $customerForm;
     public DocumentForm $documentForm;
     public $registrations;
+    public $registrationId;
     public $documents;
     public $modify = false;
     public $photo;
+    public $signature;
 
     #[On('updateDocument')]
     public function mount($customer) {
@@ -35,6 +36,15 @@ class Show extends Component
         if ($property == 'modify') {
             $this->dispatch('modifyData', $this->modify);
         }
+        if ($property == 'signature') {
+            $this->customerForm->newSignature($this->signature, $this->registrationId);
+            $this->dispatch('updateScan', registration: $this->registrationId);
+        }
+    }
+
+    #[On('selectedRegistration')]
+    public function setRegistration($id) {
+        $this->registrationId = $id;
     }
 
     public function save() {

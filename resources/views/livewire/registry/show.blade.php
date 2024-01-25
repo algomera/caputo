@@ -16,7 +16,7 @@
                 <x-fake-input width="w-48" label="Data acquisizione" uppercase="">{{date("d/m/Y", strtotime($customerForm->customer->created_at))}}</x-fake-input>
             </div>
             <div class="flex items-center gap-2">
-                <button wire:click="$dispatch('openModal', { component: 'registry.modals.chronology', arguments: {customer: {{$customerForm->customer->id}}} })" class="px-4 py-1 text-color-2c2c2c font-medium capitalize rounded-full bg-color-ffb205/30 hover:scale-105 transition-all duration-300">Cronologia generale</button>
+                <button wire:click="$dispatch('openModal', { component: 'registry.modals.chronology', arguments: {customer: {{$customerForm->customer->id}}} })" class="px-4 py-1 text-color-2c2c2c font-medium capitalize rounded-full bg-color-ffb205/30 hover:scale-105 transition-all duration-300">Cronologia cliente</button>
                 <button wire:click="$dispatch('openModal', { component: 'registry.modals.scans', arguments: {customer: {{$customerForm->customer->id}}} })" class="px-4 py-1 text-color-2c2c2c font-medium capitalize rounded-full bg-color-ffb205/30 hover:scale-105 transition-all duration-300">Scansioni</button>
                 @if ($modify)
                     <button wire:click="$set('modify', false)" class="px-4 py-1 text-color-2c2c2c font-medium capitalize rounded-full bg-red-500/60 hover:scale-105 transition-all duration-300">Disabilita Modifica</button>
@@ -124,7 +124,7 @@
                                 <div wire:click="$dispatch('openModal', { component: 'registry.modals.document', arguments: {customer: {{$customerForm->customer->id}}, document: {{$document->id}}, action: 'edit'} })" class="hover:scale-105 transition-all duration-300 cursor-pointer">
                                     <x-icons name="b-edit" />
                                 </div>
-                                @role('admin')
+                                @role('admin|responsabile sede')
                                 <div wire:click="$dispatch('openModal', { component: 'registry.modals.delete-document', arguments: {document: {{$document->id}}} })" class="hover:scale-105 transition-all duration-300 cursor-pointer">
                                     <x-icons name="b-delete" />
                                 </div>
@@ -207,3 +207,24 @@
         })
     </script>
 @endpush --}}
+
+@push('scripts')
+    <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('signaturePad', () => ({
+                signaturePadInstance: null,
+                init(){
+                    this.signaturePadInstance = new SignaturePad(this.$refs.signature_canvas);
+                },
+                clearSignature(){
+                    this.signaturePadInstance.clear();
+                },
+                uploadSignature(){
+                    @this.set('signature', this.signaturePadInstance.toDataURL('image/png'));
+                    @this.dispatch('closeModal');
+                },
+            }))
+        })
+    </script>
+@endpush
+

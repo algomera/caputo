@@ -3,10 +3,13 @@
 namespace App\Livewire\Forms;
 
 use App\Models\Customer;
+use App\Models\Document;
+use App\Models\IdentificationType;
 use App\Models\Registration;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
 use Illuminate\Support\Facades\Storage;
+use ReflectionClass;
 
 class CustomerForm extends Form
 {
@@ -127,6 +130,10 @@ class CustomerForm extends Form
             'phone_1' => $this->phone_1,
             'phone_2' => $this->phone_2,
         ]);
+
+        $this->newCustomer->chronologies()->create([
+            'title' => 'Registrazione cliente'
+        ]);
     }
 
     public function photo($photo) {
@@ -140,6 +147,10 @@ class CustomerForm extends Form
                     'path' => 'storage/app/'.$path
                 ]
             );
+
+            $this->customer->chronologies()->create([
+                'title' => 'Inserimento fototessera'
+            ]);
         } elseif ($this->newCustomer) {
             $path = Storage::putFileAs('customers/customer-'.$this->newCustomer->id, $photo, 'fototessera.png');
 
@@ -150,6 +161,10 @@ class CustomerForm extends Form
                     'path' => 'storage/app/'.$path
                 ]
             );
+
+            $this->newCustomer->chronologies()->create([
+                'title' => 'Inserimento fototessera'
+            ]);
         }
     }
 
@@ -163,6 +178,12 @@ class CustomerForm extends Form
                 'document_expiration' => $document['document_expiration'],
                 'qualification' => array_key_exists('qualification', $document) ? json_encode($document['qualification']) : null
             ]);
+
+            $document = IdentificationType::find($document['identification_type_id']);
+
+            $this->newCustomer->chronologies()->create([
+                'title' => 'Inserimento '. $document->name
+            ]);
         }
     }
 
@@ -173,7 +194,25 @@ class CustomerForm extends Form
                 'type' => 'documenti di riconoscimento',
                 'path' => 'storage/app/'.$path
             ]);
+
+            $this->newCustomer->chronologies()->create([
+                'title' => 'Scansione cliente: '. $scan->getClientOriginalName()
+            ]);
         }
+    }
+
+    public function newScan($customer, $scan) {
+        $this->customer = Customer::find($customer);
+        $path = Storage::putFileAs('customers/customer-'.$this->customer->id, $scan, str_replace(' ', '_', $scan->getClientOriginalName()));
+
+        $this->customer->documents()->create([
+            'type' => 'Scansione: '. $scan->getClientOriginalName(),
+            'path' => 'storage/app/'.$path
+        ]);
+
+        $this->customer->chronologies()->create([
+            'title' => 'Scansione: '. $scan->getClientOriginalName()
+        ]);
     }
 
     public function parentScans($scans, $registrationId) {
@@ -184,6 +223,10 @@ class CustomerForm extends Form
             $registration->documents()->create([
                 'type' => 'documenti di riconoscimento genitori',
                 'path' => 'storage/app/'.$path
+            ]);
+
+            $registration->chronologies()->create([
+                'title' => 'Scansione genitore: '. $scan->getClientOriginalName()
             ]);
         }
     }
@@ -197,6 +240,10 @@ class CustomerForm extends Form
                 'type' => 'documenti di riconoscimento accompagnatore-'.$key,
                 'path' => 'storage/app/'.$path
             ]);
+
+            $registration->chronologies()->create([
+                'title' => 'Scansione accompagnatore-'.$key.': '. $scan->getClientOriginalName()
+            ]);
         }
     }
 
@@ -209,6 +256,10 @@ class CustomerForm extends Form
                 'path' => 'storage/app/'.$path
             ]
         );
+
+        $this->newCustomer->chronologies()->create([
+            'title' => 'Aquisizione firma cliente'
+        ]);
     }
 
     public function parentSignature($signature, $registrationId) {
@@ -222,6 +273,25 @@ class CustomerForm extends Form
                 'path' => 'storage/app/'.$path
             ]
         );
+
+        $registration->chronologies()->create([
+            'title' => 'Aquisizione firma genitore '
+        ]);
+    }
+
+    public function newSignature($signature, $registrationId) {
+        $registration = Registration::find($registrationId);
+
+        $path = Storage::putFileAs('customers/customer-'.$this->customer->id.'/parent', $signature, 'firma_parente.png');
+
+        $registration->documents()->create([
+            'type' => 'firma parente',
+            'path' => 'storage/app/'.$path
+        ]);
+
+        $registration->chronologies()->create([
+            'title' => 'Aquisizione firma parente'
+        ]);
     }
 
     public function companionsSignature($signatures, $registrationId) {
@@ -237,11 +307,39 @@ class CustomerForm extends Form
                     'path' => 'storage/app/'.$path
                 ]
             );
+
+            $registration->chronologies()->create([
+                'title' => 'Aquisizione firma accompagnatore-'.$key
+            ]);
         }
     }
 
     public function update() {
         $this->validate();
         $this->customer->update($this->validate());
+    }
+
+    public function deleteScan($scan) {
+        $document = Document::find($scan);
+        $type = $document->documentable_type;
+        $documentClass = new ReflectionClass($type);
+        $className = $documentClass->getShortName();
+
+        $document->delete();
+
+        if ($className == 'Customer') {
+            $customer = Customer::find($document->documentable_id);
+
+            $customer->chronologies()->create([
+                'title' => 'Eliminazione '. $document->type
+            ]);
+        } else {
+            $registration = Registration::find($document->documentable_id);
+
+            $registration->chronologies()->create([
+                'title' => 'Eliminazione '. $document->type
+            ]);
+        }
+        $this->reset();
     }
 }

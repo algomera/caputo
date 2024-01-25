@@ -4,6 +4,7 @@ namespace App\Livewire\Forms;
 
 use App\Models\Customer;
 use App\Models\IdentificationDocument;
+use App\Models\IdentificationType;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
 
@@ -13,7 +14,7 @@ class DocumentForm extends Form
     public $patent;
     public $qualification;
 
-    public $document;
+    public $identificationDocument;
     public $identification_type_id;
     public $n_document;
     public $document_release;
@@ -59,10 +60,10 @@ class DocumentForm extends Form
     }
 
     public function setDocument($documentId) {
-        $this->document = IdentificationDocument::find($documentId);
-        if ($this->document) {
+        $this->identificationDocument = IdentificationDocument::find($documentId);
+        if ($this->identificationDocument) {
             $this->fill(
-                $this->document->only(
+                $this->identificationDocument->only(
                     'identification_type_id',
                     'n_document',
                     'document_release',
@@ -88,21 +89,39 @@ class DocumentForm extends Form
             'document_from' => $this->document_from,
             'document_expiration' => $this->document_expiration,
         ]);
+
+        $document = IdentificationType::find($this->identification_type_id);
+
+        $customer->chronologies()->create([
+            'title' => 'Inserimento '. $document->name
+        ]);
     }
 
     public function update() {
         $this->validate();
 
-        $this->document->update([
+        $this->identificationDocument->update([
             'n_document' => $this->n_document,
             'document_release' => $this->document_release,
             'document_from' => $this->document_from,
             'document_expiration' => $this->document_expiration,
         ]);
+
+        $customer = $this->identificationDocument->customer()->first();
+
+        $customer->chronologies()->create([
+            'title' => 'Modifica documento '. $this->identificationDocument->identificationType()->first()->name
+        ]);
     }
 
     public function delete() {
-        $this->document->delete();
+        $this->identificationDocument->delete();
+
+        $customer = $this->identificationDocument->customer()->first();
+
+        $customer->chronologies()->create([
+            'title' => 'Eliminazione documento '. $this->identificationDocument->identificationType()->first()->name
+        ]);
     }
 
 }

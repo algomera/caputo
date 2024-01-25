@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\chronology;
+use App\Models\Customer;
 use App\Models\Registration;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -14,23 +15,41 @@ class ChronologySeeder extends Seeder
      */
     public function run(): void
     {
+        $customers = Customer::all();
         $registrations = Registration::all();
 
-        $title = [
-            'Pagamento PagoPa',
+        $customerChronology = [
+            'Registrazione cliente',
+            'Modifica dati',
+            'Inserimento file',
+            'Inserimento documento',
+            'Modifica documento',
+            'Consegna documenti',
+        ];
+
+        $registrationChronology = [
             'Pagamento iscrizione',
-            'Conferma visita',
-            'Proposta appuntamento visita',
+            'Pagamento PagoPa',
+            'Invio messaggio appuntamento visita medica',
             'Prenotazione guida',
+            'Pagamento guida',
             'Prenotazione esame',
             'Consegna Patente'
         ];
 
+        foreach ($customers as $customer) {
+            for ($i=0; $i < count($customerChronology); $i++) {
+                $customer->chronologies()->create([
+                    'title' => $customerChronology[$i],
+                    'content' => fake()->paragraph()
+                ]);
+            }
+        }
+
         foreach ($registrations as $registration) {
-            for ($i=0; $i < 5; $i++) {
-                Chronology::create([
-                    'registration_id' => $registration->id,
-                    'title' => fake()->randomElement($title),
+            for ($i=0; $i < count($registrationChronology); $i++) {
+                $registration->chronologies()->create([
+                    'title' => $registrationChronology[$i],
                     'content' => fake()->paragraph()
                 ]);
             }
