@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('paymentable_type');
             $table->integer('paymentable_id');
+            $table->longText('note')->nullable();
             $table->decimal('amount');
             $table->timestamps();
         });

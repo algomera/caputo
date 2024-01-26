@@ -2,7 +2,7 @@
 
     <div class="flex items-end justify-between">
         <h1 class="text-5xl font-bold text-color-17489f capitalize">Scansioni
-            <span class="text-2xl">{{$registration}}</span>
+            <span class="text-2xl">{{$courseName}}</span>
         </h1>
 
         <div class="flex items-center gap-4">
@@ -30,7 +30,7 @@
                 @if ($scans->count() > 0)
                     @foreach($scans as $scan)
                         <tr class="text-center even:bg-color-f7f7f7">
-                            <td class="border-r-2 border-color-efefef py-4 px-3  text-sm">{{date("d/m/Y", strtotime($scan->created_at))}}</td>
+                            <td class="border-r-2 border-color-efefef py-4 px-3  text-sm">{{date("d/m/Y H:i", strtotime($scan->updated_at))}}</td>
                             <td colspan="5" class="border-r-2 border-color-efefef text-left font-medium px-3 py-4 text-color-2c2c2c capitalize">{{$scan->type}}</td>
                             <td class="border-r-2 border-color-efefef px-3 py-4 text-color-2c2c2c capitalize">
                                 <div class="w-fit flex items-center gap-2 m-auto">

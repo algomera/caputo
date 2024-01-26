@@ -33,4 +33,15 @@ class DrivingPlanning extends Model
     public function payments(): MorphMany {
         return $this->morphMany(Payment::class, 'paymentable');
     }
+
+    public function getSumPaymentsAttribute() {
+        $payments = $this->payments()->get();
+        $sum = 0;
+
+        foreach ($payments as $payment) {
+            $sum += $payment->amount;
+        }
+
+        return $sum;
+    }
 }

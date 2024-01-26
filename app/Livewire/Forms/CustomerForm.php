@@ -5,7 +5,9 @@ namespace App\Livewire\Forms;
 use App\Models\Customer;
 use App\Models\Document;
 use App\Models\IdentificationType;
+use App\Models\Payment;
 use App\Models\Registration;
+use Illuminate\Support\Facades\File;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
 use Illuminate\Support\Facades\Storage;
@@ -201,18 +203,31 @@ class CustomerForm extends Form
         }
     }
 
-    public function newScan($customer, $scan) {
+    public function newScan($customer, $scan, $registrationId = null) {
         $this->customer = Customer::find($customer);
         $path = Storage::putFileAs('customers/customer-'.$this->customer->id, $scan, str_replace(' ', '_', $scan->getClientOriginalName()));
 
-        $this->customer->documents()->create([
-            'type' => 'Scansione: '. $scan->getClientOriginalName(),
-            'path' => 'storage/app/'.$path
-        ]);
+        if ($registrationId) {
+            $registration = Registration::find($registrationId);
 
-        $this->customer->chronologies()->create([
-            'title' => 'Scansione: '. $scan->getClientOriginalName()
-        ]);
+            $registration->documents()->create([
+                'type' => 'Scansione: '. $scan->getClientOriginalName(),
+                'path' => 'storage/app/'.$path
+            ]);
+
+            $registration->chronologies()->create([
+                'title' => 'Scansione: '. $scan->getClientOriginalName()
+            ]);
+        } else {
+            $this->customer->documents()->create([
+                'type' => 'Scansione: '. $scan->getClientOriginalName(),
+                'path' => 'storage/app/'.$path
+            ]);
+
+            $this->customer->chronologies()->create([
+                'title' => 'Scansione: '. $scan->getClientOriginalName()
+            ]);
+        }
     }
 
     public function parentScans($scans, $registrationId) {
@@ -245,6 +260,43 @@ class CustomerForm extends Form
                 'title' => 'Scansione accompagnatore-'.$key.': '. $scan->getClientOriginalName()
             ]);
         }
+    }
+
+    public function updateScan($id, $scan) {
+        $document = Document::find($id);
+        $type = $document->documentable_type;
+        $documentClass = new ReflectionClass($type);
+        $className = $documentClass->getShortName();
+
+        if ($className == 'Customer') {
+            $customer = Customer::find($document->documentable_id);
+            $path = Storage::putFileAs('customers/customer-'.$document->documentable_id.'/parent', $scan, str_replace(' ', '_', $scan->getClientOriginalName()));
+
+            $customer->chronologies()->create([
+                'title' => 'Aggiornamento '. $document->type
+            ]);
+        } elseif ($className == 'Registration') {
+            $registration = Registration::find($document->documentable_id);
+            $path = Storage::putFileAs('customers/customer-'.$document->documentable_id.'/parent', $scan, str_replace(' ', '_', $scan->getClientOriginalName()));
+
+            $registration->chronologies()->create([
+                'title' => 'Aggiornamento '. $document->type
+            ]);
+        } elseif ($className == 'Payment') {
+            $payment = Payment::find($document->documentable_id);
+            $registration = $payment->registration;
+            $path = Storage::putFileAs('customers/customer-'.$document->documentable_id.'/'.$registration->course->slug.'/payments', $scan, str_replace(' ', '_', $scan->getClientOriginalName()));
+
+            $registration->chronologies()->create([
+                'title' => 'Aggiornamento '. $document->type
+            ]);
+        }
+
+        $document->update([
+            'path' => 'storage/app/'.$path
+        ]);
+
+        $this->reset();
     }
 
     public function signature($signature) {

@@ -27,7 +27,7 @@ class Payment extends Model
         return $this->belongsTo(DrivingPlanning::class, 'paymentable_id');
     }
 
-    public function documents(): MorphMany {
+    public function document(): MorphMany {
         return $this->morphMany(Document::class, 'documentable');
     }
 }

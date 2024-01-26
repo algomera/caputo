@@ -147,11 +147,16 @@
         @if (count($registrations) > 0)
             @foreach ($registrations as $registration)
                 <div class="w-full flex flex-col items-start gap-5 border-t pt-4 relative">
-                    <div class="flex gap-2">
-                        <p class="mr-5">Tipo di iscrizione: <span @class(["font-bold", 'text-color-'. get_color($registration->course->service->name)])>{{$registration->course->name}}</span></p>
-                        <button class="px-4 py-1 text-color-2c2c2c font-medium capitalize rounded-full bg-color-ffb205/30 hover:scale-105 transition-all duration-300">continua accettazione</button>
-                        <button wire:click="$dispatch('openModal', { component: 'registry.modals.scans', arguments: {registration: {{$registration->id}}} })" class="px-4 py-1 text-color-2c2c2c font-medium capitalize rounded-full bg-color-ffb205/30 hover:scale-105 transition-all duration-300">Scansioni/Firme</button>
-                        <button wire:click="$dispatch('openModal', { component: 'registry.modals.chronology', arguments: {registration: {{$registration->id}}} })" class="px-4 py-1 text-color-2c2c2c font-medium capitalize rounded-full bg-color-ffb205/30 hover:scale-105 transition-all duration-300">cronologia pratica</button>
+                    <div class="w-full flex items-center justify-between">
+                        <div class="flex gap-2">
+                            <p class="mr-5">Tipo di iscrizione: <span @class(["font-bold", 'text-color-'. get_color($registration->course->service->name)])>{{$registration->course->name}}</span></p>
+                            <button class="px-4 py-1 text-color-2c2c2c font-medium capitalize rounded-full bg-color-ffb205/30 hover:scale-105 transition-all duration-300">continua accettazione</button>
+                            <button wire:click="$dispatch('openModal', { component: 'registry.modals.scans', arguments: {registration: {{$registration->id}}} })" class="px-4 py-1 text-color-2c2c2c font-medium capitalize rounded-full bg-color-ffb205/30 hover:scale-105 transition-all duration-300">Scansioni/Firme</button>
+                        </div>
+                        <div class="flex gap-2">
+                            <button wire:click="$dispatch('openModal', { component: 'registry.modals.payments', arguments: {registration: {{$registration->id}}} })" class="px-4 py-1 text-color-2c2c2c font-medium capitalize rounded-full bg-color-ffb205/30 hover:scale-105 transition-all duration-300">pagamenti</button>
+                            <button wire:click="$dispatch('openModal', { component: 'registry.modals.chronology', arguments: {registration: {{$registration->id}}} })" class="px-4 py-1 text-color-2c2c2c font-medium capitalize rounded-full bg-color-ffb205/30 hover:scale-105 transition-all duration-300">cronologia</button>
+                        </div>
                     </div>
 
                     <div class="flex items-center gap-2">
@@ -161,7 +166,7 @@
                             <x-fake-input width="grow 2xl:w-48" label="N. Protocollo" uppercase="uppercase">{{$registration->medicalPlanning->protocol ?? '---'}}</x-fake-input>
                             <x-fake-input width="grow 2xl:w-48" label="Emissione Protocollo">{{$registration->medicalPlanning->protocol_release ? date("d/m/Y", strtotime($registration->medicalPlanning->protocol_release)) : '---'}}</x-fake-input>
                             <x-fake-input width="grow 2xl:w-48" label="Scadenza Protocollo">{{$registration->medicalPlanning->protocol_expiration ? date("d/m/Y", strtotime($registration->medicalPlanning->protocol_expiration)) : '---'}}</x-fake-input>
-                            <x-fake-input width="grow 2xl:w-48" label="Visita medica">{{$registration->medicalPlanning->booked}}</x-fake-input>
+                            <x-fake-input width="grow 2xl:w-48" label="Visita medica">{{date("d/m/Y", strtotime($registration->medicalPlanning->booked))}}</x-fake-input>
                         @endif
                     </div>
                     @if ($registration->pinkSheet)

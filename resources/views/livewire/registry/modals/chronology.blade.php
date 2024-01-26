@@ -17,8 +17,8 @@
                         <tr class="text-center even:bg-color-f7f7f7">
                             <td class="border-r-2 border-color-efefef py-4 px-3  text-sm">
                                 <div class="flex items-center justify-center gap-1">
-                                    <span>{{date("d/m/Y", strtotime($chronology->created_at))}}</span>-
-                                    <span class=" text-color-01a53a">{{date("H:i", strtotime($chronology->created_at))}}</span>
+                                    <span>{{date("d/m/Y", strtotime($chronology->updated_at))}}</span>-
+                                    <span class=" text-color-01a53a">{{date("H:i", strtotime($chronology->updated_at))}}</span>
                                 </div>
                             </td>
                             <td colspan="3" class="border-r-2 border-color-efefef text-left font-medium px-3 py-4 text-color-2c2c2c capitalize">{{$chronology->title}}</td>

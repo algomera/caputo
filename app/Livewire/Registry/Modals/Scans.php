@@ -17,8 +17,9 @@ class Scans extends ModalComponent
     public $customer;
 
     public $registration;
+    public $courseName;
     public $scans;
-    public $newScan;
+    public $newScan = null;
 
     #[On('updateScan')]
     public function mount($customer = null, $registration = null) {
@@ -26,16 +27,23 @@ class Scans extends ModalComponent
             $this->customer = Customer::find($customer);
             $this->scans = $this->customer->documents()->whereNotIn('type', ['fototessera', 'firma'])->get();
         } elseif ($registration) {
-            $this->registration = Registration::find($registration)->course->name;
-            $this->scans = Registration::find($registration)->documents()->get();
+            $this->registration = Registration::find($registration);
+            $this->courseName = $this->registration->course->name;
+            $this->customer = $this->registration->customer()->first();
+            $this->scans = $this->registration->documents()->get();
             $this->dispatch('selectedRegistration', $registration);
         }
     }
 
     public function updated($property) {
         if ($property == 'newScan') {
-            $this->customerForm->newScan($this->customer->id, $this->newScan);
-            $this->mount($this->customer->id);
+            if ($this->registration) {
+                $this->customerForm->newScan($this->customer->id, $this->newScan, $this->registration->id);
+                return $this->mount(registration: $this->registration->id);
+            } else {
+                $this->customerForm->newScan($this->customer->id, $this->newScan);
+                return $this->mount(customer: $this->customer->id);
+            }
         }
     }
 
