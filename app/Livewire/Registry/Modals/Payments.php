@@ -5,19 +5,15 @@ namespace App\Livewire\Registry\Modals;
 use App\Models\Registration;
 use Livewire\Attributes\On;
 use LivewireUI\Modal\ModalComponent;
-use Livewire\WithFileUploads;
 
 class Payments extends ModalComponent
 {
-    use WithFileUploads;
-
     public $registration;
     public $registrationPayments;
     public $drivings;
     public $type = null;
     public $drivingPrice;
     public $selectedDriving = null;
-    public $newScan;
 
     #[On('updatePayment')]
     public function mount($registration) {
@@ -25,19 +21,15 @@ class Payments extends ModalComponent
         $this->registrationPayments = $this->registration->payments()->get();
         $this->drivings = $this->registration->drivingPlanning()->get();
         $this->drivingPrice = $this->registration->course->getOptions()->where('type', 'guide')->first()->price;
-    }
 
-    public function updated($property) {
-        if ($property == 'newScan') {
-            dd($property);
-            $this->customerForm->updateScan($this->scan->id, $this->newScan);
-            $this->mount($this->scan->id);
+        if (!count($this->drivings)) {
+            $this->type = 'iscrizione';
         }
     }
 
-    public static function modalMaxWidth(): string
+    public static function modalMaxWidthClass(): string
     {
-        return '7xl';
+        return 'max-w-screen-xl 2xl:max-w-screen-2xl';
     }
 
     public function render()

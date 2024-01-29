@@ -151,7 +151,7 @@ class CustomerForm extends Form
             );
 
             $this->customer->chronologies()->create([
-                'title' => 'Inserimento fototessera'
+                'title' => 'Aggiornamento fototessera'
             ]);
         } elseif ($this->newCustomer) {
             $path = Storage::putFileAs('customers/customer-'.$this->newCustomer->id, $photo, 'fototessera.png');
@@ -277,7 +277,7 @@ class CustomerForm extends Form
             ]);
         } elseif ($className == 'Registration') {
             $registration = Registration::find($document->documentable_id);
-            $path = Storage::putFileAs('customers/customer-'.$document->documentable_id.'/parent', $scan, str_replace(' ', '_', $scan->getClientOriginalName()));
+            $path = Storage::putFileAs('customers/customer-'.$registration->customer_id.'/parent', $scan, str_replace(' ', '_', $scan->getClientOriginalName()));
 
             $registration->chronologies()->create([
                 'title' => 'Aggiornamento '. $document->type
@@ -285,7 +285,7 @@ class CustomerForm extends Form
         } elseif ($className == 'Payment') {
             $payment = Payment::find($document->documentable_id);
             $registration = $payment->registration;
-            $path = Storage::putFileAs('customers/customer-'.$document->documentable_id.'/'.$registration->course->slug.'/payments', $scan, str_replace(' ', '_', $scan->getClientOriginalName()));
+            $path = Storage::putFileAs('customers/customer-'.$registration->customer_id.'/'.$registration->course->slug.'/payments', $scan, str_replace(' ', '_', $scan->getClientOriginalName()));
 
             $registration->chronologies()->create([
                 'title' => 'Aggiornamento '. $document->type

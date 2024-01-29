@@ -57,7 +57,7 @@ class DocumentSeeder extends Seeder
         }
 
         foreach ($payments as $payment) {
-            $payment->documents()->create([
+            $payment->document()->create([
                 'type' => 'Pagamento',
                 'path' => fake()->imageUrl(245, 245, 'Personal', true, 'Payment', false, 'jpg')
             ]);

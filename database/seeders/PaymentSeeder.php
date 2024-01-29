@@ -22,6 +22,8 @@ class PaymentSeeder extends Seeder
         foreach ($registrations as $registration) {
             for ($i=0; $i < 2; $i++) {
                 $registration->payments()->create([
+                    'note' => fake()->paragraph(),
+                    'type' => fake()->randomElement(['contanti', 'carta', 'bonifico']),
                     'amount' => fake()->randomFloat(2, 20, 600)
                 ]);
             }
@@ -30,6 +32,8 @@ class PaymentSeeder extends Seeder
         foreach ($drivings as $driving) {
             if ($driving->welded) {
                 $driving->payments()->create([
+                    'note' => fake()->paragraph(),
+                    'type' => fake()->randomElement(['contanti', 'carta', 'bonifico']),
                     'amount' => 20
                 ]);
             }
@@ -38,6 +42,8 @@ class PaymentSeeder extends Seeder
         foreach ($medicals as $medical) {
             if ($medical->welded) {
                 $medical->payments()->create([
+                    'note' => fake()->paragraph(),
+                    'type' => fake()->randomElement(['contanti', 'carta', 'bonifico']),
                     'amount' => 64.40
                 ]);
             }

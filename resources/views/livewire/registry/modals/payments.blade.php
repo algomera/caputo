@@ -1,4 +1,11 @@
 <div class="px-14 py-8 pb-16 flex flex-col gap-4">
+    @if ($type && count($this->drivings))
+        <div wire:click='$set("type", null)' class="flex items-center gap-2 group cursor-pointer ">
+            <x-icons name="arrow_back" class="group-hover:-translate-x-1 transition-all duration-300" />
+            <span class="text-lg text-color-808080 group-hover:underline">Indietro</span>
+        </div>
+    @endif
+
 
     <div class="w-full flex items-end justify-between ">
         <h1 class="text-5xl font-bold text-color-17489f capitalize">Pagamenti
@@ -7,22 +14,15 @@
                 <span class="text-xl">({{$type}})</span>
             @endif
         </h1>
-
-        @if ($type)
-            <div wire:click='$set("type", null)' class="flex items-center gap-2 group cursor-pointer ">
-                <x-icons name="arrow_back" class="group-hover:-translate-x-1 transition-all duration-300" />
-                <span class="text-lg text-color-808080 group-hover:underline">Indietro</span>
-            </div>
-        @endif
     </div>
 
     @if (!$type)
-        <div class="w-full m-auto flex flex-col gap-4 px-28 mt-10">
-            <div wire:click='$set("type", "iscrizione")' class="w-full h-24 flex items-center justify-center border rounded-md shadow-shadow-card hover:scale-105 transition-all duration-300 cursor-pointer">
+        <div class="w-full m-auto flex justify-center items-center gap-5 px-28 mt-10">
+            <div wire:click='$set("type", "iscrizione")' class="w-fit px-20 h-24 flex items-center justify-center border rounded-md shadow-shadow-card hover:scale-105 transition-all duration-300 cursor-pointer">
                 <p class="text-lg font-semibold uppercase text-color-2c2c2c">Iscrizione</p>
             </div>
             @if ($drivings->count() > 0)
-            <div wire:click='$set("type", "guide")' class="w-full h-24 flex items-center justify-center border rounded-md shadow-shadow-card hover:scale-105 transition-all duration-300 cursor-pointer">
+            <div wire:click='$set("type", "guide")' class="w-fit px-20 h-24 flex items-center justify-center border rounded-md shadow-shadow-card hover:scale-105 transition-all duration-300 cursor-pointer">
                 <p class="text-lg font-semibold uppercase text-color-2c2c2c">Guide prenotate</p>
             </div>
             @endif
@@ -40,9 +40,11 @@
                 <thead class="customHead">
                     <tr class="text-center text-color-545454">
                         <th scope="col" class="py-3.5 px-3 font-light">Data/Ora</th>
-                        <th colspan="3" scope="col" class="px-3 py-3.5 font-light text-left">Descrizione</th>
+                        <th colspan="3" scope="col" class="px-3 py-3.5 font-light text-left">Note</th>
+                        <th scope="col" class="px-3 py-3.5 font-light">Metodo</th>
+                        <th scope="col" class="px-3 py-3.5 font-light">Importo</th>
                         <th scope="col" class="px-3 py-3.5 font-light">Allegato</th>
-                        <th scope="col" class="px-3 py-3.5 font-light">Pagato</th>
+                        <th scope="col" class="px-3 py-3.5 font-light">&nbsp;</th>
                     </tr>
                 </thead>
                 <tbody class="bg-white customBody no-scrollbar !max-h-[470px]">
@@ -56,6 +58,8 @@
                                     </div>
                                 </td>
                                 <td colspan="3" class="border-r-2 border-color-efefef py-4 px-3 text-sm text-left">{{$payment->note ?? 'Nessuna'}}</td>
+                                <td class="border-r-2 border-color-efefef font-medium px-3 py-4 text-color-2c2c2c capitalize">{{$payment->type}}</td>
+                                <td class="border-r-2 border-color-efefef font-medium px-3 py-4 text-color-2c2c2c capitalize">€ {{$payment->amount}}</td>
                                 <td class="border-r-2 border-color-efefef font-medium px-3 py-4 text-color-2c2c2c">
                                     <div class="flex items-center justify-center">
                                         @if ($payment->document()->first())
@@ -63,16 +67,20 @@
                                                 <x-icons name="show" class="w-5" />
                                             </button>
                                         @else
-                                         <x-input-files wire:model="newScan" text="Inserisci" color="" name="newScan"  preview="scans_uploaded" icon="upload" />
+                                            Nessuno
                                         @endif
                                     </div>
                                 </td>
-                                <td class="border-r-2 border-color-efefef font-medium px-3 py-4 text-color-2c2c2c capitalize">€ {{$payment->amount}}</td>
+                                <td>
+                                    <button wire:click="$dispatch('openModal', { component: 'registry.modals.show-payment', arguments: {payment: {{$payment->id}}} })" class="hover:underline cursor-pointer">
+                                        Apri
+                                    </button>
+                                </td>
                             </tr>
                         @endforeach
                     @else
                         <tr>
-                            <td colspan="4" class="text-center text-gray-400 font-bold text-lg py-5 underline">Nessun pagamento trovato...</td>
+                            <td colspan="7" class="text-center text-gray-400 font-bold text-lg py-5 underline">Nessun pagamento trovato...</td>
                         </tr>
                     @endif
                 </tbody>
@@ -103,7 +111,7 @@
                                     </div>
                                 </td>
                                 <td colspan="3" class="border-r-2 border-color-efefef py-4 px-3 text-left text-sm capitalize">Guida: {{$driving->type}}</td>
-                                <td class="border-r-2 border-color-efefef font-medium px-3 py-4 text-color-2c2c2c capitalize">€ {{$drivingPrice}}</td>
+                                <td class="border-r-2 border-color-efefef font-medium px-3 py-4 text-color-2c2c2c">€ {{$drivingPrice}}</td>
                                 <td class="border-r-2 border-color-efefef font-medium px-3 py-4 text-color-2c2c2c capitalize">
                                     <div class="flex items-center justify-center gap-2 px-5">
                                         @if (!$driving->welded)
@@ -139,9 +147,12 @@
                                         <table class="min-w-full divide-y-2 divide-color-efefef">
                                             <thead class="customHead">
                                                 <tr class="text-center text-color-545454">
-                                                    <th scope="col" class="py-3.5 px-3 font-light">Pagamento del</th>
-                                                    <th colspan="5" scope="col" class="px-3 py-3.5 font-light text-left">Note</th>
-                                                    <th scope="col" class="px-3 py-3.5 font-light">Versato</th>
+                                                    <th scope="col" class="py-3.5 px-3 font-light">Data</th>
+                                                    <th colspan="3" scope="col" class="px-3 py-3.5 font-light text-left">Note</th>
+                                                    <th scope="col" class="px-3 py-3.5 font-light">Metodo</th>
+                                                    <th scope="col" class="px-3 py-3.5 font-light">Importo</th>
+                                                    <th scope="col" class="px-3 py-3.5 font-light">Allegato</th>
+                                                    <th scope="col" class="px-3 py-3.5 font-light">&nbsp;</th>
                                                 </tr>
                                             </thead>
                                             <tbody class="bg-white customBody no-scrollbar !max-h-[470px]">
@@ -149,13 +160,30 @@
                                                     @foreach ($driving->payments()->get() as $payment)
                                                         <tr class="text-center even:bg-color-f7f7f7">
                                                             <td class="border-r-2 border-color-efefef py-4 px-3 text-sm">{{date("d/m/Y H:i", strtotime($payment->created_at))}}</td>
-                                                            <td colspan="5" class="border-r-2 border-color-efefef py-4 px-3 text-sm text-left">{{$payment->note ?? 'nessuna'}}</td>
+                                                            <td colspan="3" class="border-r-2 border-color-efefef py-4 px-3 text-sm text-left">{{$payment->note ?? 'nessuna'}}</td>
+                                                            <td class="border-r-2 border-color-efefef py-4 px-3 text-sm capitalize">{{$payment->type}}</td>
                                                             <td class="border-r-2 border-color-efefef py-4 px-3 text-sm">€ {{$payment->amount}}</td>
+                                                            <td class="border-r-2 border-color-efefef py-4 px-3 text-sm">
+                                                                <div class="flex items-center justify-center">
+                                                                    @if ($payment->document()->first())
+                                                                        <button wire:click="$dispatch('openModal', { component: 'registry.modals.showScan', arguments: {scan: {{$payment->document()->first()->id}}} })" class="bg-color-347af2/30 flex items-center justify-center px-3 py-2 rounded-full">
+                                                                            <x-icons name="show" class="w-5" />
+                                                                        </button>
+                                                                    @else
+                                                                        Nessuno
+                                                                    @endif
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <button wire:click="$dispatch('openModal', { component: 'registry.modals.show-payment', arguments: {payment: {{$payment->id}}} })" class="hover:underline cursor-pointer">
+                                                                    Apri
+                                                                </button>
+                                                            </td>
                                                         </tr>
                                                     @endforeach
                                                 @else
                                                     <tr>
-                                                        <td colspan="7" class="text-center text-gray-400 font-bold text-lg py-5 underline">Nessun pagamento...</td>
+                                                        <td colspan="6" class="text-center text-gray-400 font-bold text-lg py-5 underline">Nessun pagamento...</td>
                                                     </tr>
                                                 @endif
                                             </tbody>

@@ -6,10 +6,14 @@ use App\Livewire\Registry\Modals\Payments;
 use App\Models\DrivingPlanning;
 use App\Models\Registration;
 use Livewire\Attributes\Validate;
+use Livewire\WithFileUploads;
+use Illuminate\Support\Facades\Storage;
 use LivewireUI\Modal\ModalComponent;
 
 class AddPayment extends ModalComponent
 {
+    use WithFileUploads;
+
     public $registration;
 
     public $drivingPlanning;
@@ -17,7 +21,11 @@ class AddPayment extends ModalComponent
 
     #[Validate('required', message: 'Inserire Cifra')]
     public $amount;
+
+    #[Validate('required', message: 'Seleziona un metodo')]
+    public $type;
     public $note;
+    public $newScan;
 
     public function mount($registration = null, $drivingPlanning = null) {
         if ($registration) {
@@ -35,12 +43,22 @@ class AddPayment extends ModalComponent
         $this->amount = str_replace(" ", '', $this->amount);
 
         if ($this->drivingPlanning) {
-            $this->drivingPlanning->payments()->create([
+            $payment = $this->drivingPlanning->payments()->create([
+                'type' => $this->type,
                 'amount' => $this->amount,
                 'note' => $this->note
             ]);
 
             $registration = $this->drivingPlanning->registration;
+
+            if ($this->newScan) {
+                $path = Storage::putFileAs('customers/customer-'.$registration->customer_id, $this->newScan, str_replace(' ', '_', $this->newScan->getClientOriginalName()));
+
+                $payment->document()->create([
+                    'type' => 'Pagamento',
+                    'path' => 'storage/app/'.$path
+                ]);
+            }
 
             $registration->chronologies()->create([
                 'title' => 'Pagamento guida del '. date("d/m/Y", strtotime($this->drivingPlanning->begins))
@@ -58,10 +76,20 @@ class AddPayment extends ModalComponent
         }
 
         if ($this->registration) {
-            $this->registration->payments()->create([
+            $payment = $this->registration->payments()->create([
+                'type' => $this->type,
                 'amount' => $this->amount,
                 'note' => $this->note
             ]);
+
+            if ($this->newScan) {
+                $path = Storage::putFileAs('customers/customer-'.$this->registration->customer_id, $this->newScan, str_replace(' ', '_', $this->newScan->getClientOriginalName()));
+
+                $payment->document()->create([
+                    'type' => 'Pagamento',
+                    'path' => 'storage/app/'.$path
+                ]);
+            }
 
             $this->registration->chronologies()->create([
                 'title' => 'Pagamento iscrizione'
@@ -71,13 +99,12 @@ class AddPayment extends ModalComponent
                 Payments::class => ['updatePayment', ['registration' => $this->registration->id]],
             ]);
         }
-
-
+        $this->reset();
     }
 
     public static function modalMaxWidth(): string
     {
-        return '3xl';
+        return '4xl';
     }
 
 

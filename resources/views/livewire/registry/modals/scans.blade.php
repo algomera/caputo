@@ -33,13 +33,13 @@
                             <td class="border-r-2 border-color-efefef py-4 px-3  text-sm">{{date("d/m/Y H:i", strtotime($scan->updated_at))}}</td>
                             <td colspan="5" class="border-r-2 border-color-efefef text-left font-medium px-3 py-4 text-color-2c2c2c capitalize">{{$scan->type}}</td>
                             <td class="border-r-2 border-color-efefef px-3 py-4 text-color-2c2c2c capitalize">
-                                <div class="w-fit flex items-center gap-2 m-auto">
+                                <div class="w-fit flex items-center gap-5 m-auto">
                                     <button wire:click="$dispatch('openModal', { component: 'registry.modals.showScan', arguments: {scan: {{$scan->id}}} })" class="bg-color-347af2/30 flex items-center justify-center px-3 py-2 rounded-full">
                                         <x-icons name="show" class="w-5" />
                                     </button>
                                     @role('admin|responsabile sede')
-                                    <button wire:click="$dispatch('openModal', { component: 'registry.modals.delete-scan', arguments: {scan: {{$scan->id}}} })" class="bg-red-500/60 flex items-center justify-center px-3 py-2 rounded-full">
-                                        <x-icons name="b-delete" class="w-5" />
+                                    <button wire:click="$dispatch('openModal', { component: 'registry.modals.delete-scan', arguments: {scan: {{$scan->id}}} })" class="flex items-center justify-center">
+                                        <x-icons name="delete" class="h-5 w-5" />
                                     </button>
                                     @endrole
                                 </div>

@@ -4,7 +4,7 @@
     <div class="w-fit flex items-start gap-5 relative text-gray-400">
         <label for="{{$name}}" @class(["p-3 rounded-md flex items-center gap-8 cursor-pointer", 'bg-color-'.$color.'/20'])>
             <span class="text-color-2c2c2c font-light">{{$text}}</span>
-            <x-icons name="{{$icon}}" class="h-5" />
+            <x-icons name="{{$icon}}" class="h-5 w-4" />
         </label>
         <input {{$attributes}} type="file" name="{{$name}}" id="{{$name}}" class="block mt-1 w-full opacity-0 z-[-1] absolute">
         {{-- <div id="{{$preview}}" class="absolute -right-60 top-0 flex flex-col gap-2 mt-1"></div> --}}
