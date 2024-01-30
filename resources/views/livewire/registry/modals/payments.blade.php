@@ -44,7 +44,9 @@
                         <th scope="col" class="px-3 py-3.5 font-light">Metodo</th>
                         <th scope="col" class="px-3 py-3.5 font-light">Importo</th>
                         <th scope="col" class="px-3 py-3.5 font-light">Allegato</th>
+                        @role('admin|responsabile sede')
                         <th scope="col" class="px-3 py-3.5 font-light">&nbsp;</th>
+                        @endrole
                     </tr>
                 </thead>
                 <tbody class="bg-white customBody no-scrollbar !max-h-[470px]">
@@ -71,11 +73,13 @@
                                         @endif
                                     </div>
                                 </td>
+                                @role('admin|responsabile sede')
                                 <td>
-                                    <button wire:click="$dispatch('openModal', { component: 'registry.modals.show-payment', arguments: {payment: {{$payment->id}}} })" class="hover:underline cursor-pointer">
+                                    <button wire:click="$dispatch('openModal', { component: 'registry.modals.show-payment', arguments: {payment: {{$payment->id}}, registration: {{$registration->id}}} })" class="hover:underline cursor-pointer">
                                         Apri
                                     </button>
                                 </td>
+                                @endrole
                             </tr>
                         @endforeach
                     @else
@@ -152,7 +156,9 @@
                                                     <th scope="col" class="px-3 py-3.5 font-light">Metodo</th>
                                                     <th scope="col" class="px-3 py-3.5 font-light">Importo</th>
                                                     <th scope="col" class="px-3 py-3.5 font-light">Allegato</th>
+                                                    @role('admin|responsabile sede')
                                                     <th scope="col" class="px-3 py-3.5 font-light">&nbsp;</th>
+                                                    @endrole
                                                 </tr>
                                             </thead>
                                             <tbody class="bg-white customBody no-scrollbar !max-h-[470px]">
@@ -174,11 +180,13 @@
                                                                     @endif
                                                                 </div>
                                                             </td>
+                                                            @role('admin|responsabile sede')
                                                             <td>
-                                                                <button wire:click="$dispatch('openModal', { component: 'registry.modals.show-payment', arguments: {payment: {{$payment->id}}} })" class="hover:underline cursor-pointer">
+                                                                <button wire:click="$dispatch('openModal', { component: 'registry.modals.show-payment', arguments: {payment: {{$payment->id}}, registration: {{$registration->id}}} })" class="hover:underline cursor-pointer">
                                                                     Apri
                                                                 </button>
                                                             </td>
+                                                            @endrole
                                                         </tr>
                                                     @endforeach
                                                 @else

@@ -23,6 +23,7 @@ class Show extends Component
 
     #[On('updateDocument')]
     public function mount($customer) {
+        $this->customerForm->reset();
         $this->customerForm->setCustomer($customer);
         $this->documentForm->setPatent($customer);
         $this->documentForm->getDocuments($customer);

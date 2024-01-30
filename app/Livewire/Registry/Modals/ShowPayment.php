@@ -3,9 +3,11 @@
 namespace App\Livewire\Registry\Modals;
 
 use App\Models\Payment;
-use Illuminate\Support\Facades\Storage;
+use App\Livewire\Registry\Modals\Payments;
+use App\Livewire\Registry\Show;
 use Livewire\WithFileUploads;
 use App\Livewire\Forms\CustomerForm;
+use App\Models\Registration;
 use LivewireUI\Modal\ModalComponent;
 
 
@@ -14,15 +16,17 @@ class ShowPayment extends ModalComponent
     use WithFileUploads;
 
     public CustomerForm $customerForm;
-    public Payment $payment;
+    public $payment;
+    public $registration;
     public $note;
     public $type;
     public $amount;
     public $document;
     public $newScan;
 
-    public function mount($payment) {
-        $this->payment = $payment;
+    public function mount($payment, $registration) {
+        $this->registration = Registration::find($registration);
+        $this->payment = Payment::find($payment);
         $this->setPayment();
     }
 
@@ -44,7 +48,23 @@ class ShowPayment extends ModalComponent
             $this->customerForm->updateScan($this->document->id, $this->newScan);
         }
 
-        $this->dispatch('closeModal');
+        $this->closeModalWithEvents([
+            Payments::class => ['updatePayment', ['registration' => $this->registration->id]],
+        ]);
+    }
+
+    public function delete() {
+        // dd($this->payment, $this->registration);
+        $this->payment->delete();
+
+        $this->registration->chronologies()->create([
+            'title' => 'Cancellazione pagamento € '.$this->payment->amount
+        ]);
+
+        $this->closeModalWithEvents([
+            Payments::class => ['updatePayment', ['registration' => $this->registration->id]],
+            Show::class => ['updateDocument', ['customer' => $this->registration->customer_id]]
+        ]);
     }
 
     public static function modalMaxWidth(): string

@@ -37,5 +37,8 @@
         @endif
     </div>
 
-    <x-submit-button wire:click='update' class="ml-auto bg-color-347af2">Salva</x-submit-button>
+    <div class="flex items-center justify-between">
+        <x-submit-button wire:click='delete' class="bg-red-500/70 ">Elimina</x-submit-button>
+        <x-submit-button wire:click='update' class="bg-color-347af2">Salva</x-submit-button>
+    </div>
 </div>

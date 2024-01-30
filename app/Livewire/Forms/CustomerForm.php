@@ -369,6 +369,10 @@ class CustomerForm extends Form
     public function update() {
         $this->validate();
         $this->customer->update($this->validate());
+
+        $this->customer->chronologies()->create([
+            'title' => 'Aggiornamento dati cliente'
+        ]);
     }
 
     public function deleteScan($scan) {

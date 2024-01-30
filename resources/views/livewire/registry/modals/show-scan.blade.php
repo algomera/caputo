@@ -9,6 +9,8 @@
 
     <div class="w-full flex justify-between">
         <x-submit-button wire:click="$dispatch('closeModal')" class="bg-slate-400">Indietro</x-submit-button>
+        @if (!str_contains($scan->type,'firma'))
         <x-input-files wire:model="newScan" text="Aggiorna Scansione" color="347af2" name="newScan"  preview="scans_uploaded" icon="upload" />
+        @endif
     </div>
 </div>
