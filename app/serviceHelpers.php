@@ -65,3 +65,30 @@ if (! function_exists('get_color')) {
         return $color;
     }
 }
+
+if (! function_exists('get_step')) {
+    function get_step($step) {
+        $description = '';
+
+        switch ($step) {
+            case 'documenti':
+                $description = 'Documenti di riconoscimento cliente';
+                break;
+            case 'scansioni':
+                $description = 'Scansione documenti cliente';
+                break;
+            case 'fototessera':
+                $description = 'Fototessera cliente';
+                break;
+            case 'genitore/tutore':
+                $description = 'Documenti e firma Genitore/Tutore ';
+                break;
+            case 'accompagnatori':
+                $description = 'Documenti e firma accompagnatori ';
+                break;
+
+        }
+
+        return $description;
+    }
+}

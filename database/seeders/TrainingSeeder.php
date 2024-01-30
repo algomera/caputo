@@ -60,6 +60,7 @@ class TrainingSeeder extends Seeder
                             'type' => fake()->randomElement(['teoria', 'pratica', 'pratica/s.esame']),
                             'transmission' => fake()->randomElement(['manuale', 'automatica']),
                             'optionals' => $optionals->pluck('id')->toJson(),
+                            'step_skipped' => json_encode([]),
                             'price' => $total
                         ]);
 
@@ -69,6 +70,7 @@ class TrainingSeeder extends Seeder
                             'type' => fake()->randomElement(['teoria', 'pratica', 'pratica/s.esame']),
                             'transmission' => fake()->randomElement(['manuale', 'automatica']),
                             'optionals' => $optionals->pluck('id')->toJson(),
+                            'step_skipped' => json_encode([]),
                             'price' => $total
                         ]);
                     }
@@ -114,6 +116,7 @@ class TrainingSeeder extends Seeder
                             'type' => fake()->randomElement(['teoria', 'pratica', 'pratica/s.esame']),
                             'transmission' => fake()->randomElement(['manuale', 'automatica']),
                             'optionals' => $optionals->pluck('id')->toJson(),
+                            'step_skipped' => json_encode([]),
                             'price' => $total
                         ]);
 
@@ -123,6 +126,7 @@ class TrainingSeeder extends Seeder
                             'type' => fake()->randomElement(['teoria', 'pratica', 'pratica/s.esame']),
                             'transmission' => fake()->randomElement(['manuale', 'automatica']),
                             'optionals' => $optionals->pluck('id')->toJson(),
+                            'step_skipped' => json_encode([]),
                             'price' => $total
                         ]);
                     }

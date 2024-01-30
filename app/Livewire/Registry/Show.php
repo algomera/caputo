@@ -18,12 +18,11 @@ class Show extends Component
     public $registrationId;
     public $documents;
     public $modify = false;
-    public $photo;
+    public $photo = null;
     public $signature;
 
     #[On('updateDocument')]
     public function mount($customer) {
-        $this->customerForm->reset();
         $this->customerForm->setCustomer($customer);
         $this->documentForm->setPatent($customer);
         $this->documentForm->getDocuments($customer);
@@ -59,6 +58,11 @@ class Show extends Component
 
     public function back() {
         return redirect()->route('registry.index');
+    }
+
+    public function disabledModify() {
+        $this->modify = false;
+        $this->photo = null;
     }
 
     public function render()

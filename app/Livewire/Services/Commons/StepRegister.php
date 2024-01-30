@@ -34,9 +34,11 @@ class StepRegister extends Component
     public $scanUploaded = false;
     public $parentScanUploaded = false;
     public $steps = [];
+    public $skipped = [];
     public $typePatents = ['AM', 'A1', 'A2', 'A', 'B1','B', 'C1', 'C', 'D1', 'D', 'BE', 'C1E', 'CE', 'D1E', 'DE'];
     public $typeDocuments = [];
     public $companions = null;
+    public $companionUploaded = false;
 
     public function mount() {
         if (session('patent')) {
@@ -92,14 +94,6 @@ class StepRegister extends Component
                     'signature' => null,
                     'scans' => []
                 ],
-                2 => [
-                    'signature' => null,
-                    'scans' => []
-                ],
-                3 => [
-                    'signature' => null,
-                    'scans' => []
-                ],
             ];
         }
     }
@@ -117,6 +111,25 @@ class StepRegister extends Component
             $this->dispatch('openModal', 'services.commons.modals.registration');
         } else {
             $this->customerForm->validation();
+
+            foreach ($this->skipped as $key => $value) {
+                if ($this->steps[($this->customerForm->currentStep - 1)] == $value) {
+                    unset($this->skipped[$key]);
+                }
+            }
+
+            $this->customerForm->currentStep += 1;
+        }
+    }
+
+    public function skip() {
+        if (!in_array($this->steps[($this->customerForm->currentStep - 1)], $this->skipped)) {
+            $this->skipped[] = $this->steps[($this->customerForm->currentStep - 1)];
+        }
+
+        if ($this->customerForm->currentStep == count($this->steps)) {
+            $this->dispatch('openModal', 'services.commons.modals.registration');
+        } else {
             $this->customerForm->currentStep += 1;
         }
     }
@@ -146,6 +159,7 @@ class StepRegister extends Component
                 'type' => session()->get('course')['registration_type'],
                 'transmission' => session()->get('course')['transmission'],
                 'optionals' => json_encode(session()->get('course')['selected_cost']),
+                'step_skipped' => json_encode($this->skipped),
                 'price' => session()->get('course')['price']
             ]);
 
@@ -197,9 +211,10 @@ class StepRegister extends Component
                 MedicalPlanning::create([
                     'registration_id' => $registration->id
                 ]);
-                return redirect()->route('visits.index');
             }
         }
+
+        return redirect()->route('registry.show', ['customer' => $this->customerForm->newCustomer->id]);
 
         dd('registrazione completata', $this->customerForm->currentStep);
     }
@@ -209,6 +224,30 @@ class StepRegister extends Component
         $this->documents[] = ['identification_type_id' => ''];
         $this->validateDocument();
     }
+
+    public function addCompanion() {
+        $this->companions[] = [
+            'signature' => null,
+            'scans' => []
+        ];
+
+    }
+
+    public function removeCompanion($key) {
+        unset($this->companions[$key]);
+        $this->verifyCompanions();
+    }
+
+    public function verifyCompanions() {
+        foreach ($this->companions as $companion) {
+            if ($companion['signature'] != null && count($companion['scans']) > 0) {
+                return $this->companionUploaded = true;
+            } else {
+                $this->companionUploaded = false;
+            }
+        }
+    }
+
 
     public function updated($property) {
         if (str_contains($property,'documents')) {
@@ -220,6 +259,9 @@ class StepRegister extends Component
         }
         if ($property == "parentScan") {
             $this->parentScanUploaded = true;
+        }
+        if (str_contains($property,'companions')) {
+            $this->verifyCompanions();
         }
     }
 
@@ -293,6 +335,7 @@ class StepRegister extends Component
 
     public function removeCompanionScan($key, $number) {
         unset($this->companions[$key]['scans'][$number]);
+        $this->verifyCompanions();
     }
 
     public function changeStep($index) {

@@ -71,7 +71,8 @@
                     <x-container-step>
                         <div class="flex justify-between gap-5">
                             <p class="text-xl font-light text-color-2c2c2c">
-                                Aggiungere documento e compilare i dati
+                                Aggiungere documento e compilare i dati o
+                                <span wire:click="skip" class="text-color-2c2c2c underline cursor-pointer">Inserisci in seguito</span>
                             </p>
                             <x-submit-button wire:click='addDocument' @class(["ml-auto text-sm",'bg-color-'.get_color(session()->get('serviceName')).'/70'])>+ Documento</x-submit-button>
                         </div>
@@ -135,7 +136,7 @@
                         <div class="flex items-start justify-between gap-20">
                             <div class="flex flex-col gap-2">
                                 <x-input-files multiple wire:model="scans" text="Carica Scansioni" color="{{get_color(session()->get('serviceName'))}}" name="scans"  preview="scans_uploaded" icon="upload" />
-                                <span wire:click="nextStep" class="text-color-2c2c2c underline cursor-pointer">Inserisci in seguito</span>
+                                <span wire:click="skip" class="text-color-2c2c2c underline cursor-pointer">Inserisci in seguito</span>
 
                                 <div class="text-gray-500 mt-5">
                                     <small class="block">Cittadino extra-comunitario caricare il permesso di soggiorno</small>
@@ -180,7 +181,7 @@
                         <div class="flex gap-8">
                             <div class="flex flex-col gap-2">
                                 <x-input-files wire:model.live="photo" text="Carica Fototessera" color="{{get_color(session()->get('serviceName'))}}" name="photo" preview="fototessera_uploaded" icon="image" />
-                                <span wire:click="nextStep" class="text-color-2c2c2c underline cursor-pointer">Inserisci in seguito</span>
+                                <span wire:click="skip" class="text-color-2c2c2c underline cursor-pointer">Inserisci in seguito</span>
                             </div>
                             @if ($photo)
                             <div class="flex items-center gap-3">
@@ -255,7 +256,7 @@
                                 </button>
 
                                 <x-input-files multiple wire:model="parentScans" text="Carica Scansioni" color="{{get_color(session()->get('serviceName'))}}" name="parentScans"  preview="scans_uploaded" icon="upload" />
-                                <span wire:click="nextStep" class="text-color-2c2c2c underline cursor-pointer">Inserisci in seguito</span>
+                                <span wire:click="skip" class="text-color-2c2c2c underline cursor-pointer">Inserisci in seguito</span>
                             </div>
 
                             <div class="flex flex-col gap-1 grow max-w-lg relative py-4 border">
@@ -288,12 +289,26 @@
             {{-- Accompagnatori --}}
                 @case(7)
                     <div class="w-full flex flex-col items-end gap-5 mt-5">
-                        <div class="w-full flex flex-col items-center gap-5">
+                        <div class="w-full bg-white p-4 flex flex-col items-center gap-5">
+                            @if (count($companions) < 3)
+                                <button wire:click="addCompanion" class="ml-auto w-fit text-lg inline-flex items-center px-6 py-2 border border-transparent rounded-md font-light text-color-545454 tracking-widest bg-color-dfdfdf hover:bg-gray-700 hover:text-white active:bg-gray-900 transition ease-in-out duration-150 disabled:opacity-50 disabled:cursor-not-allowed">
+                                    + Accompagnatore
+                                </button>
+                            @endif
+
                             @foreach ($companions as $key => $companion)
-                                <div class="w-full p-4 bg-white flex flex-col gap-2">
-                                    <p class="text-xl font-bold capitalize text-color-2c2c2c">
-                                        accompagnatore {{$key}}
-                                    </p>
+                                <div class="w-full p-4  bg-color-f7f7f7 shadow-shadow-card flex flex-col gap-2">
+                                    <div class="flex items-end justify-between">
+                                        <p class="text-xl font-bold capitalize text-color-2c2c2c">
+                                            accompagnatore {{$key}}
+                                            @if ($key == 1 && count($companions) < 2 && !$companionUploaded)
+                                                <span wire:click="skip" class="ml-4 text-base font-normal text-color-2c2c2c underline cursor-pointer">Inserisci in seguito</span>
+                                            @endif
+                                        </p>
+                                        @if ($key != 1)
+                                            <x-icons name="delete" wire:click="removeCompanion({{$key}})" class="cursor-pointer" />
+                                        @endif
+                                    </div>
                                     <div class="flex border-t">
                                         <div class="flex flex-col gap-2 pt-2 pr-5 mr-5 border-r">
                                             <p>Caricare la <span class="font-bold">firma</span> dell'Accompagnatore</p>
@@ -307,15 +322,12 @@
                                                     <x-icons name="signature" />
                                                 @endif
                                             </button>
-
-                                            <span wire:click="nextStep" class="text-color-2c2c2c underline cursor-pointer">Inserisci in seguito</span>
                                         </div>
 
                                         <div class="grow flex gap-5 justify-between pt-2">
                                             <div class="flex flex-col gap-2">
                                                 <p>Caricare la <span class="font-bold">carta di Identità</span> e il <span class="font-bold">codice fiscale</span> dell'Accompagnatore</p>
                                                 <x-input-files multiple wire:model="companions.{{$key}}.scans" text="Carica Scansioni" color="{{get_color(session()->get('serviceName'))}}" name="companion.{{$key}}.scans"  preview="scans_uploaded" icon="upload" />
-                                                <span wire:click="nextStep" class="text-color-2c2c2c underline cursor-pointer">Inserisci in seguito</span>
                                             </div>
 
                                             <div class="flex flex-col gap-1 grow max-w-lg relative py-4 border">
@@ -343,7 +355,9 @@
                             <button wire:click="backStep" class="w-fit text-2xl inline-flex items-center px-6 py-2 border border-transparent rounded-md font-light text-color-545454 tracking-widest bg-color-dfdfdf hover:bg-gray-700 hover:text-white active:bg-gray-900 transition ease-in-out duration-150 disabled:opacity-50 disabled:cursor-not-allowed">
                                 Indietro
                             </button>
-                            <x-submit-button wire:click='nextStep' @class(["ml-auto",'bg-color-'.get_color(session()->get('serviceName'))])>Prosegui</x-submit-button>
+                            @if ($companionUploaded)
+                                <x-submit-button wire:click='nextStep' @class(["ml-auto",'bg-color-'.get_color(session()->get('serviceName'))])>Prosegui</x-submit-button>
+                            @endif
                         </div>
                     </div>
                 @break

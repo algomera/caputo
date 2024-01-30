@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('type');
             $table->string('transmission')->nullable();
             $table->json('optionals')->nullable();
+            $table->json('step_skipped')->nullable();
             $table->decimal('price')->nullable();
             $table->string('state')->default('aperta');
             $table->timestamps();

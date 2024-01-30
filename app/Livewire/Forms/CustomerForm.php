@@ -18,7 +18,7 @@ class CustomerForm extends Form
     public $school_id;
     public $customer;
     public $newCustomer;
-    public $currentStep = 1;
+    public $currentStep = 7;
 
     public $name;
     public $lastName;

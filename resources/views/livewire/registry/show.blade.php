@@ -19,7 +19,7 @@
                 <button wire:click="$dispatch('openModal', { component: 'registry.modals.chronology', arguments: {customer: {{$customerForm->customer->id}}} })" class="px-4 py-1 text-color-2c2c2c font-medium capitalize rounded-full bg-color-ffb205/30 hover:scale-105 transition-all duration-300">Cronologia cliente</button>
                 <button wire:click="$dispatch('openModal', { component: 'registry.modals.scans', arguments: {customer: {{$customerForm->customer->id}}} })" class="px-4 py-1 text-color-2c2c2c font-medium capitalize rounded-full bg-color-ffb205/30 hover:scale-105 transition-all duration-300">Scansioni</button>
                 @if ($modify)
-                    <button wire:click="$set('modify', false)" class="px-4 py-1 text-color-2c2c2c font-medium capitalize rounded-full bg-red-500/60 hover:scale-105 transition-all duration-300">Disabilita Modifica</button>
+                    <button wire:click="disabledModify" class="px-4 py-1 text-color-2c2c2c font-medium capitalize rounded-full bg-red-500/60 hover:scale-105 transition-all duration-300">Disabilita Modifica</button>
                     <button wire:click="save" class="px-4 py-1 text-color-2c2c2c font-medium capitalize rounded-full bg-color-01a53a/30 hover:scale-105 transition-all duration-300">Salva</button>
                 @else
                     <button wire:click="$set('modify', true)" class="px-4 py-1 text-color-2c2c2c font-medium capitalize rounded-full bg-color-01a53a/30 hover:scale-105 transition-all duration-300">Abilita Modifica</button>
@@ -44,6 +44,20 @@
             @elseif ($customerForm->customer->photo()->first())
                 <div class="w-64 h-64 bg-white relative">
                     <img class="w-full h-full" src="{{Vite::asset($customerForm->customer->photo()->first()->path)}}" alt="">
+                    @if ($modify)
+                        <div class="absolute top-2 right-2 bg-color-01a53a/40 px-2 rounded-full">
+                            <div class="w-fit flex items-start gap-5 relative text-gray-400">
+                                <label for="photo" class="font-medium cursor-pointer">
+                                    <span class="text-color-2c2c2c text-sm font-light">Carica Foto</span>
+                                </label>
+                                <input wire:model="photo" type="file" name="photo" id="photo" class="block mt-1 w-full opacity-0 z-[-1] absolute">
+                            </div>
+                        </div>
+                    @endif
+                </div>
+            @else
+                <div class="w-64 h-64 bg-white relative flex items-center justify-center">
+                    <x-icons name="default_photo" class="h-20 w-20" />
                     @if ($modify)
                         <div class="absolute top-2 right-2 bg-color-01a53a/40 px-2 rounded-full">
                             <div class="w-fit flex items-start gap-5 relative text-gray-400">
@@ -148,12 +162,19 @@
             @foreach ($registrations as $registration)
                 <div class="w-full flex flex-col items-start gap-5 border-t pt-4 relative">
                     <div class="w-full flex items-center justify-between">
-                        <div class="flex gap-2">
+                        <div class="flex items-center gap-2">
                             <p class="mr-5">Tipo di iscrizione: <span @class(["font-bold", 'text-color-'. get_color($registration->course->service->name)])>{{$registration->course->name}}</span></p>
-                            <button class="px-4 py-1 text-color-2c2c2c font-medium capitalize rounded-full bg-color-ffb205/30 hover:scale-105 transition-all duration-300">continua accettazione</button>
-                            <button wire:click="$dispatch('openModal', { component: 'registry.modals.scans', arguments: {registration: {{$registration->id}}} })" class="px-4 py-1 text-color-2c2c2c font-medium capitalize rounded-full bg-color-ffb205/30 hover:scale-105 transition-all duration-300">Scansioni/Firme</button>
+                            @if (count(json_decode($registration->step_skipped)) < 1)
+                                <button class="px-4 py-1 text-color-2c2c2c font-medium capitalize rounded-full bg-color-ffb205/30 hover:scale-105 transition-all duration-300">continua accettazione</button>
+                            @else
+                                <button wire:click="$dispatch('openModal', { component: 'registry.modals.show-skipped', arguments: {registration: {{$registration->id}}} })" class="px-4 py-1 flex items-center gap-2 text-color-2c2c2c font-medium capitalize rounded-full bg-color-ffb205/30 hover:scale-105 transition-all duration-300">
+                                    <x-icons name="alert" class="w-4 h-4" />
+                                    Documenti mancanti
+                                </button>
+                            @endif
                         </div>
                         <div class="flex gap-2">
+                            <button wire:click="$dispatch('openModal', { component: 'registry.modals.scans', arguments: {registration: {{$registration->id}}} })" class="px-4 py-1 text-color-2c2c2c font-medium capitalize rounded-full bg-color-ffb205/30 hover:scale-105 transition-all duration-300">Scansioni/Firme</button>
                             <button wire:click="$dispatch('openModal', { component: 'registry.modals.payments', arguments: {registration: {{$registration->id}}} })" class="px-4 py-1 text-color-2c2c2c font-medium capitalize rounded-full bg-color-ffb205/30 hover:scale-105 transition-all duration-300">pagamenti</button>
                             <button wire:click="$dispatch('openModal', { component: 'registry.modals.chronology', arguments: {registration: {{$registration->id}}} })" class="px-4 py-1 text-color-2c2c2c font-medium capitalize rounded-full bg-color-ffb205/30 hover:scale-105 transition-all duration-300">cronologia</button>
                         </div>
