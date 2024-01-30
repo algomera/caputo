@@ -59,7 +59,7 @@ class DocumentSeeder extends Seeder
         foreach ($payments as $payment) {
             $payment->document()->create([
                 'type' => 'Pagamento',
-                'path' => fake()->imageUrl(245, 245, 'Personal', true, 'Payment', false, 'jpg')
+                'path' => '/resources/images/document.jpg'
             ]);
         }
     }

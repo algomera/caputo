@@ -54,7 +54,6 @@ class ShowPayment extends ModalComponent
     }
 
     public function delete() {
-        // dd($this->payment, $this->registration);
         $this->payment->delete();
 
         $this->registration->chronologies()->create([
