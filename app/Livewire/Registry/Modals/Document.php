@@ -27,6 +27,19 @@ class Document extends ModalComponent
     public function save() {
         $this->documentForm->store($this->customer->id);
 
+        $registrations = $this->customer->registrations()->get();
+        if (count($registrations)) {
+            foreach ($registrations as $registration) {
+                $stepSkipped = json_decode($registration->step_skipped);
+                $step = array_search('fototessera', $stepSkipped);
+                unset($stepSkipped[$step]);
+
+                $registration->update([
+                    'step_skipped' => json_encode(array_values($stepSkipped))
+                ]);
+            }
+        }
+
         $this->closeModalWithEvents([
             RegistryShow::class => ['updateDocument', [$this->customer->id]]
         ]);

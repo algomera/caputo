@@ -167,9 +167,9 @@
                             @if (count(json_decode($registration->step_skipped)) < 1)
                                 <button class="px-4 py-1 text-color-2c2c2c font-medium capitalize rounded-full bg-color-ffb205/30 hover:scale-105 transition-all duration-300">continua accettazione</button>
                             @else
-                                <button wire:click="$dispatch('openModal', { component: 'registry.modals.show-skipped', arguments: {registration: {{$registration->id}}} })" class="px-4 py-1 flex items-center gap-2 text-color-2c2c2c font-medium capitalize rounded-full bg-color-ffb205/30 hover:scale-105 transition-all duration-300">
+                                <button wire:click="$dispatch('openModal', { component: 'registry.modals.show-skipped', arguments: {registration: {{$registration->id}}} })" class="px-4 py-[2px] flex items-center gap-2 text-color-2c2c2c font-medium capitalize rounded-full bg-red-500/10 border-red-500/50 border hover:scale-105 transition-all duration-300">
                                     <x-icons name="alert" class="w-4 h-4" />
-                                    Documenti mancanti
+                                    Dati mancanti
                                 </button>
                             @endif
                         </div>
@@ -247,6 +247,10 @@
                 },
                 uploadSignature(){
                     @this.set('signature', this.signaturePadInstance.toDataURL('image/png'));
+                    @this.dispatch('closeModal');
+                },
+                uploadCompanionSignature(key) {
+                    @this.dispatch('uploadSignatureCompanion', {key: key, signature:this.signaturePadInstance.toDataURL('image/png')})
                     @this.dispatch('closeModal');
                 },
             }))

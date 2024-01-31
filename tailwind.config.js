@@ -67,8 +67,14 @@ export default {
             backgroundImage: {
                 login: "url('/resources/images/login.png')"
             },
+            keyframes: {
+                medium_pulse: {
+                    '50%': {opacity: 0.7 },
+                }
+            },
             animation: {
                 spin_slow: 'spin 5s linear infinite',
+                medium_pulse: 'medium_pulse 2s linear infinite',
             }
         },
     },

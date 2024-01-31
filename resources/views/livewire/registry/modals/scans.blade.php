@@ -6,14 +6,7 @@
         </h1>
 
         <div class="flex items-center gap-4">
-            @if ($registration)
-            <button wire:click="$dispatch('openModal', { component: 'services.commons.modals.signature'})"
-                @class(["p-3 rounded-md flex items-center gap-8 cursor-pointer w-fit", 'bg-color-'.get_color(session()->get('serviceName')).'/20'])>
-                <span class="text-color-2c2c2c font-light">Carica Firma</span>
-                <x-icons name="signature" />
-            </button>
-            @endif
-            <x-input-files wire:model="newScan" text="Carica Scansione" color="{{get_color(session()->get('serviceName'))}}" name="scans"  preview="scans_uploaded" icon="upload" />
+            <x-input-files wire:model="newScan" text="Carica Scansione" color="7a95db" name="scans"  preview="scans_uploaded" icon="upload" />
         </div>
     </div>
 

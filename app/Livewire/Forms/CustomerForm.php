@@ -18,7 +18,7 @@ class CustomerForm extends Form
     public $school_id;
     public $customer;
     public $newCustomer;
-    public $currentStep = 7;
+    public $currentStep = 1;
 
     public $name;
     public $lastName;
@@ -37,12 +37,13 @@ class CustomerForm extends Form
     public $phone_1;
     public $phone_2;
 
+    // Validazione
     public function rules() {
         return [
             'name' => 'required',
             'lastName' => 'required',
             'sex' => 'required',
-            'fiscal_code' => 'required',
+            'fiscal_code' => 'required|unique:customers,fiscal_code',
             'date_of_birth' => 'required',
             'birth_place' => 'required',
             'country_of_birth' => 'required',
@@ -64,6 +65,7 @@ class CustomerForm extends Form
             'lastName.required' => 'Campo richiesto',
             'sex.required' => 'Campo richiesto',
             'fiscal_code.required' => 'Campo richiesto',
+            'fiscal_code.unique' => 'Codice fiscale gia registrato',
             'date_of_birth.required' => 'Campo richiesto',
             'birth_place.required' => 'Campo richiesto',
             'country_of_birth.required' => 'Campo richiesto',
@@ -78,6 +80,13 @@ class CustomerForm extends Form
         ];
     }
 
+    public function validation() {
+        if ($this->currentStep <= 1) {
+            $this->validate();
+        }
+    }
+
+    // Set Dati
     public function setCustomer($customer) {
         $this->customer = Customer::find($customer);
         $this->fill(
@@ -106,12 +115,7 @@ class CustomerForm extends Form
         $this->school_id = $id;
     }
 
-    public function validation() {
-        if ($this->currentStep <= 1) {
-            $this->validate();
-        }
-    }
-
+    // Creazione Cliente
     public function store() {
         $this->newCustomer = Customer::create([
             'school_id' => $this->school_id,
@@ -189,16 +193,49 @@ class CustomerForm extends Form
         }
     }
 
+    // Scansioni
     public function scans($scans) {
+        $customer = null;
+
+        if ($this->newCustomer) {
+            $customer = $this->newCustomer;
+        } elseif ($this->customer) {
+            $customer = $this->customer;
+        }
+
         foreach ($scans as $scan) {
-            $path = Storage::putFileAs('customers/customer-'.$this->newCustomer->id, $scan, str_replace(' ', '_', $scan->getClientOriginalName()));
-            $this->newCustomer->documents()->create([
+            $path = Storage::putFileAs('customers/customer-'.$customer->id, $scan, str_replace(' ', '_', $scan->getClientOriginalName()));
+            $customer->documents()->create([
                 'type' => 'documenti di riconoscimento',
                 'path' => 'storage/app/'.$path
             ]);
 
-            $this->newCustomer->chronologies()->create([
+            $this->customer->chronologies()->create([
                 'title' => 'Scansione cliente: '. $scan->getClientOriginalName()
+            ]);
+        }
+    }
+
+    public function medicalVisitScan($scans, $registrationId) {
+        $customer = null;
+
+        if ($this->newCustomer) {
+            $customer = $this->newCustomer;
+        } elseif ($this->customer) {
+            $customer = $this->customer;
+        }
+
+        $registration = Registration::find($registrationId);
+
+        foreach ($scans as $scan) {
+            $path = Storage::putFileAs('customers/customer-'.$customer->id, $scan, str_replace(' ', '_', $scan->getClientOriginalName()));
+            $registration->documents()->create([
+                'type' => 'Certificato visita medica',
+                'path' => 'storage/app/'.$path
+            ]);
+
+            $registration->chronologies()->create([
+                'title' => 'Scansione certificato visita medica'
             ]);
         }
     }
@@ -231,10 +268,18 @@ class CustomerForm extends Form
     }
 
     public function parentScans($scans, $registrationId) {
+        $customer = null;
+
+        if ($this->newCustomer) {
+            $customer = $this->newCustomer;
+        } elseif ($this->customer) {
+            $customer = $this->customer;
+        }
+
         $registration = Registration::find($registrationId);
 
         foreach ($scans as $scan) {
-            $path = Storage::putFileAs('customers/customer-'.$this->newCustomer->id.'/parent', $scan, str_replace(' ', '_', $scan->getClientOriginalName()));
+            $path = Storage::putFileAs('customers/customer-'.$customer->id.'/parent', $scan, str_replace(' ', '_', $scan->getClientOriginalName()));
             $registration->documents()->create([
                 'type' => 'documenti di riconoscimento genitori',
                 'path' => 'storage/app/'.$path
@@ -247,10 +292,18 @@ class CustomerForm extends Form
     }
 
     public function companionsScans($scans, $registrationId) {
+        $customer = null;
+
+        if ($this->newCustomer) {
+            $customer = $this->newCustomer;
+        } elseif ($this->customer) {
+            $customer = $this->customer;
+        }
+
         $registration = Registration::find($registrationId);
 
         foreach ($scans as $key => $scan) {
-            $path = Storage::putFileAs('customers/customer-'.$this->newCustomer->id.'/companions/'.'companion-'.$key, $scan, str_replace(' ', '_', $scan->getClientOriginalName()));
+            $path = Storage::putFileAs('customers/customer-'.$customer->id.'/companions/'.'companion-'.$key, $scan, str_replace(' ', '_', $scan->getClientOriginalName()));
             $registration->documents()->create([
                 'type' => 'documenti di riconoscimento accompagnatore-'.$key,
                 'path' => 'storage/app/'.$path
@@ -299,82 +352,6 @@ class CustomerForm extends Form
         $this->reset();
     }
 
-    public function signature($signature) {
-        $path = Storage::putFileAs('customers/customer-'.$this->newCustomer->id, $signature, 'firma.png');
-        $this->newCustomer->documents()->updateOrCreate(
-            ['type' => 'firma'],
-            [
-                'type' => 'firma',
-                'path' => 'storage/app/'.$path
-            ]
-        );
-
-        $this->newCustomer->chronologies()->create([
-            'title' => 'Aquisizione firma cliente'
-        ]);
-    }
-
-    public function parentSignature($signature, $registrationId) {
-        $registration = Registration::find($registrationId);
-
-        $path = Storage::putFileAs('customers/customer-'.$this->newCustomer->id.'/parent', $signature, 'firma_genitore.png');
-        $registration->documents()->updateOrCreate(
-            ['type' => 'firma genitore'],
-            [
-                'type' => 'firma genitore',
-                'path' => 'storage/app/'.$path
-            ]
-        );
-
-        $registration->chronologies()->create([
-            'title' => 'Aquisizione firma genitore '
-        ]);
-    }
-
-    public function newSignature($signature, $registrationId) {
-        $registration = Registration::find($registrationId);
-
-        $path = Storage::putFileAs('customers/customer-'.$this->customer->id.'/parent', $signature, 'firma_parente.png');
-
-        $registration->documents()->create([
-            'type' => 'firma parente',
-            'path' => 'storage/app/'.$path
-        ]);
-
-        $registration->chronologies()->create([
-            'title' => 'Aquisizione firma parente'
-        ]);
-    }
-
-    public function companionsSignature($signatures, $registrationId) {
-        $registration = Registration::find($registrationId);
-
-        foreach ($signatures as $key => $signature) {
-            $path = Storage::putFileAs('customers/customer-'.$this->newCustomer->id.'/companions/'.'companion-'.$key, $signature, 'firma_accompagnatore-'.$key.'.png');
-
-            $registration->documents()->updateOrCreate(
-                ['type' => 'firma accompagnatore-'.$key],
-                [
-                    'type' => 'firma accompagnatore-'.$key,
-                    'path' => 'storage/app/'.$path
-                ]
-            );
-
-            $registration->chronologies()->create([
-                'title' => 'Aquisizione firma accompagnatore-'.$key
-            ]);
-        }
-    }
-
-    public function update() {
-        $this->validate();
-        $this->customer->update($this->validate());
-
-        $this->customer->chronologies()->create([
-            'title' => 'Aggiornamento dati cliente'
-        ]);
-    }
-
     public function deleteScan($scan) {
         $document = Document::find($scan);
         $type = $document->documentable_type;
@@ -397,5 +374,99 @@ class CustomerForm extends Form
             ]);
         }
         $this->reset();
+    }
+
+    // Firme
+    public function signature($signature) {
+        $path = Storage::putFileAs('customers/customer-'.$this->newCustomer->id, $signature, 'firma.png');
+        $this->newCustomer->documents()->updateOrCreate(
+            ['type' => 'firma'],
+            [
+                'type' => 'firma',
+                'path' => 'storage/app/'.$path
+            ]
+        );
+
+        $this->newCustomer->chronologies()->create([
+            'title' => 'Aquisizione firma cliente'
+        ]);
+    }
+
+    public function parentSignature($signature, $registrationId) {
+        $customer = null;
+
+        if ($this->newCustomer) {
+            $customer = $this->newCustomer;
+        } elseif ($this->customer) {
+            $customer = $this->customer;
+        }
+
+        $registration = Registration::find($registrationId);
+
+        $path = Storage::putFileAs('customers/customer-'.$customer->id.'/parent', $signature, 'firma_genitore.png');
+        $registration->documents()->updateOrCreate(
+            ['type' => 'firma genitore'],
+            [
+                'type' => 'firma genitore',
+                'path' => 'storage/app/'.$path
+            ]
+        );
+
+        $registration->chronologies()->create([
+            'title' => 'Aquisizione firma genitore '
+        ]);
+    }
+
+    public function companionsSignature($signatures, $registrationId) {
+        $customer = null;
+
+        if ($this->newCustomer) {
+            $customer = $this->newCustomer;
+        } elseif ($this->customer) {
+            $customer = $this->customer;
+        }
+
+        $registration = Registration::find($registrationId);
+
+        foreach ($signatures as $key => $signature) {
+            $path = Storage::putFileAs('customers/customer-'.$customer->id.'/companions/'.'companion-'.$key, $signature, 'firma_accompagnatore-'.$key.'.png');
+
+            $registration->documents()->updateOrCreate(
+                ['type' => 'firma accompagnatore-'.$key],
+                [
+                    'type' => 'firma accompagnatore-'.$key,
+                    'path' => 'storage/app/'.$path
+                ]
+            );
+
+            $registration->chronologies()->create([
+                'title' => 'Aquisizione firma accompagnatore-'.$key
+            ]);
+        }
+    }
+
+    public function newSignature($signature, $registrationId) {
+        $registration = Registration::find($registrationId);
+
+        $path = Storage::putFileAs('customers/customer-'.$this->customer->id.'/parent', $signature, 'firma_parente.png');
+
+        $registration->documents()->create([
+            'type' => 'firma parente',
+            'path' => 'storage/app/'.$path
+        ]);
+
+        $registration->chronologies()->create([
+            'title' => 'Aquisizione firma parente'
+        ]);
+    }
+
+    // Aggiornamento cliente
+    public function update() {
+        $this->validate();
+        $this->customer->update($this->validate());
+
+        $this->customer->chronologies()->create([
+            'title' => 'Aggiornamento dati cliente'
+        ]);
     }
 }

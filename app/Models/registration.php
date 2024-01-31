@@ -49,6 +49,22 @@ class Registration extends Model
         return $this->MorphMany(Chronology::class, 'chronology');
     }
 
+    public function parentDocuments(): MorphMany {
+        return $this->morphMany(Document::class, 'documentable')->where('type', 'documenti di riconoscimento genitore');
+    }
+
+    public function companionDocuments(): MorphMany {
+        return $this->morphMany(Document::class, 'documentable')->where('type', 'like', '%'.'documenti di riconoscimento accompagnatore'.'%');
+    }
+
+    public function parentSignature(): MorphMany {
+        return $this->morphMany(Document::class, 'documentable')->where('type', 'firma genitore');
+    }
+
+    public function companionsSignatures(): MorphMany {
+        return $this->morphMany(Document::class, 'documentable')->where('type', 'like', '%'.'firma accompagnatore'.'%');
+    }
+
     public function course() {
         return $this->BelongsToThrough(Course::class, Training::class);
     }

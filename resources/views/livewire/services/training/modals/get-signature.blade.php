@@ -11,7 +11,7 @@
                 <x-icons name="check" />
             @else
                 <span class="text-color-2c2c2c font-light">Carica Firma</span>
-                <x-icons name="image" />
+                <x-icons name="signature" />
             @endif
         </button>
     </div>

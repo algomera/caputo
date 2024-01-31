@@ -5,6 +5,7 @@ namespace App\Livewire\Registry;
 use Livewire\Component;
 use App\Livewire\Forms\CustomerForm;
 use App\Livewire\Forms\DocumentForm;
+use App\Models\Registration;
 use Livewire\WithFileUploads;
 use Livewire\Attributes\On;
 
@@ -15,7 +16,7 @@ class Show extends Component
     public CustomerForm $customerForm;
     public DocumentForm $documentForm;
     public $registrations;
-    public $registrationId;
+    public $registration;
     public $documents;
     public $modify = false;
     public $photo = null;
@@ -37,14 +38,13 @@ class Show extends Component
             $this->dispatch('modifyData', $this->modify);
         }
         if ($property == 'signature') {
-            $this->customerForm->newSignature($this->signature, $this->registrationId);
-            $this->dispatch('updateScan', registration: $this->registrationId);
+            $this->dispatch('uploadSignature', signature: $this->signature);
         }
     }
 
     #[On('selectedRegistration')]
     public function setRegistration($id) {
-        $this->registrationId = $id;
+        $this->registration = Registration::find($id);
     }
 
     public function save() {
@@ -52,6 +52,16 @@ class Show extends Component
 
         if ($this->photo) {
             $this->customerForm->photo($this->photo);
+
+            $stepSkipped = json_decode($this->registration->step_skipped);
+            $step = array_search('fototessera', $stepSkipped);
+            unset($stepSkipped[$step]);
+
+            $this->registration->update([
+                'step_skipped' => json_encode(array_values($stepSkipped))
+            ]);
+
+            $this->mount($this->customerForm->customer->id);
         }
         $this->modify = false;
     }

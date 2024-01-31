@@ -58,6 +58,22 @@ class StepRegister extends Component
         $this->setSteps();
     }
 
+    public function updated($property) {
+        if (str_contains($property,'documents')) {
+            $this->verifyTypeDocument();
+            $this->validateDocument();
+        }
+        if ($property == "scans") {
+            $this->scanUploaded = true;
+        }
+        if ($property == "parentScan") {
+            $this->parentScanUploaded = true;
+        }
+        if (str_contains($property,'companions')) {
+            $this->verifyCompanions();
+        }
+    }
+
     public function back() {
         return redirect()->route('service');
     }
@@ -153,6 +169,10 @@ class StepRegister extends Component
         }
 
         if ($type == 'esistente') {
+            if (!in_array(15, array_values(session()->get('course')['selected_cost']))) {
+                $this->skipped[] = 'visita';
+            }
+
             $registration = Registration::create([
                 'training_id' => $trainingId,
                 'customer_id' => $this->customerForm->newCustomer->id,
@@ -204,8 +224,6 @@ class StepRegister extends Component
             }
         }
 
-        //TODO va implentata la parte pagamenti prima di esssere reinderizzato
-
         foreach (session()->get('course')['selected_cost'] as $key => $cost) {
             if ($cost == 15) {
                 MedicalPlanning::create([
@@ -214,9 +232,9 @@ class StepRegister extends Component
             }
         }
 
-        return redirect()->route('registry.show', ['customer' => $this->customerForm->newCustomer->id]);
+        //TODO va implentata la parte pagamenti prima di esssere reinderizzato
 
-        dd('registrazione completata', $this->customerForm->currentStep);
+        return redirect()->route('registry.show', ['customer' => $this->customerForm->newCustomer->id]);
     }
 
     public function addDocument() {
@@ -240,28 +258,10 @@ class StepRegister extends Component
 
     public function verifyCompanions() {
         foreach ($this->companions as $companion) {
-            if ($companion['signature'] != null && count($companion['scans']) > 0) {
-                return $this->companionUploaded = true;
-            } else {
-                $this->companionUploaded = false;
+            if (!$companion['signature'] || count($companion['scans']) < 1) {
+                return $this->companionUploaded = false;
             }
-        }
-    }
-
-
-    public function updated($property) {
-        if (str_contains($property,'documents')) {
-            $this->verifyTypeDocument();
-            $this->validateDocument();
-        }
-        if ($property == "scans") {
-            $this->scanUploaded = true;
-        }
-        if ($property == "parentScan") {
-            $this->parentScanUploaded = true;
-        }
-        if (str_contains($property,'companions')) {
-            $this->verifyCompanions();
+            $this->companionUploaded = true;
         }
     }
 

@@ -81,10 +81,13 @@ if (! function_exists('get_step')) {
                 $description = 'Fototessera cliente';
                 break;
             case 'genitore/tutore':
-                $description = 'Documenti e firma Genitore/Tutore ';
+                $description = 'Documenti e firma Genitore/Tutore';
                 break;
             case 'accompagnatori':
-                $description = 'Documenti e firma accompagnatori ';
+                $description = 'Documenti e firma accompagnatori';
+                break;
+            case 'visita':
+                $description = 'Certificato visita medica';
                 break;
 
         }

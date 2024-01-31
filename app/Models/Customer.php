@@ -51,24 +51,8 @@ class Customer extends Model
         return $this->morphMany(Document::class, 'documentable')->where('type', 'documenti di riconoscimento');
     }
 
-    public function parentDocuments(): MorphMany {
-        return $this->morphMany(Document::class, 'documentable')->where('type', 'documenti di riconoscimento genitore');
-    }
-
-    public function companionDocuments(): MorphMany {
-        return $this->morphMany(Document::class, 'documentable')->where('type', 'like', '%'.'documenti di riconoscimento accompagnatore'.'%');
-    }
-
     public function customerSignature(): MorphMany {
         return $this->morphMany(Document::class, 'documentable')->where('type', 'firma');
-    }
-
-    public function parentSignature(): MorphMany {
-        return $this->morphMany(Document::class, 'documentable')->where('type', 'firma genitore');
-    }
-
-    public function companionsSignatures(): MorphMany {
-        return $this->morphMany(Document::class, 'documentable')->where('type', 'like', '%'.'firma accompagnatore'.'%');
     }
 
     public function photo() {

@@ -15,6 +15,7 @@ class Index extends Component
     public $course;
     public $branch;
     public $type;
+    public $signature;
 
     public function setService($id) {
         $this->selectedService = Service::find($id);
@@ -66,6 +67,10 @@ class Index extends Component
             $session['conseguimento'] = $except;
         }
         session()->put('course', $session);
+    }
+
+    public function getSignature() {
+        dd('service.index');
     }
 
     public function render()

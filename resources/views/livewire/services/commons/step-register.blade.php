@@ -235,7 +235,7 @@
                     </x-container-step>
                 @break
 
-            {{-- Jolly --}}
+            {{-- Genitory --}}
                 @case(6)
                     <x-container-step>
                         <p class="text-xl font-light text-color-2c2c2c">
