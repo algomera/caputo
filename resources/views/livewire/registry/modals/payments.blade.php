@@ -31,8 +31,32 @@
 
 
     @if ($type == 'iscrizione')
-        <div class="mt-2 px-2 w-full flex justify-end">
-            <button wire:click="$dispatch('openModal', { component: 'registry.modals.add-payment', arguments: {registration: {{$registration->id}}} })" class="ml-auto px-4 py-1 text-color-2c2c2c font-medium capitalize rounded-full bg-color-01a53a/30 hover:scale-105 transition-all duration-300">+ Pagamento</button>
+        <div class="mt-2 pr-2 w-full flex items-end justify-between">
+            <div class="flex items-center gap-4">
+                <div class="px-4 py-1 border shadow-md rounded-md bg-color-f7f7f7 text-color-17489f">
+                    <span class="font-medium">Prezzo Iscrizione: € {{$registration->finalPrice}}</span>
+                </div>
+                @if ($registration->discount)
+                    <div class="px-4 py-1 border shadow-md rounded-md bg-color-f7f7f7 text-color-17489f">
+                        <span class="font-medium">Sconto: € {{$registration->discount}}</span>
+                    </div>
+                @endif
+                <div class="px-4 py-1 border shadow-md rounded-md bg-color-f7f7f7 text-color-01a53a">
+                    <span class="font-medium">Pagato: € {{$registration->totalPayment}}</span>
+                </div>
+                <div class="px-4 py-1 border shadow-md rounded-md bg-color-f7f7f7 text-red-600/80">
+                    <span class="font-medium">Da pagare: € {{($registration->remainToPay)}}</span>
+                </div>
+            </div>
+
+            <div class="space-x-4">
+                @role('admin|responsabile sede')
+                    <button wire:click="$dispatch('openModal', { component: 'registry.modals.discount', arguments: {registration: {{$registration->id}}} })" class="ml-auto px-4 py-1 text-color-2c2c2c font-medium capitalize rounded-full bg-color-ffb205/30 hover:scale-105 transition-all duration-300">Sconta</button>
+                @endrole
+                @if ($registration->totalPayment < $registration->finalPrice)
+                    <button wire:click="$dispatch('openModal', { component: 'registry.modals.add-payment', arguments: {registration: {{$registration->id}}} })" class="ml-auto px-4 py-1 text-color-2c2c2c font-medium capitalize rounded-full bg-color-01a53a/30 hover:scale-105 transition-all duration-300">+ Pagamento</button>
+                @endif
+            </div>
         </div>
 
         <div class="p-11 pt-5 bg-color-f7f7f7 shadow-shadow-card">

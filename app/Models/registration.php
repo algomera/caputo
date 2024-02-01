@@ -72,4 +72,28 @@ class Registration extends Model
     public function school() {
         return $this->BelongsToThrough(School::class, Training::class);
     }
+
+    public function getFinalPriceAttribute() {
+        if ($this->discount) {
+            return $this->price - $this->discount;
+        }
+        return $this->price;
+    }
+
+    public function getTotalPaymentAttribute() {
+        $total = 0;
+        $payments = $this->payments()->get();
+
+        foreach ($payments as $payment) {
+            $total += $payment->amount;
+        }
+        return $total;
+    }
+
+    public function getRemainToPayAttribute() {
+        if (($this->finalPrice - $this->totalPayment) < 0) {
+            return 0;
+        }
+        return ($this->finalPrice - $this->totalPayment);
+    }
 }

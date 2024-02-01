@@ -20,7 +20,8 @@ return new class extends Migration
             $table->string('transmission')->nullable();
             $table->json('optionals')->nullable();
             $table->json('step_skipped')->nullable();
-            $table->decimal('price')->nullable();
+            $table->decimal('price');
+            $table->decimal('discount')->nullable();
             $table->string('state')->default('aperta');
             $table->timestamps();
         });
