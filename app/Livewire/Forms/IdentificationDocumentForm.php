@@ -8,7 +8,7 @@ use App\Models\IdentificationType;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
 
-class DocumentForm extends Form
+class IdentificationDocumentForm extends Form
 {
     //Patente
     public $patent;

@@ -4,7 +4,7 @@ namespace App\Livewire\Registry;
 
 use Livewire\Component;
 use App\Livewire\Forms\CustomerForm;
-use App\Livewire\Forms\DocumentForm;
+use App\Livewire\Forms\IdentificationDocumentForm;
 use App\Models\Registration;
 use Livewire\WithFileUploads;
 use Livewire\Attributes\On;
@@ -14,7 +14,7 @@ class Show extends Component
     use WithFileUploads;
 
     public CustomerForm $customerForm;
-    public DocumentForm $documentForm;
+    public IdentificationDocumentForm $identificationDocumentForm;
     public $registrations;
     public $registration;
     public $documents;
@@ -25,8 +25,8 @@ class Show extends Component
     #[On('updateDocument')]
     public function mount($customer) {
         $this->customerForm->setCustomer($customer);
-        $this->documentForm->setPatent($customer);
-        $this->documentForm->getDocuments($customer);
+        $this->identificationDocumentForm->setPatent($customer);
+        $this->identificationDocumentForm->getDocuments($customer);
         $this->registrations = $this->customerForm->customer->registrations()->where('state', 'aperta')->with('medicalPlanning', 'course', 'pinkSheet')->get();
     }
 

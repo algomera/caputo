@@ -3,13 +3,13 @@
 namespace App\Livewire\Registry\Modals;
 
 use App\Livewire\Registry\Show as RegistryShow;
-use App\Livewire\Forms\DocumentForm;
+use App\Livewire\Forms\IdentificationDocumentForm;
 use App\Models\Customer;
 use LivewireUI\Modal\ModalComponent;
 
 class Document extends ModalComponent
 {
-    public DocumentForm $documentForm;
+    public IdentificationDocumentForm $identificationDocumentForm;
     public $customer;
     public $documentTypes;
     public $action;
@@ -20,12 +20,12 @@ class Document extends ModalComponent
         $this->action = $action;
 
         if ($document) {
-            $this->documentForm->setDocument($document);
+            $this->identificationDocumentForm->setDocument($document);
         }
     }
 
     public function save() {
-        $this->documentForm->store($this->customer->id);
+        $this->identificationDocumentForm->store($this->customer->id);
 
         $registrations = $this->customer->registrations()->get();
         if (count($registrations)) {
@@ -46,7 +46,7 @@ class Document extends ModalComponent
     }
 
     public function update() {
-        $this->documentForm->update();
+        $this->identificationDocumentForm->update();
 
         $this->closeModalWithEvents([
             RegistryShow::class => ['updateDocument', [$this->customer->id]]

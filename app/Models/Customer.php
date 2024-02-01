@@ -64,7 +64,7 @@ class Customer extends Model
     }
 
     public function otherIdentificationDocuments() {
-        $typeDocuments = IdentificationType::whereDoesntHave('identificationDocuments', function($query) {
+        $typeDocuments = IdentificationType::where('name', '!=', 'patente')->whereDoesntHave('identificationDocuments', function($query) {
             $query->whereIn('customer_id', [$this->id]);
         })->get();
 

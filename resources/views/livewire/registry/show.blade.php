@@ -114,19 +114,19 @@
             @endif
             <div class="grow space-y-3">
                 <div class="w-full flex items-end gap-2">
-                    <x-input-text disabled="{{!$modify}}" wire:model="documentForm.n_document" width="w-1/6" name="documentForm.n_document" label="N. Patente" />
-                    <x-input-text disabled="{{!$modify}}" type="date" wire:model="documentForm.document_release" width="w-1/6" name="documentForm.document_release" label="Rilasciata il" />
-                    <x-input-text disabled="{{!$modify}}" wire:model="documentForm.document_from" width="w-1/6" name="documentForm.document_from" label="Ente di rilascio" />
-                    <x-input-text disabled="{{!$modify}}" type="date" wire:model="documentForm.document_expiration" width="w-1/6" name="documentForm.document_expiration" label="Scade il" />
-                    <x-input-text disabled wire:model="documentForm.qualification" width="w-1/6" name="documentForm.qualification" label="Abilitazioni" />
+                    <x-input-text disabled="{{!$modify}}" wire:model="identificationDocumentForm.n_document" width="w-1/6" name="identificationDocumentForm.n_document" label="N. Patente" />
+                    <x-input-text disabled="{{!$modify}}" type="date" wire:model="identificationDocumentForm.document_release" width="w-1/6" name="identificationDocumentForm.document_release" label="Rilasciata il" />
+                    <x-input-text disabled="{{!$modify}}" wire:model="identificationDocumentForm.document_from" width="w-1/6" name="identificationDocumentForm.document_from" label="Ente di rilascio" />
+                    <x-input-text disabled="{{!$modify}}" type="date" wire:model="identificationDocumentForm.document_expiration" width="w-1/6" name="identificationDocumentForm.document_expiration" label="Scade il" />
+                    <x-input-text disabled wire:model="identificationDocumentForm.qualification" width="w-1/6" name="identificationDocumentForm.qualification" label="Abilitazioni" />
                     {{-- @if ($modify)
-                    <div wire:click="$dispatch('openModal', { component: 'registry.modals.document', arguments: {customer: {{$customerForm->customer->id}}, document: {{$documentForm->patent->id}}, action: 'edit'} })" class="hover:scale-105 transition-all duration-300 cursor-pointer">
+                    <div wire:click="$dispatch('openModal', { component: 'registry.modals.document', arguments: {customer: {{$customerForm->customer->id}}, document: {{$identificationDocumentForm->patent->id}}, action: 'edit'} })" class="hover:scale-105 transition-all duration-300 cursor-pointer">
                         <x-icons name="b-edit" />
                     </div>
                     @endif --}}
                 </div>
-                @if (count($documentForm->documents) > 0)
-                    @foreach ($documentForm->documents as $document )
+                @if (count($identificationDocumentForm->documents) > 0)
+                    @foreach ($identificationDocumentForm->documents as $document )
                         <div class="w-full flex items-end gap-2">
                             <x-fake-input width="w-1/6" label="Tipo Documento" uppercase="capitalize">{{$document->identificationType->name}}</x-fake-input>
                             <x-fake-input width="w-1/6" label="N. Documento" uppercase="uppercase">{{$document->n_document}}</x-fake-input>

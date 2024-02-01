@@ -3,7 +3,7 @@
     <h1 class="text-xl text-gray-400 font-semibold text-center my-5">
         Sei sicuro di volere eliminare
         <span class="text-gray-800 uppercase">
-            {{$documentForm->identificationDocument->identificationType->name}} ?
+            {{$identificationDocumentForm->identificationDocument->identificationType->name}} ?
         </span>
     </h1>
     <div class="w-fit m-auto space-x-5">

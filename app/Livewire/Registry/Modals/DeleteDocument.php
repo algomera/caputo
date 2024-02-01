@@ -3,20 +3,20 @@
 namespace App\Livewire\Registry\Modals;
 
 use App\Livewire\Registry\Show as RegistryShow;
-use App\Livewire\Forms\DocumentForm;
+use App\Livewire\Forms\IdentificationDocumentForm;
 use LivewireUI\Modal\ModalComponent;
 
 class DeleteDocument extends ModalComponent
 {
-    public DocumentForm $documentForm;
+    public IdentificationDocumentForm $identificationDocumentForm;
 
     public function mount($document) {
-        $this->documentForm->setDocument($document);
+        $this->identificationDocumentForm->setDocument($document);
     }
 
     public function delete() {
-        $customer = $this->documentForm->identificationDocument->customer_id;
-        $this->documentForm->delete();
+        $customer = $this->identificationDocumentForm->identificationDocument->customer_id;
+        $this->identificationDocumentForm->delete();
 
         $this->closeModalWithEvents([
             RegistryShow::class => ['updateDocument', [$customer]]
