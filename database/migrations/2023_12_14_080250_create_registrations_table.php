@@ -16,12 +16,16 @@ return new class extends Migration
             $table->foreignId('training_id')->constrained()->onDelete('cascade');
             $table->boolean('special')->default(false);
             $table->foreignId('customer_id')->constrained()->onDelete('cascade');
+            $table->string('option');
             $table->string('type');
             $table->string('transmission')->nullable();
             $table->json('optionals')->nullable();
             $table->json('step_skipped')->nullable();
             $table->decimal('price');
             $table->decimal('discount')->nullable();
+            $table->string('protocol')->nullable();
+            $table->dateTime('protocol_release')->nullable();
+            $table->date('protocol_expiration')->nullable();
             $table->string('state')->default('aperta');
             $table->timestamps();
         });

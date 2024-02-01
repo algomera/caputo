@@ -176,6 +176,7 @@ class StepRegister extends Component
             $registration = Registration::create([
                 'training_id' => $trainingId,
                 'customer_id' => $this->customerForm->newCustomer->id,
+                'option' => session()->get('course')['option'],
                 'type' => session()->get('course')['registration_type'],
                 'transmission' => session()->get('course')['transmission'],
                 'optionals' => json_encode(session()->get('course')['selected_cost']),

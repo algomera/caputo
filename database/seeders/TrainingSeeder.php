@@ -57,6 +57,7 @@ class TrainingSeeder extends Seeder
                         Registration::create([
                             'training_id' => $training->id,
                             'customer_id' => $customer->id,
+                            'option' => fake()->randomElement(['iscrizione', 'cambio codice', 'possessore di patente']),
                             'type' => fake()->randomElement(['teoria', 'pratica', 'pratica/s.esame']),
                             'transmission' => fake()->randomElement(['manuale', 'automatica']),
                             'optionals' => $optionals->pluck('id')->toJson(),
@@ -67,6 +68,7 @@ class TrainingSeeder extends Seeder
                         Registration::create([
                             'training_id' => $trainingLoop->id,
                             'customer_id' => $customer->id,
+                            'option' => fake()->randomElement(['iscrizione', 'cambio codice', 'possessore di patente']),
                             'type' => fake()->randomElement(['teoria', 'pratica', 'pratica/s.esame']),
                             'transmission' => fake()->randomElement(['manuale', 'automatica']),
                             'optionals' => $optionals->pluck('id')->toJson(),
@@ -113,6 +115,7 @@ class TrainingSeeder extends Seeder
                         Registration::create([
                             'training_id' => $training->id,
                             'customer_id' => $customer->id,
+                            'option' => fake()->randomElement(['iscrizione', 'cambio codice', 'possessore di patente']),
                             'type' => fake()->randomElement(['teoria', 'pratica', 'pratica/s.esame']),
                             'transmission' => fake()->randomElement(['manuale', 'automatica']),
                             'optionals' => $optionals->pluck('id')->toJson(),
@@ -123,6 +126,7 @@ class TrainingSeeder extends Seeder
                         Registration::create([
                             'training_id' => $trainingLoop->id,
                             'customer_id' => $customer->id,
+                            'option' => fake()->randomElement(['iscrizione', 'cambio codice', 'possessore di patente']),
                             'type' => fake()->randomElement(['teoria', 'pratica', 'pratica/s.esame']),
                             'transmission' => fake()->randomElement(['manuale', 'automatica']),
                             'optionals' => $optionals->pluck('id')->toJson(),

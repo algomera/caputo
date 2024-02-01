@@ -172,6 +172,7 @@
                                     Dati mancanti
                                 </button>
                             @endif
+                            <button wire:click="$dispatch('openModal', { component: 'registry.modals.update-registration', arguments: {registration: {{$registration->id}}} })" class="px-4 py-1 text-color-2c2c2c font-medium capitalize rounded-full bg-color-ffb205/30 hover:scale-105 transition-all duration-300">opzioni iscrizione</button>
                         </div>
                         <div class="flex gap-2">
                             <button wire:click="$dispatch('openModal', { component: 'registry.modals.scans', arguments: {registration: {{$registration->id}}} })" class="px-4 py-1 text-color-2c2c2c font-medium capitalize rounded-full bg-color-ffb205/30 hover:scale-105 transition-all duration-300">Scansioni/Firme</button>
