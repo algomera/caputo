@@ -152,91 +152,88 @@ class StepRegister extends Component
 
     #[On('newRegistration')]
     public function registration($trainingId, $type, $variant = null) {
-        // $this->customerForm->setSchool(auth()->user()->schools()->first()->id);
-        // $this->customerForm->store();
+        $this->customerForm->setSchool(auth()->user()->schools()->first()->id);
+        $this->customerForm->store();
 
-        // if ($this->documents) {
-        //     $this->customerForm->documents($this->documents);
-        // }
-        // if ($this->scans) {
-        //     $this->customerForm->scans($this->scans);
-        // }
-        // if ($this->photo) {
-        //     $this->customerForm->photo($this->photo);
-        // }
-        // if ($this->signature) {
-        //     $this->customerForm->signature($this->signature);
-        // }
+        if ($this->documents) {
+            $this->customerForm->documents($this->documents);
+        }
+        if ($this->scans) {
+            $this->customerForm->scans($this->scans);
+        }
+        if ($this->photo) {
+            $this->customerForm->photo($this->photo);
+        }
+        if ($this->signature) {
+            $this->customerForm->signature($this->signature);
+        }
 
-        // if ($type == 'esistente') {
-        //     if (!in_array(15, array_values(session()->get('course')['selected_cost']))) {
-        //         $this->skipped[] = 'visita';
-        //     }
+        if ($type == 'esistente') {
+            if (!in_array(15, array_values(session()->get('course')['selected_cost']))) {
+                $this->skipped[] = 'visita';
+            }
 
-        //     $registration = Registration::create([
-        //         'training_id' => $trainingId,
-        //         'customer_id' => $this->customerForm->newCustomer->id,
-        //         'option' => session()->get('course')['option'],
-        //         'type' => session()->get('course')['registration_type'],
-        //         'transmission' => session()->get('course')['transmission'],
-        //         'optionals' => json_encode(session()->get('course')['selected_cost']),
-        //         'step_skipped' => json_encode($this->skipped),
-        //         'price' => session()->get('course')['price']
-        //     ]);
+            $registration = Registration::create([
+                'training_id' => $trainingId,
+                'customer_id' => $this->customerForm->newCustomer->id,
+                'option' => session()->get('course')['option'],
+                'type' => session()->get('course')['registration_type'],
+                'transmission' => session()->get('course')['transmission'],
+                'optionals' => json_encode(session()->get('course')['selected_cost']),
+                'step_skipped' => json_encode($this->skipped),
+                'price' => session()->get('course')['price']
+            ]);
 
-        //     if ($this->parentScans) {
-        //         $this->customerForm->parentScans($this->parentScans, $registration->id);
-        //     }
-        //     if ($this->parentSignature) {
-        //         $this->customerForm->parentSignature($this->parentSignature, $registration->id);
-        //     }
-        //     if ($this->companions) {
-        //         $signatures = [];
-        //         $scans = [];
+            if ($this->parentScans) {
+                $this->customerForm->parentScans($this->parentScans, $registration->id);
+            }
+            if ($this->parentSignature) {
+                $this->customerForm->parentSignature($this->parentSignature, $registration->id);
+            }
+            if ($this->companions) {
+                $signatures = [];
+                $scans = [];
 
-        //         foreach ($this->companions as $key => $companion) {
-        //             if ($companion['signature'] != null) {
-        //                 $signatures[$key] = $companion['signature'];
-        //             }
-        //             if (count($companion['scans']) > 0) {
-        //                 foreach ($companion['scans'] as $scan) {
-        //                     $scans[$key] = $scan;
-        //                 }
-        //             }
-        //         }
+                foreach ($this->companions as $key => $companion) {
+                    if ($companion['signature'] != null) {
+                        $signatures[$key] = $companion['signature'];
+                    }
+                    if (count($companion['scans']) > 0) {
+                        foreach ($companion['scans'] as $scan) {
+                            $scans[$key] = $scan;
+                        }
+                    }
+                }
 
-        //         $this->customerForm->companionsSignature($signatures, $registration->id);
-        //         $this->customerForm->companionsScans($scans, $registration->id);
-        //     }
-        // } elseif ($type == 'interessato') {
-        //     if ($variant) {
-        //         InterestedCourses::create([
-        //             'customer_id' => $this->customerForm->newCustomer->id,
-        //             'course_id' => session()->get('course')['id'],
-        //             'variant_id' => $variant,
-        //             'confirm' => 'in attesa'
-        //         ]);
-        //     } else {
-        //         InterestedCourses::create([
-        //             'customer_id' => $this->customerForm->newCustomer->id,
-        //             'course_id' => session()->get('course')['id'],
-        //             'confirm' => 'in attesa'
-        //         ]);
-        //     }
-        // }
+                $this->customerForm->companionsSignature($signatures, $registration->id);
+                $this->customerForm->companionsScans($scans, $registration->id);
+            }
+        } elseif ($type == 'interessato') {
+            if ($variant) {
+                InterestedCourses::create([
+                    'customer_id' => $this->customerForm->newCustomer->id,
+                    'course_id' => session()->get('course')['id'],
+                    'variant_id' => $variant,
+                    'confirm' => 'in attesa'
+                ]);
+            } else {
+                InterestedCourses::create([
+                    'customer_id' => $this->customerForm->newCustomer->id,
+                    'course_id' => session()->get('course')['id'],
+                    'confirm' => 'in attesa'
+                ]);
+            }
+        }
 
-        // foreach (session()->get('course')['selected_cost'] as $key => $cost) {
-        //     if ($cost == 15) {
-        //         MedicalPlanning::create([
-        //             'registration_id' => $registration->id
-        //         ]);
-        //     }
-        // }
+        foreach (session()->get('course')['selected_cost'] as $key => $cost) {
+            if ($cost == 15) {
+                MedicalPlanning::create([
+                    'registration_id' => $registration->id
+                ]);
+            }
+        }
 
-        //TODO va implentata la parte pagamenti prima di esssere reinderizzato
         $this->dispatch('openModal', 'services.commons.modals.payment', ['registration' => 31]);
-
-        // return redirect()->route('registry.show', ['customer' => $this->customerForm->newCustomer->id]);
     }
 
     public function addDocument() {
