@@ -233,7 +233,7 @@ class StepRegister extends Component
             }
         }
 
-        $this->dispatch('openModal', 'services.commons.modals.payment', ['registration' => 31]);
+        $this->dispatch('openModal', 'services.commons.modals.payment', ['registration' => $registration->id]);
     }
 
     public function addDocument() {
