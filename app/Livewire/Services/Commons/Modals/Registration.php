@@ -65,10 +65,11 @@ class Registration extends ModalComponent
         $this->dispatch('newRegistration', $trainingId, $type, $variant);
     }
 
-    public static function modalMaxWidth(): string
+    public static function modalMaxWidthClass(): string
     {
-        return '7xl';
+        return 'max-w-screen-lg 2xl:max-w-screen-xl';
     }
+
 
     public function render()
     {

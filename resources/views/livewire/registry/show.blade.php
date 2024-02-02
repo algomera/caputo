@@ -9,20 +9,30 @@
 
     <div class="mt-10 p-4 w-full flex flex-col gap-4 shadow-shadow-card bg-color-f7f7f7">
         {{-- Autoscuola --}}
-        <div class="flex items-end justify-between border-b pb-4">
+        <div class="flex items-end justify-between gap-5 border-b pb-4">
             <div class="flex items-center gap-4">
                 <x-fake-input width="w-48" label="Codice autoscuola" uppercase="">{{$customerForm->customer->school->code}}</x-fake-input>
                 <x-fake-input width="w-fit" label="Sede" uppercase="">{{$customerForm->customer->school->address}}</x-fake-input>
                 <x-fake-input width="w-48" label="Data acquisizione" uppercase="">{{date("d/m/Y", strtotime($customerForm->customer->created_at))}}</x-fake-input>
             </div>
             <div class="flex items-center gap-2">
-                <button wire:click="$dispatch('openModal', { component: 'registry.modals.chronology', arguments: {customer: {{$customerForm->customer->id}}} })" class="px-4 py-1 text-color-2c2c2c font-medium capitalize rounded-full bg-color-ffb205/30 hover:scale-105 transition-all duration-300">Cronologia cliente</button>
-                <button wire:click="$dispatch('openModal', { component: 'registry.modals.scans', arguments: {customer: {{$customerForm->customer->id}}} })" class="px-4 py-1 text-color-2c2c2c font-medium capitalize rounded-full bg-color-ffb205/30 hover:scale-105 transition-all duration-300">Scansioni</button>
+                <button wire:click="$dispatch('openModal', { component: 'registry.modals.chronology', arguments: {customer: {{$customerForm->customer->id}}} })" class="flex items-center gap-2 px-4 py-1 text-color-2c2c2c font-medium capitalize rounded-full bg-color-ffb205/30 hover:scale-105 transition-all duration-300">
+                    <x-icons name="time" /> Cronologia
+                </button>
+                <button wire:click="$dispatch('openModal', { component: 'registry.modals.scans', arguments: {customer: {{$customerForm->customer->id}}} })" class="flex items-center gap-2 px-4 py-1 text-color-2c2c2c font-medium capitalize rounded-full bg-color-ffb205/30 hover:scale-105 transition-all duration-300">
+                    <x-icons name="small_upload" /> Scansioni
+                </button>
                 @if ($modify)
-                    <button wire:click="disabledModify" class="px-4 py-1 text-color-2c2c2c font-medium capitalize rounded-full bg-red-500/60 hover:scale-105 transition-all duration-300">Disabilita Modifica</button>
-                    <button wire:click="save" class="px-4 py-1 text-color-2c2c2c font-medium capitalize rounded-full bg-color-01a53a/30 hover:scale-105 transition-all duration-300">Salva</button>
+                    <button wire:click="disabledModify" class="flex items-center gap-2 px-4 py-1 text-color-2c2c2c font-medium capitalize rounded-full bg-red-500/30 hover:scale-105 transition-all duration-300">
+                        <x-icons name="cancel" /> Modifica
+                    </button>
+                    <button wire:click="save" class="flex items-center gap-2 px-4 py-1 text-color-2c2c2c font-medium capitalize rounded-full bg-color-01a53a/30 hover:scale-105 transition-all duration-300">
+                        <x-icons name="save" /> Salva
+                    </button>
                 @else
-                    <button wire:click="$set('modify', true)" class="px-4 py-1 text-color-2c2c2c font-medium capitalize rounded-full bg-color-01a53a/30 hover:scale-105 transition-all duration-300">Abilita Modifica</button>
+                    <button wire:click="$set('modify', true)" class="flex items-center gap-2 px-4 py-1 text-color-2c2c2c font-medium capitalize rounded-full bg-color-01a53a/30 hover:scale-105 transition-all duration-300">
+                        <x-icons name="pen" /> Modifica
+                    </button>
                 @endif
             </div>
         </div>
@@ -155,8 +165,8 @@
             </div>
             @if ($modify)
                 <div wire:click="$dispatch('openModal', { component: 'registry.modals.document', arguments: {customer: {{$customerForm->customer->id}}} })"
-                    class="absolute top-0 right-0 w-fit px-4 py-1 text-color-2c2c2c font-medium capitalize rounded-full bg-color-01a53a/30 hover:scale-105 transition-all duration-300 cursor-pointer">
-                    + documento
+                    class="absolute flex items-center gap-2 top-0 right-0 w-fit px-4 py-1 text-xl text-color-2c2c2c font-medium capitalize rounded-full bg-color-01a53a/30 hover:scale-105 transition-all duration-300 cursor-pointer">
+                    + <x-icons name="id_document" class="h-6 w-6" />
                 </div>
             @endif
         </div>
@@ -172,22 +182,30 @@
                             @if (count(json_decode($registration->step_skipped)) < 1)
                                 <button class="px-4 py-1 text-color-2c2c2c font-medium capitalize rounded-full bg-color-ffb205/30 hover:scale-105 transition-all duration-300">continua accettazione</button>
                             @else
-                                <button wire:click="$dispatch('openModal', { component: 'registry.modals.show-skipped', arguments: {registration: {{$registration->id}}} })" class="px-4 py-[2px] flex items-center gap-2 text-color-2c2c2c font-medium capitalize rounded-full bg-red-500/10 border-red-500/50 border hover:scale-105 transition-all duration-300">
-                                    <x-icons name="alert" class="w-4 h-4" />
+                                <button wire:click="$dispatch('openModal', { component: 'registry.modals.show-skipped', arguments: {registration: {{$registration->id}}} })" class="px-4 py-[2px] flex items-center gap-2 text-color-2c2c2c font-medium capitalize rounded-full bg-red-500/30 hover:scale-105 transition-all duration-300">
+                                    <x-icons name="error" />
                                     Dati mancanti
                                 </button>
                             @endif
-                            <button wire:click="$dispatch('openModal', { component: 'registry.modals.update-registration', arguments: {registration: {{$registration->id}}} })" class="px-4 py-1 text-color-2c2c2c font-medium capitalize rounded-full bg-color-ffb205/30 hover:scale-105 transition-all duration-300">opzioni</button>
+                            <button wire:click="$dispatch('openModal', { component: 'registry.modals.update-registration', arguments: {registration: {{$registration->id}}} })" class="flex items-center gap-2 px-4 py-1 text-color-2c2c2c font-medium capitalize rounded-full bg-color-347af2/30 hover:scale-105 transition-all duration-300">
+                                <x-icons name="option" /> opzioni
+                            </button>
                         </div>
                         <div class="flex gap-2">
-                            <button wire:click="$dispatch('openModal', { component: 'registry.modals.scans', arguments: {registration: {{$registration->id}}} })" class="px-4 py-1 text-color-2c2c2c font-medium capitalize rounded-full bg-color-ffb205/30 hover:scale-105 transition-all duration-300">Scansioni/Firme</button>
-                            <button wire:click="$dispatch('openModal', { component: 'registry.modals.payments', arguments: {registration: {{$registration->id}}} })" class="px-4 py-1 text-color-2c2c2c font-medium capitalize rounded-full bg-color-ffb205/30 hover:scale-105 transition-all duration-300">pagamenti</button>
-                            <button wire:click="$dispatch('openModal', { component: 'registry.modals.chronology', arguments: {registration: {{$registration->id}}} })" class="px-4 py-1 text-color-2c2c2c font-medium capitalize rounded-full bg-color-ffb205/30 hover:scale-105 transition-all duration-300">cronologia</button>
+                            <button wire:click="$dispatch('openModal', { component: 'registry.modals.scans', arguments: {registration: {{$registration->id}}} })" class="flex items-center gap-2 px-4 py-1 text-color-2c2c2c font-medium capitalize rounded-full bg-color-ffb205/30 hover:scale-105 transition-all duration-300">
+                                <x-icons name="small_upload" /> Scansioni/Firme
+                            </button>
+                            <button wire:click="$dispatch('openModal', { component: 'registry.modals.payments', arguments: {registration: {{$registration->id}}} })" class="flex items-center gap-2 px-4 py-1 text-color-2c2c2c font-medium capitalize rounded-full bg-color-ffb205/30 hover:scale-105 transition-all duration-300">
+                                <x-icons name="small_money" />pagamenti
+                            </button>
+                            <button wire:click="$dispatch('openModal', { component: 'registry.modals.chronology', arguments: {registration: {{$registration->id}}} })" class="flex items-center gap-2 px-4 py-1 text-color-2c2c2c font-medium capitalize rounded-full bg-color-ffb205/30 hover:scale-105 transition-all duration-300">
+                                <x-icons name="time" /> cronologia
+                            </button>
                         </div>
                     </div>
 
                     {{-- iscrizione --}}
-                    <div class="w-full flex flex-wrap items-center gap-4 mt-3">
+                    <div class="w-full flex flex-wrap items-center gap-x-4 gap-y-7 mt-3">
                         {{-- Info --}}
                         <div class="grow xl:w-fit flex items-center gap-2 border rounded-md p-2 relative">
                             <span class="absolute px-1 bg-color-f7f7f7 -top-3 left-4 font-semibold text-sm uppercase text-color-545454">Info</span>

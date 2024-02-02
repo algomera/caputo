@@ -5,7 +5,7 @@
             <small class="text-gray-400 font-bold">{{$course->name}}</small>
         </div>
 
-        <div class="m-auto flex flex-col gap-4 px-56 mt-16">
+        <div class="m-auto flex flex-col gap-4 px-20 xl:px-56 mt-16">
             @if (count($trainings) > 0)
                 <div wire:click='setOption("esistente")' class="w-full h-24 flex items-center justify-center border rounded-md shadow-shadow-card hover:scale-105 transition-all duration-300 cursor-pointer">
                     <p class="text-lg text-color-2c2c2c">Iserisci a <b>corso esistente</b></p>
@@ -31,15 +31,15 @@
 
     @if ($selectedOption == 'esistente')
         <div class="flex flex-col gap-5">
-            <div class="w-full flex justify-between">
-                <h1 @class(["text-4xl font-semibold", 'text-color-'.get_color($course->service->name)])>Seleziona il corso</h1>
-                <div wire:click='resetOption' class="flex items-center gap-2 group cursor-pointer ">
-                    <x-icons name="arrow_back" class="group-hover:-translate-x-1 transition-all duration-300" />
-                    <span class="text-lg text-color-808080 group-hover:underline">Indietro</span>
-                </div>
+            <div wire:click='resetOption' class="flex items-center gap-2 group cursor-pointer ">
+                <x-icons name="arrow_back" class="group-hover:-translate-x-1 transition-all duration-300" />
+                <span class="text-lg text-color-808080 group-hover:underline">Indietro</span>
             </div>
 
-            <button wire:click='setOption("nuovo")' class="ml-auto w-fit px-6 py-2 bg-color-01a53a/60 text-white rounded-md font-semibold">+ corso</button>
+            <div class="w-full flex justify-between">
+                <h1 @class(["text-4xl font-semibold", 'text-color-'.get_color($course->service->name)])>Seleziona il corso</h1>
+                <button wire:click='setOption("nuovo")' class="ml-auto w-fit px-6 py-2 bg-color-01a53a/60 text-white rounded-md font-semibold">+ corso</button>
+            </div>
 
             <table class="min-w-full divide-y divide-gray-200 border">
                 <thead>
@@ -111,14 +111,13 @@
     @endif
 
     @if ($selectedOption == 'interessato')
-        <div>
-            <div class="w-full flex justify-between">
-                <h1 @class(["text-4xl font-semibold", 'text-color-'.get_color($course->service->name)])>Seleziona il corso</h1>
-                <div wire:click='resetOption' class="flex items-center gap-2 group cursor-pointer ">
-                    <x-icons name="arrow_back" class="group-hover:-translate-x-1 transition-all duration-300" />
-                    <span class="text-lg text-color-808080 group-hover:underline">Indietro</span>
-                </div>
+        <div class="flex flex-col gap-5">
+            <div wire:click='resetOption' class="flex items-center gap-2 group cursor-pointer ">
+                <x-icons name="arrow_back" class="group-hover:-translate-x-1 transition-all duration-300" />
+                <span class="text-lg text-color-808080 group-hover:underline">Indietro</span>
             </div>
+
+            <h1 @class(["text-4xl font-semibold", 'text-color-'.get_color($course->service->name)])>Seleziona il corso</h1>
 
             <table class="min-w-full divide-y divide-gray-200 border mt-5">
                 <thead>
@@ -169,14 +168,13 @@
     @endif
 
     @if ($selectedOption == 'nuovo')
-        <div class="flex flex-col gap-8">
-            <div class="w-full flex justify-between">
-                <h1 @class(["text-4xl font-semibold", 'text-color-'.get_color($course->service->name)])>Seleziona e compila i campi</h1>
-                <div wire:click='resetOption' class="flex items-center gap-2 group cursor-pointer ">
-                    <x-icons name="arrow_back" class="group-hover:-translate-x-1 transition-all duration-300" />
-                    <span class="text-lg text-color-808080 group-hover:underline">Indietro</span>
-                </div>
+        <div class="flex flex-col gap-5">
+            <div wire:click='resetOption' class="flex items-center gap-2 group cursor-pointer ">
+                <x-icons name="arrow_back" class="group-hover:-translate-x-1 transition-all duration-300" />
+                <span class="text-lg text-color-808080 group-hover:underline">Indietro</span>
             </div>
+
+            <h1 @class(["text-4xl font-semibold", 'text-color-'.get_color($course->service->name)])>Seleziona e compila i campi</h1>
 
             <div class="flex gap-2 border rounded-md relative p-4 bg-color-f7f7f7">
                 @if (count($course->variants()->get()) > 0)

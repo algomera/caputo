@@ -326,7 +326,7 @@
         <svg viewBox="0 0 16 16" fill="currentColor" stroke="currentColor"
             {{ $attributes->merge(['class']) }} xmlns="http://www.w3.org/2000/svg">
             <path d="m2 5h10v3l4-4-4-4v3h-12v6h2zm12 6h-10v-3l-4 4 4 4v-3h12v-6h-2z"/>
-        </svg>        
+        </svg>
         @break
     @case('message')
         <svg xmlns="http://www.w3.org/2000/svg" width="18.959" height="18.959"
@@ -341,6 +341,171 @@
             <path id="Tracciato_1180" data-name="Tracciato 1180" d="M20.164,16.31v6.266a2.089,2.089,0,0,1-2.089,2.089H6.589A2.089,2.089,0,0,1,4.5,22.576V11.089A2.089,2.089,0,0,1,6.589,9h6.266" transform="translate(0 -1.367)" fill="none" stroke="#2c2c2c" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
             <path id="Tracciato_1181" data-name="Tracciato 1181" d="M22.5,4.5h6.266v6.266" transform="translate(-5.469)" fill="none" stroke="#2c2c2c" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
             <path id="Tracciato_1182" data-name="Tracciato 1182" d="M15,15.987,26.487,4.5" transform="translate(-3.19)" fill="none" stroke="#2c2c2c" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
+            </g>
+        </svg>
+        @break
+    @case('pay_cart')
+        <svg xmlns="http://www.w3.org/2000/svg" width="35" height="26"
+            {{ $attributes->merge(['class']) }} viewBox="0 0 35 26">
+            <g id="Icona_-_carta" data-name="Icona - carta" transform="translate(1 1)">
+            <path id="Tracciato_1176" data-name="Tracciato 1176" d="M4.5,6h27a3,3,0,0,1,3,3V27a3,3,0,0,1-3,3H4.5a3,3,0,0,1-3-3V9a3,3,0,0,1,3-3Z" transform="translate(-1.5 -6)" fill="none" stroke="#7a95db" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+            <path id="Tracciato_1177" data-name="Tracciato 1177" d="M1.5,15h33" transform="translate(-1.5 -6)" fill="none" stroke="#7a95db" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+            </g>
+        </svg>
+        @break
+    @case('pay_other')
+        <svg id="Icona_-_bonifico"  data-name="Icona - bonifico" xmlns="http://www.w3.org/2000/svg" width="33.447" height="30.644"
+            {{ $attributes->merge(['class']) }} viewBox="0 0 33.447 30.644">
+            <path id="Tracciato_1178" data-name="Tracciato 1178" d="M115.057,49.145a1.083,1.083,0,1,1,2.166,0,11.067,11.067,0,0,1-11.039,11.039h-14.5l3.8,3.4a1.078,1.078,0,0,1-1.439,1.607l-5.827-5.219a1.087,1.087,0,0,1,0-1.741l5.827-5.219a1.08,1.08,0,0,1,1.439,1.61l-3.8,3.4h14.5a8.9,8.9,0,0,0,8.873-8.873Zm-9.538-12.439a1.078,1.078,0,0,1,1.439-1.607l5.827,5.219a1.087,1.087,0,0,1,0,1.741l-5.827,5.219a1.08,1.08,0,0,1-1.439-1.61l3.8-3.4h-14.5a8.9,8.9,0,0,0-8.873,8.873,1.083,1.083,0,1,1-2.166,0A11.067,11.067,0,0,1,94.815,40.106h14.5l-3.8-3.4Z" transform="translate(-83.776 -34.823)" fill="#7a95db"/>
+        </svg>
+        @break
+    @case('save')
+        <svg xmlns="http://www.w3.org/2000/svg" width="13.133" height="13.133"
+            {{ $attributes->merge(['class']) }} viewBox="0 0 13.133 13.133">
+            <g id="Icon_feather-save" data-name="Icon feather-save" transform="translate(-3.85 -3.85)">
+            <path id="Tracciato_1227" data-name="Tracciato 1227" d="M15.017,16.332h-9.2A1.315,1.315,0,0,1,4.5,15.017v-9.2A1.315,1.315,0,0,1,5.815,4.5h7.231l3.287,3.287v7.231A1.315,1.315,0,0,1,15.017,16.332Z" fill="none" stroke="#2c2c2c" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.3"/>
+            <path id="Tracciato_1228" data-name="Tracciato 1228" d="M17.073,24.759V19.5H10.5v5.259" transform="translate(-3.371 -8.427)" fill="none" stroke="#2c2c2c" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.3"/>
+            <path id="Tracciato_1229" data-name="Tracciato 1229" d="M10.5,4.5V7.787h5.259" transform="translate(-3.371)" fill="none" stroke="#2c2c2c" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.3"/>
+            </g>
+        </svg>
+        @break
+    @case('cancel')
+        <svg xmlns="http://www.w3.org/2000/svg" width="16.5" height="16.5"
+            {{ $attributes->merge(['class']) }} viewBox="0 0 16.5 16.5">
+            <g id="Icon_ionic-ios-close-circle-outline" data-name="Icon ionic-ios-close-circle-outline" transform="translate(-3.225 -3.225)">
+            <path id="Tracciato_1235" data-name="Tracciato 1235" d="M18.416,17.533l-2.052-2.052,2.052-2.052a.622.622,0,0,0-.88-.88L15.483,14.6l-2.052-2.052a.622.622,0,0,0-.88.88L14.6,15.481l-2.052,2.052a.6.6,0,0,0,0,.88.618.618,0,0,0,.88,0l2.052-2.052,2.052,2.052a.625.625,0,0,0,.88,0A.618.618,0,0,0,18.416,17.533Z" transform="translate(-4.009 -4.006)" fill="#2c2c2c" stroke="#2c2c2c" stroke-width="0.3"/>
+            <path id="Tracciato_1236" data-name="Tracciato 1236" d="M11.475,4.465A7.007,7.007,0,1,1,6.517,6.517a6.963,6.963,0,0,1,4.957-2.052m0-1.09a8.1,8.1,0,1,0,8.1,8.1,8.1,8.1,0,0,0-8.1-8.1Z" fill="#2c2c2c" stroke="#2c2c2c" stroke-width="0.3"/>
+            </g>
+        </svg>
+        @break
+    @case('time')
+        <svg xmlns="http://www.w3.org/2000/svg" width="15.063" height="15.063"
+            {{ $attributes->merge(['class']) }} viewBox="0 0 15.063 15.063">
+            <g id="Icon_ionic-md-time" data-name="Icon ionic-md-time" transform="translate(-3.375 -3.375)">
+            <path id="Tracciato_1222" data-name="Tracciato 1222" d="M10.9,3.375a7.531,7.531,0,1,0,7.538,7.531A7.529,7.529,0,0,0,10.9,3.375Zm.007,13.556a6.025,6.025,0,1,1,6.025-6.025A6.025,6.025,0,0,1,10.906,16.931Z" fill="#2c2c2c"/>
+            <path id="Tracciato_1223" data-name="Tracciato 1223" d="M17.667,10.688h-1.13v4.519l3.954,2.372.565-.927-3.389-2.01Z" transform="translate(-6.384 -3.547)" fill="#2c2c2c"/>
+            </g>
+        </svg>
+        @break
+    @case('error')
+        <svg xmlns="http://www.w3.org/2000/svg" width="17.463" height="17.463"
+            {{ $attributes->merge(['class']) }} viewBox="0 0 17.463 17.463">
+            <path id="Icon_material-error-outline" data-name="Icon material-error-outline" d="M10.858,14.351H12.6V16.1H10.858Zm0-6.985H12.6V12.6H10.858ZM11.723,3a8.731,8.731,0,1,0,8.74,8.731A8.727,8.727,0,0,0,11.723,3Zm.009,15.717a6.985,6.985,0,1,1,6.985-6.985A6.983,6.983,0,0,1,11.731,18.717Z" transform="translate(-3 -3)" fill="#2c2c2c"/>
+        </svg>
+        @break
+    @case('pen')
+        <svg id="icona_modifica_in_button_azione" data-name="icona modifica in button azione" xmlns="http://www.w3.org/2000/svg" width="14.518" height="13.916"
+            {{ $attributes->merge(['class']) }} viewBox="0 0 14.518 13.916">
+            <path id="Tracciato_55" data-name="Tracciato 55" d="M15.272,2.4a.74.74,0,0,1,.513.2l2.42,2.319a.676.676,0,0,1,0,.984L8.527,15.184l0,0,0,0,0,0a.731.731,0,0,1-.321.175l-3.375.924a.748.748,0,0,1-.713-.177.676.676,0,0,1-.185-.683l.964-3.235a.685.685,0,0,1,.176-.3h0l.012-.012L14.759,2.6A.74.74,0,0,1,15.272,2.4Zm1.393,3.015L15.272,4.08l-.909.871,1.393,1.335ZM14.73,7.27,13.337,5.935,6.62,12.373l1.393,1.335Zm-8.1,7.078L5.953,13.7l-.27.906Z" transform="translate(-3.9 -2.4)" fill="#2c2c2c"/>
+        </svg>
+        @break
+    @case('option')
+        <svg xmlns="http://www.w3.org/2000/svg" width="17.436" height="4.26"
+            {{ $attributes->merge(['class']) }} viewBox="0 0 17.436 4.26">
+            <g id="noun-option-6047925" transform="translate(-5 -39.006)">
+            <circle id="Ellisse_166" data-name="Ellisse 166" cx="2.11" cy="2.11" r="2.11" transform="translate(11.608 39.026)" fill="#2c2c2c"/>
+            <circle id="Ellisse_167" data-name="Ellisse 167" cx="2.11" cy="2.11" r="2.11" transform="translate(5 39.006)" fill="#2c2c2c"/>
+            <circle id="Ellisse_168" data-name="Ellisse 168" cx="2.11" cy="2.11" r="2.11" transform="translate(18.217 39.046)" fill="#2c2c2c"/>
+            </g>
+        </svg>
+        @break
+    @case('bank')
+        <svg xmlns="http://www.w3.org/2000/svg" width="28.324" height="28.883" fill="currentColor" stroke="currentColor"
+            {{ $attributes->merge(['class']) }} viewBox="0 0 28.324 28.883">
+            <g id="Raggruppa_546" data-name="Raggruppa 546" transform="translate(-289.838 -49.118)">
+            <g id="Raggruppa_545" data-name="Raggruppa 545" transform="translate(59.4 -128)">
+                <path id="Tracciato_1234" data-name="Tracciato 1234" d="M232.6,186.882a3,3,0,0,1-.148-5.715l11.162-3.882a3,3,0,0,1,1.971,0l11.162,3.882a3,3,0,0,1-.148,5.715v13.29a3,3,0,0,1-1,5.829H233.576a2.976,2.976,0,0,1-2.974-2.868c.014.8,0,.792,0-.108V203a3,3,0,0,1,2-2.829Zm.838-1.881h22.325a1,1,0,0,0,.328-1.944l-11.162-3.885a1.028,1.028,0,0,0-.658,0l-11.162,3.885a1,1,0,0,0,.328,1.944ZM254.6,200V187h-2v13Zm-21,2a1,1,0,0,0-1,1v.024a.976.976,0,0,0,.976.975H255.6a1,1,0,0,0,0-2Zm1-15v13h2V187Zm16,13V187h-3v13Zm-9-13h-3v13h3Zm4,0h-2v13h2Z" fill="#7a95db" fill-rule="evenodd"/>
+            </g>
+            </g>
+        </svg>
+        @break
+    @case('money')
+        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" stroke="currentColor"
+            {{ $attributes->merge(['class']) }} viewBox="0 0 24.061 24.061">
+            <g id="Raggruppa_549" data-name="Raggruppa 549" transform="translate(20591 22712)">
+            <path id="Tracciato_1237" data-name="Tracciato 1237" d="M38.772,38.972a2.868,2.868,0,0,1,2.116,1,.781.781,0,0,0,1.153-1.053,4.412,4.412,0,0,0-3.269-1.507A4.913,4.913,0,0,0,34.3,40.992H33.011a.781.781,0,0,0,0,1.562H34c-.018.191-.05.377-.05.577s.032.377.05.567h-.985a.781.781,0,0,0,0,1.562H34.3a4.913,4.913,0,0,0,4.472,3.582,4.412,4.412,0,0,0,3.269-1.507.781.781,0,0,0-1.153-1.053,2.875,2.875,0,0,1-2.116,1,3.207,3.207,0,0,1-2.788-2.02h3.232a.781.781,0,1,0,0-1.562H35.553a4.627,4.627,0,0,1-.045-.568,4.851,4.851,0,0,1,.045-.577h3.664a.781.781,0,1,0,0-1.562H35.985A3.207,3.207,0,0,1,38.772,38.972Z" transform="translate(-20616.965 -22742.82)" fill="#7a95db" stroke="#7a95db" stroke-width="0.1"/>
+            <g id="Ellisse_169" data-name="Ellisse 169" transform="translate(-20591 -22712)" fill="none" stroke="#7a95db" stroke-width="2">
+                <circle cx="12.03" cy="12.03" r="12.03" stroke="none"/>
+                <circle cx="12.03" cy="12.03" r="11.03" fill="none"/>
+            </g>
+            </g>
+        </svg>
+        @break
+    @case('small_money')
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+            {{ $attributes->merge(['class']) }} viewBox="0 0 16 16">
+            <g id="Raggruppa_548" data-name="Raggruppa 548" transform="translate(20591 22712)">
+            <path id="Tracciato_1237" data-name="Tracciato 1237" d="M36.868,38.517a2.033,2.033,0,0,1,1.5.708.554.554,0,0,0,.817-.747,3.128,3.128,0,0,0-2.317-1.068,3.483,3.483,0,0,0-3.17,2.539h-.914a.554.554,0,1,0,0,1.107h.7c-.013.135-.035.267-.035.409s.023.267.035.4h-.7a.554.554,0,1,0,0,1.107H33.7a3.483,3.483,0,0,0,3.17,2.539,3.128,3.128,0,0,0,2.317-1.068.554.554,0,0,0-.817-.747,2.038,2.038,0,0,1-1.5.708,2.273,2.273,0,0,1-1.976-1.432h2.291a.554.554,0,1,0,0-1.107h-2.6a3.281,3.281,0,0,1-.032-.4,3.44,3.44,0,0,1,.032-.409h2.6a.554.554,0,1,0,0-1.107H34.892A2.273,2.273,0,0,1,36.868,38.517Z" transform="translate(-20619.084 -22745.516)" fill="#2c2c2c" stroke="#2c2c2c" stroke-width="0.1"/>
+            <g id="Ellisse_169" data-name="Ellisse 169" transform="translate(-20591 -22712)" fill="none" stroke="#2c2c2c" stroke-width="1.3">
+                <circle cx="8" cy="8" r="8" stroke="none"/>
+                <circle cx="8" cy="8" r="7.35" fill="none"/>
+            </g>
+            </g>
+        </svg>
+        @break
+    @case('small_upload')
+        <svg xmlns="http://www.w3.org/2000/svg" width="13.568" height="13.568"
+            {{ $attributes->merge(['class']) }} viewBox="0 0 13.568 13.568">
+            <g id="Icon_feather-upload" data-name="Icon feather-upload" transform="translate(-3.699 -3.699)">
+            <path id="Tracciato_1224" data-name="Tracciato 1224" d="M16.467,22.5v2.659a1.33,1.33,0,0,1-1.33,1.33H5.83a1.33,1.33,0,0,1-1.33-1.33V22.5" transform="translate(0 -10.022)" fill="none" stroke="#2c2c2c" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6"/>
+            <path id="Tracciato_1225" data-name="Tracciato 1225" d="M17.148,7.824,13.824,4.5,10.5,7.824" transform="translate(-3.341 0)" fill="none" stroke="#2c2c2c" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6"/>
+            <path id="Tracciato_1226" data-name="Tracciato 1226" d="M18,4.5v7.978" transform="translate(-7.517 0)" fill="none" stroke="#2c2c2c" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6"/>
+            </g>
+        </svg>
+        @break
+    @case('id_document')
+        <svg fill="#000000" height="800px" width="800px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+            {{ $attributes->merge(['class']) }} viewBox="0 0 512 512" xml:space="preserve">
+            <g>
+                <g>
+                    <path d="M479.388,89.13H32.612C14.63,89.13,0,103.76,0,121.742v268.516c0,17.982,14.63,32.612,32.612,32.612h446.776
+                        c17.982,0,32.612-14.63,32.612-32.612V121.742C512,103.76,497.37,89.13,479.388,89.13z M490.259,390.257
+                        c0,5.994-4.877,10.871-10.871,10.871H32.612c-5.994,0-10.871-4.877-10.871-10.871V121.741c0-5.994,4.877-10.871,10.871-10.871
+                        h446.776c5.994,0,10.871,4.877,10.871,10.871V390.257z"/>
+                </g>
+            </g>
+            <g>
+                <g>
+                    <path d="M422.107,184.506H305.442c-6.004,0-10.871,4.868-10.871,10.871c0,6.004,4.867,10.871,10.871,10.871h116.665
+                        c6.004,0,10.871-4.867,10.871-10.871C432.978,189.374,428.111,184.506,422.107,184.506z"/>
+                </g>
+            </g>
+            <g>
+                <g>
+                    <path d="M422.107,245.129H305.442c-6.004,0-10.871,4.867-10.871,10.871c0,6.003,4.867,10.871,10.871,10.871h116.665
+                        c6.004,0,10.871-4.868,10.871-10.871C432.978,249.996,428.111,245.129,422.107,245.129z"/>
+                </g>
+            </g>
+            <g>
+                <g>
+                    <path d="M422.107,305.752H305.442c-6.004,0-10.871,4.868-10.871,10.871c0,6.003,4.867,10.871,10.871,10.871h116.665
+                        c6.004,0,10.871-4.868,10.871-10.871C432.978,310.62,428.111,305.752,422.107,305.752z"/>
+                </g>
+            </g>
+            <g>
+                <g>
+                    <path d="M200.747,290.243c-0.22-0.015-20.116,0.814-25.49-20.71c7.261-5.715,13.354-13.656,17.708-23.14
+                        c0.322,0.032,0.644,0.072,0.964,0.072c2.964-0.001,5.834-1.351,7.72-3.774c9.129-11.725,13.876-26.949,13.368-42.868
+                        c-1.056-33.004-24.017-59.022-52.312-59.328c-0.774-0.031-1.463-0.011-2.02,0.009c-0.013,0-0.026,0.001-0.04,0.001
+                        c-6.865-2.975-14.097-4.369-21.55-4.124c-15.932,0.509-30.55,8.401-41.158,22.223c-10.165,13.243-15.446,30.475-14.869,48.527
+                        c0.098,3.054,0.34,5.87,0.728,8.538c1.053,7.686,3.173,15.054,6.301,21.897c1.503,3.289,4.699,5.482,8.311,5.698
+                        c0.983,0.063,1.948-0.038,2.876-0.261c4.427,10.973,11.116,20.104,19.206,26.479c-5.267,21.488-25.28,20.749-25.499,20.763
+                        c-21.389,0.7-38.576,18.305-38.576,39.86v39.614c0,5.404,4.38,9.784,9.784,9.784h163.339c5.404,0,9.784-4.38,9.784-9.784v-39.614
+                        C239.323,308.548,222.135,290.943,200.747,290.243z M103.303,213.828c-0.045-0.299-0.088-0.6-0.13-0.901
+                        c-0.292-2.012-0.471-4.115-0.545-6.426c-0.434-13.542,3.413-26.321,10.833-35.985c6.972-9.085,16.301-14.262,26.262-14.581
+                        c0.329-0.011,8.148-0.63,14.725,3.257c1.377,0.814,3.064,1.057,4.655,1.018c0.201-0.005,3.133-0.153,3.281-0.152
+                        c17.53,0.115,32.37,18.233,33.078,40.388c0.082,2.538-0.02,5.046-0.296,7.499c-6.475-11.114-16.093-19.72-27.539-24.533
+                        c-2.46-1.033-5.236-1.018-7.684,0.043c-2.449,1.062-4.357,3.079-5.283,5.582c-0.755,2.042-1.673,4.032-2.726,5.917
+                        c-2.569,4.594-7.825,7.303-13.716,7.118c-1.172-0.04-2.356-0.042-3.521-0.005c-5.733,0.184-11.324,1.277-16.657,3.264
+                        C112.713,207.343,107.762,210.199,103.303,213.828z M116.938,228.029c2.479-1.832,5.203-3.187,7.976-4.375
+                        c5.056-2.168,11.888-2.05,12.627-2.024c12.603,0.428,24.108-5.469,30.51-15.515c4.992,3.825,9.115,8.977,11.991,15.082
+                        c-3.03,21.957-16.695,38.661-32.201,38.661C134.007,259.858,121.591,246.773,116.938,228.029z M138.437,278.323
+                        c3.062,0.722,6.205,1.102,9.404,1.102c3.229,0,6.391-0.383,9.463-1.099c3.153,10.068,9.776,18.612,18.454,24.244
+                        c-4.174,11.486-15.217,19.539-27.888,19.539s-23.714-8.053-27.889-19.54C128.661,296.936,135.284,288.392,138.437,278.323z
+                        M75.984,359.934v-29.83c0-11.209,9.119-20.327,20.328-20.327c0.224,0,3.793-0.205,5.322-0.411
+                        c6.966,19.002,25.257,32.311,46.235,32.311c20.978,0,39.269-13.309,46.235-32.311c1.531,0.206,5.097,0.411,5.321,0.411
+                        c11.21,0,20.328,9.119,20.328,20.327v29.83H75.984z"/>
+                </g>
             </g>
         </svg>
         @break

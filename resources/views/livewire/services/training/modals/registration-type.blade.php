@@ -5,7 +5,7 @@
             <small class="text-gray-400 font-bold">{{$course->name}}</small>
         </div>
 
-        <div class="m-auto flex flex-col gap-4 px-56 mt-16">
+        <div class="m-auto flex flex-col gap-4 px-20 2xl:px-56 mt-16">
             <div wire:click='setOption("iscrizione")' class="w-full h-24 flex items-center justify-center border rounded-md shadow-shadow-card hover:scale-105 transition-all duration-300 cursor-pointer">
                 <p class="text-lg text-color-2c2c2c">Il candidato si iscrive alla <b>prima patente</b></p>
             </div>

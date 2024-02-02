@@ -19,16 +19,16 @@
                 </x-custom-select>
                 <x-input-text x-mask:dynamic="$money($input, '.', ' ')" wire:model="amount" width="w-1/3" name="amount" placeholder="0.00" label="Importo €" />
             </div>
-            <x-input-files wire:model="newScan" text="Carica File" color="347af2" name="newScan"  preview="scans_uploaded" icon="upload" />
+            <x-input-files wire:model.live="newScan" text="Carica File" color="347af2" name="newScan" preview="scans_uploaded" icon="upload" />
             <textarea wire:model="note" name="note" id="" cols="30" rows="5" placeholder="Note..." class="w-full border-color-dfdfdf rounded-md mt-5"></textarea>
         </div>
         @if ($newScan)
             <div class="w-1/2 border">
-                <embed class="h-full w-full" src="{{ $newScan->temporaryUrl() }}" alt="">
+                <iframe src="{{ $newScan->temporaryUrl() }}" width="100%" height="100%" frameborder="0"></iframe>
             </div>
         @elseif ($document)
             <div class="w-1/2 border">
-                <embed class="h-full w-full" src="{{ Vite::asset($document->path) }}" alt="">
+                <iframe src="{{ Vite::asset($document->path) }}" width="100%" height="100%" frameborder="0"></iframe>
             </div>
         @else
             <div class="w-1/2 border flex items-center justify-center">
