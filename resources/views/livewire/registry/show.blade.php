@@ -27,51 +27,55 @@
             </div>
         </div>
 
-        {{-- Dati Customer --}}
+        {{-- Customer --}}
         <div class="w-full inline-flex gap-5 border-b pb-4">
-            @if ($photo)
-                <div class="w-64 h-64 bg-white relative">
-                    <img class="w-full h-full" src="{{ $photo->temporaryUrl() }}">
-                    <div class="absolute top-2 right-2 bg-color-01a53a/40 px-2 rounded-full">
-                        <div class="w-fit flex items-start gap-5 relative text-gray-400">
-                            <label for="photo" class="font-medium cursor-pointer">
-                                <span class="text-color-2c2c2c text-sm font-light">Carica Foto</span>
-                            </label>
-                            <input wire:model="photo" type="file" name="photo" id="photo" class="block mt-1 w-full opacity-0 z-[-1] absolute">
+            {{-- Fototessera --}}
+            <div>
+                @if ($photo)
+                    <div class="w-64 h-64 bg-white relative">
+                        <img class="w-full h-full" src="{{ $photo->temporaryUrl() }}">
+                        <div class="absolute top-2 right-2 bg-color-01a53a/40 px-2 rounded-full">
+                            <div class="w-fit flex items-start gap-5 relative text-gray-400">
+                                <label for="photo" class="font-medium cursor-pointer">
+                                    <span class="text-color-2c2c2c text-sm font-light">Carica Foto</span>
+                                </label>
+                                <input wire:model="photo" type="file" name="photo" id="photo" class="block mt-1 w-full opacity-0 z-[-1] absolute">
+                            </div>
                         </div>
                     </div>
-                </div>
-            @elseif ($customerForm->customer->photo()->first())
-                <div class="w-64 h-64 bg-white relative">
-                    <img class="w-full h-full" src="{{Vite::asset($customerForm->customer->photo()->first()->path)}}" alt="">
-                    @if ($modify)
-                        <div class="absolute top-2 right-2 bg-color-01a53a/40 px-2 rounded-full">
-                            <div class="w-fit flex items-start gap-5 relative text-gray-400">
-                                <label for="photo" class="font-medium cursor-pointer">
-                                    <span class="text-color-2c2c2c text-sm font-light">Carica Foto</span>
-                                </label>
-                                <input wire:model="photo" type="file" name="photo" id="photo" class="block mt-1 w-full opacity-0 z-[-1] absolute">
+                @elseif ($customerForm->customer->photo()->first())
+                    <div class="w-64 h-64 bg-white relative">
+                        <img class="w-full h-full" src="{{Vite::asset($customerForm->customer->photo()->first()->path)}}" alt="">
+                        @if ($modify)
+                            <div class="absolute top-2 right-2 bg-color-01a53a/40 px-2 rounded-full">
+                                <div class="w-fit flex items-start gap-5 relative text-gray-400">
+                                    <label for="photo" class="font-medium cursor-pointer">
+                                        <span class="text-color-2c2c2c text-sm font-light">Carica Foto</span>
+                                    </label>
+                                    <input wire:model="photo" type="file" name="photo" id="photo" class="block mt-1 w-full opacity-0 z-[-1] absolute">
+                                </div>
                             </div>
-                        </div>
-                    @endif
-                </div>
-            @else
-                <div class="w-64 h-64 bg-white relative flex items-center justify-center">
-                    <x-icons name="default_photo" class="h-20 w-20" />
-                    @if ($modify)
-                        <div class="absolute top-2 right-2 bg-color-01a53a/40 px-2 rounded-full">
-                            <div class="w-fit flex items-start gap-5 relative text-gray-400">
-                                <label for="photo" class="font-medium cursor-pointer">
-                                    <span class="text-color-2c2c2c text-sm font-light">Carica Foto</span>
-                                </label>
-                                <input wire:model="photo" type="file" name="photo" id="photo" class="block mt-1 w-full opacity-0 z-[-1] absolute">
+                        @endif
+                    </div>
+                @else
+                    <div class="w-64 h-64 bg-white relative flex items-center justify-center">
+                        <x-icons name="default_photo" class="h-20 w-20" />
+                        @if ($modify)
+                            <div class="absolute top-2 right-2 bg-color-01a53a/40 px-2 rounded-full">
+                                <div class="w-fit flex items-start gap-5 relative text-gray-400">
+                                    <label for="photo" class="font-medium cursor-pointer">
+                                        <span class="text-color-2c2c2c text-sm font-light">Carica Foto</span>
+                                    </label>
+                                    <input wire:model="photo" type="file" name="photo" id="photo" class="block mt-1 w-full opacity-0 z-[-1] absolute">
+                                </div>
                             </div>
-                        </div>
-                    @endif
-                </div>
-            @endif
+                        @endif
+                    </div>
+                @endif
+            </div>
+            {{-- Dati --}}
             <div class="grow space-y-3">
-                <div class="w-full flex items-center gap-2">
+                <div class="w-full flex flex-wrap items-center gap-2">
                     <x-input-text disabled="{{!$modify}}" wire:model="customerForm.name" width="2xl:grow" name="customerForm.name" label="Nome" />
                     <x-input-text disabled="{{!$modify}}" wire:model="customerForm.lastName" width="2xl:grow" name="customerForm.lastName" label="Cognome" />
                     <x-custom-select disabled="{{!$modify}}" wire:model="customerForm.sex" name="customerForm.sex" label="Sesso" width="w-fit" >
@@ -84,7 +88,7 @@
                     <x-input-text disabled="{{!$modify}}" x-mask="aa" wire:model="customerForm.country_of_birth" width="w-fit" name="customerForm.country_of_birth" label="Provincia di nascita" uppercase="uppercase" />
                 </div>
 
-                <div class="w-full flex items-center gap-2">
+                <div class="w-full flex flex-wrap items-center gap-2">
                     <x-input-text disabled="{{!$modify}}" x-mask="aaaaaa99a99a999a" wire:model="customerForm.fiscal_code" width="w-fit" name="customerForm.fiscal_code" label="Codice Fiscale" uppercase="uppercase" />
                     <x-input-text disabled="{{!$modify}}" wire:model="customerForm.city" width="w-fit" name="customerForm.city" label="Citta" />
                     <x-input-text disabled="{{!$modify}}" wire:model="customerForm.address" width="2xl:grow" name="customerForm.address" label="Via/Piazza" />
@@ -103,17 +107,17 @@
         </div>
 
         {{-- Firma e Documenti --}}
-        <div class="w-full flex items-start gap-5 relative">
+        <div class="w-full flex items- gap-5 relative">
             @if ($customerForm->customer->customerSignature())
             <div>
                 <p class="text-sm font-light text-color-2c2c2c mb-1 w-fit ml-2">Firma digitale</p>
-                <div class="w-64 h-36 bg-white flex items-center shadow-shadow-card">
+                <div class="w-44 h-28 xl:w-64 xl:h-36 bg-white flex items-center shadow-shadow-card">
                     <img class="w-full" src="{{Vite::asset($customerForm->customer->customerSignature()->first()->path)}}" alt="">
                 </div>
             </div>
             @endif
             <div class="grow space-y-3">
-                <div class="w-full flex items-end gap-2">
+                <div class="w-full flex flex-wrap items-end gap-2">
                     <x-input-text disabled="{{!$modify}}" wire:model="identificationDocumentForm.n_document" width="w-1/6" name="identificationDocumentForm.n_document" label="N. Patente" />
                     <x-input-text disabled="{{!$modify}}" type="date" wire:model="identificationDocumentForm.document_release" width="w-1/6" name="identificationDocumentForm.document_release" label="Rilasciata il" />
                     <x-input-text disabled="{{!$modify}}" wire:model="identificationDocumentForm.document_from" width="w-1/6" name="identificationDocumentForm.document_from" label="Ente di rilascio" />
@@ -127,11 +131,11 @@
                 </div>
                 @if (count($identificationDocumentForm->documents) > 0)
                     @foreach ($identificationDocumentForm->documents as $document )
-                        <div class="w-full flex items-end gap-2">
-                            <x-fake-input width="w-1/6" label="Tipo Documento" uppercase="capitalize">{{$document->identificationType->name}}</x-fake-input>
+                        <div class="w-full flex flex-wrap items-end gap-2">
+                            <x-fake-input width="w-1/6" label="Tipo Documento" uppercase="capitalize text-sm">{{$document->identificationType->name}}</x-fake-input>
                             <x-fake-input width="w-1/6" label="N. Documento" uppercase="uppercase">{{$document->n_document}}</x-fake-input>
                             <x-fake-input width="w-1/6" label="Rilasciato il">{{$document->document_release}}</x-fake-input>
-                            <x-fake-input width="w-1/6" label="Ente di rilascio" uppercase="capitalize">{{$document->document_from}}</x-fake-input>
+                            <x-fake-input width="w-1/6" label="Ente di rilascio" uppercase="capitalize text-sm">{{$document->document_from}}</x-fake-input>
                             <x-fake-input width="w-1/6" label="Scade il">{{$document->document_expiration}}</x-fake-input>
                             @if ($modify)
                             <div class="flex gap-1">
@@ -160,10 +164,11 @@
         {{-- Iscrizioni aperte --}}
         @if (count($registrations) > 0)
             @foreach ($registrations as $registration)
-                <div class="w-full flex flex-col items-start gap-5 border-t pt-4 relative">
+                <div class="w-full flex flex-col items-start gap-5 border-t border-color-545454/70 pt-4 relative">
+                    {{-- Azioni --}}
                     <div class="w-full flex items-center justify-between">
                         <div class="flex items-center gap-2">
-                            <p class="mr-5">Tipo di iscrizione: <span @class(["font-bold", 'text-color-'. get_color($registration->course->service->name)])>{{$registration->course->name}}</span></p>
+                            <p class="mr-5">Iscrizione: <span @class(["font-bold capitalize", 'text-color-'. get_color($registration->course->service->name)])>{{$registration->course->name}}</span></p>
                             @if (count(json_decode($registration->step_skipped)) < 1)
                                 <button class="px-4 py-1 text-color-2c2c2c font-medium capitalize rounded-full bg-color-ffb205/30 hover:scale-105 transition-all duration-300">continua accettazione</button>
                             @else
@@ -172,7 +177,7 @@
                                     Dati mancanti
                                 </button>
                             @endif
-                            <button wire:click="$dispatch('openModal', { component: 'registry.modals.update-registration', arguments: {registration: {{$registration->id}}} })" class="px-4 py-1 text-color-2c2c2c font-medium capitalize rounded-full bg-color-ffb205/30 hover:scale-105 transition-all duration-300">opzioni iscrizione</button>
+                            <button wire:click="$dispatch('openModal', { component: 'registry.modals.update-registration', arguments: {registration: {{$registration->id}}} })" class="px-4 py-1 text-color-2c2c2c font-medium capitalize rounded-full bg-color-ffb205/30 hover:scale-105 transition-all duration-300">opzioni</button>
                         </div>
                         <div class="flex gap-2">
                             <button wire:click="$dispatch('openModal', { component: 'registry.modals.scans', arguments: {registration: {{$registration->id}}} })" class="px-4 py-1 text-color-2c2c2c font-medium capitalize rounded-full bg-color-ffb205/30 hover:scale-105 transition-all duration-300">Scansioni/Firme</button>
@@ -181,24 +186,62 @@
                         </div>
                     </div>
 
-                    <div class="flex items-center gap-2">
-                        <x-fake-input width="grow 2xl:w-48" label="Stato della richiesta" uppercase="uppercase">{{$registration->state}}</x-fake-input>
-                        <x-fake-input width="grow 2xl:w-48" label="Codice Statino" uppercase="uppercase">??</x-fake-input>
+                    {{-- iscrizione --}}
+                    <div class="w-full flex flex-wrap items-center gap-4 mt-3">
+                        {{-- Info --}}
+                        <div class="grow xl:w-fit flex items-center gap-2 border rounded-md p-2 relative">
+                            <span class="absolute px-1 bg-color-f7f7f7 -top-3 left-4 font-semibold text-sm uppercase text-color-545454">Info</span>
+                            <x-fake-input width="grow 2xl:w-48" label="Richiesta" uppercase="uppercase">{{$registration->state}}</x-fake-input>
+
+                            @if ($registration->course->type == 'training')
+                            <x-fake-input width="grow 2xl:w-48" label="Codice Statino" uppercase="uppercase">{{$registration->code_statino}}</x-fake-input>
+                            @endif
+
+                            <x-fake-input width="grow 2xl:w-48" label="Numero Protocollo" uppercase="uppercase">{{$registration->protocol ?? '--------'}}</x-fake-input>
+                            <x-fake-input width="grow 2xl:w-48" label="Emissione Protocollo">{{$registration->protocol_release ? date("d/m/Y", strtotime($registration->protocol_release)) : '__ /__ /____'}}</x-fake-input>
+                            <x-fake-input width="grow 2xl:w-48" label="Scadenza Protocollo">{{$registration->protocol_expiration ? date("d/m/Y", strtotime($registration->protocol_expiration)) : '__ /__ /____'}}</x-fake-input>
+
+                            @if ($registration->course->type == 'service')
+                            <x-fake-input width="grow 2xl:w-48" label="Presentata" uppercase="uppercase">{{$registration->presented}}</x-fake-input>
+                            <x-fake-input width="grow 2xl:w-48" label="Variazione">{{$registration->variation}}</x-fake-input>
+                            @endif
+                        </div>
+
+                        {{-- Foglio rosa --}}
+                        @if ($registration->pinkSheet)
+                        <div class="grow xl:w-fit flex items-center gap-2 border rounded-md p-2 relative">
+                            <span class="absolute px-1 bg-color-f7f7f7 -top-3 left-4 font-semibold text-sm uppercase text-color-545454">Foglio rosa</span>
+                            <x-fake-input width="grow 2xl:w-48" label="Emissione">{{$registration->pinkSheet->release ? date("d/m/Y", strtotime($registration->pinkSheet->release)) : '__ /__ /____'}}</x-fake-input>
+                            <x-fake-input width="grow 2xl:w-48" label="Scadenza">{{$registration->pinkSheet->expiration ? date("d/m/Y", strtotime($registration->pinkSheet->expiration)) : '__ /__ /____'}}</x-fake-input>
+                        </div>
+                        @endif
+
+                        {{-- Stato --}}
+                        @if ($registration->course->type == 'service')
+                        <div class="grow xl:w-fit flex items-center gap-2 border rounded-md p-2 relative">
+                            <span class="absolute px-1 bg-color-f7f7f7 -top-3 left-4 font-semibold text-sm uppercase text-color-545454">Stato</span>
+                            <x-fake-input width="grow 2xl:w-48" label="Approvata">{{$registration->approved}}</x-fake-input>
+                        </div>
+                        @endif
+
+                        {{-- Registrazione --}}
+                        <div class="grow xl:w-fit flex items-center gap-2 border rounded-md p-2 relative">
+                            <span class="absolute px-1 bg-color-f7f7f7 -top-3 left-4 font-semibold text-sm uppercase text-color-545454">Registrazione</span>
+                            <x-fake-input width="grow 2xl:w-48" label="Data">{{$registration->registration_date ? date("d/m/Y", strtotime($registration->registration_date)) : '__ /__ /____'}}</x-fake-input>
+                            <x-fake-input width="grow 2xl:w-48" label="N. Registrazione">{{$registration->n_registration}}</x-fake-input>
+                        </div>
+
+                        {{-- Visita medica --}}
                         @if ($registration->medicalPlanning)
-                            <x-fake-input width="grow 2xl:w-48" label="N. Protocollo" uppercase="uppercase">{{$registration->medicalPlanning->protocol ?? '---'}}</x-fake-input>
-                            <x-fake-input width="grow 2xl:w-48" label="Emissione Protocollo">{{$registration->medicalPlanning->protocol_release ? date("d/m/Y", strtotime($registration->medicalPlanning->protocol_release)) : '---'}}</x-fake-input>
-                            <x-fake-input width="grow 2xl:w-48" label="Scadenza Protocollo">{{$registration->medicalPlanning->protocol_expiration ? date("d/m/Y", strtotime($registration->medicalPlanning->protocol_expiration)) : '---'}}</x-fake-input>
-                            <x-fake-input width="grow 2xl:w-48" label="Visita medica">{{date("d/m/Y", strtotime($registration->medicalPlanning->booked))}}</x-fake-input>
+                        <div class="grow xl:w-fit flex items-center gap-2 border rounded-md p-2 relative">
+                            <span class="absolute px-1 bg-color-f7f7f7 -top-3 left-4 font-semibold text-sm uppercase text-color-545454">Visita medica</span>
+                            <x-fake-input width="grow 2xl:w-48" label="Data visita">{{$registration->medicalPlanning->booked ? date("d/m/Y", strtotime($registration->medicalPlanning->booked)) : '__ /__ /____'}}</x-fake-input>
+                            <x-fake-input width="grow 2xl:w-48" label="N. Protocollo" uppercase="uppercase">{{$registration->medicalPlanning->protocol ?? '--------'}}</x-fake-input>
+                            <x-fake-input width="grow 2xl:w-48" label="Emissione Protocollo">{{$registration->medicalPlanning->protocol_release ? date("d/m/Y", strtotime($registration->medicalPlanning->protocol_release)) : '__ /__ /____'}}</x-fake-input>
+                            <x-fake-input width="grow 2xl:w-48" label="Scadenza Protocollo">{{$registration->medicalPlanning->protocol_expiration ? date("d/m/Y", strtotime($registration->medicalPlanning->protocol_expiration)) : '__ /__ /____'}}</x-fake-input>
+                        </div>
                         @endif
                     </div>
-                    @if ($registration->pinkSheet)
-                        <div class="flex items-center gap-2">
-                            <x-fake-input width="grow 2xl:w-48" label="Emissione Foglio Rosa">{{date("d/m/Y", strtotime($registration->pinkSheet->release))}}</x-fake-input>
-                            <x-fake-input width="grow 2xl:w-48" label="Scadenza Foglio Rosa">{{date("d/m/Y", strtotime($registration->pinkSheet->expiration))}}</x-fake-input>
-                            <x-fake-input width="grow 2xl:w-48" label="Data Registrazione">{{date("d/m/Y", strtotime($registration->created_at))}}</x-fake-input>
-                            <x-fake-input width="grow 2xl:w-48" label="N. Registrazione">{{$registration->id}}</x-fake-input>
-                        </div>
-                    @endif
                 </div>
             @endforeach
         @endif

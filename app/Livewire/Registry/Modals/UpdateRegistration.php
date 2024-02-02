@@ -34,6 +34,12 @@ class UpdateRegistration extends ModalComponent
             MedicalPlanning::where('registration_id', $this->registration->id)->delete();
         }
 
+        $this->registration->chronologies()->create([
+            'title' => 'Rimozione opzione: '. $option->name
+        ]);
+
+        $this->dispatch('updateDocument', $this->registration->customer_id);
+
         $this->mount($this->registration->id);
     }
 
@@ -52,6 +58,12 @@ class UpdateRegistration extends ModalComponent
                 'registration_id' => $this->registration->id
             ]);
         }
+
+        $this->registration->chronologies()->create([
+            'title' => 'Aggiunta opzione: '. $option->name
+        ]);
+
+        $this->dispatch('updateDocument', $this->registration->customer_id);
 
         $this->mount($this->registration->id);
     }

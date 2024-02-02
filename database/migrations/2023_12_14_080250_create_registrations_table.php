@@ -23,10 +23,16 @@ return new class extends Migration
             $table->json('step_skipped')->nullable();
             $table->decimal('price');
             $table->decimal('discount')->nullable();
+            $table->string('state')->default('aperta');
+            $table->string('code_statino')->nullable();
             $table->string('protocol')->nullable();
             $table->dateTime('protocol_release')->nullable();
             $table->date('protocol_expiration')->nullable();
-            $table->string('state')->default('aperta');
+            $table->string('presented')->nullable();
+            $table->string('variation')->nullable();
+            $table->string('approved')->nullable();
+            $table->date('registration_date')->nullable();
+            $table->string('n_registration')->nullable();
             $table->timestamps();
         });
     }
