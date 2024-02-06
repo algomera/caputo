@@ -43,7 +43,7 @@ class CustomerForm extends Form
             'name' => 'required',
             'lastName' => 'required',
             'sex' => 'required',
-            'fiscal_code' => 'required|unique:customers,fiscal_code',
+            'fiscal_code' => 'required|unique:customers,fiscal_code,'.$this->customer ?? $this->customer->id,
             'date_of_birth' => 'required',
             'birth_place' => 'required',
             'country_of_birth' => 'required',

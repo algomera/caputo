@@ -60,9 +60,9 @@ class Show extends Component
             $this->registration->update([
                 'step_skipped' => json_encode(array_values($stepSkipped))
             ]);
-
-            $this->mount($this->customerForm->customer->id);
         }
+
+        $this->mount($this->customerForm->customer->id);
         $this->modify = false;
     }
 
@@ -73,6 +73,7 @@ class Show extends Component
     public function disabledModify() {
         $this->modify = false;
         $this->photo = null;
+        $this->mount($this->customerForm->customer->id);
     }
 
     public function render()
