@@ -78,6 +78,11 @@ class Payment extends ModalComponent
         return 'max-w-screen-lg 2xl:max-w-screen-xl';
     }
 
+    public static function closeModalOnClickAway(): bool
+    {
+        return false;
+    }
+
     public function render()
     {
         return view('livewire.services.commons.modals.payment');

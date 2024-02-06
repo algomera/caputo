@@ -210,7 +210,7 @@ class CustomerForm extends Form
                 'path' => 'storage/app/'.$path
             ]);
 
-            $this->customer->chronologies()->create([
+            $customer->chronologies()->create([
                 'title' => 'Scansione cliente: '. $scan->getClientOriginalName()
             ]);
         }

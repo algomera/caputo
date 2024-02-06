@@ -70,7 +70,7 @@ class Index extends Component
     }
 
     public function getSignature() {
-        dd('service.index');
+        $this->dispatch('openModal', 'services.commons.modals.registration');
     }
 
     public function render()

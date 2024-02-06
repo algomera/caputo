@@ -32,6 +32,12 @@ class UpdateRegistration extends ModalComponent
 
         if (strpos($option->name, 'medico')) {
             MedicalPlanning::where('registration_id', $this->registration->id)->delete();
+
+            $stepSkipped = json_decode($this->registration->step_skipped);
+            $stepSkipped[] = 'visita';
+            $this->registration->update([
+                'step_skipped' => json_encode(array_values($stepSkipped))
+            ]);
         }
 
         $this->registration->chronologies()->create([
@@ -56,6 +62,13 @@ class UpdateRegistration extends ModalComponent
         if (strpos($option->name, 'medico')) {
             MedicalPlanning::create([
                 'registration_id' => $this->registration->id
+            ]);
+
+            $stepSkipped = json_decode($this->registration->step_skipped);
+            $step = array_search('visita', $stepSkipped);
+            unset($stepSkipped[$step]);
+            $this->registration->update([
+                'step_skipped' => json_encode(array_values($stepSkipped))
             ]);
         }
 
