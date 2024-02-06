@@ -5,6 +5,7 @@ namespace App\Livewire\Registry\Modals;
 use App\Models\Registration;
 use Livewire\WithFileUploads;
 use App\Livewire\Forms\CustomerForm;
+use App\Livewire\Forms\DocumentForm;
 use Livewire\Attributes\On;
 use LivewireUI\Modal\ModalComponent;
 
@@ -12,6 +13,7 @@ class ShowSkipped extends ModalComponent
 {
     use WithFileUploads;
 
+    public DocumentForm $documentForm;
     public CustomerForm $customerForm;
     public $registration;
     public $stepSkipped;
@@ -111,11 +113,12 @@ class ShowSkipped extends ModalComponent
 
     public function save() {
         $this->customerForm->setCustomer($this->registration->customer_id);
+        $this->documentForm->setCustomer($this->registration->customer_id);
         $stepSkipped = json_decode($this->registration->step_skipped);
 
         if ($this->scans) {
             if (strpos($this->stepSkipped, 'cliente')) {
-                $this->customerForm->scans($this->scans);
+                $this->documentForm->scans($this->scans);
 
                 $step = array_search('scansioni', $stepSkipped);
                 unset($stepSkipped[$step]);
@@ -125,10 +128,10 @@ class ShowSkipped extends ModalComponent
 
                 $this->dispatch('updateDocument', customer: $this->registration->customer_id);
             } elseif (strpos($this->stepSkipped, 'Genitore')) {
-                $this->customerForm->parentScans($this->scans, $this->registration->id);
+                $this->documentForm->parentScans($this->scans, $this->registration->id);
 
                 if ($this->signature) {
-                    $this->customerForm->parentSignature($this->signature, $this->registration->id);
+                    $this->documentForm->parentSignature($this->signature, $this->registration->id);
                 }
 
                 $step = array_search('genitore/tutore', $stepSkipped);
@@ -139,7 +142,7 @@ class ShowSkipped extends ModalComponent
 
                 $this->dispatch('updateDocument', customer: $this->registration->customer_id);
             } elseif (strpos($this->stepSkipped, 'visita')) {
-                $this->customerForm->medicalVisitScan($this->scans, $this->registration->id);
+                $this->documentForm->medicalVisitScan($this->scans, $this->registration->id);
 
                 $step = array_search('visita', $stepSkipped);
                 unset($stepSkipped[$step]);
@@ -164,8 +167,8 @@ class ShowSkipped extends ModalComponent
                 }
             }
 
-            $this->customerForm->companionsSignature($signatures, $this->registration->id);
-            $this->customerForm->companionsScans($scans, $this->registration->id);
+            $this->documentForm->companionsSignature($signatures, $this->registration->id);
+            $this->documentForm->companionsScans($scans, $this->registration->id);
 
             $step = array_search('accompagnatori', $stepSkipped);
             unset($stepSkipped[$step]);

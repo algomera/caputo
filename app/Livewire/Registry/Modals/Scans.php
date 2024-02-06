@@ -6,14 +6,14 @@ use App\Models\Customer;
 use App\Models\Registration;
 use LivewireUI\Modal\ModalComponent;
 use Livewire\WithFileUploads;
-use App\Livewire\Forms\CustomerForm;
+use App\Livewire\Forms\DocumentForm;
 use Livewire\Attributes\On;
 
 class Scans extends ModalComponent
 {
     use WithFileUploads;
 
-    public CustomerForm $customerForm;
+    public DocumentForm $documentForm;
     public $customer;
 
     public $registration;
@@ -38,10 +38,10 @@ class Scans extends ModalComponent
     public function updated($property) {
         if ($property == 'newScan') {
             if ($this->registration) {
-                $this->customerForm->newScan($this->customer->id, $this->newScan, $this->registration->id);
+                $this->documentForm->newScan($this->customer->id, $this->newScan, $this->registration->id);
                 return $this->mount(registration: $this->registration->id);
             } else {
-                $this->customerForm->newScan($this->customer->id, $this->newScan);
+                $this->documentForm->newScan($this->customer->id, $this->newScan);
                 return $this->mount(customer: $this->customer->id);
             }
         }

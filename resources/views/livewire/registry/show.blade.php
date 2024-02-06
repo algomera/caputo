@@ -187,9 +187,11 @@
                                     Dati mancanti
                                 </button>
                             @endif
-                            <button wire:click="$dispatch('openModal', { component: 'registry.modals.update-registration', arguments: {registration: {{$registration->id}}} })" class="flex items-center gap-2 px-4 py-1 text-color-2c2c2c font-medium capitalize rounded-full bg-color-347af2/30 hover:scale-105 transition-all duration-300">
-                                <x-icons name="option" /> opzioni
-                            </button>
+                            @if (count($registration->course->getOptions()->where('type', 'opzionale')->where('option', $registration->option)->whereNot('name', 'Supporto audio')->get()) > 0)
+                                <button wire:click="$dispatch('openModal', { component: 'registry.modals.update-registration', arguments: {registration: {{$registration->id}}} })" class="flex items-center gap-2 px-4 py-1 text-color-2c2c2c font-medium capitalize rounded-full bg-color-347af2/30 hover:scale-105 transition-all duration-300">
+                                    <x-icons name="option" /> opzioni
+                                </button>
+                            @endif
                         </div>
                         <div class="flex gap-2">
                             <button wire:click="$dispatch('openModal', { component: 'registry.modals.scans', arguments: {registration: {{$registration->id}}} })" class="flex items-center gap-2 px-4 py-1 text-color-2c2c2c font-medium capitalize rounded-full bg-color-ffb205/30 hover:scale-105 transition-all duration-300">

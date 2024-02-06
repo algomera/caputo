@@ -3,6 +3,7 @@
 namespace App\Livewire\Services\Commons;
 
 use App\Livewire\Forms\CustomerForm;
+use App\Livewire\Forms\DocumentForm;
 use App\Models\Course;
 use App\Models\Customer;
 use App\Models\IdentificationDocument;
@@ -20,6 +21,7 @@ class StepRegister extends Component
 
     public Course $course;
     public CustomerForm $customerForm;
+    public DocumentForm $documentForm;
 
     public $patent = null;
     public $customer = null;
@@ -116,6 +118,7 @@ class StepRegister extends Component
 
     public function setCustomer($customer) {
         $this->customerForm->setCustomer($customer);
+        $this->documentForm->setCustomer($customer);
     }
 
     public function backStep() {
@@ -154,18 +157,20 @@ class StepRegister extends Component
     public function registration($trainingId, $type, $variant = null) {
         $this->customerForm->setSchool(auth()->user()->schools()->first()->id);
         $this->customerForm->store();
+        $this->setCustomer($this->customerForm->newCustomer->id);
 
         if ($this->documents) {
             $this->customerForm->documents($this->documents);
         }
-        if ($this->scans) {
-            $this->customerForm->scans($this->scans);
-        }
         if ($this->photo) {
             $this->customerForm->photo($this->photo);
         }
+
+        if ($this->scans) {
+            $this->documentForm->scans($this->scans);
+        }
         if ($this->signature) {
-            $this->customerForm->signature($this->signature);
+            $this->documentForm->signature($this->signature);
         }
 
         if ($type == 'esistente') {
@@ -185,10 +190,10 @@ class StepRegister extends Component
             ]);
 
             if ($this->parentScans) {
-                $this->customerForm->parentScans($this->parentScans, $registration->id);
+                $this->documentForm->parentScans($this->parentScans, $registration->id);
             }
             if ($this->parentSignature) {
-                $this->customerForm->parentSignature($this->parentSignature, $registration->id);
+                $this->documentForm->parentSignature($this->parentSignature, $registration->id);
             }
             if ($this->companions) {
                 $signatures = [];
@@ -205,8 +210,8 @@ class StepRegister extends Component
                     }
                 }
 
-                $this->customerForm->companionsSignature($signatures, $registration->id);
-                $this->customerForm->companionsScans($scans, $registration->id);
+                $this->documentForm->companionsSignature($signatures, $registration->id);
+                $this->documentForm->companionsScans($scans, $registration->id);
             }
         } elseif ($type == 'interessato') {
             if ($variant) {

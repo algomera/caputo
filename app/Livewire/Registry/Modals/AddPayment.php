@@ -107,6 +107,10 @@ class AddPayment extends ModalComponent
         return '4xl';
     }
 
+    public static function destroyOnClose(): bool
+    {
+        return true;
+    }
 
     public function render()
     {

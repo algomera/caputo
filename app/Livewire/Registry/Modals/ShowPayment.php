@@ -6,7 +6,7 @@ use App\Models\Payment;
 use App\Livewire\Registry\Modals\Payments;
 use App\Livewire\Registry\Show;
 use Livewire\WithFileUploads;
-use App\Livewire\Forms\CustomerForm;
+use App\Livewire\Forms\DocumentForm;
 use App\Models\Registration;
 use Illuminate\Support\Facades\Storage;
 use LivewireUI\Modal\ModalComponent;
@@ -15,7 +15,7 @@ class ShowPayment extends ModalComponent
 {
     use WithFileUploads;
 
-    public CustomerForm $customerForm;
+    public DocumentForm $documentForm;
     public $payment;
     public $registration;
     public $note;
@@ -46,7 +46,7 @@ class ShowPayment extends ModalComponent
 
         if ($this->newScan) {
             if ($this->document) {
-                $this->customerForm->updateScan($this->document->id, $this->newScan);
+                $this->documentForm->updateScan($this->document->id, $this->newScan);
             } else {
                 $path = Storage::putFileAs('customers/customer-'.$this->registration->customer_id, $this->newScan, str_replace(' ', '_', $this->newScan->getClientOriginalName()));
 
