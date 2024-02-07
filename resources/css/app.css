@@ -87,5 +87,8 @@ select::-webkit-scrollbar { /*For WebKit Browsers*/
 .fc-timegrid-slot-label-cushion {
     @apply text-color-afafaf font-semibold text-xl
 }
+.fc-timegrid-event-harness {
+    @apply max-w-[100px]
+}
 
 

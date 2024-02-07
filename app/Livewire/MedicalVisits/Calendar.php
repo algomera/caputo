@@ -9,30 +9,8 @@ use Livewire\Component;
 
 class Calendar extends Component
 {
-    public $visits = [];
-
-    public function mount() {
-        $this->visits = [];
-        $user = auth()->user();
-
-        if ($user->role == 'medico') {
-            $plannings = MedicalPlanning::where('user_id', $user->id)->get();
-        } else {
-            $plannings = MedicalPlanning::where('booked', '!=', null)->get();
-        }
-
-        foreach ($plannings as $planning) {
-            $this->visits[] = [
-                'id' => $planning->id,
-                'title' => $planning->registration->full_name_customer,
-                'start' => $planning->booked,
-            ];
-        }
-    }
-
     #[On('visitUpdate')]
     public function updateCalendar() {
-        $this->mount();
         $this->dispatch('updateCalendar');
     }
 
@@ -54,6 +32,25 @@ class Calendar extends Component
 
     public function render()
     {
-        return view('livewire.medical-visits.calendar');
+        $user = auth()->user();
+        $visits = [];
+
+        if ($user->role == 'medico') {
+            $plannings = MedicalPlanning::where('user_id', $user->id)->get();
+        } else {
+            $plannings = MedicalPlanning::where('booked', '!=', null)->get();
+        }
+
+        foreach ($plannings as $planning) {
+            $visits[] = [
+                'id' => $planning->id,
+                'title' => $planning->registration->full_name_customer,
+                'start' => $planning->booked,
+            ];
+        }
+
+        return view('livewire.medical-visits.calendar', [
+            'visits' => $visits
+        ]);
     }
 }

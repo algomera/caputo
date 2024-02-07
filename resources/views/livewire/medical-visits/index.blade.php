@@ -107,6 +107,10 @@
                                         <small class="block">N° Protocollo</small>
                                         <span class="text-color-17489f text-sm font-medium ">{{$visit->medicalPlanning->protocol}}</span>
                                     </div>
+                                @else
+                                    @role('admin|medico')
+                                        <button wire:click="$dispatch('openModal', { component: 'medical-visits.modals.visit-outcome', arguments: {visitId: {{ $visit->medicalPlanning->id }}} })" class=" px-4 py-1 bg-color-01a53a/60 text-white font-medium capitalize rounded-md">inserisci</button>
+                                    @endrole
                                 @endif
                             </td>
                             <td class="border-r-2 border-color-efefef px-3 py-4 text-color-2c2c2c">{{$visit->customer->phone_1}}</td>

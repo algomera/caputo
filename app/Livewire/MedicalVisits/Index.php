@@ -22,7 +22,8 @@ class Index extends Component
     #[On('visitModified')]
     public function render()
     {
-        if (auth()->user()->id == 1) {
+        $user = auth()->user();
+        if ($user->role->name == 'admin') {
             $medicalVisits = Registration::whereJsonContains('optionals', 15)->with('customer', 'course', 'medicalPlanning', 'school')
             ->whereHas('customer', function($q) {
                 $q->filter('name', $this->name);
@@ -40,8 +41,30 @@ class Index extends Component
                 $q->filter('code', $this->code);
             })
             ->get()->sortByDesc('id');
+        } elseif ($user->role->name == 'medico') {
+            $medicalVisits = Registration::whereJsonContains('optionals', 15)->with('customer', 'course', 'medicalPlanning', 'school')
+            ->whereHas('medicalPlanning', function($q) {
+                $user = auth()->user();
+                $q->filter('user_id', $user->id);
+            })
+            ->whereHas('customer', function($q) {
+                $q->filter('name', $this->name);
+            })
+            ->whereHas('customer', function($q) {
+                $q->filter('lastName', $this->lastName);
+            })
+            ->whereHas('customer', function($q) {
+                $q->filter('phone_1', $this->phone);
+            })
+            ->whereHas('course', function($q) {
+                $q->filter('name', $this->course);
+            })
+            ->whereHas('school', function($q) {
+                $q->filter('code', $this->code);
+            })
+            ->get()->sortByDesc('id');
         } else {
-            $school = School::find(auth()->user()->schools()->first()->id);
+            $school = School::find($user->schools()->first()->id);
             $medicalVisits = $school->medicalVisits()
             ->whereHas('customer', function($q) {
                 $q->filter('name', $this->name);

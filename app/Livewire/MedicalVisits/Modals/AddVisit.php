@@ -38,6 +38,7 @@ class AddVisit extends ModalComponent
         $this->closeModalWithEvents([
             Calendar::class => 'visitUpdate',
         ]);
+        return redirect()->route('visits.calendar');
     }
 
     public static function modalMaxWidth(): string

@@ -22,6 +22,21 @@ class InfoVisit extends ModalComponent
         $this->closeModalWithEvents([
             Calendar::class => 'visitUpdate',
         ]);
+        return redirect()->route('visits.calendar');
+    }
+
+    public function showCustomer() {
+        return redirect()->route('registry.show', ['customer' => $this->visit->registration->customer->id]);
+    }
+
+    public static function modalMaxWidthClass(): string
+    {
+        return 'max-w-screen-sm align-top';
+    }
+
+    public static function destroyOnClose(): bool
+    {
+        return true;
     }
 
     public function render()

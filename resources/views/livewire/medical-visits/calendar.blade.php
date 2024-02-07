@@ -8,8 +8,7 @@
 
 <script>
     document.addEventListener('livewire:initialized', function() {
-        const calendarEl = document.getElementById('calendar');
-        let calendar = new FullCalendar.Calendar(calendarEl, {
+        var calendar = new FullCalendar.Calendar(document.getElementById('calendar'), {
             height: 730,
             initialView: 'timeGridWeek',
             locale: 'it',
@@ -27,6 +26,7 @@
             selectable: true,
             nowIndicator: true,
             dayMaxEvents: true,
+            eventMaxStack: true,
             dayHeaderFormat: { weekday: 'long', day: 'numeric'},
             buttonText: {
                 today:    'Oggi',
@@ -44,10 +44,11 @@
             views: {
                 dayGridMonth: {
                     dayMaxEventRows: 5,
+                    eventMaxStack: 2,
                     titleFormat: { month: 'long', year: 'numeric' },
                 },
                 timeGridDay: {
-                    dayMaxEventRows: 5,
+                    dayMaxEventRows: 10,
                     titleFormat: { day: 'numeric', month: 'long', year: 'numeric' },
 
                     dateClick: function(data) {
@@ -55,7 +56,8 @@
                     },
                 },
                 timeGridWeek: {
-                    dayMaxEventRows: 5,
+                    dayMaxEventRows: 3,
+                    eventMaxStack: 1,
                     titleFormat: { day: 'numeric', month: 'long', year: 'numeric' },
 
                     dateClick: function(data) {
@@ -78,7 +80,7 @@
         calendar.render()
         @this.on('updateCalendar', () => {
             console.log('si');
-            calendar.addEvent(@json($visits))
+            calendar.refetchEvents()
         });
     });
 </script>
