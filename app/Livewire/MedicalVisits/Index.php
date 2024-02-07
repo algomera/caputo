@@ -15,6 +15,9 @@ class Index extends Component
     public $course = '';
     public $code = '';
 
+    public function calendar() {
+        return redirect()->route('visits.calendar');
+    }
 
     #[On('visitModified')]
     public function render()

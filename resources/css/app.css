@@ -44,3 +44,48 @@ select::-webkit-scrollbar { /*For WebKit Browsers*/
     width:100%;
     table-layout:fixed;
 }
+
+/* Full Calendar */
+
+.fc-view-harness {
+    @apply bg-white shadow-shadow-card no-scrollbar
+}
+.fc-multiMonthYear-view, .fc-scroller {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+/* .fc-scrollgrid-sync-table {
+    @apply hidden
+} */
+.fc-multimonth-title {
+    @apply uppercase text-color-808080 font-bold
+}
+.fc-toolbar-title {
+    @apply uppercase text-color-808080 font-bold !text-4xl
+}
+.fc-col-header-cell-cushion {
+    @apply uppercase text-color-808080 font-bold
+}
+.fc-daygrid-day-top a {
+    @apply bg-[#E5EAEA] text-[#7E8D9B] font-semibold rounded-full w-7 h-7 mt-1 mr-1 flex justify-center items-center shadow-slate-500 shadow-sm
+}
+.fc-button-primary {
+    @apply !bg-color-17489f !border-0 shadow-shadow-card !font-medium tracking-wider
+}
+.fc-button-active {
+    @apply !bg-color-01a53a/80
+}
+.fc-button-group .fc-button-active {
+    @apply brightness-110  hover:brightness-110
+}
+.fc-timegrid-slot {
+    @apply !h-20
+}
+.fc-timegrid-slot-label-frame {
+    @apply flex justify-center
+}
+.fc-timegrid-slot-label-cushion {
+    @apply text-color-afafaf font-semibold text-xl
+}
+
+

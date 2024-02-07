@@ -12,7 +12,7 @@
             <x-input-text wire:model.live="code" width="w-fit" name="code" placeholder="Codice" uppercase="shadow" />
             @endrole
         </div>
-        <button class="px-4 py-1 bg-color-17489f text-white font-bold rounded-md hover:scale-105 transition-all duration-300">Vai al calendario</button>
+        <button wire:click="calendar" class="px-4 py-1 bg-color-17489f text-white font-bold rounded-md hover:scale-105 transition-all duration-300">Vai al calendario</button>
     </div>
 
     <div class="p-11 pt-5 bg-color-f7f7f7 shadow-shadow-card mt-5">
