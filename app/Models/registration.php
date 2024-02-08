@@ -96,8 +96,4 @@ class Registration extends Model
         }
         return ($this->finalPrice - $this->totalPayment);
     }
-
-    public function getFullNameCustomerAttribute() {
-        return $this->customer->name . ' ' . $this->customer->lastName;
-    }
 }

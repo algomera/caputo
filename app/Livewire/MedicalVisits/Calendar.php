@@ -44,7 +44,7 @@ class Calendar extends Component
         foreach ($plannings as $planning) {
             $visits[] = [
                 'id' => $planning->id,
-                'title' => $planning->registration->full_name_customer,
+                'title' => $planning->customer->full_name,
                 'start' => $planning->booked,
             ];
         }

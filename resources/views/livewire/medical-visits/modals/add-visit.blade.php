@@ -21,7 +21,7 @@
             <tbody class="bg-white customBody no-scrollbar !max-h-[470px]">
                 @foreach($visits as $visit)
                     <tr class="text-center even:bg-color-f7f7f7">
-                        <td colspan="3" class="border-r-2 border-color-efefef text-left font-medium px-3 py-4 text-color-2c2c2c">{{$visit->registration->full_name_customer}}</td>
+                        <td colspan="3" class="border-r-2 border-color-efefef text-left font-medium px-3 py-4 text-color-2c2c2c">{{$visit->customer->full_name}}</td>
                         <td scope="col" class="border-r-2 border-color-efefef font-medium px-3 py-4 text-color-2c2c2c capitalize">{{$visit->registration->course->type_visit}}</td>
                         <td scope="col" class="border-r-2 border-color-efefef text-left font-medium px-3 py-4 text-color-2c2c2c capitalize">
                             @if (in_array($visit->id, $selected))

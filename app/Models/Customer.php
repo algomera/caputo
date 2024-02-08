@@ -70,4 +70,8 @@ class Customer extends Model
 
         return $typeDocuments;
     }
+
+    public function getFullNameAttribute() {
+        return $this->name . ' ' . $this->lastName;
+    }
 }
