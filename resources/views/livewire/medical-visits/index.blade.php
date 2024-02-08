@@ -105,7 +105,7 @@
                                 @if ($visit->medicalPlanning->protocol)
                                     <div>
                                         <small class="block">N° Protocollo</small>
-                                        <span class="text-color-17489f text-sm font-medium ">{{$visit->medicalPlanning->protocol}}</span>
+                                        <span class="text-color-17489f text-sm font-medium uppercase">{{$visit->medicalPlanning->protocol}}</span>
                                     </div>
                                 @else
                                     @role('admin|medico')

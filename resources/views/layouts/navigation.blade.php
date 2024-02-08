@@ -5,22 +5,38 @@
             <div class="flex">
                 <!-- Navigation Links -->
                 <div class="space-x-8 sm:-my-px sm:flex items-center">
+                    @role('admin|responsabile sede|segretaria')
                     <x-nav-link :href="route('service')" :active="request()->routeIs('service*')">
                         Servizi
                     </x-nav-link>
+                    @endrole
+                    @role('admin|responsabile sede|segretaria')
                     <x-nav-link :href="route('registry.index')" :active="request()->routeIs('registry*')">
                         Anagrafica
                     </x-nav-link>
+                    @endrole
+
+                    @role('admin|responsabile sede|segretaria')
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('')">
                         Registro iscritti
                     </x-nav-link>
+                    @endrole
+
+                    @role('admin|responsabile sede|segretaria|medico')
                     <x-nav-link :href="route('visits.index')" :active="request()->routeIs('visits*')">
                         Visite mediche
                     </x-nav-link>
+                    @endrole
+
+                    @role('admin|responsabile sede|segretaria|istruttore')
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('')">
                         Gestione Guide
                     </x-nav-link>
+                    @endrole
+
+                    @role('admin|responsabile sede|segretaria|insegnante')
                     <x-custom-dropdown title="Gestione teoria" icon="chevron_down" :options="[]"/>
+                    @endrole
                 </div>
             </div>
 

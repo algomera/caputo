@@ -58,7 +58,7 @@ class User extends Authenticatable
         return match ($this->role->name) {
             'admin' => 'service',
             'responsabile sede' => 'service',
-            'medico' => 'service',
+            'medico' => 'visits.index',
             'insegnante' => 'service',
             'istruttore' => 'service',
             'segretaria' => 'service',
