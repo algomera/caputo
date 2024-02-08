@@ -24,22 +24,22 @@ class RedirectIfAuthenticated
                 $role = Auth::user()->role->name;
                 switch ($role) {
                     case 'admin':
-                        return redirect(RouteServiceProvider::HOME);
+                        return redirect()->route(auth()->user()->getRedirectRouteName());
                         break;
                     case 'responsabile sede':
-                        return redirect(RouteServiceProvider::HOME);
+                        return redirect()->route(auth()->user()->getRedirectRouteName());
                         break;
                     case 'medico':
-                        return redirect(RouteServiceProvider::HOME);
+                        return redirect()->route(auth()->user()->getRedirectRouteName());
                         break;
                     case 'insegnante':
-                        return redirect(RouteServiceProvider::HOME);
+                        return redirect()->route(auth()->user()->getRedirectRouteName());
                         break;
                     case 'istruttore':
-                        return redirect(RouteServiceProvider::HOME);
+                        return redirect()->route(auth()->user()->getRedirectRouteName());
                         break;
                     case 'segretaria':
-                        return redirect(RouteServiceProvider::HOME);
+                        return redirect()->route(auth()->user()->getRedirectRouteName());
                         break;
                     default:
                         return redirect('/login');
