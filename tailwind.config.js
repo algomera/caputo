@@ -20,7 +20,11 @@ export default {
         {
             pattern: /max-w-screen/,
             variants: ['sm', 'md', 'lg', 'xl', '2xl'],
-        }
+        },
+        {
+            pattern: /align-(top|middle|bottom)/,
+            variants: ['top', 'middle', 'bottom'],
+        },
     ],
 
 

@@ -31,7 +31,7 @@ class InfoVisit extends ModalComponent
 
     public static function modalMaxWidthClass(): string
     {
-        return 'max-w-screen-sm align-top';
+        return 'max-w-screen-sm !align-top';
     }
 
     public static function destroyOnClose(): bool

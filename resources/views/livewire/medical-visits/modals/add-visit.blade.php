@@ -1,6 +1,14 @@
 <div class="px-14 py-8 flex flex-col gap-4">
     <h1 class="text-5xl font-bold text-color-17489f capitalize">Prenotazione visite</h1>
 
+    <div class="w-full flex items-end justify-between">
+        <div class="flex items-center gap-3">
+            <span>Cerca per:</span>
+            <x-input-text wire:model.live="name" width="w-fit" name="name" placeholder="Nome" uppercase="shadow" />
+            <x-input-text wire:model.live="lastName" width="w-fit" name="lastName" placeholder="Cognome" uppercase="shadow" />
+        </div>
+    </div>
+
     <div class="p-11 pt-5 bg-color-f7f7f7 shadow-shadow-card">
         <table class="min-w-full divide-y-2 divide-color-efefef border-b-2 border-color-efefef">
             <thead class="customHead">

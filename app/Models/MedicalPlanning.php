@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\MorphOne;
 class MedicalPlanning extends Model
 {
     use HasFactory;
+    use \Znck\Eloquent\Traits\BelongsToThrough;
 
     protected $guarded = [];
 
@@ -23,5 +24,9 @@ class MedicalPlanning extends Model
 
     public function payments(): MorphOne {
         return $this->morphOne(Payment::class, 'paymentable');
+    }
+
+    public function customer() {
+        return $this->BelongsToThrough(Customer::class, Registration::class);
     }
 }

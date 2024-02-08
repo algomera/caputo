@@ -1,4 +1,4 @@
-<div class="p-4 space-y-8">
+<div class="p-4 space-y-8 !align-top">
     <div class="flex items-start gap-2">
         @if ($visit->registration->customer->photo()->first())
         <img class="w-28 h-28" src="{{Vite::asset($visit->registration->customer->photo()->first()->path)}}" alt="">

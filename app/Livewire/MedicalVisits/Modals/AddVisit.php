@@ -10,12 +10,12 @@ use LivewireUI\Modal\ModalComponent;
 class AddVisit extends ModalComponent
 {
     public $data;
-    public $visits;
+    public $name = '';
+    public $lastName = '';
     public $selected = [];
 
     public function mount($data) {
         $this->data = $data;
-        $this->visits = MedicalPlanning::where('booked', null)->get();
     }
 
     public function add($visitId) {
@@ -48,6 +48,16 @@ class AddVisit extends ModalComponent
 
     public function render()
     {
-        return view('livewire.medical-visits.modals.add-visit');
+        $visits = MedicalPlanning::where('booked', null)->with('customer')
+        ->whereHas('customer', function($q) {
+            $q->filter('name', $this->name);
+        })
+        ->whereHas('customer', function($q) {
+            $q->filter('lastName', $this->lastName);
+        })->get();
+
+        return view('livewire.medical-visits.modals.add-visit', [
+            'visits' => $visits
+        ]);
     }
 }
