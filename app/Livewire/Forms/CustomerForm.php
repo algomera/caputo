@@ -31,24 +31,45 @@ class CustomerForm extends Form
     public $phone_2;
 
     public function rules() {
-        return [
-            'name' => 'required',
-            'lastName' => 'required',
-            'sex' => 'required',
-            'fiscal_code' => ['required','unique:customers,fiscal_code,'. $this->customer->id],
-            'date_of_birth' => 'required',
-            'birth_place' => 'required',
-            'country_of_birth' => 'required',
-            'country' => 'required',
-            'city' => 'required',
-            'province' => 'required',
-            'address' => 'required',
-            'civic' => 'required',
-            'postcode' => 'required',
-            'email' => 'required',
-            'phone_1' => 'required',
-            'phone_2' => 'nullable',
-        ];
+        if ($this->customer) {
+            return [
+                'name' => 'required',
+                'lastName' => 'required',
+                'sex' => 'required',
+                'fiscal_code' => ['required','unique:customers,fiscal_code,'. $this->customer->id],
+                'date_of_birth' => 'required',
+                'birth_place' => 'required',
+                'country_of_birth' => 'required',
+                'country' => 'required',
+                'city' => 'required',
+                'province' => 'required',
+                'address' => 'required',
+                'civic' => 'required',
+                'postcode' => 'required',
+                'email' => 'required',
+                'phone_1' => 'required',
+                'phone_2' => 'nullable',
+            ];
+        } else {
+            return [
+                'name' => 'required',
+                'lastName' => 'required',
+                'sex' => 'required',
+                'fiscal_code' => 'required',
+                'date_of_birth' => 'required',
+                'birth_place' => 'required',
+                'country_of_birth' => 'required',
+                'country' => 'required',
+                'city' => 'required',
+                'province' => 'required',
+                'address' => 'required',
+                'civic' => 'required',
+                'postcode' => 'required',
+                'email' => 'required',
+                'phone_1' => 'required',
+                'phone_2' => 'nullable',
+            ];
+        }
     }
 
     public function messages() {
@@ -133,35 +154,19 @@ class CustomerForm extends Form
     }
 
     public function photo($photo) {
-        if ($this->customer) {
-            $path = Storage::putFileAs('customers/customer-'.$this->customer->id.'/fototessera/', $photo, 'fototessera.png');
+        $path = Storage::putFileAs('customers/customer-'.$this->newCustomer->id.'/fototessera/', $photo, 'fototessera.png');
 
-            $this->customer->documents()->updateOrCreate(
-                ['type' => 'fototessera'],
-                [
-                    'type' => 'fototessera',
-                    'path' => 'storage/app/'.$path
-                ]
-            );
+        $this->newCustomer->documents()->updateOrCreate(
+            ['type' => 'fototessera'],
+            [
+                'type' => 'fototessera',
+                'path' => 'storage/app/'.$path
+            ]
+        );
 
-            $this->customer->chronologies()->create([
-                'title' => 'Aggiornamento fototessera'
-            ]);
-        } elseif ($this->newCustomer) {
-            $path = Storage::putFileAs('customers/customer-'.$this->newCustomer->id.'/fototessera/', $photo, 'fototessera.png');
-
-            $this->newCustomer->documents()->updateOrCreate(
-                ['type' => 'fototessera'],
-                [
-                    'type' => 'fototessera',
-                    'path' => 'storage/app/'.$path
-                ]
-            );
-
-            $this->newCustomer->chronologies()->create([
-                'title' => 'Inserimento fototessera'
-            ]);
-        }
+        $this->newCustomer->chronologies()->create([
+            'title' => 'Inserimento fototessera'
+        ]);
     }
 
     public function documents($documents) {

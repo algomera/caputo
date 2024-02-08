@@ -32,13 +32,19 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/service', [ServiceIndex::class, '__invoke'])->name('service');
-    Route::get('/service/servizi_al_conducente/{course:slug}', [DriverIndex::class, '__invoke'])->name('service.driver');
-    Route::get('/service/patenti/{course:slug}/register', [StepRegister::class, '__invoke'])->name('service.step.register');
-    Route::get('/visite-mediche', [MedicalVisitIndex::class, '__invoke'])->name('visits.index');
-    Route::get('/visite-mediche/calendario', [CalendarVisit::class, '__invoke'])->name('visits.calendar');
-    Route::get('/anagrafica', [RegistryIndex::class, '__invoke'])->name('registry.index');
-    Route::get('/anagrafica/{customer}', [RegistryShow::class, '__invoke'])->name('registry.show');
+
+    Route::group(['middleware' => ['role:admin|responsabile sede|segretaria']], function () {
+        Route::get('/service', [ServiceIndex::class, '__invoke'])->name('service');
+        Route::get('/service/servizi_al_conducente/{course:slug}', [DriverIndex::class, '__invoke'])->name('service.driver');
+        Route::get('/service/patenti/{course:slug}/register', [StepRegister::class, '__invoke'])->name('service.step.register');
+        Route::get('/anagrafica', [RegistryIndex::class, '__invoke'])->name('registry.index');
+        Route::get('/anagrafica/{customer}', [RegistryShow::class, '__invoke'])->name('registry.show');
+    });
+
+    Route::group(['middleware' => ['role:admin|responsabile sede|segretaria|medico']], function () {
+        Route::get('/visite-mediche', [MedicalVisitIndex::class, '__invoke'])->name('visits.index');
+        Route::get('/visite-mediche/calendario', [CalendarVisit::class, '__invoke'])->name('visits.calendar');
+    });
 });
 
 Route::middleware('auth')->group(function () {

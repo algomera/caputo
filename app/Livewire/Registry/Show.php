@@ -17,7 +17,6 @@ class Show extends Component
     public IdentificationDocumentForm $identificationDocumentForm;
     public $registrations;
     public $registration;
-    public $documents;
     public $modify = false;
     public $photo = null;
     public $signature;
@@ -31,9 +30,6 @@ class Show extends Component
     }
 
     public function updated($property) {
-        if ($property == 'document') {
-            $this->setDocument();
-        }
         if ($property == 'modify') {
             $this->dispatch('modifyData', $this->modify);
         }
@@ -53,13 +49,15 @@ class Show extends Component
         if ($this->photo) {
             $this->customerForm->photo($this->photo);
 
-            $stepSkipped = json_decode($this->registration->step_skipped);
-            $step = array_search('fototessera', $stepSkipped);
-            unset($stepSkipped[$step]);
+            foreach ($this->registrations as $registration) {
+                $stepSkipped = json_decode($registration->step_skipped);
+                $step = array_search('fototessera', $stepSkipped);
+                unset($stepSkipped[$step]);
 
-            $this->registration->update([
-                'step_skipped' => json_encode(array_values($stepSkipped))
-            ]);
+                $registration->update([
+                    'step_skipped' => json_encode(array_values($stepSkipped))
+                ]);
+            }
         }
 
         $this->mount($this->customerForm->customer->id);
