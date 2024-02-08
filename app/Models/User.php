@@ -59,7 +59,7 @@ class User extends Authenticatable
             'admin' => 'service',
             'responsabile sede' => 'service',
             'medico' => 'visits.index',
-            'insegnante' => 'service',
+            'insegnante' => 'theory.trainings.index',
             'istruttore' => 'service',
             'segretaria' => 'service',
         };
@@ -67,5 +67,9 @@ class User extends Authenticatable
 
     public function isAdmin() {
         return 'admin' === $this->role->name;
+    }
+
+    public function getFullNameAttribute() {
+        return $this->name . ' ' . $this->lastName;
     }
 }

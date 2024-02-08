@@ -35,7 +35,7 @@
                     @endrole
 
                     @role('admin|responsabile sede|segretaria|insegnante')
-                    <x-custom-dropdown title="Gestione teoria" icon="chevron_down" :options="[]"/>
+                    <x-custom-dropdown title="Gestione teoria" icon="chevron_down" :options="$theory" :active="request()->routeIs('theory*')"/>
                     @endrole
                 </div>
             </div>

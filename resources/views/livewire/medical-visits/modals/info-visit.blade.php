@@ -11,6 +11,7 @@
             <h3 class="text-lg font-medium">{{$visit->customer->full_name}}</h3>
             <p class="text-color-808080 text-sm font-bold">Iscritto a: <span class="text-base text-color-2c2c2c capitalize font-medium">{{$visit->registration->course->name}}</span></p>
             <p class="text-color-808080 text-sm font-bold">Tipo visita: <span class=" text-base text-color-2c2c2c capitalize font-medium">{{$visit->registration->course->type_visit}}</span></p>
+            <p class="text-color-808080 text-sm font-bold">Medico: <span class=" text-base text-color-2c2c2c capitalize font-medium">{{$visit->user->full_name}}</span></p>
         </div>
 
         <div class="ml-auto flex flex-col gap-4">

@@ -26,7 +26,7 @@
         </div>
 
         <div class="min-h-screen bg-color-efefef md:hidden lg:block">
-            @include('layouts.navigation')
+            <livewire:layouts.navigation />
 
             <!-- Page Content -->
             <main>

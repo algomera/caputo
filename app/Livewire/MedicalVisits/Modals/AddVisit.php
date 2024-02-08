@@ -4,7 +4,9 @@ namespace App\Livewire\MedicalVisits\Modals;
 
 use App\Livewire\MedicalVisits\Calendar;
 use App\Models\MedicalPlanning;
+use App\Models\User;
 use Carbon\Carbon;
+use Livewire\Attributes\Validate;
 use LivewireUI\Modal\ModalComponent;
 
 class AddVisit extends ModalComponent
@@ -12,6 +14,9 @@ class AddVisit extends ModalComponent
     public $data;
     public $name = '';
     public $lastName = '';
+
+    #[Validate('required', message: 'Selezionare medico')]
+    public $doctor = null;
     public $selected = [];
 
     public function mount($data) {
@@ -27,10 +32,13 @@ class AddVisit extends ModalComponent
     }
 
     public function save() {
+        $this->validate();
+
         foreach ($this->selected as $visitId) {
             $visit = MedicalPlanning::find($visitId);
 
             $visit->update([
+                'user_id' => $this->doctor,
                 'booked' => Carbon::parse($this->data)
             ]);
         }
@@ -43,11 +51,13 @@ class AddVisit extends ModalComponent
 
     public static function modalMaxWidth(): string
     {
-        return '4xl';
+        return '6xl';
     }
 
     public function render()
     {
+        $doctors = User::role('medico')->get();
+
         $visits = MedicalPlanning::where('booked', null)->with('customer')
         ->whereHas('customer', function($q) {
             $q->filter('name', $this->name);
@@ -57,7 +67,8 @@ class AddVisit extends ModalComponent
         })->get();
 
         return view('livewire.medical-visits.modals.add-visit', [
-            'visits' => $visits
+            'visits' => $visits,
+            'doctors' => $doctors
         ]);
     }
 }
