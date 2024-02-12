@@ -6,10 +6,10 @@
             <span>Cerca per:</span>
             <x-input-text wire:model.live="course" width="w-fit" name="course" placeholder="Nome corso" uppercase="shadow" />
             @if (auth()->user()->role->name != 'insegnante')
-            <x-input-text wire:model.live="user" width="w-fit" name="user" placeholder="Insegnante" uppercase="shadow" />
+                <x-input-text wire:model.live="user" width="w-fit" name="user" placeholder="Insegnante" uppercase="shadow" />
             @endif
             @role('admin')
-            <x-input-text wire:model.live="code" width="w-fit" name="code" placeholder="Codice" uppercase="shadow" />
+                <x-input-text wire:model.live="code" width="w-fit" name="code" placeholder="Codice" uppercase="shadow" />
             @endrole
         </div>
     </div>
@@ -84,10 +84,11 @@
                                 </div>
                             </td>
                             <td class="px-3 py-4 text-color-2c2c2c">
-                                <div class="w-fit m-auto">
+                                <div class="w-fit m-auto flex items-center gap-4">
                                     <button wire:click="show({{$training->id}})" class="bg-color-347af2/30 flex items-center justify-center px-3 py-2 rounded-full">
                                         <x-icons name="show" class="w-5" />
                                     </button>
+                                    <x-icons wire:click="calendar({{$training->id}})" name="calendar" class="w-8 cursor-pointer hover:scale-105" />
                                 </div>
                             </td>
                         </tr>

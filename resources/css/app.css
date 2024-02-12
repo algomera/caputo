@@ -90,5 +90,8 @@ select::-webkit-scrollbar { /*For WebKit Browsers*/
 .fc-timegrid-event-harness {
     @apply max-w-[100px]
 }
+#calendarLesson .fc-timegrid-event-harness {
+    @apply max-w-[80%]
+}
 
 

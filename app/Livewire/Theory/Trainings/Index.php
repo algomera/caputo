@@ -15,6 +15,10 @@ class Index extends Component
         return redirect()->route('theory.lessons.index', ['training' => $training]);
     }
 
+    public function calendar($training) {
+        return redirect()->route('theory.trainings.calendar', ['training' => $training]);
+    }
+
     public function render()
     {
         $user = auth()->user();

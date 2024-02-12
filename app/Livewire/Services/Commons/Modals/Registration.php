@@ -3,6 +3,7 @@
 namespace App\Livewire\Services\Commons\Modals;
 
 use App\Models\Course;
+use App\Models\LessonPlanning;
 use App\Models\Training;
 use App\Models\User;
 use LivewireUI\Modal\ModalComponent;
@@ -40,7 +41,7 @@ class Registration extends ModalComponent
 
     public function createTraining() {
         $this->validate();
-        Training::create([
+        $training = Training::create([
             'school_id' => auth()->user()->schools()->first()->id,
             'course_id' => session()->get('course')['id'],
             'variant_id' => $this->trainingCourseVariant,
@@ -48,6 +49,19 @@ class Registration extends ModalComponent
             'begins' => $this->trainingBegins,
             'ends' => $this->trainingEnds
         ]);
+
+        if ($training->variant_id != null) {
+            $lessons = $training->courseVariant->lessons()->get();
+        } else {
+            $lessons = $training->course->lessons()->get();
+        }
+
+        foreach ($lessons as $lesson) {
+            LessonPlanning::create([
+                'training_id' => $training->id,
+                'lesson_id' => $lesson->id,
+            ]);
+        }
 
         $this->mount();
         $this->selectedOption = 'esistente';

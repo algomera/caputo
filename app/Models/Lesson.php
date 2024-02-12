@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Lesson extends Model
 {
@@ -18,10 +18,10 @@ class Lesson extends Model
     }
 
     public function courseVariant(): BelongsTo {
-        return $this->belongsTo(CourseVariant::class);
+        return $this->belongsTo(CourseVariant::class, 'variant_id');
     }
 
-    public function planning(): HasMany {
-        return $this->hasMany(LessonPlanning::class);
+    public function planning(): HasOne {
+        return $this->HasOne(LessonPlanning::class);
     }
 }

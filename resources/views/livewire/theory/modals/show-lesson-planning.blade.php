@@ -1,0 +1,17 @@
+<div class="px-14 py-8 flex flex-col gap-4 relative">
+    <div>
+        <h1 class="text-3xl font-bold text-color-17489f capitalize">{{$lessonPlanning->training->course->name}}</h1>
+        <h3 class="text-xl font-bold text-color-2c2c2c capitalize">Lezione: <span class="ml-2 text-lg">{{$lessonPlanning->lesson->subject}}</span></h3>
+    </div>
+    <div class="absolute top-8 right-8 flex flex-col items-center font-medium">
+        <span class="font-semibold text-xl">{{date("d/m/Y", strtotime($lessonPlanning->begin))}}</span>
+        <span class=" text-color-17489f text-lg">{{date("H:i", strtotime($lessonPlanning->begin))}} - {{date("H:i", strtotime($endLesson))}}</span>
+    </div>
+
+    <div>
+        <p class="text-color-2c2c2c">
+            <span class="font-semibold uppercase">Descrizione:</span>
+            {{$lessonPlanning->lesson->description}}
+        </p>
+    </div>
+</div>

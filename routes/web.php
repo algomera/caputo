@@ -10,6 +10,7 @@ use App\Livewire\MedicalVisits\Calendar as CalendarVisit;
 use App\Livewire\Registry\Index as RegistryIndex;
 use App\Livewire\Registry\Show as RegistryShow;
 use App\Livewire\Theory\Trainings\Index as TrainingIndex;
+use App\Livewire\Theory\Trainings\Calendar as TrainingCalendar;
 use App\Livewire\Theory\Lessons\Index as LessonsIndex;
 
 
@@ -45,6 +46,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::group(['middleware' => ['role:admin|responsabile sede|segretaria|insegnante']], function () {
         Route::get('/gestione-corsi', [TrainingIndex::class, '__invoke'])->name('theory.trainings.index');
+        Route::get('/gestione-corsi/calendar/{training}', [TrainingCalendar::class, '__invoke'])->name('theory.trainings.calendar');
         Route::get('/gestione-lezioni/{training}', [LessonsIndex::class, '__invoke'])->name('theory.lessons.index');
     });
 
