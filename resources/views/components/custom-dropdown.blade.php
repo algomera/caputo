@@ -9,7 +9,7 @@
         class="group"
     >
         <div class="flex items-center space-x-1">
-            <span class="text-base font-light leading-6 text-color-2c2c2c focus:outline-none">{{ $title }}</span>
+            <span @class(["text-base font-light leading-6 text-color-2c2c2c focus:outline-none", $active ? 'font-semibold' : ''])>{{ $title }}</span>
             <div :class="{'rotate-180': dropOpen}" class="duration-300 transition-all">
                 <x-icons name="chevron_down" class="text-color-2c2c2c" />
             </div>

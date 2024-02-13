@@ -10,6 +10,14 @@ body::-webkit-scrollbar {
     display: none;
 }
 
+@layer base {
+    * {
+        font-family: "aktiv-grotesk", system-ui, sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+}
+
 @layer utilities {
     .no-scrollbar::-webkit-scrollbar {
         display: none;
@@ -61,7 +69,7 @@ select::-webkit-scrollbar { /*For WebKit Browsers*/
     @apply uppercase text-color-808080 font-bold
 }
 .fc-toolbar-title {
-    @apply uppercase text-color-808080 font-bold !text-4xl
+    @apply uppercase text-color-808080 font-semibold !ml-24 !text-3xl 2xl:!text-4xl
 }
 .fc-col-header-cell-cushion {
     @apply uppercase text-color-808080 font-bold
@@ -70,10 +78,19 @@ select::-webkit-scrollbar { /*For WebKit Browsers*/
     @apply bg-[#E5EAEA] text-[#7E8D9B] font-semibold rounded-full w-7 h-7 mt-1 mr-1 flex justify-center items-center shadow-slate-500 shadow-sm
 }
 .fc-button-primary {
-    @apply !bg-color-17489f !border-0 shadow-shadow-card !font-medium tracking-wider
+    @apply !bg-white disabled:!bg-color-dfdfdf !border-0 !font-medium tracking-wider !text-color-2c2c2c disabled:cursor-not-allowed !border-transparent focus:!border-transparent focus:!ring-0
+}
+.fc-icon {
+    @apply text-color-2c2c2c
+}
+.fc-today-button {
+    @apply !text-color-2c2c2c
+}
+.fc-timeGridDay-button, .fc-timeGridWeek-button, .fc-dayGridMonth-button {
+    @apply !bg-color-dfdfdf
 }
 .fc-button-active {
-    @apply !bg-color-01a53a/80
+    @apply !bg-color-01a53a/80 !text-white
 }
 .fc-button-group .fc-button-active {
     @apply brightness-110  hover:brightness-110
@@ -91,7 +108,7 @@ select::-webkit-scrollbar { /*For WebKit Browsers*/
     @apply max-w-[100px]
 }
 #calendarLesson .fc-timegrid-event-harness {
-    @apply max-w-[80%]
+    @apply max-w-[100%]
 }
 
 

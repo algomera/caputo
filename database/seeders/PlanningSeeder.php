@@ -38,7 +38,7 @@ class PlanningSeeder extends Seeder
                 LessonPlanning::create([
                     'training_id' => $training->id,
                     'lesson_id' => $lesson->id,
-                    // 'begin' => fake()->dateTimeBetween(now(), '+4 week')
+                    'begin' => fake()->dateTimeBetween(now(), '+4 week')
                 ]);
             }
         }

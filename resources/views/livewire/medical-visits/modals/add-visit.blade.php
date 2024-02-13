@@ -47,7 +47,12 @@
             </tbody>
         </table>
     </div>
-    <div class="w-full flex justify-end">
+
+    <div class="w-full flex justify-end relative">
         <x-submit-button wire:click='save' class="ml-auto bg-color-17489f">Conferma</x-submit-button>
+
+        <div class="absolute bottom-[-20px] right-0">
+            @error('selected') <span class="text-[12px] text-red-500">{{ $message }}</span> @enderror
+        </div>
     </div>
 </div>

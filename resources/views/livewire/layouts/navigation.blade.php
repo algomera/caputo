@@ -41,41 +41,45 @@
             </div>
 
             <!-- Settings Dropdown -->
-            <div class="flex items-center gap-6">
-                <x-icon-dropdown icon="notify" :contents="[]"/>
+            <div class="relative flex items-center">
+                <small class="absolute bottom-0 right-0 whitespace-nowrap text-color-808080 font-semibold capitalize">{{auth()->user()->role->name}}</small>
 
-                <div class="flex items-center gap-2">
-                    <div class="w-12 h-12 rounded-full bg-color-efefef border overflow-hidden flex items-center justify-center shadow-inner">
-                        @if (Auth::user()->image)
-                            <img src="{{ Vite::asset('storage/app/public/'. Auth::user()->image) }}" class="w-full" alt="">
-                        @endif
-                    </div>
+                <div class="flex items-center gap-6">
+                    <x-icon-dropdown icon="notify" :contents="[]"/>
 
-                    <x-dropdown align="right" width="48">
-                        <x-slot name="trigger">
-                            <button class="inline-flex items-center py-2 border border-transparent text-base leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
-                                <div>{{ Auth::user()->name }}</div>
-                                <x-icons name="chevron_down" class="text-color-2c2c2c ml-2" />
-                            </button>
-                        </x-slot>
+                    <div class="flex items-center gap-2">
+                        <div class="w-12 h-12 rounded-full bg-color-efefef border overflow-hidden flex items-center justify-center shadow-inner">
+                            @if (Auth::user()->image)
+                                <img src="{{ Vite::asset('storage/app/public/'. Auth::user()->image) }}" class="w-full" alt="">
+                            @endif
+                        </div>
 
-                        <x-slot name="content">
-                            <x-dropdown-link :href="route('profile.edit')">
-                                Profilo
-                            </x-dropdown-link>
+                        <x-dropdown align="right" width="48">
+                            <x-slot name="trigger">
+                                <button class="inline-flex items-center py-2 border border-transparent text-base leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
+                                    <div>{{ Auth::user()->name }}</div>
+                                    <x-icons name="chevron_down" class="text-color-2c2c2c ml-2" />
+                                </button>
+                            </x-slot>
 
-                            <!-- Authentication -->
-                            <form method="POST" action="{{ route('logout') }}">
-                                @csrf
-
-                                <x-dropdown-link :href="route('logout')"
-                                        onclick="event.preventDefault();
-                                                    this.closest('form').submit();">
-                                    Esci
+                            <x-slot name="content">
+                                <x-dropdown-link :href="route('profile.edit')">
+                                    Profilo
                                 </x-dropdown-link>
-                            </form>
-                        </x-slot>
-                    </x-dropdown>
+
+                                <!-- Authentication -->
+                                <form method="POST" action="{{ route('logout') }}">
+                                    @csrf
+
+                                    <x-dropdown-link :href="route('logout')"
+                                            onclick="event.preventDefault();
+                                                        this.closest('form').submit();">
+                                        Esci
+                                    </x-dropdown-link>
+                                </form>
+                            </x-slot>
+                        </x-dropdown>
+                    </div>
                 </div>
             </div>
 

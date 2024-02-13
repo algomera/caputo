@@ -8,8 +8,9 @@
         </div>
     </div>
 
-    <div class="w-full flex justify-end">
-        <button wire:click="calendar({{$training->id}})" class="px-4 py-1 bg-color-17489f text-white font-bold rounded-md hover:scale-105 transition-all duration-300">Vai al calendario</button>
+    <div class="w-full flex gap-5 justify-end">
+        <button wire:click="customers" class="px-4 py-1 bg-color-808080 text-white font-semibold rounded-md hover:scale-105 transition-all duration-300">Iscritti</button>
+        <button wire:click="calendar" class="px-4 py-1 bg-color-17489f text-white font-semibold rounded-md hover:scale-105 transition-all duration-300">Vai al calendario</button>
     </div>
 
     <div class="p-11 pt-5 bg-color-f7f7f7 shadow-shadow-card mt-5 relative">

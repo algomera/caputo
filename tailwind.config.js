@@ -25,10 +25,15 @@ export default {
             pattern: /align-(top|middle|bottom)/,
             variants: ['top', 'middle', 'bottom'],
         },
+        'text-[#17489f]',
+        'text-[#01a53a]'
     ],
 
 
     theme: {
+        fontFamily: {
+            'app': ['aktiv-grotesk', 'system-ui', 'sans-serif']
+        },
         extend: {
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],

@@ -15,7 +15,7 @@
     </head>
     <body class="antialiased">
         <div class="h-[100vh] w-full lg:flex flex-col gap-5 justify-center items-center bg-slate-100">
-            <h1 class="text-6xl font-black tracking-wider uppercase">l'autoscuola</h1>
+            <h1 class="text-6xl font-bold tracking-wider uppercase">l'autoscuola</h1>
             <a href="{{ route('login') }}" class="bg-black border border-black px-10 py-3 text-white text-sm font-bold tracking-[0.75px] rounded-md uppercase hover:bg-white hover:text-slate-500">Accedi</a>
         </div>
     </body>

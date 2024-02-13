@@ -14,4 +14,9 @@
             {{$lessonPlanning->lesson->description}}
         </p>
     </div>
+
+    <div class="w-full flex items-center justify-between mt-5">
+        <x-submit-button wire:click='cancel' class="bg-red-500/70">Annulla lezione</x-submit-button>
+        <x-submit-button wire:click='presences' class="bg-color-347af2">Gestione presenze</x-submit-button>
+    </div>
 </div>

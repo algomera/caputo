@@ -8,9 +8,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
+
 class Training extends Model
 {
     use HasFactory;
+
 
     protected $guarded = [];
 
@@ -36,5 +38,9 @@ class Training extends Model
 
     public function plannings(): HasMany {
         return $this->hasMany(LessonPlanning::class);
+    }
+
+    public function customers(): BelongsToMany {
+        return $this->BelongsToMany(Customer::class, 'registrations');
     }
 }

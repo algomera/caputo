@@ -17,6 +17,8 @@ class AddVisit extends ModalComponent
 
     #[Validate('required', message: 'Selezionare medico')]
     public $doctor = null;
+
+    #[Validate('required', message: 'Selezionare almeno un cliente')]
     public $selected = [];
 
     public function mount($data) {

@@ -453,6 +453,21 @@
             </g>
         </svg>
         @break
+    @case('check_presence')
+        <svg xmlns="http://www.w3.org/2000/svg" width="25.643" height="18.334"
+            {{ $attributes->merge(['class']) }} viewBox="0 0 25.643 18.334">
+            <path id="Icon_feather-check" data-name="Icon feather-check" d="M27.4,9,12.688,23.713,6,17.025" transform="translate(-3.879 -6.879)" fill="none" stroke="#01a53a" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
+        </svg>
+        @break
+    @case('null_presence')
+        <svg xmlns="http://www.w3.org/2000/svg" width="19.909" height="19.909"
+            {{ $attributes->merge(['class']) }} viewBox="0 0 19.909 19.909">
+            <g id="Raggruppa_488" data-name="Raggruppa 488" transform="translate(-374.545 -16.295)">
+            <line id="Linea_442" data-name="Linea 442" y2="22.154" transform="translate(392.332 18.416) rotate(45)" fill="none" stroke="#e9863e" stroke-linecap="round" stroke-width="3"/>
+            <line id="Linea_443" data-name="Linea 443" y1="22.154" x2="0.001" transform="translate(392.332 34.082) rotate(135)" fill="none" stroke="#e9863e" stroke-linecap="round" stroke-width="3"/>
+            </g>
+        </svg>
+        @break
     @case('calendar')
         <svg height="24" version="1.1" width="24"
             {{ $attributes->merge(['class']) }} xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">

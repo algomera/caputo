@@ -35,9 +35,11 @@
                     <th scope="col" class="text-left px-3 py-3.5 font-light hidden xl:table-cell">
                         Variante corso
                     </th>
+                    @role('admin|responsabile sede|segretaria')
                     <th scope="col" class="text-left px-3 py-3.5 font-light">
                         Insegnante
                     </th>
+                    @endrole
                     <th scope="col" class="text-center px-3 py-3.5 font-light">
                         Inizio
                     </th>
@@ -66,7 +68,9 @@
                                     {{$training->courseVariant->name}}
                                 @endif
                             </td>
+                            @role('admin|responsabile sede|segretaria')
                             <td class="border-r-2 border-color-efefef px-3 py-4 text-color-2c2c2c text-left">{{$training->user->full_name}}</td>
+                            @endrole
                             <td class="border-r-2 border-color-efefef px-3 py-4 text-color-2c2c2c hidden xl:table-cell">{{date("d/m/Y", strtotime($training->begins))}}</td>
                             <td class="border-r-2 border-color-efefef px-3 py-4 text-color-2c2c2c hidden xl:table-cell">
                                 <div class="flex justify-center">

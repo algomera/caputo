@@ -12,10 +12,14 @@ class Calendar extends Component
     public $training;
     public $variant;
     public $lessons = [];
+    public $trainingStart = '';
+    public $trainingEnd = '';
 
     public function mount($training) {
         $user = auth()->user();
         $this->training = Training::find($training);
+        $this->trainingStart = $this->training->begins;
+        $this->trainingEnd = $this->training->ends;
 
         if ($user->role == 'insegnante') {
             $allTrainings = Training::where('user_id', $user->id)->get();
@@ -32,20 +36,24 @@ class Calendar extends Component
 
 
         foreach ($allTrainings as $training) {
-            $color = '#1976d2';
+            $color = '#e6f1ff';
+            $borderColor = '#17489f';
             foreach ($training->plannings as $lessonPlanning) {
                 if ($training->id == $this->training->id) {
-                    $color = '#31b45e';
+                    $color = '#e8ffde';
+                    $borderColor = '#01a53a';
                 }
                 $this->lessons[] = [
                     'id' => $lessonPlanning->id,
                     'training' => $lessonPlanning->training_id,
+                    'teacher' => $lessonPlanning->training->user->full_name,
                     'lesson' => $lessonPlanning->lesson_id,
                     'title' => $this->training->variant_id ? $lessonPlanning->training->courseVariant->name : $lessonPlanning->training->course->name,
                     'argument' => $lessonPlanning->lesson->subject,
                     'start' => $lessonPlanning->begin ?? null,
                     'end' => Carbon::parse($lessonPlanning->begin)->addMinutes($lessonPlanning->lesson->duration),
-                    'color' => $color
+                    'color' => $color,
+                    'borderColor' => $borderColor
                 ];
             }
         }
