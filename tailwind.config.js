@@ -26,7 +26,11 @@ export default {
             variants: ['top', 'middle', 'bottom'],
         },
         'text-[#17489f]',
-        'text-[#01a53a]'
+        'text-[#01a53a]',
+        'border-[#17489f]',
+        'border-[#01a53a]',
+        'bg-[#e6f1ff]',
+        'bg-[#e8ffde]'
     ],
 
 

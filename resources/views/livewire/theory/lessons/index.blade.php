@@ -1,15 +1,16 @@
 <div class="w-full h-full py-10 px-8 2xl:px-14">
-    <div class="px-10 2xl:px-0 mb-5">
+    <div class="px-10 2xl:px-0">
         <div class="flex items-center gap-5">
             <div wire:click='back' class="w-12 h-12 rounded-full shadow-shadow-card flex items-center justify-center cursor-pointer group transition-all duration-300">
                 <x-icons name="back" @class(["transition-all duration-300 group-hover:-translate-x-1", 'group-hover:text-color-'.get_color($training->course->service->name)]) />
             </div>
-            <h1 @class(["text-5xl font-bold", 'text-color-'.get_color($training->course->service->name)])> {{$training->$variant->name}}</h1>
+            <h1 @class(["text-5xl font-bold pt-4", 'text-color-'.get_color($training->course->service->name)])> {{$training->$variant->name}}</h1>
         </div>
     </div>
 
-    <div class="w-full flex gap-5 justify-end">
-        <button wire:click="customers" class="px-4 py-1 bg-color-808080 text-white font-semibold rounded-md hover:scale-105 transition-all duration-300">Iscritti</button>
+    <div class="w-full flex gap-3 justify-end">
+        <button wire:click="customers" class="px-4 py-1 bg-color-538ef4 text-white font-semibold rounded-md hover:scale-105 transition-all duration-300">Iscritti al corso</button>
+        <button wire:click="presences" class="px-4 py-1 bg-color-347af2 text-white font-semibold rounded-md hover:scale-105 transition-all duration-300">visualizza presenze</button>
         <button wire:click="calendar" class="px-4 py-1 bg-color-17489f text-white font-semibold rounded-md hover:scale-105 transition-all duration-300">Vai al calendario</button>
     </div>
 
@@ -40,7 +41,7 @@
                     </th>
                 </tr>
             </thead>
-            <tbody class="bg-white customBody no-scrollbar !max-h-[470px]">
+            <tbody class="bg-white customBody no-scrollbar !max-h-[500px]">
                 @if (count($training->course->lessons) > 0)
                     @foreach($training->$variant->lessons as $lesson)
                         <tr class="text-center even:bg-color-f7f7f7">

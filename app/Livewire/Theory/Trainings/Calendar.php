@@ -38,11 +38,13 @@ class Calendar extends Component
         foreach ($allTrainings as $training) {
             $color = '#e6f1ff';
             $borderColor = '#17489f';
+
             foreach ($training->plannings as $lessonPlanning) {
                 if ($training->id == $this->training->id) {
                     $color = '#e8ffde';
                     $borderColor = '#01a53a';
                 }
+
                 $this->lessons[] = [
                     'id' => $lessonPlanning->id,
                     'training' => $lessonPlanning->training_id,
@@ -53,7 +55,7 @@ class Calendar extends Component
                     'start' => $lessonPlanning->begin ?? null,
                     'end' => Carbon::parse($lessonPlanning->begin)->addMinutes($lessonPlanning->lesson->duration),
                     'color' => $color,
-                    'borderColor' => $borderColor
+                    'customBorderColor' => $borderColor
                 ];
             }
         }
@@ -65,6 +67,7 @@ class Calendar extends Component
 
     public function show($lesson) {
         $this->dispatch('openModal', 'theory.modals.show-lesson-planning', [
+            'training' => $this->training->id,
             'lessonPlanningId' => $lesson,
         ]);
     }

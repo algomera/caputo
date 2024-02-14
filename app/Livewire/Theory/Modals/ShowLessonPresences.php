@@ -5,39 +5,60 @@ namespace App\Livewire\Theory\Modals;
 use App\Models\LessonPlanning;
 use App\Livewire\Theory\Trainings\Calendar;
 use App\Models\Presence;
+use Carbon\Carbon;
 use LivewireUI\Modal\ModalComponent;
 
 class ShowLessonPresences extends ModalComponent
 {
     public $lessonPlanning;
-    public $selected = [];
+    public $presences = [];
+    public $endLesson;
 
     public function mount($lessonPlanning) {
         $this->lessonPlanning = LessonPlanning::find($lessonPlanning);
+        $this->endLesson = Carbon::parse($this->lessonPlanning->begin)->addMinutes($this->lessonPlanning->lesson->duration);
+
+        if (count($this->lessonPlanning->presences()->get()) > 0) {
+            foreach ($this->lessonPlanning->presences()->get() as $presence) {
+                $this->presences[$presence->customer_id] = [
+                    'customer' => $presence->customer_id,
+                    'followed' => $presence->followed
+                ];
+            }
+        } else {
+            foreach ($this->lessonPlanning->training->customers()->get() as $customer) {
+                $this->presences[$customer->id] = [
+                    'customer' => $customer->id,
+                    'followed' => null
+                ];
+            }
+        }
     }
 
     public function add($customerId) {
-        $this->selected[$customerId] = $customerId;
+        $this->presences[$customerId]['followed'] = 1;
     }
 
     public function remove($customerId) {
-        unset($this->selected[$customerId]);
+        $this->presences[$customerId]['followed'] = 0;
     }
 
     public function save() {
-        foreach ($this->selected as $customerId) {
-            Presence::create([
+        foreach ($this->presences as $presence) {
+            Presence::updateOrCreate([
                 'lesson_planning_id' => $this->lessonPlanning->id,
-                'customer_id' => $customerId,
-                'followed' => true
+                'customer_id' => $presence['customer']
+            ],
+            [
+                'lesson_planning_id' => $this->lessonPlanning->id,
+                'customer_id' => $presence['customer'],
+                'followed' => $presence['followed'] === null ? false : $presence['followed']
             ]);
         }
 
-        $this->closeModalWithEvents([
+        $this->forceClose()->closeModalWithEvents([
             Calendar::class => 'planningUpdate',
         ]);
-
-        return redirect()->route('theory.trainings.calendar', ['training' => $this->lessonPlanning->training_id]);
     }
 
     public static function modalMaxWidthClass(): string

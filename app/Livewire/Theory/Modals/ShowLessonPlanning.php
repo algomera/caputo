@@ -4,15 +4,18 @@ namespace App\Livewire\Theory\Modals;
 
 use App\Models\LessonPlanning;
 use App\Livewire\Theory\Trainings\Calendar;
+use App\Models\Training;
 use Carbon\Carbon;
 use LivewireUI\Modal\ModalComponent;
 
 class ShowLessonPlanning extends ModalComponent
 {
+    public $training;
     public $lessonPlanning;
     public $endLesson;
 
-    public function mount($lessonPlanningId) {
+    public function mount($training, $lessonPlanningId) {
+        $this->training = Training::find($training);
         $this->lessonPlanning = LessonPlanning::find($lessonPlanningId)->first();
         $this->endLesson = Carbon::parse($this->lessonPlanning->begin)->addMinutes($this->lessonPlanning->lesson->duration);
     }

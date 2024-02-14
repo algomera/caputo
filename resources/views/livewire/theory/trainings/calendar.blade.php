@@ -16,7 +16,7 @@
 <script>
     document.addEventListener('livewire:initialized', function() {
         var calendar = new FullCalendar.Calendar(document.getElementById('calendarLesson'), {
-            height:700,
+            height: 680,
             initialView: 'timeGridWeek',
             locale: 'it',
             nowIndicator: true,
@@ -32,9 +32,7 @@
             editable: true,
             selectable: true,
             nowIndicator: true,
-            dayMaxEvents: true,
-            eventMaxStack: true,
-            dayHeaderFormat: { weekday: 'long', day: 'numeric'},
+            showNonCurrentDates: false,
             buttonText: {
                 today:    'Oggi',
                 month:    'Mese',
@@ -51,11 +49,14 @@
                 end: @json($trainingEnd),
             },
             eventContent: function(event) {
-                var main = {html:
-                    `<div class="p-2 fc-event-main-frame">
+                var main = {html:`
+                    <div class="p-2 w-full fc-event-main-frame border border-[`+event.event.extendedProps.customBorderColor+`] bg-[`+event.event.backgroundColor+`]">
                         <div class="fc-event-title-container">
                             <div class="fc-event-title fc-sticky">
-                                <p class="flex font-medium gap-2 text-[`+event.event.borderColor+`]"><x-icons name="time" class="!text-[`+event.event.borderColor+`]" /> `+moment(event.event.startStr).format('HH:mm')+ ' - ' +moment(event.event.endStr).format('HH:mm')+`</p>
+                                <p class="flex font-medium gap-2 text-[`+event.event.extendedProps.customBorderColor+`]">
+                                    <x-icons name="time" class="!text-[`+event.event.extendedProps.customBorderColor+`]"/>
+                                    `+moment(event.event.startStr).format('HH:mm')+ ' - ' +moment(event.event.endStr).format('HH:mm')+`
+                                </p>
                                 @role ('admin|responsabile sede|segretaria')
                                     <p class="text-lg font-medium capitalize text-color-2c2c2c">
                                         <span class="font-semibold text-base">Insegnate: </span> `+event.event.extendedProps.teacher+`
@@ -77,9 +78,11 @@
                 dayGridMonth: {
                     dayMaxEventRows: 5,
                     eventMaxStack: 2,
+                    dayHeaderFormat: { weekday: 'long'},
                     titleFormat: { month: 'long', year: 'numeric' },
                 },
                 timeGridDay: {
+                    dayHeaderFormat: { weekday: 'long', day: 'numeric'},
                     dayMaxEventRows: 10,
                     titleFormat: { day: 'numeric', month: 'long', year: 'numeric' },
 
@@ -88,8 +91,7 @@
                     },
                 },
                 timeGridWeek: {
-                    dayMaxEventRows: 3,
-                    eventMaxStack: 1,
+                    dayHeaderFormat: { weekday: 'long', day: 'numeric'},
                     titleFormat: { day: 'numeric', month: 'long', year: 'numeric' },
 
                     dateClick: function(data) {

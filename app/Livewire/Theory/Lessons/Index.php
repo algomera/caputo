@@ -22,14 +22,21 @@ class Index extends Component
         }
     }
 
-    public function calendar() {
-        return redirect()->route('theory.trainings.calendar', ['training' => $this->training->id]);
-    }
-
     public function customers() {
         $this->dispatch('openModal', 'theory.modals.show-customers', [
             'training' => $this->training->id
         ]);
+    }
+
+    public function presences() {
+        $this->dispatch('openModal', 'theory.modals.show-training-presences',
+        [
+            'training' => $this->training->id,
+        ]);
+    }
+
+    public function calendar() {
+        return redirect()->route('theory.trainings.calendar', ['training' => $this->training->id]);
     }
 
     public function back() {
