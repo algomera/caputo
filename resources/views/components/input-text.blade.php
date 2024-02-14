@@ -5,7 +5,7 @@
         {{$label}} @if ($required)*@endif
     </label>
     <input @if($disabled) disabled @endif type="{{$type}}" name="{{ $name }}" {{ $attributes }} placeholder="{{$placeholder}}"
-        @class(["h-[54px] px-4 rounded-md p-0 border-color-dfdfdf focus:border-dfdfdf focus:ring-0 placeholder:text-color-afafaf", $uppercase])
+        @class(["h-[54px] px-4 rounded-md p-0 border-color-dfdfdf focus:!border-dfdfdf focus:ring-0 placeholder:text-color-afafaf", $uppercase])
     >
     <div class="absolute bottom-[-20px] right-0">
         @error($name) <span class="text-[12px] text-red-500">{{ $message }}</span> @enderror

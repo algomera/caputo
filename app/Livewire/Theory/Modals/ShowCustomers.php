@@ -9,6 +9,8 @@ class ShowCustomers extends ModalComponent
 {
     public $training;
     public $variant;
+    public $currentCustomers;
+    public $oldCustomers;
     public $customers;
 
     public function mount($training) {
@@ -21,6 +23,8 @@ class ShowCustomers extends ModalComponent
         }
 
         $this->customers = $this->training->customers()->get();
+        $this->currentCustomers = $this->training->customers()->where('state', 'aperta')->get();
+        $this->oldCustomers = $this->training->customers()->where('state', 'chiusa')->get();
     }
 
     public function show($customerId) {

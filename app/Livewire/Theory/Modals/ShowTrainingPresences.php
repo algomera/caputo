@@ -8,6 +8,8 @@ use LivewireUI\Modal\ModalComponent;
 class ShowTrainingPresences extends ModalComponent
 {
     public $training;
+    public $name = '';
+    public $lastName = '';
 
     public function mount($training) {
         $this->training = Training::find($training);
@@ -20,6 +22,13 @@ class ShowTrainingPresences extends ModalComponent
 
     public function render()
     {
-        return view('livewire.theory.modals.show-training-presences');
+        $customers = $this->training->customers()
+        ->filter('name', $this->name)
+        ->filter('lastName', $this->lastName)
+        ->get();
+
+        return view('livewire.theory.modals.show-training-presences', [
+            'customers' => $customers
+        ]);
     }
 }

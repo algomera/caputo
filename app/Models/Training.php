@@ -43,4 +43,17 @@ class Training extends Model
     public function customers(): BelongsToMany {
         return $this->BelongsToMany(Customer::class, 'registrations');
     }
+
+    public function customerPresence($customer) {
+        $presences = 0;
+        foreach ($this->plannings()->whereNotNull('begin')->get() as $lessonPlanning) {
+            $lessonPresence = $lessonPlanning->presences()->where('customer_id', $customer)->first();
+            if ($lessonPresence) {
+                if ($lessonPresence->followed == 1) {
+                    $presences += 1;
+                }
+            }
+        }
+        return $presences;
+    }
 }

@@ -24,7 +24,7 @@ class TrainingSeeder extends Seeder
         foreach ($schools as $school) {
             $teachers = $school->teachers();
             foreach ($courses as $course) {
-                $customers = $school->customers()->get()->random(3);
+                $customers = $school->customers()->get();
                 $training = Training::create([
                     'school_id' => $school->id,
                     'course_id' => $course->id,

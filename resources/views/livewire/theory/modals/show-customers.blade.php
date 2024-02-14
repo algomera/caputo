@@ -1,12 +1,23 @@
 <div class="w-full h-full py-10 px-8 2xl:px-14">
-    <h1 class="text-5xl font-bold text-color-808080 mb-5">Iscritti in:
-        <span @class(["text-2xl", 'text-color-'.get_color($training->course->service->name)])>{{$training->$variant->name}}</span>
-    </h1>
+    <div class="w-full flex items-center justify-between">
+        <h1 class="text-5xl font-bold text-color-808080 mb-5">Iscritti in:
+            <span @class(["text-2xl", 'text-color-'.get_color($training->course->service->name)])>{{$training->$variant->name}}</span>
+        </h1>
 
-    <div class="p-11 pt-5 bg-color-f7f7f7 shadow-shadow-card mt-5 relative">
-        @if (count($customers) > 0)
-            <small class="absolute right-2 top-2 text-gray-400 font-bold">N° Iscritti: {{count($customers)}}</small>
-        @endif
+        <div class="flex items-center gap-5 p-2 pt-3 bg-color-f7f7f7 border rounded-md shadow">
+            @if (count($customers) > 0)
+                <small class="text-color-347af2 font-bold">Totale iscritti: {{count($customers)}}</small>
+            @endif
+            @if (count($currentCustomers) > 0)
+                <small class="text-color-017c67 font-bold">Iscrizioni aperte: {{count($currentCustomers)}}</small>
+            @endif
+            @if (count($oldCustomers) > 0)
+                <small class="text-color-808080 font-bold">Iscrizioni chiuse: {{count($oldCustomers)}}</small>
+            @endif
+        </div>
+    </div>
+
+    <div class="p-11 pt-5 bg-color-f7f7f7 shadow-shadow-card mt-5">
         <table class="min-w-full divide-y-2 divide-color-efefef border-b-2 border-color-efefef">
             <thead class="customHead">
                 <tr class="text-color-545454">
@@ -25,6 +36,9 @@
                     <th scope="col" class="text-center px-3 py-3.5 font-light">
                         N° Presenze
                     </th>
+                    <th scope="col" class="text-center px-3 py-3.5 font-light">
+                        Stato
+                    </th>
                     @role('admin|responsabile sede|segretaria')
                     <th scope="col" class="px-3 py-3.5 font-light">
                         &nbsp;
@@ -40,7 +54,8 @@
                             <td class="border-r-2 border-color-efefef py-4 px-3 text-color-2c2c2c capitalize">{{$customer->lastName}}</td>
                             <td class="border-r-2 border-color-efefef py-4 px-3 text-color-2c2c2c capitalize">{{$customer->name}}</td>
                             <td class="border-r-2 border-color-efefef px-3 py-4 text-color-017c67 font-medium">{{$customer->phone_1}}</td>
-                            <td class="border-r-2 border-color-efefef px-3 py-4 text-color-2c2c2c font-medium">??</td>
+                            <td class="border-r-2 border-color-efefef px-3 py-4 text-color-347af2 font-medium">{{$training->customerPresence($customer->id)}}</td>
+                            <td class="border-r-2 border-color-efefef px-3 py-4 text-color-2c2c2c font-medium capitalize">{{$customer->registrations()->where('training_id', $training->id)->first()->state}}</td>
                             @role('admin|responsabile sede|segretaria')
                             <td class="px-3 py-4 text-color-2c2c2c">
                                 <div class="w-fit m-auto">
