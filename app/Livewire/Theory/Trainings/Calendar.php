@@ -24,16 +24,14 @@ class Calendar extends Component
         if ($user->role == 'insegnante') {
             $allTrainings = Training::where('user_id', $user->id)->get();
         } else {
-            $allTrainings = Training::all();
+            $allTrainings = Training::where('school_id', $user->schools()->first()->id)->get();
         }
-
 
         if ($this->training->variant_id) {
             $this->variant = 'courseVariant';
         } else {
             $this->variant = 'course';
         }
-
 
         foreach ($allTrainings as $training) {
             $color = '#e6f1ff';
@@ -50,7 +48,7 @@ class Calendar extends Component
                     'training' => $lessonPlanning->training_id,
                     'teacher' => $lessonPlanning->training->user->full_name,
                     'lesson' => $lessonPlanning->lesson_id,
-                    'title' => $this->training->variant_id ? $lessonPlanning->training->courseVariant->name : $lessonPlanning->training->course->name,
+                    'title' => $lessonPlanning->training->courseVariant ? $lessonPlanning->training->courseVariant->name : $lessonPlanning->training->course->name,
                     'argument' => $lessonPlanning->lesson->subject,
                     'start' => $lessonPlanning->begin ?? null,
                     'end' => Carbon::parse($lessonPlanning->begin)->addMinutes($lessonPlanning->lesson->duration),

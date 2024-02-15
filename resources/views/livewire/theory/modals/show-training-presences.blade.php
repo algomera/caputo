@@ -1,7 +1,7 @@
 <div class="px-14 py-8 flex flex-col gap-4 relative">
 
     <div class="w-full flex items-end justify-between">
-        <h1 class="text-3xl font-bold text-color-17489f capitalize">{{$training->course->name}}</h1>
+        <h1 class="text-3xl font-bold text-color-17489f capitalize">Presenze in: {{$training->course->name}}</h1>
         <div class="flex items-center gap-3">
             <span>Cerca per:</span>
             <x-input-text wire:model.live="name" width="w-fit" name="name" placeholder="Nome" uppercase="shadow" />
@@ -72,14 +72,9 @@
                                 <td colspan="{{count($training->plannings()->whereNotNull('begin')->get())}}" class="text-center text-gray-400 font-bold text-lg py-[34px] underline"></td>
                             </tr>
                         @endif
-
                     </tbody>
                 </table>
             </div>
         </div>
-    </div>
-
-    <div class="w-full flex justify-end relative">
-        <x-submit-button wire:click='save' class="ml-auto bg-color-17489f">Salva</x-submit-button>
     </div>
 </div>

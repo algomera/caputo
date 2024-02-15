@@ -74,6 +74,10 @@ class Show extends Component
         $this->mount($this->customerForm->customer->id);
     }
 
+    public function showCourse($training) {
+        return redirect()->route('theory.lessons.index', ['training' => $training]);
+    }
+
     public function render()
     {
         return view('livewire.registry.show');

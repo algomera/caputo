@@ -8,7 +8,6 @@ class Navigation extends Component
 {
     public $theory = [
         ['route' => 'theory.trainings.index', 'name' => 'Gestione corsi'],
-        ['route' => 'service', 'name' => 'Gestione presenze'],
     ];
 
     public function render()

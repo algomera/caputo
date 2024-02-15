@@ -11,7 +11,11 @@ class ShowCustomers extends ModalComponent
     public $variant;
     public $currentCustomers;
     public $oldCustomers;
+    public $allCustomers;
     public $customers;
+    public $name = '';
+    public $lastName = '';
+    public $customersShow;
 
     public function mount($training) {
         $this->training = Training::find($training);
@@ -22,22 +26,45 @@ class ShowCustomers extends ModalComponent
             $this->variant = 'course';
         }
 
-        $this->customers = $this->training->customers()->get();
+        $this->allCustomers = $this->training->customers()->get();
         $this->currentCustomers = $this->training->customers()->where('state', 'aperta')->get();
         $this->oldCustomers = $this->training->customers()->where('state', 'chiusa')->get();
+        $this->customers = $this->currentCustomers;
+        $this->customersShow = 'currentCustomers';
+    }
+
+    public function changeCustomers($customers) {
+        $this->customers = $this->$customers;
+        $this->customersShow = $customers;
     }
 
     public function show($customerId) {
         return redirect()->route('registry.show', ['customer' => $customerId]);
     }
 
-    public static function modalMaxWidth(): string
+    public function presences($customerId) {
+        $this->dispatch('openModal', 'theory.modals.show-customer-presences',
+        [
+            'training' => $this->training->id,
+            'customer' => $customerId,
+        ]);
+
+    }
+
+    public static function modalMaxWidthClass(): string
     {
-        return '7xl';
+        return 'max-w-screen-xl 2xl:max-w-screen-2xl';
     }
 
     public function render()
     {
-        return view('livewire.theory.modals.show-customers');
+        $customerFilter = $this->customers->filter(function ($customer) { return
+            (stripos($customer->name, $this->name) !== false) &&
+            (stripos($customer->lastName, $this->lastName) !== false) ;
+        });
+
+        return view('livewire.theory.modals.show-customers', [
+            'customerFilter' => $customerFilter
+        ]);
     }
 }

@@ -25,7 +25,7 @@
     >
         @foreach ($options as $option )
             <a href="{{route($option['route'])}}"
-                @class(["w-full text-color-2c2c2c px-4 py-3 cursor-pointer whitespace-nowrap group", request()->route()->getName() == $option['route'] ? 'bg-slate-100 font-semibold' : ''])>
+                @class(["w-full text-color-2c2c2c px-4 py-3 cursor-pointer whitespace-nowrap group", request()->routeIs('theory*') ? 'bg-slate-100 font-semibold' : ''])>
                 <span class="group-hover:pl-3 transition-all duration-300">{{$option['name']}}</span>
             </a>
         @endforeach

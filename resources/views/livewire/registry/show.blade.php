@@ -178,7 +178,15 @@
                     {{-- Azioni --}}
                     <div class="w-full flex items-center justify-between">
                         <div class="flex items-center gap-2">
-                            <p class="mr-5">Iscrizione: <span @class(["font-bold capitalize", 'text-color-'. get_color($registration->course->service->name)])>{{$registration->course->name}}</span></p>
+                            <p wire:click="showCourse({{$registration->training_id}})" class="mr-5">Iscrizione:
+                                <span @class(["font-bold capitalize cursor-pointer hover:underline", 'text-color-'. get_color($registration->course->service->name)])>
+                                    @if ($registration->training->courseVariant)
+                                        {{$registration->training->courseVariant->name}}
+                                    @else
+                                        {{$registration->training->course->name}}
+                                    @endif
+                                </span>
+                            </p>
                             @if (count(json_decode($registration->step_skipped)) < 1)
                                 <button class="px-4 py-1 text-color-2c2c2c font-medium capitalize rounded-full bg-color-ffb205/30 hover:scale-105 transition-all duration-300">continua accettazione</button>
                             @else

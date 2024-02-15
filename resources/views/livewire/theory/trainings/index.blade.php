@@ -21,7 +21,7 @@
         <table class="min-w-full divide-y-2 divide-color-efefef border-b-2 border-color-efefef">
             <thead class="customHead">
                 <tr class="text-color-545454">
-                    <th scope="col" class="w-20 text-center px-3 py-3.5 font-semibold">
+                    <th scope="col" class="w-20 text-center px-3 py-3.5 font-semibold hidden xl:table-cell">
                         ID
                     </th>
                     @role('admin')
@@ -32,7 +32,7 @@
                     <th scope="col" class="text-left  px-3 py-3.5 font-light">
                         Nome corso
                     </th>
-                    <th scope="col" class="text-left px-3 py-3.5 font-light hidden xl:table-cell">
+                    <th scope="col" class="text-left px-3 py-3.5 font-light">
                         Variante corso
                     </th>
                     @role('admin|responsabile sede|segretaria')
@@ -40,7 +40,7 @@
                         Insegnante
                     </th>
                     @endrole
-                    <th scope="col" class="text-center px-3 py-3.5 font-light">
+                    <th scope="col" class="text-center px-3 py-3.5 font-light hidden xl:table-cell">
                         Inizio
                     </th>
                     <th scope="col" class="text-center px-3 py-3.5 font-light hidden xl:table-cell">
@@ -58,9 +58,9 @@
                 @if ($trainings->count() > 0)
                     @foreach($trainings as $training)
                         <tr class="text-center even:bg-color-f7f7f7">
-                            <td class="w-20 border-r-2 border-color-efefef py-4 px-3 text-color-17489f capitalize font-semibold">{{$training->id}}</td>
+                            <td class="w-20 border-r-2 border-color-efefef py-4 px-3 text-color-17489f capitalize font-semibold hidden xl:table-cell">{{$training->id}}</td>
                             @role('admin')
-                            <td class="border-r-2 border-color-efefef py-4 px-3 font-bold text-color-347af2 uppercase">{{$trainings->school->code}}</td>
+                            <td class="border-r-2 border-color-efefef py-4 px-3 font-bold text-color-347af2 uppercase">{{$training->school->code}}</td>
                             @endrole
                             <td class="border-r-2 border-color-efefef py-4 px-3 text-color-2c2c2c capitalize text-left">{{$training->course->name}}</td>
                             <td class="border-r-2 border-color-efefef px-3 py-4 text-color-2c2c2c capitalize text-left">

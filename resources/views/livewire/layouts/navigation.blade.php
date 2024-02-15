@@ -35,8 +35,14 @@
                     @endrole
 
                     @role('admin|responsabile sede|segretaria|insegnante')
-                    <x-custom-dropdown title="Gestione teoria" icon="chevron_down" :options="$theory" :active="request()->routeIs('theory*')"/>
+                    <x-nav-link :href="route('theory.trainings.index')" :active="request()->routeIs('theory*')">
+                        Gestione Corsi
+                    </x-nav-link>
                     @endrole
+
+                    {{-- @role('admin|responsabile sede|segretaria|insegnante')
+                    <x-custom-dropdown title="Gestione teoria" icon="chevron_down" :options="$theory" :active="request()->routeIs('theory*')"/>
+                    @endrole --}}
                 </div>
             </div>
 

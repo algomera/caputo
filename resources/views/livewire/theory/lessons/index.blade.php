@@ -1,19 +1,28 @@
 <div class="w-full h-full py-10 px-8 2xl:px-14">
-    <div class="px-10 2xl:px-0">
-        <div class="flex items-center gap-5">
-            <div wire:click='back' class="w-12 h-12 rounded-full shadow-shadow-card flex items-center justify-center cursor-pointer group transition-all duration-300">
-                <x-icons name="back" @class(["transition-all duration-300 group-hover:-translate-x-1", 'group-hover:text-color-'.get_color($training->course->service->name)]) />
-            </div>
-            <h1 @class(["text-5xl font-bold pt-4", 'text-color-'.get_color($training->course->service->name)])> {{$training->$variant->name}}</h1>
+    <div class="flex items-center gap-5 mb-5 2xl:mb-0">
+        <div wire:click='back' class="w-12 h-12 mb-3 rounded-full shadow-shadow-card flex items-center justify-center cursor-pointer group transition-all duration-300">
+            <x-icons name="back" @class(["transition-all duration-300 group-hover:-translate-x-1", 'group-hover:text-color-'.get_color($training->course->service->name)]) />
+        </div>
+        <h1 @class(["text-5xl font-bold", 'text-color-'.get_color($training->course->service->name)])> {{$training->$variant->name}}</h1>
+        <div class="flex items-end gap-4 text-color-808080 font-medium uppercase border py-2 px-6 rounded-md bg-color-f7f7f7">
+            <span>ID corso: {{$training->id}}</span>
+            <span>Inizio corso: {{date("d/m/Y", strtotime($training->begins))}}</span>
+            @if ($training->ends)
+                <span >Fine corso: {{date("d/m/Y", strtotime($training->ends))}}</span>
+            @endif
         </div>
     </div>
 
-    <div class="w-full flex gap-3 justify-end">
-        <button wire:click="customers" class="px-4 py-1 bg-color-538ef4 text-white font-semibold rounded-md hover:scale-105 transition-all duration-300">Iscritti al corso</button>
-        @if ($training->ends)
-            <button wire:click="presences" class="px-4 py-1 bg-color-347af2 text-white font-semibold rounded-md hover:scale-105 transition-all duration-300">visualizza presenze</button>
-        @endif
-        <button wire:click="calendar" class="px-4 py-1 bg-color-17489f text-white font-semibold rounded-md hover:scale-105 transition-all duration-300">Vai al calendario</button>
+    <div class="w-full flex items-end justify-end">
+        <div class="flex gap-3">
+            @if (count($training->registrations()->get()) > 0)
+                <button wire:click="customers" class="px-4 py-1 bg-color-538ef4 text-white font-semibold rounded-md hover:scale-105 transition-all duration-300">Iscritti al corso</button>
+            @endif
+            @if ($training->ends && count($training->registrations()->get()) > 0)
+                <button wire:click="presences" class="px-4 py-1 bg-color-347af2 text-white font-semibold rounded-md hover:scale-105 transition-all duration-300">visualizza presenze</button>
+            @endif
+            <button wire:click="calendar" class="px-4 py-1 bg-color-17489f text-white font-semibold rounded-md hover:scale-105 transition-all duration-300">Vai al calendario</button>
+        </div>
     </div>
 
     <div class="p-11 pt-5 bg-color-f7f7f7 shadow-shadow-card mt-5 relative">
@@ -43,22 +52,22 @@
                     </th>
                 </tr>
             </thead>
-            <tbody class="bg-white customBody no-scrollbar !max-h-[500px]">
+            <tbody class="bg-white customBody no-scrollbar !max-h-[340px] 2xl:!max-h-[500px]">
                 @if (count($training->course->lessons) > 0)
                     @foreach($training->$variant->lessons as $lesson)
                         <tr class="text-center even:bg-color-f7f7f7">
                             <td class="w-20 border-r-2 border-color-efefef py-4 px-3 text-color-17489f capitalize font-semibold">{{$lesson->id}}</td>
                             <td class="border-r-2 border-color-efefef py-4 px-3 font-bold text-color-2c2c2c uppercase">{{$lesson->type}}</td>
                             <td class="border-r-2 border-color-efefef py-4 px-3 text-color-2c2c2c capitalize text-left">{{$lesson->subject}}</td>
-                            <td class="border-r-2 border-color-efefef px-3 py-4 text-color-017c67 font-medium  w-28">{{$lesson->duration}} Min.</td>
-                            <td class="border-r-2 border-color-efefef px-3 py-4 text-color-2c2c2c hidden xl:table-cell">
+                            <td class="border-r-2 border-color-efefef px-3 py-4 text-color-017c67 font-medium hidden xl:table-cell w-28">{{$lesson->duration}} Min.</td>
+                            <td class="border-r-2 border-color-efefef px-3 py-4 text-color-2c2c2c">
                                 <div class="flex items-center justify-center gap-1">
-                                    @if ($lesson->planning->begin)
+                                    @if ($lesson->planning)
                                         <span>{{date("d/m/Y", strtotime($lesson->planning->begin))}}</span>-
                                         <span class="text-color-01a53a">{{date("H:i", strtotime($lesson->planning->begin))}}</span>
-                                        @if ($training->ends)
+                                        {{-- @if ($training->ends)
                                             <x-icons wire:click="$dispatch('openModal', { component: 'theory.modals.lesson-planning-edit', arguments: {planningId: {{ $lesson->planning->id }}} })" name="b-edit" class="w-5 ml-4 cursor-pointer hover:scale-105" />
-                                        @endif
+                                        @endif --}}
                                     @else
                                         Nessuna lezione programmata
                                     @endif
