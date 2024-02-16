@@ -24,7 +24,7 @@ class CourseVariant extends Model
     }
 
     public function prices(): HasMany {
-        return $this->hasMany(CoursePrice::class);
+        return $this->hasMany(CoursePrice::class, 'variant_id');
     }
 
     public function lessons(): HasMany {

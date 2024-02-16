@@ -39,7 +39,7 @@
                 <table class="divide-y-2 divide-color-efefef border-b-2 border-color-efefef">
                     <thead>
                         <tr class="text-center text-color-545454">
-                            @foreach ($training->plannings()->whereNotNull('begin')->get() as $lessonPlanning)
+                            @foreach ($lessonPlannings as $lessonPlanning)
                                 <th scope="col" class="px-3 py-3.5 font-light">{{date("d/m/Y", strtotime($lessonPlanning->begin))}}</th>
                             @endforeach
                         </tr>
@@ -48,7 +48,7 @@
                         @if (count($customers) > 0)
                             @foreach($customers as $customer)
                                 <tr class="text-center even:bg-color-f7f7f7">
-                                    @foreach ($training->plannings()->whereNotNull('begin')->get() as $lessonPlanning)
+                                    @foreach ($lessonPlannings as $lessonPlanning)
                                         @if (count($lessonPlanning->presences()->where('customer_id', $customer->id)->get()) > 0)
                                             @foreach ($lessonPlanning->presences()->where('customer_id', $customer->id)->get() as $presence )
                                                 <td scope="col" class="border-r-2 border-color-efefef text-left font-medium px-3 pt-5 pb-4 text-color-2c2c2c capitalize">

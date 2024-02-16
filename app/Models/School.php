@@ -39,22 +39,6 @@ class School extends Model
         return $this->hasManyThrough(Registration::class, Training::class)->whereJsonContains('optionals', 15)->with('customer', 'course', 'medicalPlanning');
     }
 
-    public function teachers() {
-        $teacher = $this->users()->whereHas('roles', function ($query) {
-            $query->where('name', 'insegnante');
-        })->get();
-
-        return $teacher;
-    }
-
-    public function instructors() {
-        $instructor = $this->users()->whereHas('roles', function ($query) {
-            $query->where('name', 'istruttore');
-        })->get();
-
-        return $instructor;
-    }
-
     public function secretaries() {
         $secretary = $this->users()->whereHas('roles', function ($query) {
             $query->where('name', 'segretaria');

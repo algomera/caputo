@@ -8,11 +8,13 @@ use LivewireUI\Modal\ModalComponent;
 class ShowTrainingPresences extends ModalComponent
 {
     public $training;
+    public $lessonPlannings;
     public $name = '';
     public $lastName = '';
 
     public function mount($training) {
         $this->training = Training::find($training);
+        $this->lessonPlannings = $this->training->plannings()->whereNotNull('begin')->get();
     }
 
     public static function modalMaxWidthClass(): string

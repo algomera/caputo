@@ -17,7 +17,7 @@ class CoursePrice extends Model
     }
 
     public function variant(): BelongsTo {
-        return $this->belongsTo(CourseVariant::class);
+        return $this->belongsTo(CourseVariant::class, 'variant_id');
     }
 
 }

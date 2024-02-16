@@ -21,12 +21,11 @@ class PlanningSeeder extends Seeder
      */
     public function run(): void
     {
-        $customers = Customer::all();
         $registrations = Registration::all();
         $schools = School::all();
 
         // Lessons
-        $trainings = Training::all()->take(10);
+        $trainings = Training::all();
         foreach ($trainings as $training) {
             if ($training->variant_id != null) {
                 $lessons = $training->courseVariant->lessons()->get();
@@ -34,22 +33,32 @@ class PlanningSeeder extends Seeder
                 $lessons = $training->course->lessons()->get();
             }
 
-            foreach ($lessons as $lesson) {
+            foreach ($lessons as $key => $lesson) {
+                if ($key < 2) {
+                    $start = strtotime(date("Y-m-d", time()));
+                    $end = strtotime(date("Y-m-d", strtotime("+3 months")));
+                    $randomDate = rand($start,$end);
+                    $hour = rand(8, 20);
+                    $minute = rand(0, 3) * 15;
+                    $begin = date('Y-m-d', $randomDate). " " . sprintf("%02d:%02d:00", $hour, $minute);
+                } else {
+                    $begin = null;
+                }
                 LessonPlanning::create([
                     'training_id' => $training->id,
                     'lesson_id' => $lesson->id,
-                    'begin' => fake()->dateTimeBetween(now(), '+4 week')
+                    'begin' => $begin
                 ]);
             }
         }
 
         // Driving
+        $instructors = User::role('istruttore')->get();
         $vehicle = Vehicle::all();
         foreach ($registrations as $registration) {
-            $instructors = $registration->school()->first()->instructors()->random()->id;
             DrivingPlanning::create([
                 'registration_id' => $registration->id,
-                'user_id' => $instructors,
+                'user_id' => $instructors->random()->id,
                 'vehicle_id' => $vehicle->random()->id,
                 'type' => fake()->randomElement(['notturna', 'extraurbana', 'autostrada']),
                 'begins' => fake()->dateTimeBetween(now(), '+4 week'),
@@ -58,18 +67,17 @@ class PlanningSeeder extends Seeder
         }
 
         // Medical
+        $doctor = User::role('medico')->get();
         foreach ($schools as $school) {
-            foreach ($school->medicalVisits()->get() as $visit) {
-                $doctor = User::role('medico')->get()->random()->id;
-
+            foreach ($school->medicalVisits()->get() as $key => $visit) {
                 MedicalPlanning::create([
                     'registration_id' => $visit->id,
-                    'user_id' => $doctor,
-                    'booked' => fake()->dateTimeBetween(now(), '+4 week'),
-                    'protocol' => fake()->regexify('[A-Z]{2}[0-9]{7}[A-Z]{2}'),
-                    'protocol_release' => now(),
-                    'protocol_expiration' => now()->addMonth(3),
-                    'welded' => fake()->boolean(),
+                    'user_id' => $doctor->random()->id,
+                    'booked' => $key % 2 != 0 ? fake()->dateTimeBetween(now(), '+4 week') : null,
+                    'protocol' => $key % 2 != 0 ? fake()->regexify('[A-Z]{2}[0-9]{7}[A-Z]{2}') : null,
+                    'protocol_release' => $key % 2 != 0 ? now() : null,
+                    'protocol_expiration' => $key % 2 != 0 ? now()->addMonth(3) : null,
+                    'welded' => $key % 2 != 0 ? true : false,
                 ]);
             }
         }

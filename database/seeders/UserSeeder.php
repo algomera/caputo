@@ -48,7 +48,6 @@ class UserSeeder extends Seeder
                     'password' => bcrypt('password'),
                 ]);
                 $medico->assignRole('medico');
-                $medico->schools()->attach($school->id);
             }
         }
 
@@ -62,7 +61,6 @@ class UserSeeder extends Seeder
                     'password' => bcrypt('password'),
                 ]);
                 $teacher->assignRole('insegnante');
-                $teacher->schools()->attach($school->id);
             }
         }
 
@@ -76,7 +74,6 @@ class UserSeeder extends Seeder
                     'password' => bcrypt('password'),
                 ]);
                 $instructor->assignRole('istruttore');
-                $instructor->schools()->attach($school->id);
             }
         }
 

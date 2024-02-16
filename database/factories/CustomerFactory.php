@@ -18,10 +18,10 @@ class CustomerFactory extends Factory
      */
     public function definition(): array
     {
-        $school = School::all();
+        $schools = School::all();
 
         return [
-            'school_id' => fake()->numberBetween(1, $school->count()),
+            'school_id' => $schools->random()->id,
             'name' => fake()->name(),
             'lastName' => fake()->lastName(),
             'sex' => fake()->randomElement(['uomo', 'donna']),

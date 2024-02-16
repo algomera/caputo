@@ -25,7 +25,7 @@ class DatabaseSeeder extends Seeder
             VehicleSeeder::class
         ]);
 
-        Customer::factory(30)->create();
+        Customer::factory(20)->create();
 
         $this->call([
             IdentificationTypeSeeder::class,

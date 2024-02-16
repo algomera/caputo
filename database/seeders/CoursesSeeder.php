@@ -16,14 +16,14 @@ class CoursesSeeder extends Seeder
 {
 
     public function createLessons($course_id, $variant_id) {
-        for ($i=0; $i < 20; $i++) {
+        for ($i=0; $i < 5; $i++) {
             Lesson::create([
                 'course_id' => $course_id,
                 'variant_id' => $variant_id,
                 'type' => fake()->randomElement(['teoria', 'pratica']) ,
                 'subject' => fake()->name(),
                 'description' => fake()->paragraph(),
-                'duration' => fake()->numberBetween(30, 240),
+                'duration' => fake()->randomElement([30, 60, 90, 120]),
             ]);
         }
     }
@@ -323,20 +323,6 @@ class CoursesSeeder extends Seeder
                         ]);
                         $this->createLessons($course->id, null);
                         $this->createPrice($course->id, null);
-
-                        for ($i=0; $i < 3; $i++) {
-                            $variant = CourseVariant::create([
-                                'course_id' => $course->id,
-                                'type' => $value['type'] ?? 'training',
-                                'name' => $value['name'] .' '. $i,
-                                'slug' => Str::slug($value['name'] .' '. $i),
-                                'description' => fake()->paragraph(),
-                                'type_visit' => $value['type_visit'],
-                                'absences' => 3
-                            ]);
-                            $this->createLessons($course->id, $variant->id);
-                            $this->createPrice($course->id, $variant->id);
-                        }
                     }
                     break;
                 case 'Formazione professionale':
