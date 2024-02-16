@@ -23,6 +23,18 @@
             slotLabelInterval: '00:60:00',
             navLinks: true,
             editable: true,
+            eventDrop: function(info) {
+                if (info.view.type == 'dayGridMonth') {
+                    info.revert();
+                    alert('Non è consentito trascinare le visite nella visualizzazione mensile.');
+                }
+            },
+            eventChange: function(info) {
+                if (info.view.type == 'timeGridDay' || info.view.type == 'timeGridWeek') {
+                    var originalDuration = info.oldEvent.end - info.oldEvent.start;
+                    info.event.setEnd(info.event.start.clone().add(originalDuration));
+                }
+            },
             selectable: true,
             nowIndicator: true,
             dayMaxEvents: true,
@@ -39,7 +51,7 @@
             headerToolbar: {
                 left: 'prev next today',
                 center: 'title',
-                right: 'timeGridDay timeGridWeek dayGridMonth multiMonthYear'
+                right: 'timeGridDay timeGridWeek dayGridMonth'
             },
             views: {
                 dayGridMonth: {
@@ -52,8 +64,23 @@
                     titleFormat: { day: 'numeric', month: 'long', year: 'numeric' },
 
                     dateClick: function(data) {
-                        @this.call('new', {data: data.dateStr});
+                        var today = new Date();
+                        if (data.date < today) {
+                            return alert('Non è possibile prenotare visite in date o orari passati.');
+                        } else {
+                            @this.new({data: data.dateStr});
+                        }
                     },
+
+                    eventDrop: function(data) {
+                        var today = new Date();
+                        if (data.event.start < today) {
+                            data.revert();
+                            alert('Non è possibile spostare le visite gia trascorse.');
+                        } else {
+                            @this.update(data.event.id, data.event.start)
+                        }
+                    }
                 },
                 timeGridWeek: {
                     dayMaxEventRows: 3,
@@ -61,11 +88,22 @@
                     titleFormat: { day: 'numeric', month: 'long', year: 'numeric' },
 
                     dateClick: function(data) {
-                        @this.new({data: data.dateStr});
+                        var today = new Date();
+                        if (data.date < today) {
+                            return alert('Non è possibile prenotare visite in date o orari passati.');
+                        } else {
+                            @this.new({data: data.dateStr});
+                        }
                     },
 
                     eventDrop: function(data) {
-                        @this.update(data.event.id, data.event.start)
+                        var today = new Date();
+                        if (data.event.start < today) {
+                            data.revert();
+                            alert('Non è possibile spostare una visita svolta o spostare una visita in una data passata.');
+                        } else {
+                            @this.update(data.event.id, data.event.start)
+                        }
                     }
                 },
             },

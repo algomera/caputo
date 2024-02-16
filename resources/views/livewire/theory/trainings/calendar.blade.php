@@ -30,6 +30,21 @@
             slotLabelInterval: '00:15:00',
             navLinks: true,
             editable: true,
+            eventDrop: function(info) {
+                if (info.view.type == 'dayGridMonth') {
+                    info.revert(); // Annulla il trascinamento se si trova nella visualizzazione mensile
+                    alert('Non è consentito trascinare eventi nella visualizzazione mensile.');
+                }
+            },
+            eventChange: function(info) {
+                // Verifica se la visualizzazione corrente è 'timeGridWeek'
+                if (info.view.type == 'timeGridDay' || info.view.type == 'timeGridWeek') {
+                    // Calcola la durata originale dell'evento
+                    var originalDuration = info.oldEvent.end - info.oldEvent.start;
+                    // Imposta la data di fine dell'evento in base alla durata originale
+                    info.event.setEnd(info.event.start.clone().add(originalDuration));
+                }
+            },
             selectable: true,
             nowIndicator: true,
             showNonCurrentDates: false,
@@ -87,19 +102,43 @@
                     titleFormat: { day: 'numeric', month: 'long', year: 'numeric' },
 
                     dateClick: function(data) {
-                        @this.call('new', {data: data.dateStr});
+                        var today = new Date();
+                        if (data.date < today) {
+                            return alert('Non è possibile programmare lezioni in date o orari passati.');
+                        } else {
+                            @this.new({data: data.dateStr});
+                        }
                     },
+                    eventDrop: function(data) {
+                        var today = new Date();
+                        if (data.event.start < today) {
+                            data.revert();
+                            alert('Non è possibile spostare le lezioni gia trascorse.');
+                        } else {
+                            @this.update(data.event.id, data.event.start)
+                        }
+                    }
                 },
                 timeGridWeek: {
                     dayHeaderFormat: { weekday: 'long', day: 'numeric'},
                     titleFormat: { day: 'numeric', month: 'long', year: 'numeric' },
 
                     dateClick: function(data) {
-                        @this.new({data: data.dateStr});
+                        var today = new Date();
+                        if (data.date < today) {
+                            return alert('Non è possibile programmare lezioni in una data passata.');
+                        } else {
+                            @this.new({data: data.dateStr});
+                        }
                     },
-
                     eventDrop: function(data) {
-                        @this.update(data.event.id, data.event.start)
+                        var today = new Date();
+                        if (data.event.start < today) {
+                            data.revert();
+                            alert('Non è possibile spostare una lezione svolta o spostare una lezione in data passata.');
+                        } else {
+                            @this.update(data.event.id, data.event.start)
+                        }
                     }
                 },
             },
