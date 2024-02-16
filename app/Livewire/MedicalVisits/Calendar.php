@@ -37,12 +37,20 @@ class Calendar extends Component
 
         if ($user->role == 'medico') {
             $plannings = MedicalPlanning::where('user_id', $user->id)->get();
-        } else {
+        } elseif ($user->role == 'admin') {
             $plannings = MedicalPlanning::where('booked', '!=', null)->get();
+        } else {
+            $plannings = MedicalPlanning::where('booked', '!=', null)->with('training')
+            ->whereHas('training', function($q) {
+                $user = auth()->user();
+                return $q->where('school_id', $user->schools()->first()->id);
+            })->get();
         }
 
         foreach ($plannings as $planning) {
             $visits[] = [
+                'school' => $planning->training->school->code,
+                'doctor' => $planning->user->full_name,
                 'id' => $planning->id,
                 'title' => $planning->customer->full_name,
                 'start' => $planning->booked,

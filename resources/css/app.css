@@ -105,7 +105,7 @@ select::-webkit-scrollbar { /*For WebKit Browsers*/
     @apply text-color-afafaf font-semibold text-xl
 }
 .fc-timegrid-event-harness {
-    @apply max-w-[100px]
+    @apply max-w-[100%]
 }
 #calendarLesson .fc-timegrid-event-harness {
     @apply max-w-[100%]

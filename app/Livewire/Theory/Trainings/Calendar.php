@@ -14,18 +14,15 @@ class Calendar extends Component
     public $lessons = [];
     public $trainingStart = '';
     public $trainingEnd = '';
+    public $user;
 
     public function mount($training) {
-        $user = auth()->user();
+        $this->user = auth()->user();
         $this->training = Training::find($training);
         $this->trainingStart = $this->training->begins;
         $this->trainingEnd = $this->training->ends;
 
-        if ($user->role == 'insegnante') {
-            $allTrainings = Training::where('user_id', $user->id)->get();
-        } else {
-            $allTrainings = Training::where('school_id', $user->schools()->first()->id)->get();
-        }
+        $allTrainings = $this->getTrainingsBetweenDates($this->trainingStart, $this->trainingEnd);
 
         if ($this->training->variant_id) {
             $this->variant = 'courseVariant';
@@ -34,10 +31,11 @@ class Calendar extends Component
         }
 
         foreach ($allTrainings as $training) {
+            $plannings = $training->plannings()->with('training', 'lesson', 'user', 'course')->get();
             $color = '#e6f1ff';
             $borderColor = '#17489f';
 
-            foreach ($training->plannings as $lessonPlanning) {
+            foreach ($plannings as $lessonPlanning) {
                 if ($training->id == $this->training->id) {
                     $color = '#e8ffde';
                     $borderColor = '#01a53a';
@@ -46,9 +44,9 @@ class Calendar extends Component
                 $this->lessons[] = [
                     'id' => $lessonPlanning->id,
                     'training' => $lessonPlanning->training_id,
-                    'teacher' => $lessonPlanning->training->user->full_name,
+                    'teacher' => $lessonPlanning->user->full_name,
                     'lesson' => $lessonPlanning->lesson_id,
-                    'title' => $lessonPlanning->training->courseVariant ? $lessonPlanning->training->courseVariant->name : $lessonPlanning->training->course->name,
+                    'title' => $lessonPlanning->training->variant_id ? $lessonPlanning->training->courseVariant->name : $lessonPlanning->course->name,
                     'argument' => $lessonPlanning->lesson->subject,
                     'start' => $lessonPlanning->begin ?? null,
                     'end' => Carbon::parse($lessonPlanning->begin)->addMinutes($lessonPlanning->lesson->duration),
@@ -57,6 +55,35 @@ class Calendar extends Component
                 ];
             }
         }
+    }
+
+    public function getTrainingsBetweenDates($startDate, $endDate) {
+        if ($this->user->role == 'admin') {
+            $trainings = Training::where(function ($query) use ($startDate, $endDate) {
+                $query->whereBetween('begins', [$startDate, $endDate])->orWhere(function ($query) use ($endDate) {
+                    $query->where('begins', '<', $endDate)->where(function ($query) {
+                        $query->whereNull('ends')->orWhere('ends', '>', Carbon::now());
+                    });
+                });
+            })->get();
+        } elseif ($this->user->role == 'insegnante') {
+            $trainings = Training::where('user_id', $this->user->id)->where(function ($query) use ($startDate, $endDate) {
+                $query->whereBetween('begins', [$startDate, $endDate])->orWhere(function ($query) use ($endDate) {
+                    $query->where('begins', '<', $endDate)->where(function ($query) {
+                        $query->whereNull('ends')->orWhere('ends', '>', Carbon::now());
+                    });
+                });
+            })->get();
+        } else {
+            $trainings = Training::where('school_id', $this->user->schools()->first()->id)->where(function ($query) use ($startDate, $endDate) {
+                $query->whereBetween('begins', [$startDate, $endDate])->orWhere(function ($query) use ($endDate) {
+                    $query->where('begins', '<', $endDate)->where(function ($query) {
+                        $query->whereNull('ends')->orWhere('ends', '>', Carbon::now());
+                    });
+                });
+            })->get();
+        }
+        return $trainings;
     }
 
     public function back() {

@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class LessonPlanning extends Model
 {
     use HasFactory;
+    use \Znck\Eloquent\Traits\BelongsToThrough;
 
     protected $guarded = [];
 
@@ -23,5 +24,17 @@ class LessonPlanning extends Model
 
     public function presences(): HasMany {
         return $this->hasMany(Presence::class);
+    }
+
+    public function user() {
+        return $this->BelongsToThrough(user::class, Training::class);
+    }
+
+    public function course() {
+        return $this->BelongsToThrough(Course::class, Training::class);
+    }
+
+    public function courseVariant() {
+        return $this->BelongsToThrough(CourseVariant::class, Training::class);
     }
 }

@@ -5,6 +5,7 @@
 @push('scripts')
 
 <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js'></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.30.1/moment.min.js"></script>
 
 <script>
     document.addEventListener('livewire:initialized', function() {
@@ -12,7 +13,6 @@
             height: 730,
             initialView: 'timeGridWeek',
             locale: 'it',
-            timeZone: 'Europe/Rome',
             nowIndicator: true,
             navLinks: true,
             firstDay: 1,
@@ -34,6 +34,35 @@
                     var originalDuration = info.oldEvent.end - info.oldEvent.start;
                     info.event.setEnd(info.event.start.clone().add(originalDuration));
                 }
+            },
+            eventContent: function(event) {
+                var main = {html:`
+                    <div class="p-2 w-full fc-event-main-frame">
+                        <div class="fc-event-title-container">
+                            <div class="fc-event-title fc-sticky">
+                                <div class="flex gap-2">
+                                    <p class="flex font-medium gap-2">
+                                        <x-icons name="time"/> `+moment(event.event.startStr).format('HH:mm')+`
+                                    </p>
+                                    @role ('admin')
+                                        <p class="uppercase">
+                                            <span class="capitalize">Scuola: </span> `+event.event.extendedProps.school+`
+                                        </p>
+                                    @endrole
+                                </div>
+                                @role ('admin|responsabile sede|segretaria')
+                                    <p class="capitalize">
+                                        <span>Medico: </span> `+event.event.extendedProps.doctor+`
+                                    </p>
+                                @endrole
+                                <p>
+                                    <span>Paziente: </span> `+event.event.title+`
+                                </p>
+                            </div>
+                        </div>
+                    </div>`
+                }
+                return main;
             },
             selectable: true,
             nowIndicator: true,

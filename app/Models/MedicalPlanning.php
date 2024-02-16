@@ -29,4 +29,8 @@ class MedicalPlanning extends Model
     public function customer() {
         return $this->BelongsToThrough(Customer::class, Registration::class);
     }
+
+    public function training() {
+        return $this->BelongsToThrough(Training::class, Registration::class);
+    }
 }
