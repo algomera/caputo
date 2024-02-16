@@ -154,9 +154,16 @@ class CustomerForm extends Form
     }
 
     public function photo($photo) {
-        $path = Storage::putFileAs('customers/customer-'.$this->newCustomer->id.'/fototessera/', $photo, 'fototessera.png');
+        $customer = null;
+        if ($this->newCustomer) {
+            $customer = $this->newCustomer;
+        } else {
+            $customer = $this->customer;
+        }
 
-        $this->newCustomer->documents()->updateOrCreate(
+        $path = Storage::putFileAs('customers/customer-'.$customer->id.'/fototessera/', $photo, 'fototessera.png');
+
+        $customer->documents()->updateOrCreate(
             ['type' => 'fototessera'],
             [
                 'type' => 'fototessera',
@@ -164,14 +171,21 @@ class CustomerForm extends Form
             ]
         );
 
-        $this->newCustomer->chronologies()->create([
+        $customer->chronologies()->create([
             'title' => 'Inserimento fototessera'
         ]);
     }
 
     public function documents($documents) {
+        $customer = null;
+        if ($this->newCustomer) {
+            $customer = $this->newCustomer;
+        } else {
+            $customer = $this->customer;
+        }
+
         foreach ($documents as $document) {
-            $this->newCustomer->identificationDocuments()->create([
+            $customer->identificationDocuments()->create([
                 'identification_type_id' => $document['identification_type_id'],
                 'n_document' => $document['n_document'],
                 'document_release' => $document['document_release'],
@@ -182,7 +196,7 @@ class CustomerForm extends Form
 
             $document = IdentificationType::find($document['identification_type_id']);
 
-            $this->newCustomer->chronologies()->create([
+            $customer->chronologies()->create([
                 'title' => 'Inserimento '. $document->name
             ]);
         }
