@@ -58,31 +58,40 @@ class Calendar extends Component
     }
 
     public function getTrainingsBetweenDates($startDate, $endDate) {
-        if ($this->user->role == 'admin') {
+        if ($this->user->role == 'admin' || $this->user->role == 'insegnante') {
             $trainings = Training::where(function ($query) use ($startDate, $endDate) {
-                $query->whereBetween('begins', [$startDate, $endDate])->orWhere(function ($query) use ($endDate) {
-                    $query->where('begins', '<', $endDate)->where(function ($query) {
-                        $query->whereNull('ends')->orWhere('ends', '>', Carbon::now());
+                if ($endDate) {
+                    $query->whereBetween('begins', [$startDate, $endDate])->orWhere(function ($query) use ($endDate) {
+                        $query->where('begins', '<', $endDate)->where(function ($query) {
+                            $query->whereNull('ends')->orWhere('ends', '>', Carbon::now());
+                        });
                     });
-                });
-            })->get();
-        } elseif ($this->user->role == 'insegnante') {
-            $trainings = Training::where('user_id', $this->user->id)->where(function ($query) use ($startDate, $endDate) {
-                $query->whereBetween('begins', [$startDate, $endDate])->orWhere(function ($query) use ($endDate) {
-                    $query->where('begins', '<', $endDate)->where(function ($query) {
-                        $query->whereNull('ends')->orWhere('ends', '>', Carbon::now());
+                } else {
+                    $query->Where(function ($query) use ($startDate) {
+                        $query->where('begins', '<=', $startDate)->where(function ($query) {
+                            $query->whereNull('ends')->orWhere('ends', '>=', Carbon::now()->toDateString());
+                        });
                     });
-                });
+                }
             })->get();
         } else {
             $trainings = Training::where('school_id', $this->user->schools()->first()->id)->where(function ($query) use ($startDate, $endDate) {
-                $query->whereBetween('begins', [$startDate, $endDate])->orWhere(function ($query) use ($endDate) {
-                    $query->where('begins', '<', $endDate)->where(function ($query) {
-                        $query->whereNull('ends')->orWhere('ends', '>', Carbon::now());
+                if ($endDate) {
+                    $query->whereBetween('begins', [$startDate, $endDate])->orWhere(function ($query) use ($endDate) {
+                        $query->where('begins', '<', $endDate)->where(function ($query) {
+                            $query->whereNull('ends')->orWhere('ends', '>', Carbon::now());
+                        });
                     });
-                });
+                } else {
+                    $query->Where(function ($query) use ($startDate) {
+                        $query->where('begins', '<=', $startDate)->where(function ($query) {
+                            $query->whereNull('ends')->orWhere('ends', '>=', Carbon::now()->toDateString());
+                        });
+                    });
+                }
             })->get();
         }
+
         return $trainings;
     }
 
