@@ -155,12 +155,18 @@
             end: @json($trainingEnd),
         });
 
-        calendar.render();
-
-        @this.on('updateCalendar', () => {
-            console.log('si');
-            calendar.refetchEvents()
+        @this.on('updateCalendar', lesson => {
+            calendar.addEvent(lesson[0])
         });
+
+        @this.on('eventRemove', function (lessonId) {
+            var lesson = calendar.getEventById(lessonId);
+            if (lesson) {
+                lesson.remove();
+            }
+        });
+
+        calendar.render();
     });
 </script>
 @endpush

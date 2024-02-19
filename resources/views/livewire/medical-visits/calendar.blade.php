@@ -152,8 +152,8 @@
             });
         });
 
-        @this.on('eventRemove', function (visit) {
-            var visit = calendar.getEventById(visit);
+        @this.on('eventRemove', function (visitId) {
+            var visit = calendar.getEventById(visitId);
             if (visit) {
                 visit.remove();
             }

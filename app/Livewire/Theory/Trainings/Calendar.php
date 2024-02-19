@@ -5,6 +5,7 @@ namespace App\Livewire\Theory\Trainings;
 use App\Models\LessonPlanning;
 use App\Models\Training;
 use Carbon\Carbon;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class Calendar extends Component
@@ -41,18 +42,20 @@ class Calendar extends Component
                     $borderColor = '#01a53a';
                 }
 
-                $this->lessons[] = [
-                    'id' => $lessonPlanning->id,
-                    'training' => $lessonPlanning->training_id,
-                    'teacher' => $lessonPlanning->user->full_name,
-                    'lesson' => $lessonPlanning->lesson_id,
-                    'title' => $lessonPlanning->training->variant_id ? $lessonPlanning->training->courseVariant->name : $lessonPlanning->course->name,
-                    'argument' => $lessonPlanning->lesson->subject,
-                    'start' => $lessonPlanning->begin ?? null,
-                    'end' => Carbon::parse($lessonPlanning->begin)->addMinutes($lessonPlanning->lesson->duration),
-                    'color' => $color,
-                    'customBorderColor' => $borderColor
-                ];
+                if ($lessonPlanning->begin) {
+                    $this->lessons[] = [
+                        'id' => $lessonPlanning->id,
+                        'training' => $lessonPlanning->training_id,
+                        'teacher' => $lessonPlanning->user->full_name,
+                        'lesson' => $lessonPlanning->lesson_id,
+                        'title' => $lessonPlanning->training->variant_id ? $lessonPlanning->training->courseVariant->name : $lessonPlanning->course->name,
+                        'argument' => $lessonPlanning->lesson->subject,
+                        'start' => $lessonPlanning->begin,
+                        'end' => Carbon::parse($lessonPlanning->begin)->addMinutes($lessonPlanning->lesson->duration),
+                        'color' => $color,
+                        'customBorderColor' => $borderColor
+                    ];
+                }
             }
         }
     }
@@ -119,6 +122,16 @@ class Calendar extends Component
         $lessonPlanning->update([
             'begin' => Carbon::parse($start)
         ]);
+    }
+
+    #[On('planningUpdate')]
+    public function updateCalendar($lesson) {
+        $this->dispatch('updateCalendar', $lesson);
+    }
+
+    #[On('lessonRemove')]
+    public function lessonRemove($lesson) {
+        $this->dispatch('eventRemove', $lesson);
     }
 
     public function render()

@@ -5,6 +5,7 @@ namespace App\Livewire\Theory\Modals;
 use App\Livewire\Theory\Trainings\Calendar;
 use App\Models\LessonPlanning;
 use App\Models\Training;
+use Carbon\Carbon;
 use LivewireUI\Modal\ModalComponent;
 
 class PlanLesson extends ModalComponent
@@ -20,17 +21,26 @@ class PlanLesson extends ModalComponent
     }
 
     public function schedule($lessonId) {
-        $lessonPlanning = LessonPlanning::find($lessonId);
+        $lessonPlanning = LessonPlanning::where('id', $lessonId)->with('training', 'lesson', 'user', 'course')->first();
 
         $lessonPlanning->update([
             'begin' => $this->dateTime['data']
         ]);
 
-        $this->closeModalWithEvents([
-            Calendar::class => 'planningUpdate',
-        ]);
+        $scheduleLesson = [
+            'id' => $lessonPlanning->id,
+            'training' => $lessonPlanning->training_id,
+            'teacher' => $lessonPlanning->user->full_name,
+            'lesson' => $lessonPlanning->lesson_id,
+            'title' => $lessonPlanning->training->variant_id ? $lessonPlanning->training->courseVariant->name : $lessonPlanning->course->name,
+            'argument' => $lessonPlanning->lesson->subject,
+            'start' => $lessonPlanning->begin,
+            'end' => Carbon::parse($lessonPlanning->begin)->addMinutes($lessonPlanning->lesson->duration),
+            'color' => '#e8ffde',
+            'customBorderColor' => '#01a53a'
+        ];
 
-        return redirect()->route('theory.trainings.calendar', ['training' => $this->training->id]);
+        $this->closeModalWithEvents([Calendar::class => ['planningUpdate', ['lesson' => $scheduleLesson]]]);
     }
 
     public static function modalMaxWidth(): string

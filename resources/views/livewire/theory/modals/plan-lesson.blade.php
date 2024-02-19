@@ -27,7 +27,7 @@
                                         <span class="text-color-17489f text-sm font-medium ">{{date("d/m/Y - H:i", strtotime($lessonPlanning->begin))}}</span>
                                     </div>
                                 @else
-                                    <button wire:click="schedule({{$lessonPlanning->id}})" class="px-4 py-1 text-color-2c2c2c font-medium capitalize rounded-full bg-color-01a53a/30 hover:scale-105 transition-all duration-300">inserisci</button>
+                                    <button wire:click="schedule({{$lessonPlanning->id}})" class="px-4 py-1 text-color-2c2c2c font-medium capitalize rounded-full bg-color-01a53a/30 hover:scale-105 transition-all duration-300 focus-visible:ring-0 focus-visible:border-none focus-visible:outline-none focus-visible:ring-offset-0 focus:outline-none focus:ring-2 focus:ring-offset-0">inserisci</button>
                                 @endif
                             </div>
                         </td>

@@ -25,11 +25,9 @@ class ShowLessonPlanning extends ModalComponent
             'begin' => null
         ]);
 
-        $this->closeModalWithEvents([
-            Calendar::class => 'planningUpdate',
-        ]);
-
-        return redirect()->route('theory.trainings.calendar', ['training' => $this->lessonPlanning->training_id]);
+        $this->closeModalWithEvents([Calendar::class => ['lessonRemove',
+            ['lesson' => $this->lessonPlanning->id]
+        ]]);
     }
 
     public function presences() {
