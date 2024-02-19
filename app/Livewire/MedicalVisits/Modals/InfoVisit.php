@@ -19,10 +19,9 @@ class InfoVisit extends ModalComponent
             'booked' => null
         ]);
 
-        $this->closeModalWithEvents([
-            Calendar::class => 'visitUpdate',
-        ]);
-        return redirect()->route('visits.calendar');
+        $this->closeModalWithEvents([Calendar::class => ['visitRemove',
+            ['visit' => $this->visit->id]
+        ]]);
     }
 
     public function showCustomer() {

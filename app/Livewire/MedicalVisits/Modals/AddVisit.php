@@ -35,6 +35,7 @@ class AddVisit extends ModalComponent
 
     public function save() {
         $this->validate();
+        $visits = [];
 
         foreach ($this->selected as $visitId) {
             $visit = MedicalPlanning::find($visitId);
@@ -43,12 +44,18 @@ class AddVisit extends ModalComponent
                 'user_id' => $this->doctor,
                 'booked' => Carbon::parse($this->data)
             ]);
+
+            $visits[] = [
+                'school' => $visit->training->school->code,
+                'doctor' => $visit->user->full_name,
+                'id' => $visit->id,
+                'title' => $visit->customer->full_name,
+                'start' => $visit->booked,
+            ];
+
         }
 
-        $this->closeModalWithEvents([
-            Calendar::class => 'visitUpdate',
-        ]);
-        return redirect()->route('visits.calendar');
+        $this->closeModalWithEvents([Calendar::class => ['visitUpdate', ['visits' => $visits]]]);
     }
 
     public static function modalMaxWidth(): string
@@ -60,7 +67,7 @@ class AddVisit extends ModalComponent
     {
         $doctors = User::role('medico')->get();
 
-        $visits = MedicalPlanning::where('booked', null)->with('customer')
+        $visits = MedicalPlanning::where('booked', null)->with('customer', 'course')
         ->whereHas('customer', function($q) {
             $q->filter('name', $this->name);
         })

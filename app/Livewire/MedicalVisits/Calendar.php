@@ -9,9 +9,20 @@ use Livewire\Component;
 
 class Calendar extends Component
 {
+    public $user;
+
+    public function mount() {
+        $this->user = auth()->user();
+    }
+
     #[On('visitUpdate')]
-    public function updateCalendar() {
-        $this->dispatch('updateCalendar');
+    public function updateCalendar($visits) {
+        $this->dispatch('updateCalendar', $visits);
+    }
+
+    #[On('visitRemove')]
+    public function visitRemove($visit) {
+        $this->dispatch('eventRemove', $visit);
     }
 
     public function show($visit) {
@@ -32,24 +43,22 @@ class Calendar extends Component
 
     public function render()
     {
-        $user = auth()->user();
         $visits = [];
 
-        if ($user->role == 'medico') {
-            $plannings = MedicalPlanning::where('user_id', $user->id)->get();
-        } elseif ($user->role == 'admin') {
-            $plannings = MedicalPlanning::where('booked', '!=', null)->get();
+        if ($this->user->role == 'medico') {
+            $medicalPlannings = MedicalPlanning::where('user_id', $this->user->id)->with('school', 'training', 'user', 'customer')->get();
+        } elseif ($this->user->role == 'admin') {
+            $medicalPlannings = MedicalPlanning::where('booked', '!=', null)->with('school', 'training', 'user', 'customer')->get();
         } else {
-            $plannings = MedicalPlanning::where('booked', '!=', null)->with('training')
+            $medicalPlannings = MedicalPlanning::where('booked', '!=', null)->with('school', 'training', 'user', 'customer')
             ->whereHas('training', function($q) {
-                $user = auth()->user();
-                return $q->where('school_id', $user->schools()->first()->id);
+                return $q->where('school_id', $this->user->schools()->first()->id);
             })->get();
         }
 
-        foreach ($plannings as $planning) {
+        foreach ($medicalPlannings as $planning) {
             $visits[] = [
-                'school' => $planning->training->school->code,
+                'school' => $planning->school->code,
                 'doctor' => $planning->user->full_name,
                 'id' => $planning->id,
                 'title' => $planning->customer->full_name,

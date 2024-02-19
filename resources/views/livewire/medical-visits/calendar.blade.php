@@ -144,11 +144,22 @@
             events: @json($visits),
         });
 
-        calendar.render()
-        @this.on('updateCalendar', () => {
-            console.log('si');
-            calendar.refetchEvents()
+        @this.on('updateCalendar', events => {
+            events.forEach(array => {
+                array.forEach(event => {
+                    calendar.addEvent(event);
+                });
+            });
         });
+
+        @this.on('eventRemove', function (visit) {
+            var visit = calendar.getEventById(visit);
+            if (visit) {
+                visit.remove();
+            }
+        });
+
+        calendar.render()
     });
 </script>
 @endpush
