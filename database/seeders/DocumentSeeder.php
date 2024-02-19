@@ -24,15 +24,15 @@ class DocumentSeeder extends Seeder
         $documents = [
             [
                 'type' => 'fototessera',
-                'path' =>  '/resources/images/photo.png'
+                'path' =>  'resources/images/photo.png'
             ],
             [
                 'type' => 'firma',
-                'path' =>  '/resources/images/signature.png'
+                'path' =>  'resources/images/signature.png'
             ],
             [
                 'type' => 'documenti di riconoscimento',
-                'path' =>  '/resources/images/c.id.jpg'
+                'path' =>  'resources/images/c.id.jpg'
             ],
         ];
 
