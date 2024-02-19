@@ -14,7 +14,6 @@ class Registration extends Model
     use HasFactory;
     use \Znck\Eloquent\Traits\BelongsToThrough;
 
-
     protected $guarded = [];
 
     public function customer(): BelongsTo {
