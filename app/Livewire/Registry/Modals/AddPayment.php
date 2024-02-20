@@ -52,11 +52,11 @@ class AddPayment extends ModalComponent
             $registration = $this->drivingPlanning->registration;
 
             if ($this->newScan) {
-                $path = Storage::putFileAs('customers/customer-'.$registration->customer_id, $this->newScan, str_replace(' ', '_', $this->newScan->getClientOriginalName()));
+                $path = Storage::disk('public')->putFileAs('customers/customer-'.$registration->customer_id, $this->newScan, str_replace(' ', '_', $this->newScan->getClientOriginalName()));
 
                 $payment->document()->create([
                     'type' => 'Pagamento',
-                    'path' => 'storage/app/'.$path
+                    'path' => $path
                 ]);
             }
 
@@ -83,11 +83,11 @@ class AddPayment extends ModalComponent
             ]);
 
             if ($this->newScan) {
-                $path = Storage::putFileAs('customers/customer-'.$this->registration->customer_id, $this->newScan, str_replace(' ', '_', $this->newScan->getClientOriginalName()));
+                $path = Storage::disk('public')->putFileAs('customers/customer-'.$this->registration->customer_id, $this->newScan, str_replace(' ', '_', $this->newScan->getClientOriginalName()));
 
                 $payment->document()->create([
                     'type' => 'Pagamento',
-                    'path' => 'storage/app/'.$path
+                    'path' => $path
                 ]);
             }
 
