@@ -62,7 +62,7 @@
                             <td class="border-r-2 border-color-efefef px-3 py-4 text-color-017c67 font-medium hidden xl:table-cell w-28">{{$lesson->duration}} Min.</td>
                             <td class="border-r-2 border-color-efefef px-3 py-4 text-color-2c2c2c">
                                 <div class="flex items-center justify-center gap-1">
-                                    @if ($lesson->planning)
+                                    @if ($lesson->planning->begin)
                                         <span>{{date("d/m/Y", strtotime($lesson->planning->begin))}}</span>-
                                         <span class="text-color-01a53a">{{date("H:i", strtotime($lesson->planning->begin))}}</span>
                                         {{-- @if ($training->ends)
