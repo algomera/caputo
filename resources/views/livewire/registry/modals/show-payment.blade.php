@@ -24,11 +24,11 @@
         </div>
         @if ($newScan)
             <div class="w-1/2 border">
-                <object data="{{ $newScan->temporaryUrl() }}" width="100%" height="100%" frameborder="0"></object>
+                <iframe src="{{ $newScan->temporaryUrl() }}" width="100%" height="100%" frameborder="0"></iframe>
             </div>
         @elseif ($document)
             <div class="w-1/2 border">
-                <object data="{{ asset($document->path) }}" width="100%" height="100%" frameborder="0"></object>
+                <iframe src="{{ asset($document->path) }}" width="100%" height="100%" frameborder="0"></iframe>
             </div>
         @else
             <div class="w-1/2 border flex items-center justify-center">
