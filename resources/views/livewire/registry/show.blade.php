@@ -44,14 +44,16 @@
                 @if ($photo)
                     <div class="w-64 h-64 bg-white relative">
                         <img class="w-full h-full" src="{{ $photo->temporaryUrl() }}">
-                        <div class="absolute top-2 right-2 bg-color-01a53a/40 px-2 rounded-full">
-                            <div class="w-fit flex items-start gap-5 relative text-gray-400">
-                                <label for="photo" class="font-medium cursor-pointer">
-                                    <span class="text-color-2c2c2c text-sm font-light">Carica Foto</span>
-                                </label>
-                                <input wire:model="photo" type="file" name="photo" id="photo" class="block mt-1 w-full opacity-0 z-[-1] absolute">
+                        @if ($modify)
+                            <div class="absolute top-2 right-2 bg-color-01a53a/40 px-2 rounded-full">
+                                <div class="w-fit flex items-start gap-5 relative text-gray-400">
+                                    <label for="photo" class="font-medium cursor-pointer">
+                                        <span class="text-color-2c2c2c text-sm font-light">Carica Foto</span>
+                                    </label>
+                                    <input wire:model="photo" type="file" name="photo" id="photo" class="block mt-1 w-full opacity-0 z-[-1] absolute">
+                                </div>
                             </div>
-                        </div>
+                        @endif
                     </div>
                 @elseif ($customerForm->customer->photo()->first())
                     @if ($customerForm->customer->photo()->first()->path)
