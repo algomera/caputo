@@ -55,7 +55,7 @@
                     </div>
                 @elseif ($customerForm->customer->photo()->first())
                     <div class="w-64 h-64 bg-white relative">
-                        <img class="w-full h-full" src="{{Vite::asset('public/'.$customerForm->customer->photo()->first()->path)}}" alt="">
+                        <img class="w-full h-full" src="{{Vite::asset($customerForm->customer->photo()->first()->path)}}" alt="">
                         @if ($modify)
                             <div class="absolute top-2 right-2 bg-color-01a53a/40 px-2 rounded-full">
                                 <div class="w-fit flex items-start gap-5 relative text-gray-400">
@@ -122,7 +122,7 @@
             <div>
                 <p class="text-sm font-light text-color-2c2c2c mb-1 w-fit ml-2">Firma digitale</p>
                 <div class="w-44 h-28 xl:w-64 xl:h-36 bg-white flex items-center shadow-shadow-card">
-                    <img class="w-full" src="{{Vite::asset('public/'.$customerForm->customer->customerSignature()->first()->path)}}" alt="">
+                    <img class="w-full" src="{{Vite::asset($customerForm->customer->customerSignature()->first()->path)}}" alt="">
                 </div>
             </div>
             @endif
