@@ -25,7 +25,7 @@ class DocumentForm extends Form
             $path = Storage::disk('public')->putFileAs('customers/customer-'.$this->customer->id, $scan, str_replace(' ', '_', $scan->getClientOriginalName()));
             $this->customer->documents()->create([
                 'type' => 'documenti di riconoscimento',
-                'path' => 'storage/app/public/'.$path
+                'path' => 'storage/'.$path
             ]);
 
             $this->customer->chronologies()->create([
@@ -43,7 +43,7 @@ class DocumentForm extends Form
 
             $registration->documents()->create([
                 'type' => 'Scansione: '. $scan->getClientOriginalName(),
-                'path' => 'storage/app/public/'.$path
+                'path' => 'storage/'.$path
             ]);
 
             $registration->chronologies()->create([
@@ -52,7 +52,7 @@ class DocumentForm extends Form
         } else {
             $this->customer->documents()->create([
                 'type' => 'Scansione: '. $scan->getClientOriginalName(),
-                'path' => 'storage/app/public/'.$path
+                'path' => 'storage/'.$path
             ]);
 
             $this->customer->chronologies()->create([
@@ -68,7 +68,7 @@ class DocumentForm extends Form
             $path = Storage::disk('public')->putFileAs('customers/customer-'.$this->customer->id, $scan, str_replace(' ', '_', $scan->getClientOriginalName()));
             $registration->documents()->create([
                 'type' => 'Certificato visita medica',
-                'path' => 'storage/app/public/'.$path
+                'path' => 'storage/'.$path
             ]);
 
             $registration->chronologies()->create([
@@ -84,7 +84,7 @@ class DocumentForm extends Form
             $path = Storage::disk('public')->putFileAs('customers/customer-'.$this->customer->id.'/parent', $scan, str_replace(' ', '_', $scan->getClientOriginalName()));
             $registration->documents()->create([
                 'type' => 'documenti di riconoscimento genitori',
-                'path' => 'storage/app/public/'.$path
+                'path' => 'storage/'.$path
             ]);
 
             $registration->chronologies()->create([
@@ -100,7 +100,7 @@ class DocumentForm extends Form
             $path = Storage::disk('public')->putFileAs('customers/customer-'.$this->customer->id.'/companions/'.'companion-'.$key, $scan, str_replace(' ', '_', $scan->getClientOriginalName()));
             $registration->documents()->create([
                 'type' => 'documenti di riconoscimento accompagnatore-'.$key,
-                'path' => 'storage/app/public/'.$path
+                'path' => 'storage/'.$path
             ]);
 
             $registration->chronologies()->create([
@@ -140,7 +140,7 @@ class DocumentForm extends Form
         }
 
         $document->update([
-            'path' => 'storage/app/public/'.$path
+            'path' => 'storage/'.$path
         ]);
 
         $this->reset();
@@ -177,7 +177,7 @@ class DocumentForm extends Form
             ['type' => 'firma'],
             [
                 'type' => 'firma',
-                'path' => 'storage/app/public/'.$path
+                'path' => 'storage/'.$path
             ]
         );
 
@@ -194,7 +194,7 @@ class DocumentForm extends Form
             ['type' => 'firma genitore'],
             [
                 'type' => 'firma genitore',
-                'path' => 'storage/app/public/'.$path
+                'path' => 'storage/'.$path
             ]
         );
 
@@ -213,7 +213,7 @@ class DocumentForm extends Form
                 ['type' => 'firma accompagnatore-'.$key],
                 [
                     'type' => 'firma accompagnatore-'.$key,
-                    'path' => 'storage/app/public/'.$path
+                    'path' => 'storage/'.$path
                 ]
             );
 
@@ -230,7 +230,7 @@ class DocumentForm extends Form
 
         $registration->documents()->create([
             'type' => 'firma parente',
-            'path' => 'storage/app/public/'.$path
+            'path' => 'storage/'.$path
         ]);
 
         $registration->chronologies()->create([

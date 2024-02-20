@@ -1,7 +1,7 @@
 <div class="p-4 space-y-8 !align-top">
     <div class="flex items-start gap-2">
         @if ($visit->customer->photo()->first())
-        <img class="w-28 h-28" src="{{Vite::asset($visit->registration->customer->photo()->first()->path)}}" alt="">
+        <img class="w-28 h-28" src="{{asset($visit->registration->customer->photo()->first()->path)}}" alt="">
         @else
         <div class="w-28 h-28 border shadow flex items-center justify-center">
             <x-icons name="default_photo" />
