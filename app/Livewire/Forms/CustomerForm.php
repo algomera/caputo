@@ -161,13 +161,13 @@ class CustomerForm extends Form
             $customer = $this->customer;
         }
 
-        $path = Storage::putFileAs('customers/customer-'.$customer->id.'/fototessera/', $photo, 'fototessera.png');
+        $path = Storage::disk('public')->putFileAs('customers/customer-'.$customer->id.'/fototessera', $photo, 'fototessera.png');
 
         $customer->documents()->updateOrCreate(
             ['type' => 'fototessera'],
             [
                 'type' => 'fototessera',
-                'path' => 'storage/app/'.$path
+                'path' => $path
             ]
         );
 
