@@ -20,7 +20,7 @@
         <div>
             <p class="font-extrabold uppercase text-xs text-gray-400 tracking-[.75px]">Imagine profilo</p>
             <div class="h-[125px] w-[125px] mb-[10px] border flex items-center justify-center overflow-hidden bg-color-efefef shadow-inner">
-                <img class="w-full h-full" id="load" src="{{ Vite::asset(Auth::user()->image) }}" alt="">
+                <img class="w-full h-full" id="load" src="{{ asset('storage/'. Auth::user()->image) }}" alt="">
             </div>
             <div class="flex gap-5 relative">
                 <label for="image" class="w-[125px] bg-color-347af2/80 hover:bg-color-347af2 h-[36px] py-2 px-6 text-white text-[12px] font-bold uppercase cursor-pointer">
