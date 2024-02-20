@@ -122,7 +122,7 @@
             <div>
                 <p class="text-sm font-light text-color-2c2c2c mb-1 w-fit ml-2">Firma digitale</p>
                 <div class="w-44 h-28 xl:w-64 xl:h-36 bg-white flex items-center shadow-shadow-card">
-                    <img class="w-full" src="{{Vite::asset($customerForm->customer->customerSignature()->first()->path)}}" alt="">
+                    <img class="w-full" src="{{asset($customerForm->customer->customerSignature()->first()->path)}}" alt="">
                 </div>
             </div>
             @endif
