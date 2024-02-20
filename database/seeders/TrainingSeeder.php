@@ -21,29 +21,29 @@ class TrainingSeeder extends Seeder
         $schools = School::all();
         $courses = Course::where('type', 'training')->get();
         $courseVariant = CourseVariant::where('type', 'training')->get();
+        $teachers = User::role('insegnante')->get();
 
         foreach ($schools as $school) {
-            $teachers = User::role('insegnante')->get();
             $customers = $school->customers()->get();
 
             //Creazione Training per ogni corso in tutte le autoscuole
             foreach ($courses as $course) {
-                $training = Training::create([
-                    'school_id' => $school->id,
-                    'course_id' => $course->id,
-                    'user_id' => $teachers->random()->id,
-                    'begins' => now(),
-                    'ends' => fake()->dateTimeBetween('+4 week', '+8 week'),
-                ]);
+                if ($course->id > 9 && $course->id < 19) {
+                    $training = Training::create([
+                        'school_id' => $school->id,
+                        'course_id' => $course->id,
+                        'user_id' => $teachers->random()->id,
+                        'begins' => now(),
+                        'ends' => fake()->dateTimeBetween('+4 week', '+8 week'),
+                    ]);
 
-                $trainingLoop = Training::create([
-                    'school_id' => $school->id,
-                    'course_id' => $course->id,
-                    'user_id' => $teachers->random()->id,
-                    'begins' => now(),
-                ]);
+                    $trainingLoop = Training::create([
+                        'school_id' => $school->id,
+                        'course_id' => $course->id,
+                        'user_id' => $teachers->random()->id,
+                        'begins' => now(),
+                    ]);
 
-                foreach ($customers as $customer) {
                     $costs = $course->getOptions()->where('type', 'fisso')->get();
                     $optionals = $course->getOptions()->where('type', 'opzionale')->get()->random(3);
                     $priceCourse = $course->prices()->where('licenses', null)->first();
@@ -58,7 +58,7 @@ class TrainingSeeder extends Seeder
 
                     Registration::create([
                         'training_id' => $training->id,
-                        'customer_id' => $customer->id,
+                        'customer_id' => $customers->random()->id,
                         'option' => fake()->randomElement(['iscrizione', 'cambio codice', 'possessore di patente']),
                         'type' => fake()->randomElement(['teoria', 'pratica', 'pratica/s.esame']),
                         'transmission' => fake()->randomElement(['manuale', 'automatica']),
@@ -69,7 +69,7 @@ class TrainingSeeder extends Seeder
 
                     Registration::create([
                         'training_id' => $trainingLoop->id,
-                        'customer_id' => $customer->id,
+                        'customer_id' => $customers->random()->id,
                         'option' => fake()->randomElement(['iscrizione', 'cambio codice', 'possessore di patente']),
                         'type' => fake()->randomElement(['teoria', 'pratica', 'pratica/s.esame']),
                         'transmission' => fake()->randomElement(['manuale', 'automatica']),
@@ -81,62 +81,62 @@ class TrainingSeeder extends Seeder
             }
 
             //Creazione Training per ogni variante corso in tutte le autoscuole
-            foreach ($courseVariant as $variant) {
-                $customers = $school->customers()->get()->random(3);
-                $training = Training::create([
-                    'school_id' => $school->id,
-                    'course_id' => $variant->course->id,
-                    'variant_id' => $variant->id,
-                    'user_id' => $teachers->random()->id,
-                    'begins' => now(),
-                    'ends' => fake()->dateTimeBetween('+4 week', '+8 week'),
-                ]);
+            // foreach ($courseVariant as $variant) {
+            //     $customers = $school->customers()->get()->random(3);
+            //     $training = Training::create([
+            //         'school_id' => $school->id,
+            //         'course_id' => $variant->course->id,
+            //         'variant_id' => $variant->id,
+            //         'user_id' => $teachers->random()->id,
+            //         'begins' => now(),
+            //         'ends' => fake()->dateTimeBetween('+4 week', '+8 week'),
+            //     ]);
 
-                $trainingLoop = Training::create([
-                    'school_id' => $school->id,
-                    'course_id' => $variant->course->id,
-                    'variant_id' => $variant->id,
-                    'user_id' => $teachers->random()->id,
-                    'begins' => now(),
-                    'ends' => fake()->dateTimeBetween('+4 week', '+8 week'),
-                ]);
+            //     $trainingLoop = Training::create([
+            //         'school_id' => $school->id,
+            //         'course_id' => $variant->course->id,
+            //         'variant_id' => $variant->id,
+            //         'user_id' => $teachers->random()->id,
+            //         'begins' => now(),
+            //         'ends' => fake()->dateTimeBetween('+4 week', '+8 week'),
+            //     ]);
 
-                foreach ($customers as $customer) {
-                    $costs = $variant->getOptions()->where('type', 'fisso')->get();
-                    $optionals = $variant->getOptions()->where('type', 'opzionale')->get()->random(3);
-                    $priceCourseVariant = $variant->prices()->where('licenses', null)->first();
-                    $total = $priceCourseVariant->price;
+            //     foreach ($customers as $customer) {
+            //         $costs = $variant->getOptions()->where('type', 'fisso')->get();
+            //         $optionals = $variant->getOptions()->where('type', 'opzionale')->get()->random(3);
+            //         $priceCourseVariant = $variant->prices()->where('licenses', null)->first();
+            //         $total = $priceCourseVariant->price;
 
-                    foreach ($costs as $cost) {
-                        $total += $cost->price;
-                    }
-                    foreach ($optionals as $optional) {
-                        $total += $optional->price;
-                    }
+            //         foreach ($costs as $cost) {
+            //             $total += $cost->price;
+            //         }
+            //         foreach ($optionals as $optional) {
+            //             $total += $optional->price;
+            //         }
 
-                    Registration::create([
-                        'training_id' => $training->id,
-                        'customer_id' => $customer->id,
-                        'option' => fake()->randomElement(['iscrizione', 'cambio codice', 'possessore di patente']),
-                        'type' => fake()->randomElement(['teoria', 'pratica', 'pratica/s.esame']),
-                        'transmission' => fake()->randomElement(['manuale', 'automatica']),
-                        'optionals' => $optionals->pluck('id')->toJson(),
-                        'step_skipped' => json_encode([]),
-                        'price' => $total
-                    ]);
+            //         Registration::create([
+            //             'training_id' => $training->id,
+            //             'customer_id' => $customer->id,
+            //             'option' => fake()->randomElement(['iscrizione', 'cambio codice', 'possessore di patente']),
+            //             'type' => fake()->randomElement(['teoria', 'pratica', 'pratica/s.esame']),
+            //             'transmission' => fake()->randomElement(['manuale', 'automatica']),
+            //             'optionals' => $optionals->pluck('id')->toJson(),
+            //             'step_skipped' => json_encode([]),
+            //             'price' => $total
+            //         ]);
 
-                    Registration::create([
-                        'training_id' => $trainingLoop->id,
-                        'customer_id' => $customer->id,
-                        'option' => fake()->randomElement(['iscrizione', 'cambio codice', 'possessore di patente']),
-                        'type' => fake()->randomElement(['teoria', 'pratica', 'pratica/s.esame']),
-                        'transmission' => fake()->randomElement(['manuale', 'automatica']),
-                        'optionals' => $optionals->pluck('id')->toJson(),
-                        'step_skipped' => json_encode([]),
-                        'price' => $total
-                    ]);
-                }
-            }
+            //         Registration::create([
+            //             'training_id' => $trainingLoop->id,
+            //             'customer_id' => $customer->id,
+            //             'option' => fake()->randomElement(['iscrizione', 'cambio codice', 'possessore di patente']),
+            //             'type' => fake()->randomElement(['teoria', 'pratica', 'pratica/s.esame']),
+            //             'transmission' => fake()->randomElement(['manuale', 'automatica']),
+            //             'optionals' => $optionals->pluck('id')->toJson(),
+            //             'step_skipped' => json_encode([]),
+            //             'price' => $total
+            //         ]);
+            //     }
+            // }
         }
     }
 }
