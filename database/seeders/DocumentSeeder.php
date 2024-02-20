@@ -24,15 +24,15 @@ class DocumentSeeder extends Seeder
         $documents = [
             [
                 'type' => 'fototessera',
-                'path' =>  'resources/images/photo.png'
+                'path' =>  null
             ],
             [
                 'type' => 'firma',
-                'path' =>  'resources/images/signature.png'
+                'path' =>  null
             ],
             [
                 'type' => 'documenti di riconoscimento',
-                'path' =>  'resources/images/c.id.jpg'
+                'path' =>  null
             ],
         ];
 
@@ -59,7 +59,7 @@ class DocumentSeeder extends Seeder
         foreach ($payments as $payment) {
             $payment->document()->create([
                 'type' => 'Pagamento',
-                'path' => '/resources/images/document.jpg'
+                'path' => null
             ]);
         }
     }

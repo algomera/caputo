@@ -54,33 +54,35 @@
                         </div>
                     </div>
                 @elseif ($customerForm->customer->photo()->first())
-                    <div class="w-64 h-64 bg-white relative">
-                        <img class="w-full h-full" src="{{Vite::asset($customerForm->customer->photo()->first()->path)}}" alt="">
-                        @if ($modify)
-                            <div class="absolute top-2 right-2 bg-color-01a53a/40 px-2 rounded-full">
-                                <div class="w-fit flex items-start gap-5 relative text-gray-400">
-                                    <label for="photo" class="font-medium cursor-pointer">
-                                        <span class="text-color-2c2c2c text-sm font-light">Carica Foto</span>
-                                    </label>
-                                    <input wire:model="photo" type="file" name="photo" id="photo" class="block mt-1 w-full opacity-0 z-[-1] absolute">
+                    @if ($customerForm->customer->photo()->first()->path)
+                        <div class="w-64 h-64 bg-white relative">
+                            <img class="w-full h-full" src="{{Vite::asset($customerForm->customer->photo()->first()->path)}}" alt="">
+                            @if ($modify)
+                                <div class="absolute top-2 right-2 bg-color-01a53a/40 px-2 rounded-full">
+                                    <div class="w-fit flex items-start gap-5 relative text-gray-400">
+                                        <label for="photo" class="font-medium cursor-pointer">
+                                            <span class="text-color-2c2c2c text-sm font-light">Carica Foto</span>
+                                        </label>
+                                        <input wire:model="photo" type="file" name="photo" id="photo" class="block mt-1 w-full opacity-0 z-[-1] absolute">
+                                    </div>
                                 </div>
-                            </div>
-                        @endif
-                    </div>
-                @else
-                    <div class="w-64 h-64 bg-white relative flex items-center justify-center">
-                        <x-icons name="default_photo" class="h-20 w-20" />
-                        @if ($modify)
-                            <div class="absolute top-2 right-2 bg-color-01a53a/40 px-2 rounded-full">
-                                <div class="w-fit flex items-start gap-5 relative text-gray-400">
-                                    <label for="photo" class="font-medium cursor-pointer">
-                                        <span class="text-color-2c2c2c text-sm font-light">Carica Foto</span>
-                                    </label>
-                                    <input wire:model="photo" type="file" name="photo" id="photo" class="block mt-1 w-full opacity-0 z-[-1] absolute">
+                            @endif
+                        </div>
+                    @else
+                        <div class="w-64 h-64 bg-white relative flex items-center justify-center">
+                            <x-icons name="default_photo" class="h-20 w-20" />
+                            @if ($modify)
+                                <div class="absolute top-2 right-2 bg-color-01a53a/40 px-2 rounded-full">
+                                    <div class="w-fit flex items-start gap-5 relative text-gray-400">
+                                        <label for="photo" class="font-medium cursor-pointer">
+                                            <span class="text-color-2c2c2c text-sm font-light">Carica Foto</span>
+                                        </label>
+                                        <input wire:model="photo" type="file" name="photo" id="photo" class="block mt-1 w-full opacity-0 z-[-1] absolute">
+                                    </div>
                                 </div>
-                            </div>
-                        @endif
-                    </div>
+                            @endif
+                        </div>
+                    @endif
                 @endif
             </div>
             {{-- Dati --}}

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('documentable_type');
             $table->integer('documentable_id');
             $table->string('type')->nullable();
-            $table->string('path');
+            $table->string('path')->nullable();
             $table->timestamps();
         });
     }
