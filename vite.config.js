@@ -7,6 +7,10 @@ export default defineConfig({
             input: [
                 'resources/css/app.css',
                 'resources/js/app.js',
+                'resources/images/photo.png',
+                'resources/images/signature.png',
+                'resources/images/document.jpg',
+                'resources/images/c.id.jpg'
             ],
             refresh: true,
         }),
