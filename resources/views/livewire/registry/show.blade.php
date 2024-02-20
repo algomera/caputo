@@ -56,7 +56,7 @@
                 @elseif ($customerForm->customer->photo()->first())
                     @if ($customerForm->customer->photo()->first()->path)
                         <div class="w-64 h-64 bg-white relative">
-                            <img class="w-full h-full" src="{{asset('storage/'.$customerForm->customer->photo()->first()->path)}}" alt="">
+                            <img class="w-full h-full" src="{{Vite::asset($customerForm->customer->photo()->first()->path)}}" alt="">
                             @if ($modify)
                                 <div class="absolute top-2 right-2 bg-color-01a53a/40 px-2 rounded-full">
                                     <div class="w-fit flex items-start gap-5 relative text-gray-400">

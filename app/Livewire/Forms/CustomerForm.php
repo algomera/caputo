@@ -167,7 +167,7 @@ class CustomerForm extends Form
             ['type' => 'fototessera'],
             [
                 'type' => 'fototessera',
-                'path' => $path
+                'path' => 'storage/app/public/'.$path
             ]
         );
 
