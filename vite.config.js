@@ -10,7 +10,8 @@ export default defineConfig({
                 'resources/images/photo.png',
                 'resources/images/signature.png',
                 'resources/images/document.jpg',
-                'resources/images/c.id.jpg'
+                'resources/images/c.id.jpg',
+                'resources/documents/supp_audio.pdf'
             ],
             refresh: true,
         }),
