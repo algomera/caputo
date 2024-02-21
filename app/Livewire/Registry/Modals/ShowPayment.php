@@ -30,6 +30,24 @@ class ShowPayment extends ModalComponent
         $this->setPayment();
     }
 
+    // public function updated($property) {
+    //     if ($property == 'newScan') {
+    //         if ($this->document) {
+    //             $this->documentForm->updateScan($this->document->id, $this->newScan);
+    //         } else {
+    //             $path = Storage::disk('public')->putFileAs('customers/customer-'.$this->registration->customer_id, $this->newScan, str_replace(' ', '_', $this->newScan->getClientOriginalName()));
+
+    //             $this->document = $this->payment->document()->create([
+    //                 'type' => 'Pagamento',
+    //                 'path' => $path
+    //             ]);
+    //         }
+
+    //         $this->documentForm->updateScan($this->document->id, $this->newScan);
+    //         $this->mount($this->payment->id, $this->registration->id);
+    //     }
+    // }
+
     public function setPayment() {
         $this->fill(
             $this->payment->only('note', 'type', 'amount')
@@ -48,11 +66,11 @@ class ShowPayment extends ModalComponent
             if ($this->document) {
                 $this->documentForm->updateScan($this->document->id, $this->newScan);
             } else {
-                $path = Storage::putFileAs('customers/customer-'.$this->registration->customer_id, $this->newScan, str_replace(' ', '_', $this->newScan->getClientOriginalName()));
+                $path = Storage::disk('public')->putFileAs('customers/customer-'.$this->registration->customer_id, $this->newScan, str_replace(' ', '_', $this->newScan->getClientOriginalName()));
 
                 $this->payment->document()->create([
                     'type' => 'Pagamento',
-                    'path' => 'storage/app/'.$path
+                    'path' => $path
                 ]);
             }
         }

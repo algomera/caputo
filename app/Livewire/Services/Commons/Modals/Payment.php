@@ -58,11 +58,11 @@ class Payment extends ModalComponent
         ]);
 
         if ($this->newScan) {
-            $path = Storage::putFileAs('customers/customer-'.$this->registration->customer_id, $this->newScan, str_replace(' ', '_', $this->newScan->getClientOriginalName()));
+            $path = Storage::disk('public')->putFileAs('customers/customer-'.$this->registration->customer_id, $this->newScan, str_replace(' ', '_', $this->newScan->getClientOriginalName()));
 
             $payment->document()->create([
                 'type' => 'Pagamento',
-                'path' => 'storage/app/'.$path
+                'path' => $path
             ]);
         }
 
@@ -73,9 +73,9 @@ class Payment extends ModalComponent
         return redirect()->route('registry.show', ['customer' => $this->registration->customer_id]);
     }
 
-    public static function modalMaxWidthClass(): string
+    public static function modalMaxWidth(): string
     {
-        return 'max-w-screen-lg 2xl:max-w-screen-xl';
+        return '4xl';
     }
 
     public static function closeModalOnClickAway(): bool

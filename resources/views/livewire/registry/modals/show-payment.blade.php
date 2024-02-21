@@ -19,14 +19,17 @@
                 </x-custom-select>
                 <x-input-text x-mask:dynamic="$money($input, '.', ' ')" wire:model="amount" width="w-1/3" name="amount" placeholder="0.00" label="Importo €" />
             </div>
-            <x-input-files wire:model.live="newScan" text="Carica File" color="347af2" name="newScan" preview="scans_uploaded" icon="upload" />
+
+            <div class="grow relative flex justify-start">
+                <x-input-files wire:model="newScan" text="Carica File" color="347af2" name="newScan"  preview="scans_uploaded" icon="upload" />
+                @if ($newScan)
+                    <small class="absolute -bottom-5 left-0 text-color-017c67 font-medium">{{$newScan->getClientOriginalName()}}</small>
+                @endif
+            </div>
+
             <textarea wire:model="note" name="note" id="" cols="30" rows="5" placeholder="Note..." class="w-full border-color-dfdfdf rounded-md mt-5"></textarea>
         </div>
-        @if ($newScan)
-            <div class="w-1/2 border">
-                <iframe src="{{ $newScan->temporaryUrl() }}" width="100%" height="100%" frameborder="0"></iframe>
-            </div>
-        @elseif ($document)
+        @if ($document)
             <div class="w-1/2 border">
                 <iframe src="{{ asset('storage/'.$document->path) }}" width="100%" height="100%" frameborder="0"></iframe>
             </div>
