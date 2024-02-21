@@ -115,7 +115,7 @@
                             data.revert();
                             alert('Non è possibile spostare le lezioni gia trascorse.');
                         } else {
-                            @this.update(data.event.id, data.event.start)
+                            @this.update(data.event.id, moment(data.event.start, 'YYYY-MM-DDTHH:mm').add(1, 'hours'))
                         }
                     }
                 },
@@ -137,7 +137,7 @@
                             data.revert();
                             alert('Non è possibile spostare una lezione svolta o spostare una lezione in data passata.');
                         } else {
-                            @this.update(data.event.id, data.event.start)
+                            @this.update(data.event.id, moment(data.event.start, 'YYYY-MM-DDTHH:mm').add(1, 'hours'))
                         }
                     }
                 },
