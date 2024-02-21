@@ -92,7 +92,9 @@
                                     <button wire:click="show({{$training->id}})" class="bg-color-347af2/30 flex items-center justify-center px-3 py-2 rounded-full">
                                         <x-icons name="show" class="w-5" />
                                     </button>
-                                    <x-icons wire:click="calendar({{$training->id}})" name="calendar" class="w-8 cursor-pointer hover:scale-105" />
+                                    <button wire:click="calendar({{$training->id}})" class="bg-color-ffb205/30 flex items-center justify-center px-3 py-3 rounded-full">
+                                        <x-icons name="calendar" class="w-5" />
+                                    </button>
                                 </div>
                             </td>
                         </tr>

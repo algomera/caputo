@@ -48,7 +48,6 @@
 
             <!-- Settings Dropdown -->
             <div class="relative flex items-center">
-                <small class="absolute bottom-0 right-0 whitespace-nowrap text-color-808080 font-semibold capitalize">{{auth()->user()->role->name}}</small>
 
                 <div class="flex items-center gap-6">
                     <x-icon-dropdown icon="notify" :contents="[]"/>
@@ -63,7 +62,10 @@
                         <x-dropdown align="right" width="48">
                             <x-slot name="trigger">
                                 <button class="inline-flex items-center py-2 border border-transparent text-base leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
-                                    <div>{{ Auth::user()->name }}</div>
+                                    <div class="flex flex-col gap-1">
+                                        <span>{{ Auth::user()->name }}</span>
+                                        <small class="whitespace-nowrap text-color-808080 font-semibold capitalize">{{auth()->user()->role->name}}</small>
+                                    </div>
                                     <x-icons name="chevron_down" class="text-color-2c2c2c ml-2" />
                                 </button>
                             </x-slot>

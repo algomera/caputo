@@ -470,7 +470,7 @@
         @break
     @case('presence')
         <svg fill="#000000" height="40px" width="40px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-            {{ $attributes->merge(['class']) }}viewBox="0 0 287.403 287.403" xml:space="preserve">
+            {{ $attributes->merge(['class']) }} viewBox="0 0 287.403 287.403" xml:space="preserve">
             <g>
                 <path d="M197.095,253.646H30V33.757h167.095v12.214l29.767-29.767c-1.214-7.066-7.355-12.447-14.767-12.447H15
                     c-8.284,0-15,6.716-15,15v249.89c0,8.284,6.716,15,15,15h197.095c8.284,0,15-6.716,15-15V159.041l-30,7.533V253.646z"/>
@@ -488,25 +488,13 @@
         </svg>
         @break
     @case('calendar')
-        <svg height="24" version="1.1" width="24"
-            {{ $attributes->merge(['class']) }} xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
-            <g transform="translate(0 -1028.4)">
-                <path d="m5 1032.4c-1.1046 0-2 0.9-2 2v14c0 1.1 0.8954 2 2 2h6 2 6c1.105 0 2-0.9 2-2v-14c0-1.1-0.895-2-2-2h-6-2-6z" fill="#bdc3c7"/>
-                <path d="m5 3c-1.1046 0-2 0.8954-2 2v14c0 1.105 0.8954 2 2 2h6 2 6c1.105 0 2-0.895 2-2v-14c0-1.1046-0.895-2-2-2h-6-2-6z" fill="#ecf0f1" transform="translate(0 1028.4)"/>
-                <path d="m5 3c-1.1046 0-2 0.8954-2 2v3 1h18v-1-3c0-1.1046-0.895-2-2-2h-6-2-6z" fill="#e74c3c" transform="translate(0 1028.4)"/>
-                <path d="m7 5.5a1.5 1.5 0 1 1 -3 0 1.5 1.5 0 1 1 3 0z" fill="#c0392b" transform="translate(.5 1028.4)"/>
-                <path d="m6 1c-0.5523 0-1 0.4477-1 1v3c0 0.5523 0.4477 1 1 1s1-0.4477 1-1v-3c0-0.5523-0.4477-1-1-1z" fill="#bdc3c7" transform="translate(0 1028.4)"/>
-                <path d="m7 5.5a1.5 1.5 0 1 1 -3 0 1.5 1.5 0 1 1 3 0z" fill="#c0392b" transform="translate(12.5 1028.4)"/>
-                <g fill="#bdc3c7">
-                    <path d="m18 1029.4c-0.552 0-1 0.4-1 1v3c0 0.5 0.448 1 1 1s1-0.5 1-1v-3c0-0.6-0.448-1-1-1z"/>
-                    <path d="m5 1039.4v2h2v-2h-2zm3 0v2h2v-2h-2zm3 0v2h2v-2h-2zm3 0v2h2v-2h-2zm3 0v2h2v-2h-2z"/>
-                    <path d="m5 1042.4v2h2v-2h-2zm3 0v2h2v-2h-2zm3 0v2h2v-2h-2zm3 0v2h2v-2h-2zm3 0v2h2v-2h-2z"/>
-                    <path d="m5 1045.4v2h2v-2h-2zm3 0v2h2v-2h-2zm3 0v2h2v-2h-2zm3 0v2h2v-2h-2zm3 0v2h2v-2h-2z"/>
-                </g>
-                <path d="m40 18a6 6 0 1 1 -12 0 6 6 0 1 1 12 0z" fill="#34495e" transform="matrix(.82491 0 0 .82491 -9.5468 1032.1)"/>
-                <path d="m18.5 14c-0.276 0-0.5 0.224-0.5 0.5v0.5 3 0.5c0 0.276 0.224 0.5 0.5 0.5h0.5 2 0.5c0.276 0 0.5-0.224 0.5-0.5s-0.224-0.5-0.5-0.5h-0.5-2v-3-0.5c0-0.276-0.224-0.5-0.5-0.5z" fill="#bdc3c7" transform="translate(0 1028.4)"/>
-                <path d="m18.5 1041.4c-3.038 0-5.5 2.4-5.5 5.5 0 3 2.462 5.5 5.5 5.5s5.5-2.5 5.5-5.5c0-3.1-2.462-5.5-5.5-5.5zm0 1c2.485 0 4.5 2 4.5 4.5 0 2.4-2.015 4.5-4.5 4.5s-4.5-2.1-4.5-4.5c0-2.5 2.015-4.5 4.5-4.5z" fill="#7f8c8d"/>
-                <path d="m27 17.5c0 0.276-0.224 0.5-0.5 0.5s-0.5-0.224-0.5-0.5 0.224-0.5 0.5-0.5 0.5 0.224 0.5 0.5z" fill="#95a5a6" transform="translate(-8 1029.4)"/>
+        <svg xmlns="http://www.w3.org/2000/svg" width="15.402" height="16.947"
+            {{ $attributes->merge(['class']) }} viewBox="0 0 15.402 16.947">
+            <g id="Icon_feather-calendar" data-name="Icon feather-calendar" transform="translate(-3.75 -2.25)">
+            <path id="Tracciato_212" data-name="Tracciato 212" d="M6.045,6H16.858A1.545,1.545,0,0,1,18.4,7.545V18.358A1.545,1.545,0,0,1,16.858,19.9H6.045A1.545,1.545,0,0,1,4.5,18.358V7.545A1.545,1.545,0,0,1,6.045,6Z" transform="translate(0 -1.455)" fill="none" stroke="#27272a" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
+            <path id="Tracciato_213" data-name="Tracciato 213" d="M24,3V6.089" transform="translate(-9.459 0)" fill="none" stroke="#27272a" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
+            <path id="Tracciato_214" data-name="Tracciato 214" d="M12,3V6.089" transform="translate(-3.638 0)" fill="none" stroke="#27272a" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
+            <path id="Tracciato_215" data-name="Tracciato 215" d="M4.5,15H18.4" transform="translate(0 -5.821)" fill="none" stroke="#27272a" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
             </g>
         </svg>
         @break
