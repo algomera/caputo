@@ -103,7 +103,8 @@
 
                     dateClick: function(data) {
                         var today = new Date();
-                        if (data.date < today) {
+                        if (!@json($trainingEnd)) {
+                        } else if (data.date < today) {
                             return alert('Non è possibile programmare lezioni in date o orari passati.');
                         } else {
                             @this.new({data: data.dateStr});
@@ -131,9 +132,10 @@
 
                     dateClick: function(data) {
                         var today = new Date();
-                        if (data.date < today) {
+                        if (!@json($trainingEnd)) {
+                        } else if (data.date < today) {
                             return alert('Non è possibile programmare lezioni in una data passata.');
-                        } else {
+                        }  else {
                             @this.new({data: data.dateStr});
                         }
                     },

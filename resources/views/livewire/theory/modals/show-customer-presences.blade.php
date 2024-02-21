@@ -35,7 +35,9 @@
                             <td scope="col" class="border-r-2 border-color-efefef text-center px-3 pt-5 pb-4 text-color-2c2c2c capitalize">
                                 @foreach ($presences as $presence)
                                     @if ($presence->lesson_id == $lesson->id && $presence->followed)
-                                        {{date("d/m/Y", strtotime($presence->begin))}}
+                                        @if ($presence->begin)
+                                            {{date("d/m/Y", strtotime($presence->begin))}}
+                                        @endif
                                     @endif
                                 @endforeach
                             </td>

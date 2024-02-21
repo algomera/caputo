@@ -50,11 +50,7 @@ class ShowCustomerPresences extends ModalComponent
             ->get();
         }
 
-        foreach ($this->presences as $presence) {
-            if ($presence->followed) {
-                $this->totalPresences += 1;
-            }
-        }
+        $this->totalPresences = $this->training->customerPresence($customer);
     }
 
     public static function modalMaxWidthClass(): string
