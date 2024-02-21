@@ -114,6 +114,12 @@
                         if (data.event.start < today) {
                             data.revert();
                             alert('Non è possibile spostare le lezioni gia trascorse.');
+                        } else if (moment(data.event.start, 'HH:mm:mm').format('HH:mm') < '08:00') {
+                            data.revert();
+                            alert('Non è possibile spostare la lezione fuori dal range del calendario.');
+                        } else if (moment(data.event.start, 'HH:mm:mm').add(data.event.extendedProps.lessonDuration,'m').format('HH:mm') > '20:00') {
+                            data.revert();
+                            alert('Non è possibile spostare la lezione fuori dal range del calendario.');
                         } else {
                             @this.update(data.event.id, moment(data.event.start, 'YYYY-MM-DDTHH:mm').add(1, 'hours'))
                         }
@@ -133,9 +139,16 @@
                     },
                     eventDrop: function(data) {
                         var today = new Date();
+
                         if (data.event.start < today) {
                             data.revert();
                             alert('Non è possibile spostare una lezione svolta o spostare una lezione in data passata.');
+                        } else if (moment(data.event.start, 'HH:mm:mm').format('HH:mm') < '08:00') {
+                            data.revert();
+                            alert('Non è possibile spostare la lezione fuori dal range del calendario.');
+                        } else if (moment(data.event.start, 'HH:mm:mm').add(data.event.extendedProps.lessonDuration,'m').format('HH:mm') > '20:00') {
+                            data.revert();
+                            alert('Non è possibile spostare la lezione fuori dal range del calendario.');
                         } else {
                             @this.update(data.event.id, moment(data.event.start, 'YYYY-MM-DDTHH:mm').add(1, 'hours'))
                         }

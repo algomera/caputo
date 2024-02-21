@@ -51,6 +51,7 @@ class Calendar extends Component
                         'title' => $lessonPlanning->training->variant_id ? $lessonPlanning->training->courseVariant->name : $lessonPlanning->course->name,
                         'argument' => $lessonPlanning->lesson->subject,
                         'start' => $lessonPlanning->begin,
+                        'lessonDuration' => $lessonPlanning->lesson->duration,
                         'end' => Carbon::parse($lessonPlanning->begin)->addMinutes($lessonPlanning->lesson->duration),
                         'color' => $color,
                         'customBorderColor' => $borderColor
