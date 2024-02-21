@@ -29,9 +29,12 @@
 
             <textarea wire:model="note" name="note" id="" cols="30" rows="5" placeholder="Note..." class="w-full border-color-dfdfdf rounded-md mt-5"></textarea>
         </div>
+
         @if ($document)
             <div class="w-1/2 border">
-                <iframe src="{{ asset('storage/'.$document->path) }}" width="100%" height="100%" frameborder="0"></iframe>
+                @if ($document->path)
+                    <iframe src="{{ asset('storage/'.$document->path) }}" width="100%" height="100%" frameborder="0"></iframe>
+                @endif
             </div>
         @else
             <div class="w-1/2 border flex items-center justify-center">
