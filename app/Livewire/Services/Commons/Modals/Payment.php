@@ -62,7 +62,7 @@ class Payment extends ModalComponent
 
             $payment->document()->create([
                 'type' => 'Pagamento',
-                'path' => $path
+                'path' => 'storage/'.$path
             ]);
         }
 

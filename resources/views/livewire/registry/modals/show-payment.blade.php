@@ -33,7 +33,7 @@
         @if ($document)
             <div class="w-1/2 border">
                 @if ($document->path)
-                    <iframe src="{{ asset('storage/'.$document->path) }}" width="100%" height="100%" frameborder="0"></iframe>
+                    <iframe src="{{ asset($document->path) }}" width="100%" height="100%" frameborder="0"></iframe>
                 @endif
             </div>
         @else
