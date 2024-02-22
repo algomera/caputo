@@ -5,7 +5,7 @@
     </div>
 
     <div class="flex gap-4 min-w-min ">
-        <div>
+        <div class="grow">
             <h1 class="text-3xl font-bold text-color-17489f capitalize">Pagamento
                 {{-- <span class="ml-2 text-xl underline">{{date("d/m/Y H:i", strtotime($drivingPlanning->begins))}}</span> --}}
             </h1>
@@ -35,10 +35,6 @@
                 @if ($document->path)
                     <iframe src="{{ asset($document->path) }}" width="100%" height="100%" frameborder="0"></iframe>
                 @endif
-            </div>
-        @else
-            <div class="w-1/2 border flex items-center justify-center">
-                <x-icons name="default_photo" class="w-14 h-14" />
             </div>
         @endif
     </div>
