@@ -41,8 +41,7 @@
             slotLabelInterval: '00:15:00',
             navLinks: true,
             editable: true,
-            // eventOrderStrict: true,
-            eventOrder: false,
+            eventOrderStrict: true,
             eventDrop: function(info) {
                 if (info.view.type == 'dayGridMonth') {
                     info.revert(); // Annulla il trascinamento se si trova nella visualizzazione mensile
@@ -140,6 +139,7 @@
                     }
                 },
                 timeGridWeek: {
+                    eventOrder: false,
                     eventMaxStack: 1,
                     dayHeaderFormat: { weekday: 'long', day: 'numeric'},
                     titleFormat: { day: 'numeric', month: 'long', year: 'numeric' },

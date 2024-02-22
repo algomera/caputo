@@ -59,29 +59,51 @@ class LessonPlanning extends Command
                                 // Programmo nuovamente tutte le lezioni previste nel corso
                                 foreach ($lessons as $lesson) {
                                     $now = $now->modify('+1 day');
-                                    $now->setTime(15, 30, 0);
+                                    $day = $now->format('N');
 
-                                    ModelsLessonPlanning::create([
-                                        'training_id' => $training->id,
-                                        'lesson_id' => $lesson->id,
-                                        'begin' => $now->format('Y-m-d H:i:s')
-                                    ]);
+                                    // Verifico se e domenica
+                                    if ($day != 7) {
+                                        ModelsLessonPlanning::create([
+                                            'training_id' => $training->id,
+                                            'lesson_id' => $lesson->id,
+                                            'begin' => $now->format('Y-m-d H:i:s')
+                                        ]);
+                                    } else {
+                                        $now = $now->modify('+1 day');
+
+                                        ModelsLessonPlanning::create([
+                                            'training_id' => $training->id,
+                                            'lesson_id' => $lesson->id,
+                                            'begin' => $now->format('Y-m-d H:i:s')
+                                        ]);
+                                    }
                                 }
                             }
                         }
                     } else {
-                        $now = new DateTime();
+                        $now = new DateTime($training->begins.' '.$training->time_start);
 
                         // Programmo tutte le lezioni previste nel corso
                         foreach ($lessons as $lesson) {
                             $now = $now->modify('+1 day');
-                            $now->setTime(15, 30, 0);
+                            $day = $now->format('N');
 
-                            ModelsLessonPlanning::create([
-                                'training_id' => $training->id,
-                                'lesson_id' => $lesson->id,
-                                'begin' => $now->format('Y-m-d H:i:s')
-                            ]);
+                            // Verifico se e domenica
+                            if ($day != 7) {
+                                ModelsLessonPlanning::create([
+                                    'training_id' => $training->id,
+                                    'lesson_id' => $lesson->id,
+                                    'begin' => $now->format('Y-m-d H:i:s')
+                                ]);
+                            } else {
+                                $now = $now->modify('+1 day');
+
+                                ModelsLessonPlanning::create([
+                                    'training_id' => $training->id,
+                                    'lesson_id' => $lesson->id,
+                                    'begin' => $now->format('Y-m-d H:i:s')
+                                ]);
+                            }
                         }
                     }
                 }

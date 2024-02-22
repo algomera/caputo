@@ -38,7 +38,7 @@ class PlanningSeeder extends Seeder
                     $start = strtotime($training->begins);
                     $end = $training->ends ? strtotime($training->ends) : strtotime(date("Y-m-d", strtotime("+3 months")));
                     $randomDate = rand($start,$end);
-                    $hour = rand(8, 20);
+                    $hour = rand(8, 17);
                     $minute = rand(0, 3) * 15;
                     $begin = date('Y-m-d', $randomDate). " " . sprintf("%02d:%02d:00", $hour, $minute);
                 } else {

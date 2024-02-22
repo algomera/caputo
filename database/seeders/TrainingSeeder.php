@@ -37,11 +37,15 @@ class TrainingSeeder extends Seeder
                         'ends' => fake()->dateTimeBetween('+4 week', '+8 week'),
                     ]);
 
+                    $hour = rand(8, 17);
+                    $minute = rand(0, 3) * 15;
+
                     $trainingLoop = Training::create([
                         'school_id' => $school->id,
                         'course_id' => $course->id,
                         'user_id' => $teachers->random()->id,
                         'begins' => now(),
+                        'time_start' => sprintf("%02d:%02d:00", $hour, $minute)
                     ]);
 
                     $costs = $course->getOptions()->where('type', 'fisso')->get();
