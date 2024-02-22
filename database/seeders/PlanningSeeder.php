@@ -35,8 +35,8 @@ class PlanningSeeder extends Seeder
 
             foreach ($lessons as $key => $lesson) {
                 if ($key < 2) {
-                    $start = strtotime(date("Y-m-d", time()));
-                    $end = strtotime(date("Y-m-d", strtotime("+3 months")));
+                    $start = strtotime($training->begins);
+                    $end = $training->ends ? strtotime($training->ends) : strtotime(date("Y-m-d", strtotime("+3 months")));
                     $randomDate = rand($start,$end);
                     $hour = rand(8, 20);
                     $minute = rand(0, 3) * 15;
