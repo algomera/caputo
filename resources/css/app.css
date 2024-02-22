@@ -107,6 +107,9 @@ select::-webkit-scrollbar { /*For WebKit Browsers*/
 .fc-timegrid-event-harness {
     @apply max-w-[100%]
 }
+.fc-popover-body {
+    @apply max-h-72 overflow-y-auto
+}
 #calendarLesson .fc-timegrid-event-harness {
     @apply max-w-[100%]
 }

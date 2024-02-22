@@ -14,6 +14,17 @@
 <script src="https://cdn.jsdelivr.net/npm/moment@2.30.1/moment.min.js"></script>
 
 <script>
+    var lessons = @json($lessons);
+    lessons.sort(function(a,b) {
+        if (a.id === @json($trainingId)) {
+            return -1;  // Metti a a.ID prima di b.ID
+        } else if (b.id === @json($trainingId)) {
+            return 1;   // Metti b.ID prima di a.ID
+        } else {
+            return a.id - b.id; // Ordina gli altri eventi per ID in modo crescente
+        }
+    });
+
     document.addEventListener('livewire:initialized', function() {
         var calendar = new FullCalendar.Calendar(document.getElementById('calendarLesson'), {
             height: 680,
@@ -30,6 +41,8 @@
             slotLabelInterval: '00:15:00',
             navLinks: true,
             editable: true,
+            // eventOrderStrict: true,
+            eventOrder: false,
             eventDrop: function(info) {
                 if (info.view.type == 'dayGridMonth') {
                     info.revert(); // Annulla il trascinamento se si trova nella visualizzazione mensile
@@ -127,6 +140,7 @@
                     }
                 },
                 timeGridWeek: {
+                    eventMaxStack: 1,
                     dayHeaderFormat: { weekday: 'long', day: 'numeric'},
                     titleFormat: { day: 'numeric', month: 'long', year: 'numeric' },
 
@@ -161,8 +175,7 @@
             eventClick: function(info) {
                 @this.call('show', {lesson: info.event.id});
             },
-
-            events: @json($lessons),
+            events: lessons,
         });
 
         calendar.setOption('visibleRange', {

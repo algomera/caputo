@@ -25,7 +25,7 @@ class PlanningSeeder extends Seeder
         $schools = School::all();
 
         // Lessons
-        $trainings = Training::all();
+        $trainings = Training::whereNotNull('ends')->get();
         foreach ($trainings as $training) {
             if ($training->variant_id != null) {
                 $lessons = $training->courseVariant->lessons()->get();

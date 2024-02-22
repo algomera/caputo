@@ -11,6 +11,7 @@ use Livewire\Component;
 class Calendar extends Component
 {
     public $training;
+    public $trainingId;
     public $variant;
     public $lessons = [];
     public $trainingStart = '';
@@ -18,6 +19,7 @@ class Calendar extends Component
     public $user;
 
     public function mount($training) {
+        $this->trainingId = $training;
         $this->user = auth()->user();
         $this->training = Training::find($training);
         $this->trainingStart = $this->training->begins;
