@@ -5,7 +5,7 @@
         <input {{ $attributes }} id="{{$value}}" type="radio" name="{{$name}}" value="{{$value}}"
             class="w-6 h-6 rounded-full text-color-7a95db bg-transparent border-color-7a95db focus:ring-transparent focus:ring-0"/>
         <div class="flex flex-col">
-            <span class="capitalize leading-[20px]">{{$label}}</span>
+            <span class="capitalize leading-7">{{$label}}</span>
         </div>
     </div>
     <div class="absolute -bottom-3 right-0">

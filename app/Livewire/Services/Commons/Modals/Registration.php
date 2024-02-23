@@ -14,9 +14,11 @@ class Registration extends ModalComponent
     public $course;
     public $trainings;
     public $trainingCourseVariant = null;
+    public $trainingUser;
     public $trainingBegins;
     public $trainingEnds;
-    public $trainingUser;
+    public $trainingTimeStart;
+    public $loopTraining = false;
 
     public function mount() {
         $this->course = Course::find(session()->get('course')['id']);
@@ -26,28 +28,58 @@ class Registration extends ModalComponent
     }
 
     public function rules() {
-        return [
-            'trainingBegins' => 'required',
-            'trainingUser' => 'required'
-        ];
+        if ($this->loopTraining) {
+            return [
+                'trainingUser' => 'required',
+                'trainingBegins' => 'required',
+                'trainingTimeStart' => 'required',
+            ];
+        } else {
+            return [
+                'trainingUser' => 'required',
+                'trainingBegins' => 'required',
+                'trainingEnds' => 'required'
+            ];
+        }
     }
 
     public function messages() {
-        return [
-            'trainingBegins.required' => 'Campo richiesto',
-            'trainingUser.required' => 'Selezione richiesta'
-        ];
+        if ($this->loopTraining) {
+            return [
+                'trainingUser.required' => 'Selezione richiesta',
+                'trainingBegins.required' => 'Campo richiesto',
+                'trainingTimeStart.required' => 'Campo richiesto',
+            ];
+        } else {
+            return [
+                'trainingUser.required' => 'Selezione richiesta',
+                'trainingBegins.required' => 'Campo richiesto',
+                'trainingEnds.required' => 'Campo richiesto'
+            ];
+        }
+    }
+
+    public function setLoop() {
+        $this->loopTraining = !$this->loopTraining;
+
+        if ($this->loopTraining) {
+            $this->trainingEnds = null;
+        } else {
+            $this->trainingTimeStart = null;
+        }
     }
 
     public function createTraining() {
         $this->validate();
+
         $training = Training::create([
             'school_id' => auth()->user()->schools()->first()->id,
             'course_id' => session()->get('course')['id'],
             'variant_id' => $this->trainingCourseVariant,
             'user_id' => $this->trainingUser,
             'begins' => $this->trainingBegins,
-            'ends' => $this->trainingEnds
+            'ends' => $this->trainingEnds,
+            'time_start' => $this->trainingTimeStart
         ]);
 
         if ($training->variant_id != null) {
@@ -56,11 +88,13 @@ class Registration extends ModalComponent
             $lessons = $training->course->lessons()->get();
         }
 
-        foreach ($lessons as $lesson) {
-            LessonPlanning::create([
-                'training_id' => $training->id,
-                'lesson_id' => $lesson->id,
-            ]);
+        if (!$this->loopTraining) {
+            foreach ($lessons as $lesson) {
+                LessonPlanning::create([
+                    'training_id' => $training->id,
+                    'lesson_id' => $lesson->id,
+                ]);
+            }
         }
 
         $this->mount();
@@ -81,7 +115,7 @@ class Registration extends ModalComponent
 
     public static function modalMaxWidthClass(): string
     {
-        return 'max-w-screen-lg 2xl:max-w-screen-xl';
+        return 'max-w-screen-lg 2xl:max-w-screen-2xl';
     }
 
 

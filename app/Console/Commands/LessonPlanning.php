@@ -82,6 +82,7 @@ class LessonPlanning extends Command
                         }
                     } else {
                         $now = new DateTime($training->begins.' '.$training->time_start);
+                        $now = $now->modify('-1 day');
 
                         // Programmo tutte le lezioni previste nel corso
                         foreach ($lessons as $lesson) {

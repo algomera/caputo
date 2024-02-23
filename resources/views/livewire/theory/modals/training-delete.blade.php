@@ -1,12 +1,13 @@
 <div class="p-8 flex flex-col items-center">
     <x-icons name="alert"/>
     <h1 class="text-xl text-gray-400 font-semibold text-center my-5">
-        Sei sicuro di volere eliminare l'autoscuola con codice
+        Sei sicuro di volere eliminare il corso
         <span class="text-gray-800 uppercase">
-            {{$school->code}} ?
+            {{$training->course->name}} ?
         </span>
+
         <div>
-            <small class="text-gray-400 font-light">La cancellazione riguarda anche tutti i dati ad essa legati!</small>
+            <small class="text-gray-400 font-light">La cancellazione riguarda anche tutti i dati ad esso legati!</small>
         </div>
     </h1>
     <div class="w-fit m-auto space-x-5">

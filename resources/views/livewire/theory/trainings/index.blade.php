@@ -12,6 +12,9 @@
                 <x-input-text wire:model.live="code" width="w-fit" name="code" placeholder="Codice" uppercase="shadow" />
             @endrole
         </div>
+        @if (auth()->user()->role->name != 'insegnante')
+            <button wire:click="$dispatch('openModal', { component: 'theory.modals.training-create' })" class="w-fit px-6 py-2 bg-color-01a53a/50 text-white rounded-md font-medium">Crea corso</button>
+        @endif
     </div>
 
     <div class="p-11 pt-5 bg-color-f7f7f7 shadow-shadow-card mt-5 relative">
@@ -95,6 +98,12 @@
                                     <button wire:click="calendar({{$training->id}})" class="bg-color-ffb205/30 flex items-center justify-center px-3 py-3 rounded-full">
                                         <x-icons name="calendar" class="w-5" />
                                     </button>
+                                    @role('admin|responsabile sede')
+                                    <button wire:click="$dispatch('openModal', { component: 'theory.modals.training-delete', arguments: {training: {{ $training->id }}} })"
+                                        class="bg-red-500/10 flex items-center justify-center p-2.5 border border-red-500/50 rounded-full">
+                                        <x-icons name="delete" class="w-5" />
+                                    </button>
+                                    @endrole
                                 </div>
                             </td>
                         </tr>

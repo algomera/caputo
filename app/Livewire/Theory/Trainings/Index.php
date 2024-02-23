@@ -4,6 +4,7 @@ namespace App\Livewire\Theory\Trainings;
 
 use App\Models\Training;
 use Livewire\Component;
+use Livewire\Attributes\On;
 
 class Index extends Component
 {
@@ -19,6 +20,7 @@ class Index extends Component
         return redirect()->route('theory.trainings.calendar', ['training' => $training]);
     }
 
+    #[On('UpdateTrainingIndex')]
     public function render()
     {
         $user = auth()->user();
