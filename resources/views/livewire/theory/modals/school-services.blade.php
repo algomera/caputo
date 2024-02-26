@@ -19,7 +19,7 @@
 
 
         <div x-data="{open: null}" class="w-full overflow-auto no-scrollbar">
-            @if ($selectedSchool)
+            @if ($school && $services)
                 @if ($services->count() > 0)
                     @foreach ($services as $service)
                         <div class="w-full bg-color-fbfbfb transition-all duration-300">
@@ -46,7 +46,7 @@
                                 @if ($service->courses()->get()->count() > 0)
                                     <div class="flex flex-wrap gap-x-4 gap-y-4 mt-5">
                                         @foreach ($service->courses()->get() as $course)
-                                            <div wire:click="$dispatch('openModal', { component: 'theory.modals.training-create', arguments: {school: {{$school->id}}, course: {{$course->id}}} })"
+                                            <div wire:click="$dispatch('openModal', { component: 'theory.modals.training-create', arguments: {school: {{$selectedSchool}}, course: {{$course->id}}} })"
                                                 class="w-[calc(25%-16px)] flex flex-col gap-2 xl:flex-row items-center justify-between border rounded-md p-3 bg-white cursor-pointer hover:scale-105 transition-all duration-300 group">
                                                 <span class="capitalize font-medium text-color-545454 group-hover:text-color-017c67/70 transition-all duration-150">{{$course->name}}</span>
                                                 <div class="flex items-center gap-2">

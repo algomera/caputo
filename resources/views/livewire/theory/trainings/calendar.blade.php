@@ -73,7 +73,7 @@
             },
             validRange: {
                 start: @json($trainingStart),
-                end: @json($trainingEnd),
+                end: moment(@json($trainingEnd)).add(1, 'days').format('YYYY-MM-DD'),
             },
             eventContent: function(event) {
                 var main = {html:`
@@ -176,11 +176,6 @@
                 @this.call('show', {lesson: info.event.id});
             },
             events: lessons,
-        });
-
-        calendar.setOption('visibleRange', {
-            start: @json($trainingStart),
-            end: @json($trainingEnd),
         });
 
         @this.on('updateCalendar', lesson => {

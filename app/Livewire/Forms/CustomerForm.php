@@ -46,7 +46,7 @@ class CustomerForm extends Form
                 'address' => 'required',
                 'civic' => 'required',
                 'postcode' => 'required',
-                'email' => 'required',
+                'email' => ['required','unique:customers,email,'. $this->customer->id],
                 'phone_1' => 'required',
                 'phone_2' => 'nullable',
             ];
@@ -55,7 +55,7 @@ class CustomerForm extends Form
                 'name' => 'required',
                 'lastName' => 'required',
                 'sex' => 'required',
-                'fiscal_code' => 'required',
+                'fiscal_code' => ['required','unique:customers,fiscal_code'],
                 'date_of_birth' => 'required',
                 'birth_place' => 'required',
                 'country_of_birth' => 'required',
@@ -65,7 +65,7 @@ class CustomerForm extends Form
                 'address' => 'required',
                 'civic' => 'required',
                 'postcode' => 'required',
-                'email' => 'required',
+                'email' => ['required','unique:customers,email'],
                 'phone_1' => 'required',
                 'phone_2' => 'nullable',
             ];
@@ -89,6 +89,7 @@ class CustomerForm extends Form
             'civic.required' => 'Richiesto',
             'postcode.required' => 'Richiesto',
             'email.required' => 'Email richiesta',
+            'email.unique' => 'Email gia registrata',
             'phone_1.required' => 'Campo richiesto',
         ];
     }

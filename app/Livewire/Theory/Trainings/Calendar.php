@@ -34,27 +34,29 @@ class Calendar extends Component
         }
 
         foreach ($allTrainings as $training) {
-            $plannings = $training->plannings()->with('training', 'lesson', 'user', 'course')->get();
+            $plannings = $training->plannings()->with('lesson', 'user', 'course')->get();
             $color = '#e6f1ff';
             $borderColor = '#17489f';
 
             foreach ($plannings as $lessonPlanning) {
-                if ($training->id == $this->training->id) {
-                    $color = '#e8ffde';
-                    $borderColor = '#01a53a';
-                }
-
                 if ($lessonPlanning->begin) {
+                    $lesson = $lessonPlanning->lesson;
+
+                    if ($training->id == $this->training->id) {
+                        $color = '#e8ffde';
+                        $borderColor = '#01a53a';
+                    }
+
                     $this->lessons[] = [
                         'id' => $lessonPlanning->id,
-                        'training' => $lessonPlanning->training_id,
+                        'training' => $training->id,
                         'teacher' => $lessonPlanning->user->full_name,
                         'lesson' => $lessonPlanning->lesson_id,
-                        'title' => $lessonPlanning->training->variant_id ? $lessonPlanning->training->courseVariant->name : $lessonPlanning->course->name,
-                        'argument' => $lessonPlanning->lesson->subject,
+                        'title' => $training->variant_id ? $training->courseVariant->name : $training->course->name,
+                        'argument' => $lesson->subject,
                         'start' => $lessonPlanning->begin,
-                        'lessonDuration' => $lessonPlanning->lesson->duration,
-                        'end' => Carbon::parse($lessonPlanning->begin)->addMinutes($lessonPlanning->lesson->duration),
+                        'lessonDuration' => $lesson->duration,
+                        'end' => Carbon::parse($lessonPlanning->begin)->addMinutes($lesson->duration),
                         'color' => $color,
                         'customBorderColor' => $borderColor
                     ];
@@ -68,8 +70,8 @@ class Calendar extends Component
             $trainings = Training::where(function ($query) use ($startDate, $endDate) {
                 if ($endDate) {
                     $query->whereBetween('begins', [$startDate, $endDate])->orWhere(function ($query) use ($endDate) {
-                        $query->where('begins', '<', $endDate)->where(function ($query) {
-                            $query->whereNull('ends')->orWhere('ends', '>', Carbon::now());
+                        $query->where('begins', '<', $endDate)->where(function ($query) use ($endDate) {
+                            $query->whereNull('ends')->orWhere('ends', '>', Carbon::now())->where('ends', '<=', $endDate);
                         });
                     });
                 } else {
@@ -84,8 +86,8 @@ class Calendar extends Component
             $trainings = Training::where('school_id', $this->user->schools()->first()->id)->where(function ($query) use ($startDate, $endDate) {
                 if ($endDate) {
                     $query->whereBetween('begins', [$startDate, $endDate])->orWhere(function ($query) use ($endDate) {
-                        $query->where('begins', '<', $endDate)->where(function ($query) {
-                            $query->whereNull('ends')->orWhere('ends', '>', Carbon::now());
+                        $query->where('begins', '<', $endDate)->where(function ($query) use ($endDate) {
+                            $query->whereNull('ends')->orWhere('ends', '>', Carbon::now())->where('ends', '<=', $endDate);
                         });
                     });
                 } else {

@@ -13,6 +13,7 @@ use LivewireUI\Modal\ModalComponent;
 class TrainingCreate extends ModalComponent
 {
     public $school;
+    public $schoolId;
     public $course;
     public $trainingCourseVariant = null;
     public $loopTraining = false;
@@ -22,6 +23,7 @@ class TrainingCreate extends ModalComponent
     public $trainingTimeStart;
 
     public function mount($school, $course) {
+        $this->schoolId = $school;
         $this->school = School::find($school);
         $this->course = Course::find($course);
     }
