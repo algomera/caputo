@@ -25,8 +25,6 @@
         return 0;
     });
 
-    console.log(lessons);
-
     document.addEventListener('livewire:initialized', function() {
         var calendar = new FullCalendar.Calendar(document.getElementById('calendarLesson'), {
             height: 680,
@@ -60,6 +58,10 @@
                 }
             },
             selectable: true,
+            selectConstraint: {
+                start: '08:00',
+                end: '20:00'
+            },
             nowIndicator: true,
             showNonCurrentDates: false,
             buttonText: {
@@ -118,7 +120,10 @@
 
                     dateClick: function(data) {
                         var today = new Date();
+
                         if (!@json($trainingEnd)) {
+                        } else if (moment(data.date, 'HH:mm').format('HH:mm') < '08:00') {
+                            return alert('Per programmare nuove lezioni cliccare le caselle in basso definite da orari.');
                         } else if (data.date < today) {
                             return alert('Non è possibile programmare lezioni in date o orari passati.');
                         } else {
@@ -150,7 +155,10 @@
 
                     dateClick: function(data) {
                         var today = new Date();
+                        console.log(moment(data.date, 'HH:mm').format('HH:mm'));
                         if (!@json($trainingEnd)) {
+                        } else if (moment(data.date, 'HH:mm').format('HH:mm') < '08:00') {
+                            return alert('Per programmare nuove lezioni cliccare le caselle in basso definite da orari.');
                         } else if (data.date < today) {
                             return alert('Non è possibile programmare lezioni in una data passata.');
                         }  else {

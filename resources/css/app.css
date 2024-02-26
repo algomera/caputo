@@ -96,7 +96,7 @@ select::-webkit-scrollbar { /*For WebKit Browsers*/
     @apply brightness-110  hover:brightness-110
 }
 .fc-timegrid-slot {
-    @apply !h-20
+    @apply !h-16
 }
 .fc-timegrid-slot-label-frame {
     @apply flex justify-center
