@@ -13,7 +13,7 @@
             @endrole
         </div>
         @if (auth()->user()->role->name != 'insegnante')
-            <button wire:click="$dispatch('openModal', { component: 'theory.modals.training-create' })" class="w-fit px-6 py-2 bg-color-01a53a/50 text-white rounded-md font-medium">Crea corso</button>
+            <button wire:click="$dispatch('openModal', { component: 'theory.modals.school-services' })" class="w-fit px-6 py-2 bg-color-01a53a/50 text-white rounded-md font-medium">Crea corso</button>
         @endif
     </div>
 
@@ -24,37 +24,20 @@
         <table class="min-w-full divide-y-2 divide-color-efefef border-b-2 border-color-efefef">
             <thead class="customHead">
                 <tr class="text-color-545454">
-                    <th scope="col" class="w-20 text-center px-3 py-3.5 font-semibold hidden xl:table-cell">
-                        ID
-                    </th>
+                    <th scope="col" class="w-20 text-center px-3 py-3.5 font-semibold hidden xl:table-cell">ID</th>
                     @role('admin')
-                    <th scope="col" class="py-3.5 px-3 font-light">
-                        Codice
-                    </th>
+                        <th scope="col" class="py-3.5 px-3 font-light">Codice</th>
                     @endrole
-                    <th scope="col" class="text-left  px-3 py-3.5 font-light">
-                        Nome corso
-                    </th>
-                    <th scope="col" class="text-left px-3 py-3.5 font-light">
-                        Variante corso
-                    </th>
+                    <th scope="col" class="text-left  px-3 py-3.5 font-light">Corso</th>
+                    <th scope="col" class="text-left px-3 py-3.5 font-light">Variante</th>
                     @role('admin|responsabile sede|segretaria')
-                    <th scope="col" class="text-left px-3 py-3.5 font-light">
-                        Insegnante
-                    </th>
+                        <th scope="col" class="text-left px-3 py-3.5 font-light">Insegnante</th>
                     @endrole
-                    <th scope="col" class="text-center px-3 py-3.5 font-light hidden xl:table-cell">
-                        Inizio
-                    </th>
-                    <th scope="col" class="text-center px-3 py-3.5 font-light hidden xl:table-cell">
-                        Fine
-                    </th>
-                    <th scope="col" class="text-center px-3 py-3.5 font-light hidden xl:table-cell">
-                        N° Iscritti
-                    </th>
-                    <th scope="col" class="px-3 py-3.5 font-light">
-                        &nbsp;
-                    </th>
+                    <th scope="col" class="text-center px-3 py-3.5 font-light">Inizio</th>
+                    <th scope="col" class="w-20 text-center px-3 py-3.5 font-light">Orario</th>
+                    <th scope="col" class="text-center px-3 py-3.5 font-light">Fine</th>
+                    <th scope="col" class="text-center px-3 py-3.5 font-light hidden xl:table-cell">N° Iscritti</th>
+                    <th scope="col" colspan="2" class="py-3.5 font-light">Azioni</th>
                 </tr>
             </thead>
             <tbody class="bg-white customBody no-scrollbar !max-h-[470px]">
@@ -63,19 +46,20 @@
                         <tr class="text-center even:bg-color-f7f7f7">
                             <td class="w-20 border-r-2 border-color-efefef py-4 px-3 text-color-17489f capitalize font-semibold hidden xl:table-cell">{{$training->id}}</td>
                             @role('admin')
-                            <td class="border-r-2 border-color-efefef py-4 px-3 font-bold text-color-347af2 uppercase">{{$training->school->code}}</td>
+                                <td class="border-r-2 border-color-efefef py-4 px-3 font-bold text-color-347af2 uppercase">{{$training->school->code}}</td>
                             @endrole
-                            <td class="border-r-2 border-color-efefef py-4 px-3 text-color-2c2c2c capitalize text-left">{{$training->course->name}}</td>
-                            <td class="border-r-2 border-color-efefef px-3 py-4 text-color-2c2c2c capitalize text-left">
+                            <td class="border-r-2 border-color-efefef py-4 px-3 text-color-2c2c2c capitalize text-left text-sm 2xl:text-base">{{$training->course->name}}</td>
+                            <td class="border-r-2 border-color-efefef px-3 py-4 text-color-2c2c2c capitalize text-left text-sm 2xl:text-base">
                                 @if ($training->courseVariant)
                                     {{$training->courseVariant->name}}
                                 @endif
                             </td>
                             @role('admin|responsabile sede|segretaria')
-                            <td class="border-r-2 border-color-efefef px-3 py-4 text-color-2c2c2c text-left">{{$training->user->full_name}}</td>
+                                <td class="border-r-2 border-color-efefef px-3 py-4 text-color-2c2c2c text-left text-sm 2xl:text-base">{{$training->user->full_name}}</td>
                             @endrole
-                            <td class="border-r-2 border-color-efefef px-3 py-4 text-color-2c2c2c hidden xl:table-cell">{{date("d/m/Y", strtotime($training->begins))}}</td>
-                            <td class="border-r-2 border-color-efefef px-3 py-4 text-color-2c2c2c hidden xl:table-cell">
+                            <td class="border-r-2 border-color-efefef px-3 py-4 text-color-2c2c2c text-sm 2xl:text-base">{{date("d/m/Y", strtotime($training->begins))}}</td>
+                            <td class="w-20 border-r whitespace-nowrap px-3 py-4 font-light text-color-2c2c2c capitalize">{{$training->time_start ? date("H:i", strtotime($training->time_start)) : null}}</td>
+                            <td class="border-r-2 border-color-efefef px-3 py-4 text-color-2c2c2c text-sm 2xl:text-base">
                                 <div class="flex justify-center">
                                     @if (!$training->ends)
                                         <x-icons name="pay_other" />
@@ -90,19 +74,19 @@
                                     <x-icons name="user" class="text-color-347af2 " />
                                 </div>
                             </td>
-                            <td class="px-3 py-4 text-color-2c2c2c">
-                                <div class="w-fit m-auto flex items-center gap-4">
-                                    <button wire:click="show({{$training->id}})" class="bg-color-347af2/30 flex items-center justify-center px-3 py-2 rounded-full">
+                            <td colspan="2" class="py-4 text-color-2c2c2c">
+                                <div class="w-fit m-auto flex items-center gap-1 2xl:gap-2">
+                                    <button wire:click="show({{$training->id}})" class="bg-color-347af2/30 flex items-center justify-center px-3 py-2 rounded-full scale-75 2xl:scale-100">
                                         <x-icons name="show" class="w-5" />
                                     </button>
-                                    <button wire:click="calendar({{$training->id}})" class="bg-color-ffb205/30 flex items-center justify-center px-3 py-3 rounded-full">
+                                    <button wire:click="calendar({{$training->id}})" class="bg-color-ffb205/30 flex items-center justify-center px-3 py-3 rounded-full scale-75 2xl:scale-100">
                                         <x-icons name="calendar" class="w-5" />
                                     </button>
                                     @role('admin|responsabile sede')
-                                    <button wire:click="$dispatch('openModal', { component: 'theory.modals.training-delete', arguments: {training: {{ $training->id }}} })"
-                                        class="bg-red-500/10 flex items-center justify-center p-2.5 border border-red-500/50 rounded-full">
-                                        <x-icons name="delete" class="w-5" />
-                                    </button>
+                                        <button wire:click="$dispatch('openModal', { component: 'theory.modals.training-delete', arguments: {training: {{ $training->id }}} })"
+                                            class="bg-red-500/10 flex items-center justify-center p-2.5 border border-red-500/50 rounded-full scale-75 2xl:scale-100">
+                                            <x-icons name="delete" class="w-5" />
+                                        </button>
                                     @endrole
                                 </div>
                             </td>

@@ -24,7 +24,10 @@ class Index extends Component
     public function render()
     {
         $user = auth()->user();
-        $schoolId = $user->schools()->first()->id;
+        if ($user->role->name != 'admin') {
+            $schoolId = $user->schools()->first()->id;
+        }
+
         if ($user->role->name == 'admin') {
             $trainings = Training::with('course', 'courseVariant', 'user', 'school')
             ->whereHas('course', function($q) {
@@ -35,12 +38,12 @@ class Index extends Component
             })
             ->whereHas('school', function($q) {
                 $q->filter('code', $this->code);
-            })->get();
+            })->orderBy('id', 'DESC')->get();
         } elseif ($user->role->name == 'insegnante') {
             $trainings = Training::where('school_id', $schoolId)->where('user_id', $user->id)->with('course', 'courseVariant')
             ->whereHas('course', function($q) {
                 $q->filter('name', $this->course);
-            })->get();
+            })->orderBy('id', 'DESC')->get();
         } else {
             $trainings = Training::where('school_id', $schoolId)->with('course', 'courseVariant', 'user')
             ->whereHas('course', function($q) {
@@ -48,7 +51,7 @@ class Index extends Component
             })
             ->whereHas('user', function($q) {
                 $q->filter('name', $this->user);
-            })->get();
+            })->orderBy('id', 'DESC')->get();
         }
 
         return view('livewire.theory.trainings.index', [
