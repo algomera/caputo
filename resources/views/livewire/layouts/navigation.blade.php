@@ -9,15 +9,12 @@
                     <x-nav-link :href="route('service')" :active="request()->routeIs('service*')">
                         Servizi
                     </x-nav-link>
-                    @endrole
-                    @role('admin|responsabile sede|segretaria')
+
                     <x-nav-link :href="route('registry.index')" :active="request()->routeIs('registry*')">
                         Anagrafica
                     </x-nav-link>
-                    @endrole
 
-                    @role('admin|responsabile sede|segretaria')
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('')">
+                    <x-nav-link :href="route('subscribers.index')" :active="request()->routeIs('subscribers*')">
                         Registro iscritti
                     </x-nav-link>
                     @endrole
@@ -29,7 +26,7 @@
                     @endrole
 
                     @role('admin|responsabile sede|segretaria|istruttore')
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('')">
+                    <x-nav-link :href="route('driving.index')" :active="request()->routeIs('driving*')">
                         Gestione Guide
                     </x-nav-link>
                     @endrole
@@ -79,9 +76,8 @@
                                 <form method="POST" action="{{ route('logout') }}">
                                     @csrf
 
-                                    <x-dropdown-link :href="route('logout')"
-                                            onclick="event.preventDefault();
-                                                        this.closest('form').submit();">
+                                    <x-dropdown-link :href="route('logout')" onclick="event.preventDefault();
+                                        this.closest('form').submit();">
                                         Esci
                                     </x-dropdown-link>
                                 </form>

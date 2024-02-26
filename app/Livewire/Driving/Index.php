@@ -1,0 +1,31 @@
+<?php
+
+namespace App\Livewire\Driving;
+
+use App\Models\DrivingPlanning;
+use Livewire\Component;
+
+class Index extends Component
+{
+    public $drivings = [];
+
+    public function mount() {
+        $drivingPlanning = DrivingPlanning::all();
+
+        foreach ($drivingPlanning as $driving) {
+            $this->drivings[] = [
+                'id' => $driving->id,
+                'customer' => $driving->customer->full_name,
+                // 'instructor' => $driving->instructor->full_name,
+                'vehicle_type' => $driving->vehicle->type,
+                'plate' => $driving->vehicle->plate,
+                'start' => $driving->begins
+            ];
+        }
+    }
+
+    public function render()
+    {
+        return view('livewire.driving.index');
+    }
+}

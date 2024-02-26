@@ -12,6 +12,8 @@ use App\Livewire\Registry\Show as RegistryShow;
 use App\Livewire\Theory\Trainings\Index as TrainingIndex;
 use App\Livewire\Theory\Trainings\Calendar as TrainingCalendar;
 use App\Livewire\Theory\Lessons\Index as LessonsIndex;
+use App\Livewire\Driving\Index as DrivingIndex;
+use App\Livewire\Subscribers\Index as SubscribersIndex;
 
 
 
@@ -42,12 +44,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/service/patenti/{course:slug}/register', [StepRegister::class, '__invoke'])->name('service.step.register');
         Route::get('/anagrafica', [RegistryIndex::class, '__invoke'])->name('registry.index');
         Route::get('/anagrafica/{customer}', [RegistryShow::class, '__invoke'])->name('registry.show');
+        Route::get('registro-iscritti', [SubscribersIndex::class, '__invoke'])->name('subscribers.index');
     });
 
     Route::group(['middleware' => ['role:admin|responsabile sede|segretaria|insegnante']], function () {
         Route::get('/gestione-corsi', [TrainingIndex::class, '__invoke'])->name('theory.trainings.index');
         Route::get('/gestione-corsi/calendar/{training}', [TrainingCalendar::class, '__invoke'])->name('theory.trainings.calendar');
         Route::get('/gestione-lezioni/{training}', [LessonsIndex::class, '__invoke'])->name('theory.lessons.index');
+    });
+
+    Route::group(['middleware' => ['role:admin|responsabile sede|segretaria|istruttore']], function () {
+        Route::get('/gestione-guide', [DrivingIndex::class, '__invoke'])->name('driving.index');
     });
 
     Route::group(['middleware' => ['role:admin|responsabile sede|segretaria|medico']], function () {
