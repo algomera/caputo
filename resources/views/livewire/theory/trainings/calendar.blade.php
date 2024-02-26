@@ -16,14 +16,16 @@
 <script>
     var lessons = @json($lessons);
     lessons.sort(function(a,b) {
-        if (a.id === @json($trainingId)) {
-            return -1;  // Metti a a.ID prima di b.ID
-        } else if (b.id === @json($trainingId)) {
-            return 1;   // Metti b.ID prima di a.ID
-        } else {
-            return a.id - b.id; // Ordina gli altri eventi per ID in modo crescente
+        if (a.training == @json($trainingId) && b.training != @json($trainingId)) {
+            return -1;
         }
+        if (a.training != @json($trainingId) && b.training == @json($trainingId)) {
+            return 1;
+        }
+        return 0;
     });
+
+    console.log(lessons);
 
     document.addEventListener('livewire:initialized', function() {
         var calendar = new FullCalendar.Calendar(document.getElementById('calendarLesson'), {
@@ -105,6 +107,7 @@
                 dayGridMonth: {
                     dayMaxEventRows: 5,
                     eventMaxStack: 2,
+                    eventOrder: false,
                     dayHeaderFormat: { weekday: 'long'},
                     titleFormat: { month: 'long', year: 'numeric' },
                 },
@@ -139,6 +142,7 @@
                     }
                 },
                 timeGridWeek: {
+                    eventOrderStrict: true,
                     eventOrder: false,
                     eventMaxStack: 1,
                     dayHeaderFormat: { weekday: 'long', day: 'numeric'},
@@ -165,6 +169,9 @@
                         } else if (moment(data.event.start, 'HH:mm:mm').add(data.event.extendedProps.lessonDuration,'m').format('HH:mm') > '20:00') {
                             data.revert();
                             alert('Non è possibile spostare la lezione fuori dal range del calendario.');
+                        } else if (!@json($trainingEnd)) {
+                            data.revert();
+                            alert('Non è possibile spostare la lezione in questa schermata.');
                         } else {
                             @this.update(data.event.id, moment(data.event.start, 'YYYY-MM-DDTHH:mm').add(1, 'hours'))
                         }
