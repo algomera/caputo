@@ -20,6 +20,7 @@ return new class extends Migration
             $table->longText('description')->nullable();
             $table->string('type_visit')->nullable();
             $table->string('absences')->nullable();
+            $table->string('guides')->nullable();
             $table->timestamps();
         });
     }

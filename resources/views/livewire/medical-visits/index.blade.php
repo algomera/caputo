@@ -20,43 +20,19 @@
             <thead class="customHead">
                 <tr class="text-center text-color-545454">
                     @role('admin')
-                    <th scope="col" class="py-3.5 px-3 font-light">
-                        Codice
-                    </th>
+                    <th scope="col" class="py-3.5 px-3 font-light">Codice</th>
                     @endrole
-                    <th scope="col" class="py-3.5 px-3 font-light">
-                        Corso/servizio
-                    </th>
-                    <th scope="col" class="py-3.5 px-3 font-light">
-                        Cognome
-                    </th>
-                    <th scope="col" class="px-3 py-3.5 font-light">
-                        Nome
-                    </th>
-                    <th scope="col" class="px-3 py-3.5 font-light">
-                        Tipo di visita
-                    </th>
-                    <th scope="col" class="px-3 py-3.5 font-light">
-                        Pago Pa
-                    </th>
-                    <th scope="col" class="px-3 py-3.5 font-light">
-                        1° Fase
-                    </th>
-                    <th scope="col" class="px-3 py-3.5 font-light">
-                        Stato visita
-                    </th>
-                    <th scope="col" class="px-3 py-3.5 font-light">
-                        N° Protocollo
-                    </th>
-                    <th scope="col" class="px-3 py-3.5 font-light">
-                        Telefono 1
-                    </th>
-                    <th scope="col" class="px-3 py-3.5 font-light hidden xl:table-cell">
-                        Telefono 2
-                    </th>
-                    <th scope="col" class="px-3 py-3.5 font-light hidden xl:table-cell">
-                        Scadenza
-                    </th>
+                    <th scope="col" class="py-3.5 px-3 font-light">Corso/servizio</th>
+                    <th scope="col" class="py-3.5 px-3 font-light">Cognome</th>
+                    <th scope="col" class="px-3 py-3.5 font-light">Nome</th>
+                    <th scope="col" class="px-3 py-3.5 font-light">Tipo di visita</th>
+                    <th scope="col" class="px-3 py-3.5 font-light">Pago Pa</th>
+                    <th scope="col" class="px-3 py-3.5 font-light">1° Fase</th>
+                    <th scope="col" class="px-3 py-3.5 font-light">Stato visita</th>
+                    <th scope="col" class="px-3 py-3.5 font-light">N° Protocollo</th>
+                    <th scope="col" class="px-3 py-3.5 font-light">Telefono 1</th>
+                    <th scope="col" class="px-3 py-3.5 font-light hidden xl:table-cell">Telefono 2</th>
+                    <th scope="col" class="px-3 py-3.5 font-light hidden xl:table-cell">Scadenza</th>
                 </tr>
             </thead>
             <tbody class="bg-white customBody no-scrollbar !max-h-[470px]">

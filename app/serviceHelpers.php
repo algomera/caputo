@@ -95,3 +95,23 @@ if (! function_exists('get_step')) {
         return $description;
     }
 }
+
+if (! function_exists('get_guide')) {
+    function get_guide($guide) {
+        $icon = '';
+
+        switch ($guide) {
+            case 'notturna':
+                $icon = 'night';
+                break;
+            case 'extraurbana':
+                $icon = 'street';
+                break;
+            case 'autostrada':
+                $icon = 's_street';
+                break;
+        }
+
+        return $icon;
+    }
+}

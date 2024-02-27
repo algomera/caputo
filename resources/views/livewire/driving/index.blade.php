@@ -21,7 +21,7 @@
             weekends: true,
             slotMinTime: '8:00:00',
             slotMaxTime: '20:00:00',
-            slotDuration: '00:60:00',
+            slotDuration: '00:30:00',
             slotLabelInterval: '00:60:00',
             navLinks: true,
             editable: true,
@@ -61,25 +61,25 @@
             },
             eventContent: function(event) {
                 var main = {html:`
-                    <div class="p-2 w-full fc-event-main-frame border">
+                    <div class="p-2 w-full fc-event-main-frame border bg-color-347af2/80">
                         <div class="fc-event-title-container">
                             <div class="fc-event-title fc-sticky">
-                                <p class="flex font-medium gap-2">
-                                    <x-icons name="time"/>`+moment(event.event.startStr).format('HH:mm')+`
+                                <p class="flex font-medium gap-2 text-white">
+                                    <x-icons name="time" class="text-white"/>`+moment(event.event.startStr).format('HH:mm')+`
                                 </p>
                                 @role ('admin|responsabile sede|segretaria')
-                                    <p class="text-lg font-medium capitalize text-color-2c2c2c">
-                                        <span class="font-semibold text-base">Cliente: </span> `+event.event.extendedProps.customer+`
+                                    <p class="text-base capitalize whitespace-nowrap overflow-hidden truncate text-white">
+                                        <span class="font-medium text-sm">Cliente: </span> `+event.event.extendedProps.customer+`
                                     </p>
-                                    <p class="text-lg font-medium capitalize text-color-2c2c2c">
-                                        <span class="font-semibold text-base">Istruttore: </span> `+event.event.extendedProps.Instructor+`
+                                    <p class="text-base capitalize text-white">
+                                        <span class="font-medium text-sm">Istruttore: </span> `+event.event.extendedProps.instructor+`
                                     </p>
                                 @endrole
-                                <p class="text-base font-medium text-color-2c2c2c">
-                                    <span class="font-semibold text-base">Veicolo: </span> `+event.event.extendedProps.vehicle_type+`
+                                <p class="text-sm text-white">
+                                    <span class="font-medium text-sm">Veicolo: </span> `+event.event.extendedProps.vehicle_type+`
                                 </p>
-                                <p class="text-lg font-medium text-color-2c2c2c">
-                                    <span class="font-semibold text-base">Targa: </span> `+event.event.extendedProps.plate+`
+                                <p class="text-sm text-white">
+                                    <span class="font-medium text-sm">Targa: </span> `+event.event.extendedProps.plate+`
                                 </p>
                             </div>
                         </div>
@@ -127,8 +127,8 @@
                 },
             },
 
-            eventClick: function(info) {
-                @this.call('show', {lesson: info.event.id});
+            eventClick: function(driving) {
+                @this.call('show', {driving: driving.event.id});
             },
             events: @json($drivings),
         });
@@ -137,7 +137,7 @@
             calendar.addEvent(driving[0])
         });
 
-        @this.on('eventRemove', function (drivingId) {
+        @this.on('drivingRemove', function (drivingId) {
             var driving = calendar.getEventById(drivingId);
             if (driving) {
                 driving.remove();

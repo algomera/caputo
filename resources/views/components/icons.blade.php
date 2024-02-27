@@ -498,6 +498,32 @@
             </g>
         </svg>
         @break
+    @case('night')
+        <svg xmlns="http://www.w3.org/2000/svg" width="16.111" height="16.111"
+            {{ $attributes->merge(['class']) }} viewBox="0 0 16.111 16.111">
+            <path id="Icon_feather-moon" data-name="Icon feather-moon" d="M20.668,13.281A8.073,8.073,0,1,1,11.887,4.5a6.279,6.279,0,0,0,8.781,8.781Z" transform="translate(-4.557 -4.5)" fill="#17489f"/>
+        </svg>
+        @break
+    @case('street')
+        <svg id="icon-autostrada" xmlns="http://www.w3.org/2000/svg" width="20.611" height="19.774"
+            {{ $attributes->merge(['class']) }} viewBox="0 0 20.611 19.774">
+            <path id="Tracciato_1210" data-name="Tracciato 1210" d="M130.786,0h2.594l-.374,6.913H129.29Z" transform="translate(-123.874)" fill="#347af2"/>
+            <path id="Tracciato_1211" data-name="Tracciato 1211" d="M269.374,0H266.78l.374,6.913h3.716Z" transform="translate(-255.604)" fill="#347af2"/>
+            <path id="Tracciato_1212" data-name="Tracciato 1212" d="M62.969,255h4.4l-.464,9.091H61Z" transform="translate(-58.444 -244.317)" fill="#347af2"/>
+            <path id="Tracciato_1213" data-name="Tracciato 1213" d="M284.742,255h-4.4l.464,9.091h5.907Z" transform="translate(-268.595 -244.317)" fill="#347af2"/>
+            <path id="Tracciato_1214" data-name="Tracciato 1214" d="M0,188.2v1.408a.218.218,0,0,0,.217.217H1.4a.218.218,0,0,1,.217.217V191.7a.218.218,0,0,0,.217.217H3.092a.217.217,0,0,0,.209-.159l.508-1.819a.218.218,0,0,1,.209-.159H16.674a.217.217,0,0,1,.21.161l.491,1.815a.218.218,0,0,0,.21.161h1.3a.218.218,0,0,0,.217-.217v-1.726a.218.218,0,0,1,.217-.217h1.069a.218.218,0,0,0,.217-.217V188.2a.217.217,0,0,0-.217-.217H.217A.217.217,0,0,0,0,188.2Z" transform="translate(0 -180.105)" fill="#347af2"/>
+        </svg>
+        @break
+    @case('s_street')
+        <svg id="icon-autostrada" xmlns="http://www.w3.org/2000/svg" width="20.611" height="19.774"
+            {{ $attributes->merge(['class']) }} viewBox="0 0 20.611 19.774">
+            <path id="Tracciato_1210" data-name="Tracciato 1210" d="M130.786,0h2.594l-.374,6.913H129.29Z" transform="translate(-123.874)" fill="#017c67"/>
+            <path id="Tracciato_1211" data-name="Tracciato 1211" d="M269.374,0H266.78l.374,6.913h3.716Z" transform="translate(-255.604)" fill="#017c67"/>
+            <path id="Tracciato_1212" data-name="Tracciato 1212" d="M62.969,255h4.4l-.464,9.091H61Z" transform="translate(-58.444 -244.317)" fill="#017c67"/>
+            <path id="Tracciato_1213" data-name="Tracciato 1213" d="M284.742,255h-4.4l.464,9.091h5.907Z" transform="translate(-268.595 -244.317)" fill="#017c67"/>
+            <path id="Tracciato_1214" data-name="Tracciato 1214" d="M0,188.2v1.408a.218.218,0,0,0,.217.217H1.4a.218.218,0,0,1,.217.217V191.7a.218.218,0,0,0,.217.217H3.092a.217.217,0,0,0,.209-.159l.508-1.819a.218.218,0,0,1,.209-.159H16.674a.217.217,0,0,1,.21.161l.491,1.815a.218.218,0,0,0,.21.161h1.3a.218.218,0,0,0,.217-.217v-1.726a.218.218,0,0,1,.217-.217h1.069a.218.218,0,0,0,.217-.217V188.2a.217.217,0,0,0-.217-.217H.217A.217.217,0,0,0,0,188.2Z" transform="translate(0 -180.105)" fill="#347af2"/>
+        </svg>
+        @break
     @case('id_document')
         <svg fill="#000000" height="800px" width="800px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
             {{ $attributes->merge(['class']) }} viewBox="0 0 512 512" xml:space="preserve">

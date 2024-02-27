@@ -11,6 +11,7 @@ use App\Models\School;
 use App\Models\Training;
 use App\Models\User;
 use App\Models\Vehicle;
+use DateTime;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -56,12 +57,17 @@ class PlanningSeeder extends Seeder
         $instructors = User::role('istruttore')->get();
         $vehicle = Vehicle::all();
         foreach ($registrations as $registration) {
+            $currentDay = new DateTime();
+            $randomDate = rand($currentDay->getTimestamp(), strtotime(date("Y-m-d", strtotime("+3 months"))));
+            $hour = rand(8, 19);
+            $minute = (rand(0, 1) == 0) ? 0 : 30;
+
             DrivingPlanning::create([
                 'registration_id' => $registration->id,
                 'user_id' => $instructors->random()->id,
                 'vehicle_id' => $vehicle->random()->id,
                 'type' => fake()->randomElement(['notturna', 'extraurbana', 'autostrada']),
-                'begins' => fake()->dateTimeBetween(now(), '+4 week'),
+                'begins' => date('Y-m-d', $randomDate). " " . sprintf("%02d:%02d:00", $hour, $minute),
                 'welded' => fake()->boolean(),
             ]);
         }
