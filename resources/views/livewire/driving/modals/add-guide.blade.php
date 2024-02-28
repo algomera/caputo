@@ -10,14 +10,16 @@
 
     <div class="mb-4">
         <div class="flex gap-4 mb-4">
+            @role('admin|responsabile sede|segretaria')
             <x-custom-select wire:model="instructor" name="instructor" label="Istruttore" width="grow" >
                 <option value="">Seleziona</option>
                 @foreach ($instructors as $instructor)
                     <option value="{{$instructor->id}}">{{$instructor->full_name}}</option>
                 @endforeach
             </x-custom-select>
+            @endrole
 
-            <x-custom-select wire:model="vehicle" name="vehicle" label="Veicolo" width="grow">
+            <x-custom-select wire:model="vehicle" name="vehicle" label="Veicolo" width="w-fit">
                 <option value="">Seleziona</option>
                 @foreach ($vehicles as $vehicle)
                     <option class="text-sm text-color-545454" value="{{$vehicle->id}}">{{$vehicle->type}} - Cambio: {{$vehicle->transmission}} targa: {{$vehicle->plate}}</option>

@@ -17,9 +17,16 @@
             </div>
         </div>
 
-        <div class="ml-auto flex flex-col gap-4">
-            <button wire:click="delete" class="px-6 py-2 bg-red-500/70 text-white uppercase font-semibold  focus-visible:ring-0 focus-visible:border-none focus-visible:outline-none focus-visible:ring-offset-0 hover:scale-105 transition-all duration-300">annulla guida</button>
-            <button wire:click="showCustomer" class="px-6 py-2 bg-color-347af2/70 text-white uppercase font-semibold  focus-visible:ring-0 focus-visible:border-none focus-visible:outline-none focus-visible:ring-offset-0 hover:scale-105 transition-all duration-300">Vai al Profilo</button>
+        <div class="ml-auto flex flex-col gap-3">
+            @if ($deletable)
+                <button wire:click="delete" class="px-6 py-2 bg-red-500/70 text-white uppercase font-semibold  focus-visible:ring-0 focus-visible:border-none focus-visible:outline-none focus-visible:ring-offset-0 hover:scale-105 transition-all duration-300">annulla guida</button>
+            @endif
+            @if ($driving->note)
+                <button wire:click="$dispatch('openModal', { component: 'driving.modals.show-note-guide', arguments: { guide: {{ $driving->id }} }})" class="px-6 py-2 bg-color-e9863e/70 text-white uppercase font-semibold  focus-visible:ring-0 focus-visible:border-none focus-visible:outline-none focus-visible:ring-offset-0 hover:scale-105 transition-all duration-300">Vedi note</button>
+            @endif
+            @role('admin|responsabile sede|segretaria')
+                <button wire:click="showCustomer" class="px-6 py-2 bg-color-347af2/70 text-white uppercase font-semibold  focus-visible:ring-0 focus-visible:border-none focus-visible:outline-none focus-visible:ring-offset-0 hover:scale-105 transition-all duration-300">Vai al Profilo</button>
+            @endrole
         </div>
     </div>
 </div>

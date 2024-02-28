@@ -1,5 +1,5 @@
 <div class="px-14 py-8 flex flex-col gap-4">
-    <div wire:click="$dispatch('closeModal')" class="flex items-center gap-2 group cursor-pointer ">
+    <div wire:click="$dispatch('closeModal')" class="flex items-center gap-2 group cursor-pointer w-fit">
         <x-icons name="arrow_back" class="group-hover:-translate-x-1 transition-all duration-300" />
         <span class="text-lg text-color-808080 group-hover:underline">Indietro</span>
     </div>
@@ -24,7 +24,7 @@
                     <th scope="col" class="px-3 py-3.5 font-light text-center">Tipo guida</th>
                     <th scope="col" class="px-3 py-3.5 font-light text-center">Note</th>
                     <th scope="col" class="px-3 py-3.5 font-light text-center">Pagamento</th>
-                    <th scope="col" class="px-3 py-3.5 font-light text-center">&nbsp;</th>
+                    <th scope="col" class="px-3 py-3.5 font-light text-center">Stato</th>
                 </tr>
             </thead>
             <tbody class="bg-white customBody no-scrollbar !max-h-[340px] 2xl:!max-h-[500px]">
@@ -49,26 +49,38 @@
                             <td class="border-r-2 border-color-efefef px-3 py-4 text-color-2c2c2c">
                                 <div class="w-fit m-auto">
                                     @if ($guide->note)
-                                        <button wire:click="$dispatch('openModal', { component: 'driving.modals.show-note-guides', arguments: { guide: {{ $guide->id }} }})" class="bg-color-347af2/30 flex items-center justify-center px-3 py-2 rounded-full">
+                                        <button wire:click="$dispatch('openModal', { component: 'driving.modals.show-note-guide', arguments: { guide: {{ $guide->id }} }})" class="bg-color-347af2/30 flex items-center justify-center px-3 py-2 rounded-full">
                                             <x-icons name="show" class="w-5" />
                                         </button>
+                                    @else
+                                        Nessuna
                                     @endif
                                 </div>
                             </td>
                             <td class="border-r-2 border-color-efefef px-3 py-4 text-color-017c67 text-center hidden xl:table-cell">
                                 <div class="w-fit m-auto">
                                     @if ($guide->welded)
-                                        <span class="px-5 pt-1 text-sm font-medium text-white rounded-full bg-color-01a53a/50">Pagato</span>
+                                        <span class="px-5 pt-1 text-sm font-medium text-white rounded-full bg-color-01a53a/50">Saldato</span>
                                     @else
+                                        @role('admin|responsabile sede|segretaria')
                                         <span wire:click="$dispatch('openModal', { component: 'driving.modals.payment-guide', arguments: { guide: {{ $guide->id }} }})" class="px-3 font-medium hover:underline cursor-pointer">Paga</span>
+                                        @elserole('istruttore')
+                                        <span class="px-3 font-medium text-red-500/70">Da Saldare</span>
+                                        @endrole
                                     @endif
                                 </div>
                             </td>
-                            <td class="px-3 py-4 text-color-017c67 text-center hidden xl:table-cell">
+                            <td class="px-3 py-4 text-white text-sm text-center hidden xl:table-cell">
                                 <div class="w-fit m-auto">
-                                    <button wire:click="$dispatch('openModal', { component: 'driving.modals.show-guide', arguments: { guide: {{ $guide->id }} }})" class="bg-color-347af2/30 flex items-center justify-center px-3 py-2 rounded-full">
-                                        <x-icons name="show" class="w-5" />
-                                    </button>
+                                    @if ($guide->performed == 'Da svolgere')
+                                        <button wire:click="performed({{ $guide->id }})" wire:confirm="Confermi lo svolgimento della guida?" class="bg-color-347af2/50 flex items-center justify-center px-5 py-2 rounded-full">
+                                            {{$guide->performed}}
+                                        </button>
+                                        @else
+                                        <div class="bg-color-01a53a/50 flex items-center justify-center px-5 py-2 rounded-full">
+                                            {{$guide->performed}}
+                                        </div>
+                                    @endif
                                 </div>
                             </td>
                         </tr>

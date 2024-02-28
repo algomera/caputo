@@ -1,5 +1,16 @@
 <div class="w-full h-full py-10 px-8 2xl:px-14">
-    <h1 class="text-5xl font-bold text-color-17489f capitalize mb-5">Gestione guide</h1>
+    <div class="flex items-start justify-between">
+        <h1 class="text-5xl font-bold text-color-17489f capitalize mb-5">Gestione guide</h1>
+
+        @role('admin')
+        <x-custom-select wire:model.live="schoolCode" name="schoolCode" label="" width="w-fit" >
+            <option value="">tutte le scuole</option>
+            @foreach ($schools as $school)
+                <option value="{{$school->id}}">Scuola: {{$school->code}}</option>
+            @endforeach
+        </x-custom-select>
+        @endrole
+    </div>
 
     <div wire:ignore id='calendarDriving'></div>
 </div>
@@ -11,7 +22,7 @@
 <script>
     document.addEventListener('livewire:initialized', function() {
         var calendar = new FullCalendar.Calendar(document.getElementById('calendarDriving'), {
-            height: 680,
+            height: 650,
             initialView: 'timeGridWeek',
             locale: 'it',
             nowIndicator: true,
@@ -64,22 +75,31 @@
                     <div class="p-2 w-full fc-event-main-frame border bg-color-347af2/80">
                         <div class="fc-event-title-container">
                             <div class="fc-event-title fc-sticky">
-                                <p class="flex font-medium gap-2 text-white">
-                                    <x-icons name="time" class="text-white"/>`+moment(event.event.startStr).format('HH:mm')+`
-                                </p>
-                                @role ('admin|responsabile sede|segretaria')
+                                <div class="flex items-center justify-between">
+                                    <p class="flex font-medium gap-2 text-white">
+                                        <x-icons name="time" class="text-white"/>`+moment(event.event.startStr).format('HH:mm')+`
+                                    </p>
+                                    @role ('admin')
+                                        <p class="text-sm text-white">
+                                            Scuola: <span class="uppercase">`+event.event.extendedProps.school+`</span>
+                                        </p>
+                                    @endrole
+                                </div>
+                                @role ('admin|responsabile sede|segretaria|istruttore')
                                     <p class="text-base capitalize whitespace-nowrap overflow-hidden truncate text-white">
                                         <span class="font-medium text-sm">Cliente: </span> `+event.event.extendedProps.customer+`
                                     </p>
+                                @endrole
+                                @role ('admin|responsabile sede|segretaria')
                                     <p class="text-base capitalize text-white">
                                         <span class="font-medium text-sm">Istruttore: </span> `+event.event.extendedProps.instructor+`
                                     </p>
                                 @endrole
                                 <p class="text-sm text-white">
-                                    <span class="font-medium text-sm">Veicolo: </span> `+event.event.extendedProps.vehicle_type+`
+                                    <span class="font-medium text-sm capitalize">Veicolo: </span> `+event.event.extendedProps.vehicle_type+`
                                 </p>
-                                <p class="text-sm text-white">
-                                    <span class="font-medium text-sm">Targa: </span> `+event.event.extendedProps.plate+`
+                                <p class="text-sm text-white uppercase">
+                                    <span class="font-medium text-sm capitalize">Targa: </span> `+event.event.extendedProps.plate+`
                                 </p>
                             </div>
                         </div>
@@ -103,10 +123,29 @@
                     dateClick: function(data) {
                         var today = new Date();
 
-                        @this.new({data: data.dateStr});
+                        if (moment(data.date, 'HH:mm').format('HH:mm') < '08:00') {
+                            return alert('Per programmare nuove guide cliccare le caselle in basso definite da orari.');
+                        } else if (data.date < today) {
+                            return alert('Non è possibile programmare guide in una data passata.');
+                        }  else {
+                            @this.openRegistration({data: data.dateStr});
+                        }
                     },
                     eventDrop: function(data) {
-                        @this.update(data.event.id, moment(data.event.start, 'YYYY-MM-DDTHH:mm').add(1, 'hours'))
+                        var today = new Date();
+
+                        if (data.event.start < today) {
+                            data.revert();
+                            alert('Non è possibile spostare una guida svolta o spostare una guida in data passata.');
+                        } else if (moment(data.event.start, 'HH:mm:mm').format('HH:mm') < '08:00') {
+                            data.revert();
+                            alert('Non è possibile spostare la guida fuori dal range del calendario.');
+                        } else if (moment(data.event.start, 'HH:mm:mm').add(data.event.extendedProps.lessonDuration,'m').format('HH:mm') > '20:00') {
+                            data.revert();
+                            alert('Non è possibile spostare la guida fuori dal range del calendario.');
+                        } else {
+                            @this.drivingUpdate(data.event.id, moment(data.event.start, 'YYYY-MM-DDTHH:mm'))
+                        }
                     }
                 },
                 timeGridWeek: {
@@ -117,12 +156,32 @@
                     titleFormat: { day: 'numeric', month: 'long', year: 'numeric' },
 
                     dateClick: function(data) {
-                        @this.new({data: data.dateStr});
+                        var today = new Date();
+
+                        if (moment(data.date, 'HH:mm').format('HH:mm') < '08:00') {
+                            return alert('Per programmare nuove guide cliccare le caselle in basso definite da orari.');
+                        } else if (data.date < today) {
+                            return alert('Non è possibile programmare guide in una data passata.');
+                        }  else {
+                            @this.openRegistration({data: data.dateStr});
+                        }
                     },
                     eventDrop: function(data) {
                         var today = new Date();
 
-                        @this.update(data.event.id, moment(data.event.start, 'YYYY-MM-DDTHH:mm').add(1, 'hours'))
+                        if (data.event.start < today) {
+                            data.revert();
+                            alert('Non è possibile spostare una guida svolta o spostare una guida in data passata.');
+                        } else if (moment(data.event.start, 'HH:mm:mm').format('HH:mm') < '08:00') {
+                            data.revert();
+                            alert('Non è possibile spostare la guida fuori dal range del calendario.');
+                        } else if (moment(data.event.start, 'HH:mm:mm').add(data.event.extendedProps.lessonDuration,'m').format('HH:mm') > '20:00') {
+                            data.revert();
+                            alert('Non è possibile spostare la guida fuori dal range del calendario.');
+                        } else {
+                            @this.drivingUpdate(data.event.id, moment(data.event.start, 'YYYY-MM-DDTHH:mm'))
+                        }
+
                     }
                 },
             },
@@ -130,10 +189,12 @@
             eventClick: function(driving) {
                 @this.call('show', {driving: driving.event.id});
             },
+
             events: @json($drivings),
         });
 
-        @this.on('updateCalendar', driving => {
+        @this.on('addDriving', driving => {
+            console.log(driving);
             calendar.addEvent(driving[0])
         });
 
@@ -142,6 +203,16 @@
             if (driving) {
                 driving.remove();
             }
+        });
+
+        @this.on('changeSchool', function (drivings) {
+            const newDrivings = drivings[0];
+
+            calendar.removeAllEvents();
+            newDrivings.forEach(driving => {
+                calendar.addEvent(driving)
+            });
+            calendar.refetchEvents()
         });
 
         calendar.render();

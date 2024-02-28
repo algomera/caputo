@@ -72,6 +72,10 @@ class Registration extends Model
         return $this->BelongsToThrough(School::class, Training::class);
     }
 
+    public function getPerformedGuidesAttribute() {
+        return $this->drivingPlanning()->where('performed', 'svolta')->get();
+    }
+
     public function getFinalPriceAttribute() {
         if ($this->discount) {
             return $this->price - $this->discount;

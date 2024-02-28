@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('type');
             $table->dateTime('begins');
             $table->longText('note')->nullable();
+            $table->string('performed')->default('Da svolgere');
             $table->boolean('welded')->default(false);
             $table->timestamps();
         });

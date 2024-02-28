@@ -50,6 +50,10 @@ class User extends Authenticatable
         return $this->hasMany(MedicalPlanning::class);
     }
 
+    public function drivingPlannings(): HasMany {
+        return $this->hasMany(DrivingPlanning::class);
+    }
+
     public function getRoleAttribute() {
         return $this->roles[0];
     }
@@ -58,10 +62,10 @@ class User extends Authenticatable
         return match ($this->role->name) {
             'admin' => 'service',
             'responsabile sede' => 'service',
+            'segretaria' => 'service',
             'medico' => 'visits.index',
             'insegnante' => 'theory.trainings.index',
-            'istruttore' => 'service',
-            'segretaria' => 'service',
+            'istruttore' => 'driving.index',
         };
     }
 

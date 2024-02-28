@@ -60,13 +60,13 @@ class AddPayment extends ModalComponent
                 ]);
             }
 
-            $registration->chronologies()->create([
-                'title' => 'Pagamento guida del '. date("d/m/Y", strtotime($this->drivingPlanning->begins))
-            ]);
-
             if ($this->drivingPlanning->sumPayments >= $this->drivingPrice) {
                 $this->drivingPlanning->update([
                     'welded' => true
+                ]);
+            } else {
+                $registration->chronologies()->create([
+                    'title' => 'Pagamento guida del '. date("d/m/Y H:i", strtotime($this->drivingPlanning->begins)). ' di € '. $this->amount
                 ]);
             }
 
@@ -90,7 +90,7 @@ class AddPayment extends ModalComponent
                     'path' => 'storage/'.$path
                 ]);
             }
-
+            // TODO controllare se viene saldato
             $this->registration->chronologies()->create([
                 'title' => 'Pagamento iscrizione'
             ]);

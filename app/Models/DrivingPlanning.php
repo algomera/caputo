@@ -14,6 +14,10 @@ class DrivingPlanning extends Model
 
     protected $guarded = [];
 
+    public function school() {
+        return $this->BelongsToThrough(School::class, [Training::class, Registration::class]);
+    }
+
     public function customer() {
         return $this->BelongsToThrough(Customer::class, Registration::class);
     }

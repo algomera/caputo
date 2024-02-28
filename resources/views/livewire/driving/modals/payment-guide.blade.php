@@ -8,10 +8,10 @@
         <span class="ml-2 text-xl underline">{{date("d/m/Y H:i", strtotime($drivingPlanning->begins))}}</span>
     </h1>
 
-    <div>
-        <p>Prezzo: € {{$drivingPrice}}</p>
-        <p>Pagato: € {{$drivingPlanning->sumPayments}}</p>
-        <p>Da Pagare: € {{$drivingPrice - $drivingPlanning->sumPayments}}</p>
+    <div class="font-medium text-color-545454">
+        <p>Prezzo: <span class="font-light">€ {{$drivingPrice}}</span></p>
+        <p>Pagato: <span class="font-light">€ {{$drivingPlanning->sumPayments}}</span></p>
+        <p>Da Pagare: <span class="font-light">€ {{$drivingPrice - $drivingPlanning->sumPayments}}</span></p>
     </div>
 
     <div class="space-y-7">

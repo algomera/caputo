@@ -155,7 +155,7 @@
 
                     dateClick: function(data) {
                         var today = new Date();
-                        console.log(moment(data.date, 'HH:mm').format('HH:mm'));
+
                         if (!@json($trainingEnd)) {
                         } else if (moment(data.date, 'HH:mm').format('HH:mm') < '08:00') {
                             return alert('Per programmare nuove lezioni cliccare le caselle in basso definite da orari.');

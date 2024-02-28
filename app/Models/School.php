@@ -6,12 +6,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use App\Models\User;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use App\Models\User;
 
 class School extends Model
 {
     use HasFactory;
+    use \Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
     protected $guarded = [];
 
@@ -37,6 +38,10 @@ class School extends Model
 
     public function medicalVisits(): HasManyThrough {
         return $this->hasManyThrough(Registration::class, Training::class)->whereJsonContains('optionals', 15)->with('customer', 'course', 'medicalPlanning');
+    }
+
+    public function drivingPlannings() {
+        return $this->hasManyDeep(DrivingPlanning::class, [Training::class, Registration::class]);
     }
 
     public function secretaries() {

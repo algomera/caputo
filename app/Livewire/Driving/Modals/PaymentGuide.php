@@ -52,21 +52,23 @@ class PaymentGuide extends ModalComponent
             ]);
         }
 
-        $registration->chronologies()->create([
-            'title' => 'Pagamento guida del '. date("d/m/Y", strtotime($this->drivingPlanning->begins))
-        ]);
-
         if ($this->drivingPlanning->sumPayments >= $this->drivingPrice) {
             $this->drivingPlanning->update([
                 'welded' => true
             ]);
+
+            $registration->chronologies()->create([
+                'title' => 'Saldo guida del '. date("d/m/Y H:i", strtotime($this->drivingPlanning->begins))
+            ]);
+        } else {
+            $registration->chronologies()->create([
+                'title' => 'Pagamento guida del '. date("d/m/Y H:i", strtotime($this->drivingPlanning->begins)). ' di € '. $this->amount
+            ]);
         }
 
         $this->closeModalWithEvents([
-            ShowRegistrationGuides::class => ['updatePayment', ['registration' => $registration->id]],
+            ShowRegistrationGuides::class => ['updateGuide', ['registration' => $registration->id]],
         ]);
-
-        $this->reset();
     }
 
     public static function modalMaxWidth(): string
