@@ -64,6 +64,10 @@ class AddPayment extends ModalComponent
                 $this->drivingPlanning->update([
                     'welded' => true
                 ]);
+
+                $registration->chronologies()->create([
+                    'title' => 'Saldo guida del '. date("d/m/Y H:i", strtotime($this->drivingPlanning->begins)). ' di € '. $this->amount
+                ]);
             } else {
                 $registration->chronologies()->create([
                     'title' => 'Pagamento guida del '. date("d/m/Y H:i", strtotime($this->drivingPlanning->begins)). ' di € '. $this->amount
@@ -90,10 +94,20 @@ class AddPayment extends ModalComponent
                     'path' => 'storage/'.$path
                 ]);
             }
-            // TODO controllare se viene saldato
-            $this->registration->chronologies()->create([
-                'title' => 'Pagamento iscrizione'
-            ]);
+
+            if ($this->registration->sumPayments >= $this->registration->price) {
+                $this->registration->update([
+                    'welded' => true
+                ]);
+
+                $this->registration->chronologies()->create([
+                    'title' => 'Saldo iscrizione di € '. $this->amount
+                ]);
+            } else {
+                $this->registration->chronologies()->create([
+                    'title' => 'Pagamento iscrizione di € '. $this->amount
+                ]);
+            }
 
             $this->closeModalWithEvents([
                 Payments::class => ['updatePayment', ['registration' => $this->registration->id]],

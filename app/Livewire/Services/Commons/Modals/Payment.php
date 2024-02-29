@@ -66,9 +66,19 @@ class Payment extends ModalComponent
             ]);
         }
 
-        $this->registration->chronologies()->create([
-            'title' => 'Pagamento iscrizione'
-        ]);
+        if ($this->registration->sumPayments >= $this->registration->price) {
+            $this->registration->update([
+                'welded' => true
+            ]);
+
+            $this->registration->chronologies()->create([
+                'title' => 'Saldo iscrizione di € '. $this->amount
+            ]);
+        } else {
+            $this->registration->chronologies()->create([
+                'title' => 'Pagamento iscrizione di € '. $this->amount
+            ]);
+        }
 
         return redirect()->route('registry.show', ['customer' => $this->registration->customer_id]);
     }

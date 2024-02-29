@@ -51,7 +51,9 @@
 
             <div class="space-x-4">
                 @role('admin|responsabile sede')
+                @if (!$registration->welded)
                     <button wire:click="$dispatch('openModal', { component: 'registry.modals.discount', arguments: {registration: {{$registration->id}}} })" class="ml-auto px-4 py-1 text-color-2c2c2c font-medium capitalize rounded-full bg-color-ffb205/30 hover:scale-105 transition-all duration-300">Sconta</button>
+                @endif
                 @endrole
                 @if ($registration->totalPayment < $registration->finalPrice)
                     <button wire:click="$dispatch('openModal', { component: 'registry.modals.add-payment', arguments: {registration: {{$registration->id}}} })" class="ml-auto px-4 py-1 text-color-2c2c2c font-medium capitalize rounded-full bg-color-01a53a/30 hover:scale-105 transition-all duration-300">+ Pagamento</button>

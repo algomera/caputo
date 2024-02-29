@@ -99,4 +99,15 @@ class Registration extends Model
         }
         return ($this->finalPrice - $this->totalPayment);
     }
+
+    public function getSumPaymentsAttribute() {
+        $payments = $this->payments()->get();
+        $sum = 0;
+
+        foreach ($payments as $payment) {
+            $sum += $payment->amount;
+        }
+
+        return $sum;
+    }
 }

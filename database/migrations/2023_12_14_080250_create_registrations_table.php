@@ -33,6 +33,7 @@ return new class extends Migration
             $table->string('approved')->nullable();
             $table->date('registration_date')->nullable();
             $table->string('n_registration')->nullable();
+            $table->boolean('welded')->default(false);
             $table->timestamps();
         });
     }

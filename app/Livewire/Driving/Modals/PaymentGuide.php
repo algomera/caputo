@@ -58,7 +58,7 @@ class PaymentGuide extends ModalComponent
             ]);
 
             $registration->chronologies()->create([
-                'title' => 'Saldo guida del '. date("d/m/Y H:i", strtotime($this->drivingPlanning->begins))
+                'title' => 'Saldo guida del '. date("d/m/Y H:i", strtotime($this->drivingPlanning->begins)). ' di € '. $this->amount
             ]);
         } else {
             $registration->chronologies()->create([
