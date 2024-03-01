@@ -3,7 +3,6 @@
 namespace App\Livewire\Registry\Modals;
 
 use App\Models\Registration;
-use Livewire\Attributes\Validate;
 use App\Livewire\Registry\Modals\Payments;
 use LivewireUI\Modal\ModalComponent;
 
@@ -19,15 +18,14 @@ class Discount extends ModalComponent
 
     public function rules() {
         return [
-            'discount' => 'required|min:1|max:100'
+            'discount' => 'required|numeric|max:'.$this->registration->remainToPay
         ];
     }
 
     public function messages() {
         return [
             'discount.required' => 'Inserire Cifra da scontare',
-            'discount.min:1' => 'Inserire un valore superiore a 0 €',
-            'discount.max:100' => 'La cifra supera il rimanente importo da versare',
+            'discount.max' => 'La cifra supera il rimanente importo da pagare',
         ];
     }
 
@@ -40,7 +38,11 @@ class Discount extends ModalComponent
     public function save() {
         $this->validate();
 
-        if ($this->registration->remainToPay > $this->discount) {
+        if ($this->discount == 0) {
+            $this->registration->update([
+                'discount' => null
+            ]);
+        } else {
             $this->registration->update([
                 'discount' => $this->discount
             ]);
