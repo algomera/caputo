@@ -19,7 +19,7 @@
             </div>
         </div>
 
-        <div class="flex items-center gap-3">
+        <div class="flex gap-3">
             <div class="ml-auto flex flex-col gap-3">
                 @if ($deletable)
                     <button wire:click="delete" class="px-6 py-2 bg-red-500/70 text-white uppercase font-semibold  focus-visible:ring-0 focus-visible:border-none focus-visible:outline-none focus-visible:ring-offset-0 hover:scale-105 transition-all duration-300">annulla guida</button>
