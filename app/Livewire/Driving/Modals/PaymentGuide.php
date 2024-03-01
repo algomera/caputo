@@ -31,9 +31,14 @@ class PaymentGuide extends ModalComponent
         $this->drivingPrice = $this->drivingPlanning->registration->course->getOptions()->where('type', 'guide')->first()->price;
     }
 
+    public function updated($property) {
+        if ($property == 'amount') {
+            $this->amount = str_replace(" ", '', $this->amount);
+        }
+    }
+
     public function create() {
         $this->validate();
-        $this->amount = str_replace(" ", '', $this->amount);
 
         $payment = $this->drivingPlanning->payments()->create([
             'type' => $this->type,

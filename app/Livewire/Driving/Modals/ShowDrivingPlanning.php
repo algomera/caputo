@@ -40,7 +40,7 @@ class ShowDrivingPlanning extends ModalComponent
 
     public static function modalMaxWidthClass(): string
     {
-        return 'max-w-screen-md !align-top';
+        return 'max-w-screen-lg !align-top';
     }
 
     public function render()

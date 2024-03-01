@@ -26,7 +26,7 @@ class Discount extends ModalComponent
     public function messages() {
         return [
             'discount.required' => 'Inserire Cifra da scontare',
-            'discount.min:1' => 'Inserire un valore di almeno un €',
+            'discount.min:1' => 'Inserire un valore superiore a 0 €',
             'discount.max:100' => 'La cifra supera il rimanente importo da versare',
         ];
     }

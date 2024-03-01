@@ -38,9 +38,14 @@ class AddPayment extends ModalComponent
         }
     }
 
+    public function updated($property) {
+        if ($property == 'amount') {
+            $this->amount = str_replace(" ", '', $this->amount);
+        }
+    }
+
     public function create() {
         $this->validate();
-        $this->amount = str_replace(" ", '', $this->amount);
 
         if ($this->drivingPlanning) {
             $payment = $this->drivingPlanning->payments()->create([
