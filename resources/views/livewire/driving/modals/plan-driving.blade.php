@@ -26,7 +26,7 @@
                 <tr class="text-color-545454">
                     <th scope="col" class="py-3.5 px-3 font-light text-center">Cliente</th>
                     <th scope="col" class="px-3 py-3.5 font-light text-center">Iscrizione</th>
-                    <th scope="col" class="px-3 py-3.5 font-light text-center hidden xl:table-cell">Guide obbligatorie</th>
+                    <th scope="col" class="px-3 py-3.5 font-light text-center">Guide obbligatorie</th>
                     <th scope="col" class="px-3 py-3.5 font-light text-center">Guide prenotate</th>
                     <th scope="col" class="px-3 py-3.5 font-light text-center">Guide svolte</th>
                     <th scope="col" class="px-3 py-3.5 font-light text-center">&nbsp;</th>
@@ -45,8 +45,8 @@
                             </td>
                             <td class="border-r-2 border-color-efefef py-4 px-3 font-medium text-color-2c2c2c uppercase text-center">{{$registration->course->name}}</td>
                             <td class="border-r-2 border-color-efefef py-4 px-3 text-color-2c2c2c text-center">{{$registration->course->guides}}</td>
-                            <td class="border-r-2 border-color-efefef px-3 py-4 text-color-2c2c2c text-center hidden xl:table-cell">{{count($registration->drivingPlanning)}}</td>
-                            <td class="border-r-2 border-color-efefef px-3 py-4 text-color-017c67 text-center hidden xl:table-cell">{{count($registration->performedGuides)}}</td>
+                            <td class="border-r-2 border-color-efefef px-3 py-4 text-color-2c2c2c text-center">{{count($registration->drivingPlanning)}}</td>
+                            <td class="border-r-2 border-color-efefef px-3 py-4 text-color-017c67 text-center">{{count($registration->performedGuides)}}</td>
                             <td class="px-3 py-4 text-color-2c2c2c">
                                 <div class="w-fit m-auto">
                                     <button wire:click="$dispatch('openModal', { component: 'driving.modals.show-registration-guides', arguments: { registration: {{ $registration->id }} }})" class="bg-color-347af2/30 flex items-center justify-center px-3 py-2 rounded-full">

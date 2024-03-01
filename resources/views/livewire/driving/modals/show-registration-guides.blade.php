@@ -20,9 +20,9 @@
                     <th scope="col" class="w-20 py-3.5 px-3 font-light text-center">Numero</th>
                     <th scope="col" class="py-3.5 px-3 font-light text-center">Data</th>
                     <th scope="col" class="px-3 py-3.5 font-light text-center">Istruttore</th>
-                    <th scope="col" class="px-3 py-3.5 font-light text-center hidden xl:table-cell">Targa</th>
+                    <th scope="col" class="px-3 py-3.5 font-light text-center">Targa</th>
                     <th scope="col" class="px-3 py-3.5 font-light text-center">Tipo guida</th>
-                    <th scope="col" class="px-3 py-3.5 font-light text-center">Note</th>
+                    <th scope="col" class="px-3 py-3.5 font-light text-center hidden xl:table-cell">Note</th>
                     <th scope="col" class="px-3 py-3.5 font-light text-center">Pagamento</th>
                     <th scope="col" class="px-3 py-3.5 font-light text-center">Stato</th>
                 </tr>
@@ -39,14 +39,14 @@
                                 </div>
                             </td>
                             <td class="border-r-2 border-color-efefef py-4 px-3 text-color-2c2c2c text-center">{{$guide->instructor->full_name}}</td>
-                            <td class="border-r-2 border-color-efefef px-3 py-4 text-color-347af2 text-center hidden xl:table-cell">{{$guide->vehicle->plate}}</td>
-                            <td class="border-r-2 border-color-efefef px-3 py-4 text-center hidden xl:table-cell capitalize">
+                            <td class="border-r-2 border-color-efefef px-3 py-4 text-color-347af2 text-center">{{$guide->vehicle->plate}}</td>
+                            <td class="border-r-2 border-color-efefef px-3 py-4 text-center capitalize">
                                 <div class="flex items-center justify-center gap-2 text-sm">
                                     <x-icons name="{{get_guide($guide->type)}}" />
                                     {{$guide->type}}
                                 </div>
                             </td>
-                            <td class="border-r-2 border-color-efefef px-3 py-4 text-color-2c2c2c">
+                            <td class="border-r-2 border-color-efefef px-3 py-4 text-color-2c2c2c hidden xl:table-cell">
                                 <div class="w-fit m-auto">
                                     @if ($guide->note)
                                         <button wire:click="$dispatch('openModal', { component: 'driving.modals.show-note-guide', arguments: { guide: {{ $guide->id }} }})" class="bg-color-347af2/30 flex items-center justify-center px-3 py-2 rounded-full">
@@ -57,7 +57,7 @@
                                     @endif
                                 </div>
                             </td>
-                            <td class="border-r-2 border-color-efefef px-3 py-4 text-color-017c67 text-center hidden xl:table-cell">
+                            <td class="border-r-2 border-color-efefef px-3 py-4 text-color-017c67 text-center">
                                 <div class="w-fit m-auto">
                                     @if ($guide->welded)
                                         <span class="px-5 pt-1 text-sm font-medium text-white rounded-full bg-color-01a53a/50">Saldato</span>
@@ -70,7 +70,7 @@
                                     @endif
                                 </div>
                             </td>
-                            <td class="px-3 py-4 text-white text-sm text-center hidden xl:table-cell">
+                            <td class="px-3 py-4 text-white text-sm text-center">
                                 <div class="w-fit m-auto">
                                     @if ($guide->performed == 'Da svolgere')
                                         <button wire:click="performed({{ $guide->id }})" wire:confirm="Confermi lo svolgimento della guida?" class="bg-color-347af2/50 flex items-center justify-center px-5 py-2 rounded-full">

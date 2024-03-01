@@ -32,9 +32,9 @@ class ShowRegistrationGuides extends ModalComponent
         $this->dispatch('updatePlan');
     }
 
-    public static function modalMaxWidth(): string
+    public static function modalMaxWidthClass(): string
     {
-        return '7xl';
+        return 'max-w-screen-lg 2xl:max-w-screen-xl';
     }
 
     public static function destroyOnClose(): bool
