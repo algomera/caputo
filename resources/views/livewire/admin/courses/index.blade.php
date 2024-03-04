@@ -43,7 +43,7 @@
                             </div>
                         </div>
 
-                        <div x-show="open == {{ $service->id }}" class="pb-4 pr-4 border-t ml-20">
+                        <div x-show="open == {{ $service->id }}" x-transition.duration.300ms class="pb-4 pr-4 border-t ml-20 overflow-hidden transition-all duration-300">
                             @if ($service->courses()->get()->count() > 0)
                                 <div class="flex flex-wrap gap-x-4 gap-y-4 mt-5">
                                     @foreach ($service->courses()->get() as $course)
