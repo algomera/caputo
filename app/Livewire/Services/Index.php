@@ -30,10 +30,10 @@ class Index extends Component
     }
 
     #[On('setCourse')]
-    public function setCourse($course, $branch, $type) {
-        $this->course = Course::find($course);
-        $this->branch = $branch;
-        $this->type = $type;
+    public function setCourse() {
+        $this->course = Course::find(session()->get('course')['id']);
+        $this->branch = session()->get('course')['branch'];
+        $this->type = session()->get('course')['registration_type'];
         $this->step += 1;
     }
 
@@ -51,22 +51,12 @@ class Index extends Component
         if ($id == 14) {
             session()->put('course', [
                 'id' => $id,
-                'option' => 'guida accompagnata',
-                'registration_type' => 'guide'
+                'branch' => 'guida accompagnata',
+                'registration_type' => 1
             ]);
 
-            $this->setCourse($id,'guida accompagnata', session()->get('course')['registration_type']);
+            $this->setCourse();
         }
-    }
-
-    public function addSession($option, $type, $except = null) {
-        $session = session()->get('course', []);
-        $session['option'] = $option;
-        $session['registration_type'] = $type;
-        if ($except) {
-            $session['conseguimento'] = $except;
-        }
-        session()->put('course', $session);
     }
 
     public function getSignature() {

@@ -35,7 +35,7 @@ class GetFiscalCode extends ModalComponent
     }
 
     public function next() {
-        if (session()->get('course')['option'] == 'cambio codice') {
+        if (session()->get('course')['registration_type'] == 'cambio codice') {
             $this->dispatch('openModal', 'services.training.modals.get-signature');
         } else {
             $course = Course::find(session()->get('course')['id']);

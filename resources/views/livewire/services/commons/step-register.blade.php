@@ -130,7 +130,7 @@
                 @case(3)
                     <x-container-step>
                         <p class="text-xl font-light text-color-2c2c2c">
-                            Caricare la scansione della <span class="font-bold">patente, carta d’identità</span> e il <span class="font-bold">codice fiscale</span>, altrimenti cliccare “inserire in seguito”
+                            Caricare la scansione della <span class="font-bold">patente, carta d’identità</span> e il <span class="font-bold">codice fiscale</span>, altrimenti cliccare “inserisci in seguito”
                         </p>
 
                         <div class="flex items-start justify-between gap-20">

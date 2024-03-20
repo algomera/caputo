@@ -15,7 +15,7 @@ class UpdateRegistration extends ModalComponent
 
     public function mount($registration) {
         $this->registration = Registration::find($registration);
-        $this->options = $this->registration->course->getOptions()->where('type', 'opzionale')->where('option', $this->registration->option)->whereNot('name', 'Supporto audio')->get();
+        $this->options = $this->registration->course->getOptions()->where('type', 'opzionale')->where('registration_type_id', $this->registration->registration_type_id)->whereNot('name', 'Supporto audio')->get();
         $this->selectedOptions = json_decode($this->registration->optionals);
     }
 

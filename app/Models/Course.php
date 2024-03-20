@@ -43,6 +43,10 @@ class Course extends Model
         return $this->hasMany(InterestedCourses::class);
     }
 
+    public function courseRegistrationSteps(): HasMany {
+        return $this->hasMany(CourseRegistrationStep::class);
+    }
+
     public function getOptions(): MorphToMany {
         return $this->morphToMany(Option::class, 'costs');
     }
@@ -55,5 +59,9 @@ class Course extends Model
             $duration += $lesson->duration;
         }
         return (floor($duration / 60).':'. ($duration % 60));
+    }
+
+    public function getStepCourse($registrationTypeId) {
+        return CourseRegistrationStep::where('course_id', $this->id)->where('registration_type_id', $registrationTypeId)->first();
     }
 }

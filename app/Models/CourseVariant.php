@@ -52,4 +52,8 @@ class CourseVariant extends Model
         }
         return (floor($duration / 60).':'. ($duration % 60));
     }
+
+    public function getStepCourse($registrationTypeId) {
+        return CourseRegistrationStep::where('course_id', $this->id)->where('registration_type_id', $registrationTypeId)->first();
+    }
 }

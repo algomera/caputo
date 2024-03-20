@@ -1,6 +1,5 @@
 <div class="p-12 flex flex-col gap-5 bg-color-f7f7f7">
-    <h2 class="text-2xl font-medium mb-2 capitalize">{{session()->get('course')['option']}}</h2>
-    <p class="text-lg">Inserire il codice fiscale per verificare la presenza di una marca operativa</p>
+    <h2 class="text-xl font-medium mb-2 capitalize">Inserire il codice fiscale per verificare la presenza di una marca operativa</h2>
     <x-input-text x-mask="aaaaaa99a99a999a" wire:model="fiscalCode" width="w-1/4" name="fiscalCode" label="Codice Fiscale" uppercase="uppercase" required="true" />
     @if ($message)
     <div class="flex items-center gap-1">

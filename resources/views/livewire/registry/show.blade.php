@@ -206,7 +206,7 @@
                                     Dati mancanti
                                 </button>
                             @endif
-                            @if (count($registration->course->getOptions()->where('type', 'opzionale')->where('option', $registration->option)->whereNot('name', 'Supporto audio')->get()) > 0)
+                            @if (count($registration->course->getOptions()->where('type', 'opzionale')->where('registration_type_id', $registration->registration_type_id)->whereNot('name', 'Supporto audio')->get()) > 0)
                                 <button wire:click="$dispatch('openModal', { component: 'registry.modals.update-registration', arguments: {registration: {{$registration->id}}} })" class="flex items-center gap-2 px-4 py-1 text-color-2c2c2c font-medium capitalize rounded-full bg-color-347af2/30 hover:scale-105 transition-all duration-300">
                                     <x-icons name="option" /> opzioni
                                 </button>

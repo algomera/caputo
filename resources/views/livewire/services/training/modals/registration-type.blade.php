@@ -1,33 +1,16 @@
 <div class="p-4 pb-16">
-    @if (!$selectedOption)
+    @if (!$selectedRegistrationType)
         <div class="w-full flex justify-between">
             <h1 @class(["text-4xl font-semibold", 'text-color-'.get_color($course->service->name)])>Selezionare l'opzione</h1>
             <small class="text-gray-400 font-bold">{{$course->name}}</small>
         </div>
 
         <div class="m-auto flex flex-col gap-4 px-20 2xl:px-56 mt-16">
-            <div wire:click='setOption("iscrizione")' class="w-full h-24 flex items-center justify-center border rounded-md shadow-shadow-card hover:scale-105 transition-all duration-300 cursor-pointer">
-                <p class="text-lg text-color-2c2c2c">Il candidato si iscrive alla <b>prima patente</b></p>
-            </div>
-            @if ( !in_array(session('course')['id'], [10, 11, 15, 16]))
-                <div wire:click='setOption("possessore di patente")' class="w-full h-24 flex items-center justify-center border rounded-md shadow-shadow-card hover:scale-105 transition-all duration-300 cursor-pointer">
-                    <p class="text-lg text-color-2c2c2c">Il candidato è possessore di <b>patente A1, B1 o B</b></p>
+            @foreach ($courseRegistrationTypes as $key => $type)
+                <div wire:key="type-{{$key}}" wire:click="setRegistrationType({{$type->registrationType->id}})" class="w-full h-24 flex items-center justify-center border rounded-md shadow-shadow-card hover:scale-105 transition-all duration-300 cursor-pointer">
+                    <p class="text-lg text-color-2c2c2c font-semibold capitalize">{{$type->registrationType->name}}</p>
                 </div>
-            @endif
-            @if ( in_array(session('course')['id'], [16]))
-                <div wire:click='setOption("possessore di patente")' class="w-full h-24 flex items-center justify-center border rounded-md shadow-shadow-card hover:scale-105 transition-all duration-300 cursor-pointer">
-                    <p class="text-lg text-color-2c2c2c">Il candidato è possessore di <b>patente A1, A2, A o B1</b></p>
-                </div>
-            @endif
-            @if (session('course')['id'] == 16)
-                <div wire:click='setOption("guida accompagnata")' class="w-full h-24 flex items-center justify-center border rounded-md shadow-shadow-card hover:scale-105 transition-all duration-300 cursor-pointer">
-                    <p class="text-lg text-color-2c2c2c">Possiede l'autorizzazione per la <b>guida accompagnata</b></p>
-                </div>
-
-            @endif
-            <div wire:click='setOption("cambio codice")' class="w-full h-24 flex items-center justify-center border rounded-md shadow-shadow-card hover:scale-105 transition-all duration-300 cursor-pointer">
-                <p class="text-lg text-color-2c2c2c">Effettuare il <b>Cambio codice</b></p>
-            </div>
+            @endforeach
         </div>
     @else
         <div class="w-full flex justify-between">
@@ -35,7 +18,7 @@
                 <x-icons name="arrow_back" class="group-hover:-translate-x-1 transition-all duration-300" />
                 <span class="text-lg text-color-808080 group-hover:underline">Indietro</span>
             </div>
-            <small class="text-gray-400 font-bold capitalize">{{$selectedOption}}</small>
+            <small class="text-gray-400 font-bold capitalize">{{$selectedRegistrationType}}</small>
         </div>
 
         <div class="flex flex-wrap items-center justify-center gap-5 py-24">

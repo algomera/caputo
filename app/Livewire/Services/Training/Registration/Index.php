@@ -4,6 +4,7 @@ namespace App\Livewire\Services\Training\Registration;
 
 use App\Models\Option;
 use Livewire\Component;
+use Livewire\Attributes\Validate;
 use Livewire\Attributes\On;
 
 class Index extends Component
@@ -11,43 +12,30 @@ class Index extends Component
     public $course;
     public $branch;
     public $type;
-    public $transmission;
     public $selectedOptions = [];
     public $total = 0;
 
+    #[Validate('required', message: 'Scelta obbligatoria')]
+    public $transmission;
+
     public function mount() {
-        if (session()->get('course')['registration_type'] == 'teoria') {
+        if (session()->get('course')['branch'] == 'teoria') {
             $this->total += $this->course->prices()->where('licenses', null)->first()->price;
-        } elseif (session()->get('course')['registration_type'] == 'guide') {
-            // if (session()->get('course')['option'] != 'possessore di patente') {
-            //     $this->total += $this->course->prices()->where('licenses', null)->first()->price;
-            // }
         }
 
-        foreach ($this->course->getOptions()->where('type', 'fisso')->where('option', $this->branch)->get() as  $option) {
+        foreach ($this->course->getOptions()->where('type', 'fisso')->where('registration_type_id', $this->type)->get() as  $option) {
             $this->total += $option->price;
         }
-    }
-
-    public function rules() {
-        return [
-            'transmission' => 'required'
-        ];
-    }
-    public function messages() {
-        return [
-            'transmission.required' => 'Scelta obbligatoria'
-        ];
     }
 
     public function updated() {
         $this->total = 0;
 
-        if (session()->get('course')['registration_type'] == 'teoria') {
+        if (session()->get('course')['branch'] == 'teoria') {
             $this->total += $this->course->prices()->first()->price;
         }
 
-        foreach ($this->course->getOptions()->where('type', 'fisso')->where('option', $this->branch)->get() as  $option) {
+        foreach ($this->course->getOptions()->where('type', 'fisso')->where('registration_type_id', $this->type)->get() as  $option) {
             $this->total += $option->price;
         }
 
@@ -79,7 +67,7 @@ class Index extends Component
         $session['price'] = $this->total;
         session()->put('course', $session);
 
-        if (session()->get('course')['option'] != 'cambio codice') {
+        if (session()->get('course')['registration_type'] != 4) {
             $this->dispatch('openModal', 'services.training.modals.get-fiscal-code');
         } else {
             $this->dispatch('openModal', 'services.training.modals.remind-t-t2112');

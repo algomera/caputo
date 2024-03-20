@@ -4,13 +4,14 @@ namespace Database\Seeders;
 
 use App\Models\Course;
 use App\Models\CoursePrice;
+use App\Models\CourseRegistrationStep;
 use App\Models\CourseVariant;
 use App\Models\Lesson;
+use App\Models\RegistrationType;
 use App\Models\Service;
 use Illuminate\Support\Str;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Stringable;
 
 class CoursesSeeder extends Seeder
 {
@@ -53,12 +54,53 @@ class CoursesSeeder extends Seeder
         }
     }
 
+    public function createCourseRegistrationStep($course_id, $variant_id = null) {
+
+        foreach (RegistrationType::all() as $registrationType) {
+            CourseRegistrationStep::create([
+                'course_id' => $course_id,
+                'variant_id' => $variant_id,
+                'registration_type_id' => $registrationType->id,
+                'steps_id' => json_encode($this->getCourseStep($registrationType->id, $course_id))
+            ]);
+        }
+    }
+
+    public function getCourseStep($type, $course_id) {
+        $steps = [];
+        switch ($type) {
+            case 1: // prima patente
+                $steps = [1,2,3,4,5];
+
+                if (in_array($course_id, ['10','11','14','15'])) {
+                    $steps[] = 6;
+                }
+                if ($course_id == 14) {
+                    $steps[] = 7;
+                }
+                break;
+            case 2: // possessore di patente
+                $steps = [3,4,5];
+                break;
+            case 3: // possessore guida accomagnata
+                $steps = [3,4,5];
+                break;
+            case 4: // cambio codice
+                $steps = [3,4,5,8];
+                break;
+        }
+
+        return $steps;
+    }
+
+
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
         $services = Service::all();
+
         $service_cond = [
             [
                 'name' => 'Conferma patente',
@@ -322,8 +364,10 @@ class CoursesSeeder extends Seeder
                             'absences' => 3,
                             'guides' => rand(0, 10)
                         ]);
+
                         $this->createLessons($course->id, null);
                         $this->createPrice($course->id, null);
+                        $this->createCourseRegistrationStep($course->id);
                     }
                     break;
                 case 'Formazione professionale':

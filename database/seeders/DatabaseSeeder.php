@@ -20,6 +20,8 @@ class DatabaseSeeder extends Seeder
             SchoolSeeder::class,
             UserSeeder::class,
             ServiceSeeder::class,
+            StepSeeder::class,
+            RegistrationTypeSeeder::class,
             CoursesSeeder::class,
             OptionSeeder::class,
             VehicleSeeder::class

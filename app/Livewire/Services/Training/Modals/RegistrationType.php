@@ -3,56 +3,50 @@
 namespace App\Livewire\Services\Training\Modals;
 
 use App\Models\Course;
+use App\Models\RegistrationType as ModelsRegistrationType;
 use LivewireUI\Modal\ModalComponent;
 
 class RegistrationType extends ModalComponent
 {
     public Course $course;
-    public $selectedOption = null;
+    public $courseRegistrationTypes;
+    public $selectedRegistrationType = null;
 
     public function mount($course) {
         $this->course = $course;
+        $this->courseRegistrationTypes = $this->course->courseRegistrationSteps()->get();
 
         session()->put('course', [
             'id' => $this->course->id,
         ]);
     }
 
-    public function setOption($option) {
-        if (session()->get('course')['id'] == 10 AND $option == 'iscrizione') {
-            $this->addSession($option, 'teoria');
-
-            $this->dispatch('setCourse',
-                course: $this->course->id,
-                branch: $option,
-                type  : session()->get('course')['registration_type']
-            );
-            return $this->closeModal();
+    public function setRegistrationType($id) {
+        switch ($id) {
+            case 1:
+                $this->addSession($id, 'teoria');
+                $this->dispatch('setCourse');
+                return $this->closeModal();
+                break;
+            case 2:
+                $this->addSession($id, 'guide');
+                $this->dispatch('setCourse');
+                return $this->closeModal();
+                break;
+            case 3:
+                $this->addSession($id, 'guide');
+                $this->dispatch('setCourse');
+                return $this->closeModal();
+                break;
+            case 4:
+                $this->addSession($id, 'guide');
+                $this->selectedRegistrationType = 'guide';
+                break;
         }
-
-        if (session()->get('course')['id'] == 16 AND $option == 'possessore di patente' OR $option == 'guida accompagnata') {
-            $this->addSession($option, 'guide');
-
-            $this->dispatch('setCourse',
-                course: $this->course->id,
-                branch: $option,
-                type  : session()->get('course')['registration_type']
-            );
-            return $this->closeModal();
-        }
-
-        if ($option == 'possessore di patente') {
-            $this->addSession($option, 'guide');
-            $this->selectedOption = 'guide';
-        } else {
-            $this->addSession($option, $option);
-        }
-
-        $this->selectedOption = $option;
     }
 
     public function resetOption() {
-        $this->selectedOption = null;
+        $this->selectedRegistrationType = null;
     }
 
     public function setType($type) {
@@ -62,21 +56,19 @@ class RegistrationType extends ModalComponent
             $this->addSession($this->selectedOption, $type);
         }
 
-        $this->dispatch('setCourse',
-            course: $this->course->id,
-            branch: $this->selectedOption,
-            type  : session()->get('course')['registration_type']
-        );
+        $this->dispatch('setCourse');
         $this->closeModal();
     }
 
-    public function addSession($option, $type, $except = null) {
+    public function addSession($registration_type, $branch, $except = null) {
         $session = session()->get('course', []);
-        $session['option'] = $option;
-        $session['registration_type'] = $type;
+        $session['registration_type'] = $registration_type;
+        $session['branch'] = $branch;
+
         if ($except) {
             $session['conseguimento'] = $except;
         }
+
         session()->put('course', $session);
     }
 

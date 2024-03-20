@@ -2,8 +2,6 @@
 
 namespace App\Livewire\Services\Commons;
 
-use App\Livewire\Forms\CustomerForm;
-use App\Livewire\Forms\DocumentForm;
 use App\Models\Course;
 use App\Models\Customer;
 use App\Models\IdentificationDocument;
@@ -11,6 +9,9 @@ use App\Models\IdentificationType;
 use App\Models\InterestedCourses;
 use App\Models\MedicalPlanning;
 use App\Models\Registration;
+use App\Models\Step;
+use App\Livewire\Forms\CustomerForm;
+use App\Livewire\Forms\DocumentForm;
 use Livewire\WithFileUploads;
 use Livewire\Component;
 use Livewire\Attributes\On;
@@ -82,31 +83,14 @@ class StepRegister extends Component
 
     public function setSteps() {
         $course = Course::find(session()->get('course')['id']);
-        if ($course->type == 'service') {
-            $this->steps= [
-                'dati',
-                'documenti',
-                'scansioni',
-                'fototessera',
-                'firma',
-                'anamnestico'
-            ];
-        } else {
-            $this->steps = [
-                'dati',
-                'documenti',
-                'scansioni',
-                'fototessera',
-                'firma',
-            ];
+        $courseSteps = json_decode($course->getStepCourse(session()->get('course')['registration_type'])->steps_id);
+
+        foreach ($courseSteps as $id) {
+            $step = Step::find($id);
+            $this->steps[] = $step->short_name;
         }
 
-        if (in_array($course->id, ['10','11','14','15'])) {
-            $this->steps[] = 'genitore/tutore';
-        }
-
-        if ($course->id == 14) {
-            $this->steps[] = 'accompagnatori';
+        if (session()->get('course')['id'] == 14) {
             $this->companions = [
                 1 => [
                     'signature' => null,
@@ -181,7 +165,7 @@ class StepRegister extends Component
             $registration = Registration::create([
                 'training_id' => $trainingId,
                 'customer_id' => $this->customerForm->newCustomer->id,
-                'option' => session()->get('course')['option'],
+                'registration_type_id' => session()->get('course')['registration_type'],
                 'type' => session()->get('course')['registration_type'],
                 'transmission' => session()->get('course')['transmission'],
                 'optionals' => json_encode(session()->get('course')['selected_cost']),

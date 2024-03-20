@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('options', function (Blueprint $table) {
+        Schema::create('course_registration_steps', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('type');
+            $table->foreignId('course_id')->constrained()->onDelete('cascade');
+            $table->foreignId('variant_id')->nullable()->constrained('course_variants')->onDelete('cascade');
             $table->foreignId('registration_type_id')->constrained()->onDelete('cascade');
-            $table->decimal('price');
+            $table->json('steps_id');
             $table->timestamps();
         });
     }
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('options');
+        Schema::dropIfExists('course_registration_steps');
     }
 };
