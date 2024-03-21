@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('course_id')->constrained()->onDelete('cascade');
             $table->foreignId('variant_id')->nullable()->constrained('course_variants')->onDelete('cascade');
-            $table->json('licenses')->nullable();
+            $table->foreignId('registration_type_id')->constrained()->onDelete('cascade');
             $table->decimal('price');
             $table->timestamps();
         });

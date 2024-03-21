@@ -42,6 +42,7 @@ class StepRegister extends Component
     public $typeDocuments = [];
     public $companions = null;
     public $companionUploaded = false;
+    public $currentStep;
 
     public function mount() {
         if (session('patent')) {
@@ -84,10 +85,11 @@ class StepRegister extends Component
     public function setSteps() {
         $course = Course::find(session()->get('course')['id']);
         $courseSteps = json_decode($course->getStepCourse(session()->get('course')['registration_type'])->steps_id);
+        $this->currentStep = Step::find(reset($courseSteps))->short_name;
 
-        foreach ($courseSteps as $id) {
+        foreach ($courseSteps as $key => $id) {
             $step = Step::find($id);
-            $this->steps[] = [
+            $this->steps[$key+1] = [
                 'id' => $step->id,
                 'short_name' => $step->short_name
             ];
@@ -110,6 +112,7 @@ class StepRegister extends Component
 
     public function backStep() {
         $this->customerForm->currentStep -= 1;
+        $this->currentStep = $this->steps[$this->customerForm->currentStep]['short_name'];
     }
 
     public function nextStep() {
@@ -119,7 +122,7 @@ class StepRegister extends Component
             $this->customerForm->validation();
 
             foreach ($this->skipped as $value) {
-                if ($this->steps[($this->customerForm->currentStep - 1)]['id'] == $value) {
+                if ($this->steps[($this->customerForm->currentStep)]['id'] == $value) {
                     $key = array_search($value, $this->skipped);
 
                     if ($key !== false) {
@@ -129,18 +132,20 @@ class StepRegister extends Component
             }
 
             $this->customerForm->currentStep += 1;
+            $this->currentStep = $this->steps[$this->customerForm->currentStep]['short_name'];
         }
     }
 
     public function skip() {
-        if (!in_array($this->steps[($this->customerForm->currentStep - 1)], $this->skipped)) {
-            $this->skipped[] = $this->steps[($this->customerForm->currentStep - 1)]['id'];
+        if (!in_array($this->steps[($this->customerForm->currentStep)], $this->skipped)) {
+            $this->skipped[] = $this->steps[($this->customerForm->currentStep)]['id'];
         }
 
         if ($this->customerForm->currentStep == count($this->steps)) {
             $this->dispatch('openModal', 'services.commons.modals.registration');
         } else {
             $this->customerForm->currentStep += 1;
+            $this->currentStep = $this->steps[$this->customerForm->currentStep]['short_name'];
         }
     }
 

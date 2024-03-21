@@ -72,6 +72,12 @@ if (! function_exists('get_step')) {
     }
 }
 
+if (! function_exists('get_registrationType')) {
+    function get_registrationType($id) {
+        return \App\Models\RegistrationType::find($id);
+    }
+}
+
 if (! function_exists('get_guide')) {
     function get_guide($guide) {
         $icon = '';

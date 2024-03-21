@@ -29,40 +29,31 @@ class CoursesSeeder extends Seeder
         }
     }
 
-    public function createPrice($course_id, $variant_id) {
-        $licenses = [
-            ['AM'],
-            ['A1'],
-            ['A2'],
-            ['B', 'A2'],
-            ['B']
-        ];
+    public function createPrice($course_id, $variant_id = null) {
 
-        CoursePrice::create([
-            'course_id' => $course_id,
-            'variant_id' => $variant_id,
-            'price' => fake()->numberBetween(200, 1800)
-        ]);
+        $courseRegistrations = CourseRegistrationStep::where('course_id', $course_id)->where('variant_id', $variant_id)->get();
 
-        foreach ($licenses as $license) {
+        foreach ($courseRegistrations as $courseRegistration) {
             CoursePrice::create([
                 'course_id' => $course_id,
                 'variant_id' => $variant_id,
-                'licenses' => json_encode($license),
+                'registration_type_id' => $courseRegistration->registration_type_id,
                 'price' => fake()->numberBetween(200, 1800)
             ]);
         }
     }
 
-    public function createCourseRegistrationStep($course_id, $variant_id = null) {
+    public function createCourseRegistrationStep($course_id, $variant_id = null, $registration_types = []) {
 
-        foreach (RegistrationType::all() as $registrationType) {
-            CourseRegistrationStep::create([
-                'course_id' => $course_id,
-                'variant_id' => $variant_id,
-                'registration_type_id' => $registrationType->id,
-                'steps_id' => json_encode($this->getCourseStep($registrationType->id, $course_id))
-            ]);
+        if (count($registration_types)) {
+            foreach ($registration_types as $registrationType) {
+                CourseRegistrationStep::create([
+                    'course_id' => $course_id,
+                    'variant_id' => $variant_id,
+                    'registration_type_id' => $registrationType,
+                    'steps_id' => json_encode($this->getCourseStep($registrationType, $course_id))
+                ]);
+            }
         }
     }
 
@@ -142,39 +133,48 @@ class CoursesSeeder extends Seeder
         $patents = [
             [
                 'name' => 'Patente AM',
-                'type_visit' => 'rilascio'
+                'type_visit' => 'rilascio',
+                'registration_types' => [1,4],
             ],
             [
                 'name' => 'Patente A1',
-                'type_visit' => 'rilascio'
+                'type_visit' => 'rilascio',
+                'registration_types' => [1,4],
             ],
             [
                 'name' => 'Patente A2',
-                'type_visit' => 'rilascio'
+                'type_visit' => 'rilascio',
+                'registration_types' => [1,2,4],
             ],
             [
                 'name' => 'Patente A',
-                'type_visit' => 'rilascio'
+                'type_visit' => 'rilascio',
+                'registration_types' => [1,2,4],
             ],
             [
                 'name' => 'Guida accompagnata',
-                'type_visit' => 'rilascio'
+                'type_visit' => 'rilascio',
+                'registration_types' => [2],
             ],
             [
                 'name' => 'Patente B1',
-                'type_visit' => 'rilascio'
+                'type_visit' => 'rilascio',
+                'registration_types' => [1,4],
             ],
             [
                 'name' => 'Patente B',
-                'type_visit' => 'rilascio'
+                'type_visit' => 'rilascio',
+                'registration_types' => [1,2,3,4],
             ],
             [
                 'name' => 'Patente B codice 96',
-                'type_visit' => 'rilascio'
+                'type_visit' => 'rilascio',
+                'registration_types' => [1,4],
             ],
             [
                 'name' => 'Patente BE',
-                'type_visit' => 'rilascio'
+                'type_visit' => 'rilascio',
+                'registration_types' => [1,4],
             ],
             [
                 'name' => 'Guide di perfezionamento',
@@ -362,12 +362,12 @@ class CoursesSeeder extends Seeder
                             'description' => fake()->paragraph(),
                             'type_visit' => $value['type_visit'],
                             'absences' => 3,
-                            'guides' => rand(0, 10)
+                            'guides' => $value['name'] == 'Guida accompagnata' ? 10 : 0
                         ]);
 
                         $this->createLessons($course->id, null);
+                        $this->createCourseRegistrationStep($course->id, null, $value['registration_types'] ?? []);
                         $this->createPrice($course->id, null);
-                        $this->createCourseRegistrationStep($course->id);
                     }
                     break;
                 case 'Formazione professionale':
@@ -396,7 +396,7 @@ class CoursesSeeder extends Seeder
                             'description' => fake()->paragraph(),
                             'type_visit' => $value['type_visit'],
                             'absences' => 3,
-                            'guides' => rand(0, 10)
+                            'guides' => 0
                         ]);
                         $this->createLessons($course->id, null);
                         $this->createPrice($course->id, null);

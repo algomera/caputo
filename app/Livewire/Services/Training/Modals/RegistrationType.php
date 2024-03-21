@@ -49,25 +49,17 @@ class RegistrationType extends ModalComponent
         $this->selectedRegistrationType = null;
     }
 
-    public function setType($type) {
-        if ($type == 'guide/s.esame') {
-            $this->addSession($this->selectedOption, 'guide', 's.esame');
-        } else {
-            $this->addSession($this->selectedOption, $type);
-        }
+    public function setBranch($branch) {
+        $this->addSession(session('course')['registration_type'], $branch);
 
         $this->dispatch('setCourse');
         $this->closeModal();
     }
 
-    public function addSession($registration_type, $branch, $except = null) {
+    public function addSession($registration_type, $branch) {
         $session = session()->get('course', []);
         $session['registration_type'] = $registration_type;
         $session['branch'] = $branch;
-
-        if ($except) {
-            $session['conseguimento'] = $except;
-        }
 
         session()->put('course', $session);
     }

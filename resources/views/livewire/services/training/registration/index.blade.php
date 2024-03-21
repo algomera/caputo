@@ -81,13 +81,13 @@
                 <div class="grow h-[2px] bg-color-dfdfdf mb-2"></div>
                 <p @class(["text-xl font-bold", 'text-color-'.get_color($course->service->name)])>{{$course->getOptions()->where('type', 'guide')->first()->price}} €</p>
             </div>
-            @if (array_key_exists('conseguimento', session()->get('course')))
-                <p>Ci sono guide obbligatorie.</p>
-            @elseif (session()->get('course')['id'] == 14)
-                <p>Ci sono 10 guide obbligatorie.</p>
+
+            @if ($course->guides)
+                <p>Ci sono {{$course->guides}} guide obbligatorie.</p>
             @else
                 <p>Non ci sono guide obbligatorie.</p>
             @endif
+
             <x-custom-radio wire:model='transmission' label="Cambio automatico" name="transmission" value="automatico" />
             <x-custom-radio wire:model='transmission' label="Cambio manuale" name="transmission" value="manuale" />
         </div>

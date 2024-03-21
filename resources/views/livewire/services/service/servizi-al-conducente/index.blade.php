@@ -16,7 +16,7 @@
                     <p class="text-2xl font-medium text-color-2c2c2c">Rinnovabile da 4 mesi prima della scadenza</p>
                 </div>
                 <div class="border-b pb-5">
-                    <p class="text-xl text-color-2c2c2c">Ricevuta PostePay di {{ number_format($course->prices()->where('licenses', null)->first()->price, 2 , ',', '.') }}€</p>
+                    <p class="text-xl text-color-2c2c2c">Ricevuta PostePay di {{ number_format($course->prices()->where('registration_type_id', session('course')['registration_type'])->first()->price, 2 , ',', '.') }}€</p>
                 </div>
 
                 <div class="mt-10 space-y-4">

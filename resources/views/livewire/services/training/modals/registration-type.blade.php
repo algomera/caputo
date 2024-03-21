@@ -18,20 +18,18 @@
                 <x-icons name="arrow_back" class="group-hover:-translate-x-1 transition-all duration-300" />
                 <span class="text-lg text-color-808080 group-hover:underline">Indietro</span>
             </div>
-            <small class="text-gray-400 font-bold capitalize">{{$selectedRegistrationType}}</small>
+            <small class="text-gray-400 font-bold capitalize">{{get_registrationType(session('course')['registration_type'])->name}}</small>
         </div>
 
         <div class="flex flex-wrap items-center justify-center gap-5 py-24">
-            @if (session()->get('course')['registration_type'] != 'guide')
-                <div wire:click='setType("teoria")' class="px-24 h-24 flex items-center justify-center border rounded-md shadow-lg hover:scale-105 transition-all duration-300 cursor-pointer">
-                    <p class="text-lg text-color-2c2c2c whitespace-nowrap">Gestione teoria</p>
-                </div>
-            @endif
-            <div wire:click='setType("guide")' class="px-24 h-24 flex items-center justify-center border rounded-md shadow-lg hover:scale-105 transition-all duration-300 cursor-pointer">
+            <div wire:click='setBranch("teoria")' class="px-24 h-24 flex items-center justify-center border rounded-md shadow-lg hover:scale-105 transition-all duration-300 cursor-pointer">
+                <p class="text-lg text-color-2c2c2c whitespace-nowrap">Gestione teoria</p>
+            </div>
+            <div wire:click='setBranch("guide")' class="px-24 h-24 flex items-center justify-center border rounded-md shadow-lg hover:scale-105 transition-all duration-300 cursor-pointer">
                 <p class="text-lg text-color-2c2c2c whitespace-nowrap">Gestione guide</p>
             </div>
             @if (session('course')['id'] == 13)
-                <div wire:click='setType("guide/s.esame")' class="px-24 h-24 flex items-center justify-center border rounded-md shadow-lg hover:scale-105 transition-all duration-300 cursor-pointer">
+                <div wire:click='setBranch("guide/s.esame")' class="px-24 h-24 flex items-center justify-center border rounded-md shadow-lg hover:scale-105 transition-all duration-300 cursor-pointer">
                     <div class="text-center relative">
                         <p class="text-lg text-color-2c2c2c whitespace-nowrap">Gestione guide</p>
                         <small>(Senza esame per possessori di A2)</small>

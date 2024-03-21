@@ -12,20 +12,19 @@
             <div class="flex justify-center gap-1">
                 @foreach ($steps as $key => $step)
                     <x-steps
-                        color="{{$customerForm->currentStep >= $key+1 ? get_color(session()->get('serviceName')) : 'afafaf'}}"
+                        color="{{$customerForm->currentStep >= $key ? get_color(session()->get('serviceName')) : 'afafaf'}}"
                         currentStep="{{$customerForm->currentStep}}"
-                        number="{{$key+1}}"
+                        number="{{$key}}"
                         step="{{$step['short_name']}}"
                     />
-                    @if ($key+1 < count($steps) )
-                        <div @class(["h-1 grow max-w-[138px] rounded-full shadow mt-4", $customerForm->currentStep >= $key+2 ? 'bg-color-'.get_color(session()->get('serviceName')) : 'bg-color-afafaf'])></div>
+                    @if ($key < count($steps) )
+                        <div @class(["h-1 grow max-w-[138px] rounded-full shadow mt-4", $customerForm->currentStep >= $key+1 ? 'bg-color-'.get_color(session()->get('serviceName')) : 'bg-color-afafaf'])></div>
                     @endif
                 @endforeach
             </div>
 
-            @switch($customerForm->currentStep)
-            {{-- Dati --}}
-                @case(1)
+            @switch($currentStep)
+                @case('dati')
                     <x-container-step>
                         <p class="text-xl font-light text-color-2c2c2c">
                             Inserire i <span class="font-bold">Dati</span> del cliente per proseguire.
@@ -66,8 +65,7 @@
                     </x-container-step>
                 @break
 
-            {{-- Documenti --}}
-                @case(2)
+                @case('documenti')
                     <x-container-step>
                         <div class="flex justify-between gap-5">
                             <p class="text-xl font-light text-color-2c2c2c">
@@ -126,8 +124,7 @@
                     </x-container-step>
                 @break
 
-            {{-- Scansioni --}}
-                @case(3)
+                @case('scansioni')
                     <x-container-step>
                         <p class="text-xl font-light text-color-2c2c2c">
                             Caricare la scansione della <span class="font-bold">patente, carta d’identità</span> e il <span class="font-bold">codice fiscale</span>, altrimenti cliccare “inserisci in seguito”
@@ -161,9 +158,11 @@
                         </div>
 
                         <div class="flex justify-between">
-                            <button wire:click="backStep" class="w-fit text-2xl inline-flex items-center px-6 py-2 border border-transparent rounded-md font-light text-color-545454 tracking-widest bg-color-dfdfdf hover:bg-gray-700 hover:text-white active:bg-gray-900 transition ease-in-out duration-150 disabled:opacity-50 disabled:cursor-not-allowed">
-                                Indietro
-                            </button>
+                            @if (session('course')['registration_type'] == 1)
+                                <button wire:click="backStep" class="w-fit text-2xl inline-flex items-center px-6 py-2 border border-transparent rounded-md font-light text-color-545454 tracking-widest bg-color-dfdfdf hover:bg-gray-700 hover:text-white active:bg-gray-900 transition ease-in-out duration-150 disabled:opacity-50 disabled:cursor-not-allowed">
+                                    Indietro
+                                </button>
+                            @endif
                             @if ($scanUploaded)
                                 <x-submit-button wire:click='nextStep' @class(["ml-auto",'bg-color-'.get_color(session()->get('serviceName'))])>Prosegui</x-submit-button>
                             @endif
@@ -171,8 +170,7 @@
                     </x-container-step>
                 @break
 
-            {{-- Fototessera --}}
-                @case(4)
+                @case('fototessera')
                     <x-container-step>
                         <p class="text-xl font-light text-color-2c2c2c">
                             Caricare la fototessera, altrimenti cliccare “inserire in seguito”
@@ -206,8 +204,7 @@
                     </x-container-step>
                 @break
 
-            {{-- Firma --}}
-                @case(5)
+                @case('firma')
                     <x-container-step>
                         <p class="text-xl font-light text-color-2c2c2c">
                             Caricare la firma del cliente e salvare, per proseguire.
@@ -235,8 +232,7 @@
                     </x-container-step>
                 @break
 
-            {{-- Genitory --}}
-                @case(6)
+                @case('genitore/tutore')
                     <x-container-step>
                         <p class="text-xl font-light text-color-2c2c2c">
                             Caricare la <span class="font-bold">firma</span>, la <span class="font-bold">carta d’identità</span> e il <span class="font-bold">codice fiscale</span> del genitore/tutore
@@ -286,8 +282,7 @@
                     </x-container-step>
                 @break
 
-            {{-- Accompagnatori --}}
-                @case(7)
+                @case('accompagnatori')
                     <div class="w-full flex flex-col items-end gap-5 mt-5">
                         <div class="w-full bg-white p-4 flex flex-col items-center gap-5">
                             @if (count($companions) < 3)
@@ -360,6 +355,30 @@
                             @endif
                         </div>
                     </div>
+                @break
+
+                @case('residenza')
+                    <x-container-step>
+                        <div class="p-10 flex flex-col text-center justify-center gap-10 relative">
+                            <h1 class="text-4xl font-medium text-color-2c2c2c">Conferma residenza</h1>
+
+                            <div class="flex flex-wrap gap-4">
+                                <x-input-text wire:model="customerForm.city" width="grow" name="customerForm.city" label="Città" uppercase="capitalize" required="true" />
+                                <x-input-text wire:model="customerForm.province" width="grow" name="customerForm.province" label="Provincia" uppercase="uppercase" required="true" />
+                                <x-input-text wire:model="customerForm.postcode" width="grow" name="customerForm.postcode" label="Cap" uppercase="uppercase" required="true" />
+                                <x-input-text wire:model="customerForm.toponym" width="grow" name="customerForm.toponym" label="Toponimo" uppercase="capitalize" />
+                                <x-input-text wire:model="customerForm.address" width="grow" name="customerForm.address" label="Indirizzo" uppercase="capitalize" required="true" />
+                                <x-input-text wire:model="customerForm.civic" width="grow" name="customerForm.civic" label="N. Civico" uppercase="uppercase" required="true" />
+                            </div>
+
+                            <div class="flex justify-between">
+                                <button wire:click="backStep" class="w-fit text-2xl inline-flex items-center px-6 py-2 border border-transparent rounded-md font-light text-color-545454 tracking-widest bg-color-dfdfdf hover:bg-gray-700 hover:text-white active:bg-gray-900 transition ease-in-out duration-150 disabled:opacity-50 disabled:cursor-not-allowed">
+                                    Indietro
+                                </button>
+                                <x-submit-button wire:click='nextStep' @class(['bg-color-'.get_color(session()->get('serviceName'))])>Prosegui</x-submit-button>
+                            </div>
+                        </div>
+                    </x-container-step>
                 @break
             @endswitch
         </div>
