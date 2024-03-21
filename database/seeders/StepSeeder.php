@@ -15,44 +15,49 @@ class StepSeeder extends Seeder
     {
         $steps = [
             [ //1
-                'name' => 'dati cliente',
+                'name' => 'Dati cliente',
                 'short_name' => 'dati',
                 'required' => true,
             ],
             [ //2
-                'name' => 'documenti riconoscimento',
+                'name' => 'Documenti riconoscimento',
                 'short_name' => 'documenti',
                 'required' => false,
             ],
             [ //3
-                'name' => 'scansione documenti riconoscimento',
+                'name' => 'Scansione documenti riconoscimento',
                 'short_name' => 'scansioni',
                 'required' => false,
             ],
             [ //4
-                'name' => 'fototessera',
+                'name' => 'Fototessera',
                 'short_name' => 'fototessera',
                 'required' => false,
             ],
             [ //5
-                'name' => 'firma cliente',
+                'name' => 'Firma cliente',
                 'short_name' => 'firma',
                 'required' => true,
             ],
             [ //6
-                'name' => 'scansione documenti e firma genitore/tutore',
+                'name' => 'Scansione documenti e firma genitore/tutore',
                 'short_name' => 'genitore/tutore',
                 'required' => false,
             ],
             [ //7
-                'name' => 'scansione documenti e firma accompagnatore',
+                'name' => 'Scansione documenti e firma accompagnatore',
                 'short_name' => 'accompagnatori',
                 'required' => false,
             ],
             [ //8
-                'name' => 'conferma residenza',
+                'name' => 'Conferma residenza',
                 'short_name' => 'residenza',
                 'required' => true,
+            ],
+            [ //9
+                'name' => 'Visita medica',
+                'short_name' => 'visita',
+                'required' => false,
             ],
         ];
 

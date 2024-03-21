@@ -59,9 +59,9 @@ class Index extends Component
         $this->validate();
 
         $session = session()->get('course', []);
-        $session['selected_cost'] = [];
+        $session['selected_options'] = [];
         foreach ($this->selectedOptions as $optionId) {
-            $session['selected_cost'][] = intval($optionId);
+            $session['selected_options'][] = intval($optionId);
         }
         $session['transmission'] = $this->transmission;
         $session['price'] = $this->total;

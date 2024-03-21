@@ -71,11 +71,11 @@ class AddPayment extends ModalComponent
                 ]);
 
                 $registration->chronologies()->create([
-                    'title' => 'Saldo guida del '. date("d/m/Y H:i", strtotime($this->drivingPlanning->begins)). ' di € '. $this->amount
+                    'title' => 'Saldo guida del '. date("d/m/Y H:i", strtotime($this->drivingPlanning->begins)). ' di € '. $this->amount .' con '. $this->type
                 ]);
             } else {
                 $registration->chronologies()->create([
-                    'title' => 'Pagamento guida del '. date("d/m/Y H:i", strtotime($this->drivingPlanning->begins)). ' di € '. $this->amount
+                    'title' => 'Pagamento guida del '. date("d/m/Y H:i", strtotime($this->drivingPlanning->begins)). ' di € '. $this->amount .' con '. $this->type
                 ]);
             }
 
@@ -106,11 +106,11 @@ class AddPayment extends ModalComponent
                 ]);
 
                 $this->registration->chronologies()->create([
-                    'title' => 'Saldo iscrizione di € '. $this->amount
+                    'title' => 'Saldo iscrizione di € '. $this->amount .' con '. $this->type
                 ]);
             } else {
                 $this->registration->chronologies()->create([
-                    'title' => 'Pagamento iscrizione di € '. $this->amount
+                    'title' => 'Pagamento iscrizione di € '. $this->amount .' con '. $this->type
                 ]);
             }
 

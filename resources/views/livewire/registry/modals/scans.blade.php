@@ -31,9 +31,11 @@
                                         <x-icons name="show" class="w-5" />
                                     </button>
                                     @role('admin|responsabile sede')
-                                    <button wire:click="$dispatch('openModal', { component: 'registry.modals.delete-scan', arguments: {scan: {{$scan->id}}} })" class="flex items-center justify-center">
-                                        <x-icons name="delete" class="h-5 w-5" />
-                                    </button>
+                                        @if (!$scan->step_id)
+                                            <button wire:click="$dispatch('openModal', { component: 'registry.modals.delete-scan', arguments: {scan: {{$scan->id}}} })" class="flex items-center justify-center">
+                                                <x-icons name="delete" class="h-5 w-5" />
+                                            </button>
+                                        @endif
                                     @endrole
                                 </div>
                             </td>

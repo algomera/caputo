@@ -108,12 +108,12 @@
                     <x-input-text disabled="{{!$modify}}" x-mask="aa" wire:model="customerForm.province" width="w-20" name="customerForm.province" label="Provincia" uppercase="uppercase" />
                     <x-input-text disabled="{{!$modify}}" x-mask="99999" wire:model="customerForm.postcode" width="w-20" name="customerForm.postcode" label="Cap" />
                     <x-input-text disabled="{{!$modify}}" wire:model="customerForm.country" width="2xl:grow" name="customerForm.country" label="Cittadinanza" />
-                    <x-input-text disabled="{{!$modify}}" wire:model="customerForm.aire" width="2xl:grow" name="customerForm.aire" label="Iscritto Aire" />
                 </div>
                 <div class="flex items-center gap-2">
                     <x-input-text disabled="{{!$modify}}" x-mask="999 9999999" wire:model="customerForm.phone_1" width="w-1/4" name="customerForm.phone_1" label="1° Cellulare" />
                     <x-input-text disabled="{{!$modify}}" x-mask="999 9999999" wire:model="customerForm.phone_2" width="w-1/4" name="customerForm.phone_2" label="2° Cellulare" />
                     <x-input-text disabled="{{!$modify}}" type="email" wire:model="customerForm.email" width="w-1/4" name="customerForm.email" label="Email" />
+                    <x-input-text disabled="{{!$modify}}" wire:model="customerForm.aire" width="2xl:grow" name="customerForm.aire" label="Iscritto Aire" />
                 </div>
             </div>
         </div>
@@ -164,9 +164,11 @@
                                     <x-icons name="b-edit" />
                                 </div>
                                 @role('admin|responsabile sede')
-                                <div wire:click="$dispatch('openModal', { component: 'registry.modals.delete-document', arguments: {document: {{$document->id}}} })" class="hover:scale-105 transition-all duration-300 cursor-pointer">
-                                    <x-icons name="b-delete" />
-                                </div>
+                                    @if ($document->identificationType->id != 1)
+                                        <div wire:click="$dispatch('openModal', { component: 'registry.modals.delete-document', arguments: {document: {{$document->id}}} })" class="hover:scale-105 transition-all duration-300 cursor-pointer">
+                                            <x-icons name="b-delete" />
+                                        </div>
+                                    @endif
                                 @endrole
                             </div>
                             @endif

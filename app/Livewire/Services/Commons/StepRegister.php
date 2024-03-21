@@ -87,7 +87,10 @@ class StepRegister extends Component
 
         foreach ($courseSteps as $id) {
             $step = Step::find($id);
-            $this->steps[] = $step->short_name;
+            $this->steps[] = [
+                'id' => $step->id,
+                'short_name' => $step->short_name
+            ];
         }
 
         if (session()->get('course')['id'] == 14) {
@@ -115,9 +118,13 @@ class StepRegister extends Component
         } else {
             $this->customerForm->validation();
 
-            foreach ($this->skipped as $key => $value) {
-                if ($this->steps[($this->customerForm->currentStep - 1)] == $value) {
-                    unset($this->skipped[$key]);
+            foreach ($this->skipped as $value) {
+                if ($this->steps[($this->customerForm->currentStep - 1)]['id'] == $value) {
+                    $key = array_search($value, $this->skipped);
+
+                    if ($key !== false) {
+                        array_splice($this->skipped, $key, 1);
+                    }
                 }
             }
 
@@ -127,7 +134,7 @@ class StepRegister extends Component
 
     public function skip() {
         if (!in_array($this->steps[($this->customerForm->currentStep - 1)], $this->skipped)) {
-            $this->skipped[] = $this->steps[($this->customerForm->currentStep - 1)];
+            $this->skipped[] = $this->steps[($this->customerForm->currentStep - 1)]['id'];
         }
 
         if ($this->customerForm->currentStep == count($this->steps)) {
@@ -158,8 +165,8 @@ class StepRegister extends Component
         }
 
         if ($type == 'esistente') {
-            if (!in_array(15, array_values(session()->get('course')['selected_cost']))) {
-                $this->skipped[] = 'visita';
+            if (!in_array(15, array_values(session()->get('course')['selected_options']))) {
+                $this->skipped[] = 9;
             }
 
             $registration = Registration::create([
@@ -168,7 +175,7 @@ class StepRegister extends Component
                 'registration_type_id' => session()->get('course')['registration_type'],
                 'type' => session()->get('course')['registration_type'],
                 'transmission' => session()->get('course')['transmission'],
-                'optionals' => json_encode(session()->get('course')['selected_cost']),
+                'optionals' => json_encode(session()->get('course')['selected_options']),
                 'step_skipped' => json_encode($this->skipped),
                 'price' => session()->get('course')['price']
             ]);
@@ -214,7 +221,7 @@ class StepRegister extends Component
             }
         }
 
-        foreach (session()->get('course')['selected_cost'] as $key => $cost) {
+        foreach (session()->get('course')['selected_options'] as $key => $cost) {
             if ($cost == 15) {
                 MedicalPlanning::create([
                     'registration_id' => $registration->id

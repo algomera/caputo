@@ -15,7 +15,7 @@
                         color="{{$customerForm->currentStep >= $key+1 ? get_color(session()->get('serviceName')) : 'afafaf'}}"
                         currentStep="{{$customerForm->currentStep}}"
                         number="{{$key+1}}"
-                        step="{{$step}}"
+                        step="{{$step['short_name']}}"
                     />
                     @if ($key+1 < count($steps) )
                         <div @class(["h-1 grow max-w-[138px] rounded-full shadow mt-4", $customerForm->currentStep >= $key+2 ? 'bg-color-'.get_color(session()->get('serviceName')) : 'bg-color-afafaf'])></div>

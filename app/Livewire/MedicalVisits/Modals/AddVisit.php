@@ -34,6 +34,10 @@ class AddVisit extends ModalComponent
     }
 
     public function save() {
+        if (auth()->user()->role->name == 'medico') {
+            $this->doctor = auth()->user()->id;
+        }
+
         $this->validate();
         $visits = [];
 
@@ -52,7 +56,6 @@ class AddVisit extends ModalComponent
                 'title' => $visit->customer->full_name,
                 'start' => $visit->booked,
             ];
-
         }
 
         $this->closeModalWithEvents([Calendar::class => ['visitUpdate', ['visits' => $visits]]]);

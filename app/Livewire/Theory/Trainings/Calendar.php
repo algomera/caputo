@@ -66,7 +66,7 @@ class Calendar extends Component
     }
 
     public function getTrainingsBetweenDates($startDate, $endDate) {
-        if ($this->user->role == 'admin' || $this->user->role == 'insegnante') {
+        if ($this->user->role->name == 'admin' || $this->user->role->name == 'insegnante') {
             $trainings = Training::where(function ($query) use ($startDate, $endDate) {
                 if ($endDate) {
                     $query->whereBetween('begins', [$startDate, $endDate])->orWhere(function ($query) use ($endDate) {
