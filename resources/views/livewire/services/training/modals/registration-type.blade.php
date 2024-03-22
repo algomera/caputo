@@ -7,8 +7,16 @@
 
         <div class="m-auto flex flex-col gap-4 px-20 2xl:px-56 mt-16">
             @foreach ($courseRegistrationTypes as $key => $type)
-                <div wire:key="type-{{$key}}" wire:click="setRegistrationType({{$type->registrationType->id}})" class="w-full h-24 flex items-center justify-center border rounded-md shadow-shadow-card hover:scale-105 transition-all duration-300 cursor-pointer">
+                <div wire:key="type-{{$key}}" wire:click="setRegistrationType({{$type->registrationType->id}})" class="w-full h-24 flex flex-col items-center justify-center border rounded-md shadow-shadow-card hover:scale-105 transition-all duration-300 cursor-pointer">
                     <p class="text-lg text-color-2c2c2c font-semibold capitalize">{{$type->registrationType->name}}</p>
+                    @if ($variant)
+                        <small class="font-semibold text-gray-400 text-center">{{$type->courseVariant->name}}</small>
+                    @else
+                        <small class="font-semibold text-gray-400 text-center">{{$type->course->name}}</small>
+                    @endif
+                    @if ($registrationCondition && $type->registrationType->id == 2)
+                        <small class="font-semibold text-gray-400 text-center">({{$registrationCondition->condition}})</small>
+                    @endif
                 </div>
             @endforeach
         </div>

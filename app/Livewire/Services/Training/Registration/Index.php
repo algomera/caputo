@@ -19,9 +19,7 @@ class Index extends Component
     public $transmission;
 
     public function mount() {
-        if (session()->get('course')['branch'] == 'teoria') {
-            $this->total += $this->course->prices()->where('registration_type_id', $this->type)->first()->price;
-        }
+        $this->total += $this->course->prices()->where('registration_type_id', $this->type)->first()->price;
 
         foreach ($this->course->getOptions()->where('type', 'fisso')->where('registration_type_id', $this->type)->get() as  $option) {
             $this->total += $option->price;

@@ -15,4 +15,17 @@ class CourseRegistrationStep extends Model
     public function registrationType(): BelongsTo {
         return $this->BelongsTo(RegistrationType::class);
     }
+
+    public function getSteps() {
+        return Step::whereIn('id',json_decode($this->steps_id))->get();
+    }
+
+    public function course(): BelongsTo {
+        return $this->BelongsTo(Course::class);
+    }
+
+    public function courseVariant(): BelongsTo {
+        return $this->BelongsTo(CourseVariant::class, 'variant_id');
+    }
+
 }

@@ -47,11 +47,24 @@ class CoursesSeeder extends Seeder
 
         if (count($registration_types)) {
             foreach ($registration_types as $registrationType) {
+                $condition = null;
+
+                if ($registrationType == 2) {
+                    if (in_array($course_id, ['12','13'])) {
+                        $condition = 'A1, B1, B';
+                    } elseif ($course_id == 14) {
+                        $condition = 'A2';
+                    } elseif ($course_id == 16) {
+                        $condition = 'A1, A2, A, B1';
+                    }
+                }
+
                 CourseRegistrationStep::create([
                     'course_id' => $course_id,
                     'variant_id' => $variant_id,
                     'registration_type_id' => $registrationType,
-                    'steps_id' => json_encode($this->getCourseStep($registrationType, $course_id))
+                    'steps_id' => json_encode($this->getCourseStep($registrationType, $course_id)),
+                    'condition' => $condition
                 ]);
             }
         }
@@ -368,6 +381,22 @@ class CoursesSeeder extends Seeder
                         $this->createLessons($course->id, null);
                         $this->createCourseRegistrationStep($course->id, null, $value['registration_types'] ?? []);
                         $this->createPrice($course->id, null);
+
+                        for ($i=0; $i < 2; $i++) {
+                            $variant = CourseVariant::create([
+                                'course_id' => $course->id,
+                                'type' => $value['type'] ?? 'training',
+                                'name' => $value['name'] .' '. $i,
+                                'slug' => Str::slug($value['name'] .' '. $i),
+                                'description' => fake()->paragraph(),
+                                'type_visit' => $value['type_visit'],
+                                'absences' => 3
+                            ]);
+                            $this->createLessons($course->id, $variant->id);
+                            $this->createCourseRegistrationStep($course->id, $variant->id, $value['registration_types'] ?? []);
+                            $this->createPrice($course->id, $variant->id);
+                        }
+
                     }
                     break;
                 case 'Formazione professionale':
@@ -417,7 +446,7 @@ class CoursesSeeder extends Seeder
                         $this->createLessons($course->id, null);
                         $this->createPrice($course->id, null);
 
-                        for ($i=0; $i < 3; $i++) {
+                        for ($i=0; $i < 2; $i++) {
                             $variant = CourseVariant::create([
                                 'course_id' => $course->id,
                                 'type' => $value['type'] ?? 'training',

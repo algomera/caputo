@@ -3,18 +3,19 @@
 namespace App\Livewire\Services\Training\Modals;
 
 use App\Models\Course;
-use App\Models\RegistrationType as ModelsRegistrationType;
 use LivewireUI\Modal\ModalComponent;
+use App\Models\CourseRegistrationStep;
 
 class RegistrationType extends ModalComponent
 {
     public Course $course;
-    public $courseRegistrationTypes;
-    public $selectedRegistrationType = null;
+    public $registrationCondition;
+    public $selectedRegistrationType = false;
+    public $variant = false;
 
     public function mount($course) {
         $this->course = $course;
-        $this->courseRegistrationTypes = $this->course->courseRegistrationSteps()->get();
+        $this->registrationCondition = CourseRegistrationStep::where('course_id', session('course')['id'])->where('registration_type_id', 2)->first();
 
         session()->put('course', [
             'id' => $this->course->id,
@@ -39,14 +40,18 @@ class RegistrationType extends ModalComponent
                 return $this->closeModal();
                 break;
             case 4:
-                $this->addSession($id, 'guide');
-                $this->selectedRegistrationType = 'guide';
+                $this->addSession($id);
+                $this->selectedRegistrationType = true;
                 break;
         }
     }
 
+    public function showVariant() {
+        $this->variant = !$this->variant;
+    }
+
     public function resetOption() {
-        $this->selectedRegistrationType = null;
+        $this->selectedRegistrationType = false;
     }
 
     public function setBranch($branch) {
@@ -56,7 +61,7 @@ class RegistrationType extends ModalComponent
         $this->closeModal();
     }
 
-    public function addSession($registration_type, $branch) {
+    public function addSession($registration_type, $branch = null) {
         $session = session()->get('course', []);
         $session['registration_type'] = $registration_type;
         $session['branch'] = $branch;
@@ -71,6 +76,14 @@ class RegistrationType extends ModalComponent
 
     public function render()
     {
-        return view('livewire.services.training.modals.registration-type');
+        if ($this->variant) {
+            $courseRegistrationTypes = $this->course->courseRegistrationSteps()->where('variant_id', '!=', null)->get();
+        } else {
+            $courseRegistrationTypes = $this->course->courseRegistrationSteps()->where('variant_id', null)->get();
+        }
+
+        return view('livewire.services.training.modals.registration-type', [
+            'courseRegistrationTypes' => $courseRegistrationTypes
+        ]);
     }
 }

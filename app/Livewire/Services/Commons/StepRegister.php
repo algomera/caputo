@@ -3,18 +3,18 @@
 namespace App\Livewire\Services\Commons;
 
 use App\Models\Course;
+use Livewire\Component;
 use App\Models\Customer;
-use App\Models\IdentificationDocument;
-use App\Models\IdentificationType;
-use App\Models\InterestedCourses;
-use App\Models\MedicalPlanning;
+use Livewire\Attributes\On;
 use App\Models\Registration;
-use App\Models\Step;
+use Livewire\WithFileUploads;
+use App\Models\MedicalPlanning;
+use App\Models\InterestedCourses;
+use App\Models\IdentificationType;
 use App\Livewire\Forms\CustomerForm;
 use App\Livewire\Forms\DocumentForm;
-use Livewire\WithFileUploads;
-use Livewire\Component;
-use Livewire\Attributes\On;
+use App\Models\CourseRegistrationStep;
+use App\Models\IdentificationDocument;
 
 class StepRegister extends Component
 {
@@ -83,12 +83,10 @@ class StepRegister extends Component
     }
 
     public function setSteps() {
-        $course = Course::find(session()->get('course')['id']);
-        $courseSteps = json_decode($course->getStepCourse(session()->get('course')['registration_type'])->steps_id);
-        $this->currentStep = Step::find(reset($courseSteps))->short_name;
+        $courseRegistrationSteps = CourseRegistrationStep::where('course_id', session('course')['id'])->where('registration_type_id', session('course')['registration_type'])->first()->getSteps();
+        $this->currentStep = $courseRegistrationSteps->first()->short_name;
 
-        foreach ($courseSteps as $key => $id) {
-            $step = Step::find($id);
+        foreach ($courseRegistrationSteps as $key => $step) {
             $this->steps[$key+1] = [
                 'id' => $step->id,
                 'short_name' => $step->short_name
@@ -178,7 +176,7 @@ class StepRegister extends Component
                 'training_id' => $trainingId,
                 'customer_id' => $this->customerForm->newCustomer->id,
                 'registration_type_id' => session()->get('course')['registration_type'],
-                'type' => session()->get('course')['registration_type'],
+                'branch' => session()->get('course')['branch'],
                 'transmission' => session()->get('course')['transmission'],
                 'optionals' => json_encode(session()->get('course')['selected_options']),
                 'step_skipped' => json_encode($this->skipped),

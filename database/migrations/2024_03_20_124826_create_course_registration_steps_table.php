@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('variant_id')->nullable()->constrained('course_variants')->onDelete('cascade');
             $table->foreignId('registration_type_id')->constrained()->onDelete('cascade');
             $table->json('steps_id');
+            $table->string('condition')->nullable();
             $table->timestamps();
         });
     }
