@@ -31,7 +31,7 @@ class Document extends ModalComponent
         if (count($registrations)) {
             foreach ($registrations as $registration) {
 
-                $arrayStepSkippedId = json_decode($registration->step_skipped);
+                $arrayStepSkippedId = $registration->step_skipped;
                 $key = array_search(2, $arrayStepSkippedId);
 
                 if ($key !== false) {
@@ -39,7 +39,7 @@ class Document extends ModalComponent
                 }
 
                 $registration->update([
-                    'step_skipped' => json_encode(array_values($arrayStepSkippedId))
+                    'step_skipped' =>array_values($arrayStepSkippedId)
                 ]);
             }
         }

@@ -11,36 +11,38 @@ class RegistrationType extends ModalComponent
     public Course $course;
     public $registrationCondition;
     public $selectedRegistrationType = false;
+    public $existingVariant;
     public $variant = false;
 
     public function mount($course) {
         $this->course = $course;
-        $this->registrationCondition = CourseRegistrationStep::where('course_id', session('course')['id'])->where('registration_type_id', 2)->first();
+        $this->registrationCondition = CourseRegistrationStep::where('course_id', $this->course->id)->where('registration_type_id', 2)->first();
+        $this->existingVariant = count($this->course->courseRegistrationSteps()->where('variant_id', '!=', null)->get());
 
         session()->put('course', [
             'id' => $this->course->id,
         ]);
     }
 
-    public function setRegistrationType($id) {
-        switch ($id) {
+    public function setRegistrationType($type_id, $variant_id = null) {
+        switch ($type_id) {
             case 1:
-                $this->addSession($id, 'teoria');
+                $this->addSession($type_id, $variant_id, 'teoria');
                 $this->dispatch('setCourse');
                 return $this->closeModal();
                 break;
             case 2:
-                $this->addSession($id, 'guide');
+                $this->addSession($type_id, $variant_id, 'guide');
                 $this->dispatch('setCourse');
                 return $this->closeModal();
                 break;
             case 3:
-                $this->addSession($id, 'guide');
+                $this->addSession($type_id, $variant_id, 'guide');
                 $this->dispatch('setCourse');
                 return $this->closeModal();
                 break;
             case 4:
-                $this->addSession($id);
+                $this->addSession($type_id, $variant_id);
                 $this->selectedRegistrationType = true;
                 break;
         }
@@ -55,15 +57,16 @@ class RegistrationType extends ModalComponent
     }
 
     public function setBranch($branch) {
-        $this->addSession(session('course')['registration_type'], $branch);
+        $this->addSession(session('course')['registration_type'], session('course')['course_variant'], $branch);
 
         $this->dispatch('setCourse');
         $this->closeModal();
     }
 
-    public function addSession($registration_type, $branch = null) {
+    public function addSession($registration_type_id, $courseVariant_id = null, $branch = null) {
         $session = session()->get('course', []);
-        $session['registration_type'] = $registration_type;
+        $session['course_variant'] = $courseVariant_id;
+        $session['registration_type'] = $registration_type_id;
         $session['branch'] = $branch;
 
         session()->put('course', $session);

@@ -5,6 +5,7 @@ namespace App\Livewire\Services\Training\Modals;
 use App\Livewire\Forms\CustomerForm;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Course;
+use App\Models\CourseVariant;
 use LivewireUI\Modal\ModalComponent;
 
 class GetFiscalCode extends ModalComponent
@@ -38,7 +39,11 @@ class GetFiscalCode extends ModalComponent
         if (session()->get('course')['registration_type'] == 'cambio codice') {
             $this->dispatch('openModal', 'services.training.modals.get-signature');
         } else {
-            $course = Course::find(session()->get('course')['id']);
+            if (session('course')['course_variant']) {
+                $course = CourseVariant::find(session()->get('course')['course_variant']);
+            } else {
+                $course = Course::find(session()->get('course')['id']);
+            }
 
             return redirect()->route('service.step.register', [
                 'course' => $course,

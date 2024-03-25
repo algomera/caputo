@@ -12,11 +12,17 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
 class CourseVariant extends Model
 {
     use HasFactory;
+    use \Znck\Eloquent\Traits\BelongsToThrough;
+
 
     protected $guarded = [];
 
     public function course(): BelongsTo {
         return $this->belongsTo(Course::class);
+    }
+
+    public function service() {
+        return $this->BelongsToThrough(Service::class, Course::class);
     }
 
     public function options(): BelongsToMany {

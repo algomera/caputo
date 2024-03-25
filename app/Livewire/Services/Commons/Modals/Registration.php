@@ -3,6 +3,7 @@
 namespace App\Livewire\Services\Commons\Modals;
 
 use App\Models\Course;
+use App\Models\CourseVariant;
 use App\Models\LessonPlanning;
 use App\Models\Training;
 use App\Models\User;
@@ -13,7 +14,6 @@ class Registration extends ModalComponent
     public $selectedOption = null;
     public $course;
     public $trainings;
-    public $trainingCourseVariant = null;
     public $trainingUser;
     public $trainingBegins;
     public $trainingEnds;
@@ -21,10 +21,17 @@ class Registration extends ModalComponent
     public $loopTraining = false;
 
     public function mount() {
-        $this->course = Course::find(session()->get('course')['id']);
-        $loopTrainings = Training::where('school_id', auth()->user()->schools()->first()->id)->where('course_id', $this->course->id)->where('ends', null)->get();
-        $trainings = Training::where('school_id', auth()->user()->schools()->first()->id)->where('course_id', $this->course->id)->where('ends', '>', now()->format('Y-m-d'))->get();
-        $this->trainings = $loopTrainings->merge($trainings);
+        if (session()->get('course')['course_variant']) {
+            $this->course = CourseVariant::find(session()->get('course')['course_variant']);
+            $loopTrainings = Training::where('school_id', auth()->user()->schools()->first()->id)->where('variant_id', $this->course->id)->where('ends', null)->get();
+            $trainings = Training::where('school_id', auth()->user()->schools()->first()->id)->where('variant_id', $this->course->id)->where('ends', '>', now()->format('Y-m-d'))->get();
+            $this->trainings = $loopTrainings->merge($trainings);
+        } else {
+            $this->course = Course::find(session()->get('course')['id']);
+            $loopTrainings = Training::where('school_id', auth()->user()->schools()->first()->id)->where('course_id', $this->course->id)->where('ends', null)->get();
+            $trainings = Training::where('school_id', auth()->user()->schools()->first()->id)->where('course_id', $this->course->id)->where('ends', '>', now()->format('Y-m-d'))->get();
+            $this->trainings = $loopTrainings->merge($trainings);
+        }
     }
 
     public function rules() {
@@ -75,7 +82,7 @@ class Registration extends ModalComponent
         $training = Training::create([
             'school_id' => auth()->user()->schools()->first()->id,
             'course_id' => session()->get('course')['id'],
-            'variant_id' => $this->trainingCourseVariant,
+            'variant_id' => session()->get('course')['course_variant'],
             'user_id' => $this->trainingUser,
             'begins' => $this->trainingBegins,
             'ends' => $this->trainingEnds,

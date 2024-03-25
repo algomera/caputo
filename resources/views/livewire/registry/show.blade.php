@@ -1,4 +1,4 @@
-<div class="w-full h-full py-10 px-8 2xl:px-14">
+<div x-init="$wire.showMissingData" class="w-full h-full py-10 px-8 2xl:px-14">
 
     <div class="flex items-center gap-5">
         <div wire:click='back' class="w-12 h-12 rounded-full shadow-shadow-card flex items-center justify-center cursor-pointer group">
@@ -200,13 +200,13 @@
                                     @endif
                                 </span>
                             </p>
-                            @if (count(json_decode($registration->step_skipped)) < 1)
-                                <button class="px-4 py-1 text-color-2c2c2c font-medium capitalize rounded-full bg-color-ffb205/30 hover:scale-105 transition-all duration-300">continua accettazione</button>
-                            @else
+                            @if (count($registration->step_skipped))
                                 <button wire:click="$dispatch('openModal', { component: 'registry.modals.show-skipped', arguments: {registration: {{$registration->id}}} })" class="px-4 py-[2px] flex items-center gap-2 text-color-2c2c2c font-medium capitalize rounded-full bg-red-500/30 hover:scale-105 transition-all duration-300">
                                     <x-icons name="error" />
                                     Dati mancanti
                                 </button>
+                            @else
+                                <button class="px-4 py-1 text-color-2c2c2c font-medium capitalize rounded-full bg-color-ffb205/30 hover:scale-105 transition-all duration-300">continua accettazione</button>
                             @endif
                             @if (count($registration->course->getOptions()->where('type', 'opzionale')->where('registration_type_id', $registration->registration_type_id)->whereNot('name', 'Supporto audio')->get()) > 0)
                                 <button wire:click="$dispatch('openModal', { component: 'registry.modals.update-registration', arguments: {registration: {{$registration->id}}} })" class="flex items-center gap-2 px-4 py-1 text-color-2c2c2c font-medium capitalize rounded-full bg-color-347af2/30 hover:scale-105 transition-all duration-300">

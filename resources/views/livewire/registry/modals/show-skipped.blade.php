@@ -215,14 +215,14 @@
                     </tr>
                 </thead>
                 <tbody class="bg-white customBody no-scrollbar !max-h-[470px]">
-                    @if (count(json_decode($registration->step_skipped)) > 0)
-                        @foreach(json_decode($registration->step_skipped) as $step)
+                    @if (count($registration->step_skipped))
+                        @foreach($registration->getStepSkipped() as $step)
                             <tr class="text-center even:bg-color-f7f7f7">
-                                <td colspan="3" class="border-r-2 border-color-efefef text-left font-medium px-3 py-4 text-color-2c2c2c">{{get_step($step)->name}}</td>
+                                <td colspan="3" class="border-r-2 border-color-efefef text-left font-medium px-3 py-4 text-color-2c2c2c">{{$step->name}}</td>
                                 <td class="border-r-2 border-color-efefef text-left font-medium px-3 py-4 text-color-2c2c2c capitalize">
-                                    @if (!in_array($step, [2,4]))
+                                    @if (!in_array($step->id, [2,4]))
                                         <div class="w-full flex items-center justify-center">
-                                            <button wire:click="$set('stepSkipped', '{{$step}}')" class="px-4 py-1 text-color-2c2c2c font-medium capitalize rounded-full bg-color-01a53a/30 hover:scale-105 transition-all duration-300">inserisci</button>
+                                            <button wire:click="$set('stepSkipped', {{$step->id}})" class="px-4 py-1 text-color-2c2c2c font-medium capitalize rounded-full bg-color-01a53a/30 hover:scale-105 transition-all duration-300">inserisci</button>
                                         </div>
                                     @endif
                                 </td>

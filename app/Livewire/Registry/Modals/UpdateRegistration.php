@@ -17,7 +17,7 @@ class UpdateRegistration extends ModalComponent
     public function mount($registration) {
         $this->registration = Registration::find($registration);
         $this->options = $this->registration->course->getOptions()->where('type', 'opzionale')->where('registration_type_id', $this->registration->registration_type_id)->whereNot('name', 'Supporto audio')->get();
-        $this->selectedOptions = json_decode($this->registration->optionals);
+        $this->selectedOptions = $this->registration->optionals;
         $this->existingDocumentVisit =  $this->registration->documents()->where('step_id', 9)->first();
     }
 
@@ -35,7 +35,7 @@ class UpdateRegistration extends ModalComponent
         if ($id == 15) {
             MedicalPlanning::where('registration_id', $this->registration->id)->delete();
 
-            $arrayStepSkippedId = json_decode($this->registration->step_skipped);
+            $arrayStepSkippedId = $this->registration->step_skipped;
             $key = array_search($id, $arrayStepSkippedId);
 
             if ($key !== false) {
@@ -43,7 +43,7 @@ class UpdateRegistration extends ModalComponent
             }
 
             $this->registration->update([
-                'step_skipped' => json_encode(array_values($arrayStepSkippedId))
+                'step_skipped' => array_values($arrayStepSkippedId)
             ]);
         }
 
@@ -71,7 +71,7 @@ class UpdateRegistration extends ModalComponent
                 'registration_id' => $this->registration->id
             ]);
 
-            $arrayStepSkippedId = json_decode($this->registration->step_skipped);
+            $arrayStepSkippedId = $this->registration->step_skipped;
             $key = array_search($id, $arrayStepSkippedId);
 
             if ($key !== false) {
@@ -79,7 +79,7 @@ class UpdateRegistration extends ModalComponent
             }
 
             $this->registration->update([
-                'step_skipped' => json_encode(array_values($arrayStepSkippedId))
+                'step_skipped' => array_values($arrayStepSkippedId)
             ]);
         }
 

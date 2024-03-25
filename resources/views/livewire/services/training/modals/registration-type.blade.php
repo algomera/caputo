@@ -2,12 +2,16 @@
     @if (!$selectedRegistrationType)
         <div class="w-full flex justify-between">
             <h1 @class(["text-4xl font-semibold", 'text-color-'.get_color($course->service->name)])>Selezionare l'opzione</h1>
-            <small class="text-gray-400 font-bold">{{$course->name}}</small>
+            @if ($existingVariant)
+                <button wire:click="showVariant" class="text-lg font-medium capitalize pt-1 px-4 bg-color-017c67 text-white border-transparent focus-visible:border-transparent focus:border-transparent !outline-none focus:ring-0 {{$variant ? 'bg-yellow-500/70' : 'bg-color-017c67/70'}}">
+                    @if ($variant) Varianti corso @else Corso standard @endif
+                </button>
+            @endif
         </div>
 
         <div class="m-auto flex flex-col gap-4 px-20 2xl:px-56 mt-16">
             @foreach ($courseRegistrationTypes as $key => $type)
-                <div wire:key="type-{{$key}}" wire:click="setRegistrationType({{$type->registrationType->id}})" class="w-full h-24 flex flex-col items-center justify-center border rounded-md shadow-shadow-card hover:scale-105 transition-all duration-300 cursor-pointer">
+                <div wire:key="type-{{$key}}" wire:click="setRegistrationType({{$type->registrationType->id}}, {{$type->variant_id}})" class="w-full h-24 flex flex-col items-center justify-center border rounded-md shadow-shadow-card hover:scale-105 transition-all duration-300 cursor-pointer">
                     <p class="text-lg text-color-2c2c2c font-semibold capitalize">{{$type->registrationType->name}}</p>
                     @if ($variant)
                         <small class="font-semibold text-gray-400 text-center">{{$type->courseVariant->name}}</small>

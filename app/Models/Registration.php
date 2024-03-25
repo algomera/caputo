@@ -16,6 +16,11 @@ class Registration extends Model
 
     protected $guarded = [];
 
+    protected $casts = [
+        'step_skipped' => 'array',
+        'optional' => 'array'
+    ];
+
     public function customer(): BelongsTo {
         return $this->belongsTo(Customer::class);
     }
@@ -74,6 +79,12 @@ class Registration extends Model
 
     public function getPerformedGuidesAttribute() {
         return $this->drivingPlanning()->where('performed', 'svolta')->get();
+    }
+
+    public function getStepSkipped() {
+        return Step::where(function ($q) {
+            $q->whereIn('id', $this->step_skipped);
+        })->get();
     }
 
     public function getFinalPriceAttribute() {

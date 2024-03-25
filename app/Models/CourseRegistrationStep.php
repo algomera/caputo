@@ -12,12 +12,16 @@ class CourseRegistrationStep extends Model
 
     protected $guarded = [];
 
+    protected $casts = [
+        'steps_id' => 'array',
+    ];
+
     public function registrationType(): BelongsTo {
         return $this->BelongsTo(RegistrationType::class);
     }
 
     public function getSteps() {
-        return Step::whereIn('id',json_decode($this->steps_id))->get();
+        return Step::whereIn('id', $this->steps_id)->get();
     }
 
     public function course(): BelongsTo {

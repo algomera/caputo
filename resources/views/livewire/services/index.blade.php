@@ -50,15 +50,7 @@
             @break
     {{-- Scelta opzioni corso --}}
         @case(2)
-            <livewire:services.training.registration.index :course="$course" :branch="$branch" :type="$type" />
-            @break
-    {{-- ? --}}
-        @case(3)
-            <div></div>
-            @break
-    {{-- ? --}}
-        @case(4)
-            <div></div>
+            <livewire:services.training.registration.index :course="$course" :variant="$courseVariant" :branch="$branch" :type="$type" />
             @break
 
         @default

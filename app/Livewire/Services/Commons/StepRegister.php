@@ -14,16 +14,17 @@ use App\Models\IdentificationType;
 use App\Livewire\Forms\CustomerForm;
 use App\Livewire\Forms\DocumentForm;
 use App\Models\CourseRegistrationStep;
+use App\Models\CourseVariant;
 use App\Models\IdentificationDocument;
 
 class StepRegister extends Component
 {
     use WithFileUploads;
 
-    public Course $course;
     public CustomerForm $customerForm;
     public DocumentForm $documentForm;
 
+    public $course;
     public $patent = null;
     public $customer = null;
     public $photo;
@@ -45,6 +46,12 @@ class StepRegister extends Component
     public $currentStep;
 
     public function mount() {
+        if (session('course')['course_variant']) {
+            $this->course = CourseVariant::find(session('course')['course_variant']);
+        } else {
+            $this->course = Course::find(session('course')['id']);
+        }
+
         if (session('patent')) {
             $this->patent = IdentificationDocument::where('n_document', session()->get('patent'))->first();
 
@@ -208,20 +215,12 @@ class StepRegister extends Component
                 $this->documentForm->companionsScans($scans, $registration->id);
             }
         } elseif ($type == 'interessato') {
-            if ($variant) {
-                InterestedCourses::create([
-                    'customer_id' => $this->customerForm->newCustomer->id,
-                    'course_id' => session()->get('course')['id'],
-                    'variant_id' => $variant,
-                    'confirm' => 'in attesa'
-                ]);
-            } else {
-                InterestedCourses::create([
-                    'customer_id' => $this->customerForm->newCustomer->id,
-                    'course_id' => session()->get('course')['id'],
-                    'confirm' => 'in attesa'
-                ]);
-            }
+            $registration = InterestedCourses::create([
+                'customer_id' => $this->customerForm->newCustomer->id,
+                'course_id' => session()->get('course')['id'],
+                'variant_id' => session()->get('course')['course_variant'],
+                'confirm' => 'in attesa'
+            ]);
         }
 
         foreach (session()->get('course')['selected_options'] as $key => $cost) {
@@ -232,7 +231,11 @@ class StepRegister extends Component
             }
         }
 
-        $this->dispatch('openModal', 'services.commons.modals.payment', ['registration' => $registration->id]);
+        if ($type == 'esistente') {
+            $this->dispatch('openModal', 'services.commons.modals.payment', ['registration' => $registration->id]);
+        } else {
+            return redirect()->route('registry.show', ['customer' => $registration->customer_id]);
+        }
     }
 
     public function addDocument() {

@@ -10,6 +10,8 @@ use Livewire\Attributes\On;
 class Index extends Component
 {
     public $course;
+    public $variant;
+    public $selectedCourse;
     public $branch;
     public $type;
     public $selectedOptions = [];
@@ -19,9 +21,14 @@ class Index extends Component
     public $transmission;
 
     public function mount() {
-        $this->total += $this->course->prices()->where('registration_type_id', $this->type)->first()->price;
+        if ($this->variant) {
+            $this->selectedCourse = $this->variant;
+        } else {
+            $this->selectedCourse = $this->course;
+        }
+        $this->total += $this->selectedCourse->prices()->where('registration_type_id', $this->type)->first()->price;
 
-        foreach ($this->course->getOptions()->where('type', 'fisso')->where('registration_type_id', $this->type)->get() as  $option) {
+        foreach ($this->selectedCourse->getOptions()->where('type', 'fisso')->where('registration_type_id', $this->type)->get() as  $option) {
             $this->total += $option->price;
         }
     }
@@ -30,10 +37,10 @@ class Index extends Component
         $this->total = 0;
 
         if (session()->get('course')['branch'] == 'teoria') {
-            $this->total += $this->course->prices()->first()->price;
+            $this->total += $this->selectedCourse->prices()->first()->price;
         }
 
-        foreach ($this->course->getOptions()->where('type', 'fisso')->where('registration_type_id', $this->type)->get() as  $option) {
+        foreach ($this->selectedCourse->getOptions()->where('type', 'fisso')->where('registration_type_id', $this->type)->get() as  $option) {
             $this->total += $option->price;
         }
 

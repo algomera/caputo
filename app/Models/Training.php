@@ -43,6 +43,10 @@ class Training extends Model
         return $this->BelongsToMany(Customer::class, 'registrations');
     }
 
+    public function customerMissingData($customer) {
+        return $this->registrations()->where('customer_id', $customer)->first()->step_skipped;
+    }
+
     public function customerPresence($customer) {
         $presences = 0;
         foreach ($this->plannings()->whereNotNull('begin')->get() as $lessonPlanning) {
