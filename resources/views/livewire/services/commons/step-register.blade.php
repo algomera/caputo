@@ -94,8 +94,8 @@
                                     </div>
                                     @if ($documents[$key]['identification_type_id'] == 2)
                                         <x-custom-select multiple wire:model.live="documents.{{$key}}.qualification" name="documents.{{$key}}.type" label="Qualifiche" width="grow" height="!min-h-[calc(100%-10px)]" >
-                                            @foreach ($typePatents as $patent )
-                                                <option value="{{$patent}}" class="capitalize">{{$patent}}</option>
+                                            @foreach ($patents as $patent )
+                                                <option value="{{$patent->id}}" class="uppercase">{{$patent->qualification}}</option>
                                             @endforeach
                                         </x-custom-select>
                                         {{-- @if (array_key_exists('qualification', $documents[$key]))

@@ -29,7 +29,7 @@ class identificationDocumentSeeder extends Seeder
                         'document_release' => fake()->date(),
                         'document_from' => fake()->word(),
                         'document_expiration' => fake()->date(),
-                        'qualification' => json_encode(['A','B'])
+                        'qualification' => json_encode(['1','6'])
                     ]);
                 }
 

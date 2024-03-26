@@ -16,6 +16,7 @@ class Index extends Component
     public $type;
     public $selectedOptions = [];
     public $total = 0;
+    public $changeTransmission = false;
 
     #[Validate('required', message: 'Scelta obbligatoria')]
     public $transmission;
@@ -30,6 +31,10 @@ class Index extends Component
 
         foreach ($this->selectedCourse->getOptions()->where('type', 'fisso')->where('registration_type_id', $this->type)->get() as  $option) {
             $this->total += $option->price;
+        }
+
+        if (session('course')['registration_type'] == 4) {
+            $this->transmission = 'manuale';
         }
     }
 
@@ -47,6 +52,12 @@ class Index extends Component
         foreach ($this->selectedOptions as $id) {
             $option = Option::find($id);
             $this->total += $option->price;
+        }
+
+        if (in_array(8, $this->selectedOptions)) {
+            $this->changeTransmission = true;
+        } else {
+            $this->changeTransmission = false;
         }
     }
 

@@ -16,11 +16,6 @@ class Registration extends Model
 
     protected $guarded = [];
 
-    protected $casts = [
-        'step_skipped' => 'array',
-        'optional' => 'array'
-    ];
-
     public function customer(): BelongsTo {
         return $this->belongsTo(Customer::class);
     }
@@ -72,6 +67,9 @@ class Registration extends Model
     public function course() {
         return $this->BelongsToThrough(Course::class, Training::class);
     }
+    public function courseVariant() {
+        return $this->BelongsToThrough(CourseVariant::class, Training::class, foreignKeyLookup: [CourseVariant::class => 'variant_id']);
+    }
 
     public function school() {
         return $this->BelongsToThrough(School::class, Training::class);
@@ -83,7 +81,7 @@ class Registration extends Model
 
     public function getStepSkipped() {
         return Step::where(function ($q) {
-            $q->whereIn('id', $this->step_skipped);
+            $q->whereIn('id', json_decode($this->step_skipped));
         })->get();
     }
 

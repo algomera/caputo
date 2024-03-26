@@ -81,7 +81,7 @@ class AddGuide extends ModalComponent
     public function render()
     {
         $instructors = User::role('istruttore')->get();
-        $vehicles = Vehicle::all();
+        $vehicles = Vehicle::where('patent_id', $this->registration->course->patent_id)->where('transmission', $this->registration->transmission)->get();
 
         return view('livewire.driving.modals.add-guide', [
             'instructors' => $instructors,

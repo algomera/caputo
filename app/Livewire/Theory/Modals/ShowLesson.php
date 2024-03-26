@@ -20,6 +20,11 @@ class ShowLesson extends ModalComponent
         }
     }
 
+    public static function closeModalOnClickAway(): bool
+    {
+        return false;
+    }
+
     public function render()
     {
         return view('livewire.theory.modals.show-lesson');

@@ -3,6 +3,7 @@
 namespace App\Livewire\Registry\Modals;
 
 use App\Livewire\Registry\Modals\Payments;
+use App\Models\Document;
 use App\Models\DrivingPlanning;
 use App\Models\Registration;
 use Livewire\Attributes\Validate;
@@ -92,7 +93,7 @@ class AddPayment extends ModalComponent
             ]);
 
             if ($this->newScan) {
-                $path = Storage::disk('public')->putFileAs('customers/customer-'.$this->registration->customer_id, $this->newScan, str_replace(' ', '_', $this->newScan->getClientOriginalName()));
+                $path = Storage::disk('public')->putFileAs('customers/customer-'.$this->registration->customer_id.'/'.$registration->course->slug.'/payments', $this->newScan, str_replace(' ', '_', $this->newScan->getClientOriginalName()));
 
                 $payment->document()->create([
                     'type' => 'Pagamento',

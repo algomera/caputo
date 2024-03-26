@@ -11,11 +11,19 @@
             <div>
                 <div class="flex items-center gap-2">
                     <h3 class="text-lg font-medium">{{$driving->customer->full_name}}</h3>
-                    @if (count($driving->registration->step_skipped))
+                    @if (count(json_decode($driving->registration->step_skipped)))
                         <span title="Mandare in accettazione" class="px-3 text-sm font-medium text-red-500 underline cursor-default">Dati Mancanti!</span>
                     @endif
                 </div>
-                <p class="text-color-808080 text-sm font-bold">Corso: <span class="text-base text-color-2c2c2c capitalize font-medium">{{$driving->registration->course->name}}</span></p>
+                <p class="text-color-808080 text-sm font-bold">Corso:
+                    <span class="text-base text-color-2c2c2c capitalize font-medium">
+                        @if ($driving->registration->courseVariant)
+                            {{$driving->registration->courseVariant->name}}
+                        @else
+                            {{$driving->registration->course->name}}
+                        @endif
+                    </span>
+                </p>
                 <p class="text-color-808080 text-sm font-bold">Istruttore: <span class=" text-base text-color-2c2c2c capitalize font-medium">{{$driving->instructor->full_name}}</span></p>
                 <div class="flex items-center gap-4">
                     <span class="text-color-808080 text-sm font-bold">Veicolo: <span class=" text-base text-color-2c2c2c capitalize font-medium">{{ $driving->vehicle->type}}</span></span>

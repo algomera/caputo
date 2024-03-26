@@ -16,6 +16,7 @@ use App\Livewire\Forms\DocumentForm;
 use App\Models\CourseRegistrationStep;
 use App\Models\CourseVariant;
 use App\Models\IdentificationDocument;
+use App\Models\Patent;
 
 class StepRegister extends Component
 {
@@ -39,13 +40,15 @@ class StepRegister extends Component
     public $parentScanUploaded = false;
     public $steps = [];
     public $skipped = [];
-    public $typePatents = ['AM', 'A1', 'A2', 'A', 'B1','B', 'C1', 'C', 'D1', 'D', 'BE', 'C1E', 'CE', 'D1E', 'DE'];
+    public $patents;
     public $typeDocuments = [];
     public $companions = null;
     public $companionUploaded = false;
     public $currentStep;
 
     public function mount() {
+        $this->patents = Patent::all();
+
         if (session('course')['course_variant']) {
             $this->course = CourseVariant::find(session('course')['course_variant']);
         } else {

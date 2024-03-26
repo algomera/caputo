@@ -11,15 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('vehicles', function (Blueprint $table) {
+        Schema::create('patents', function (Blueprint $table) {
             $table->id();
-            $table->string('type');
-            $table->foreignId('patent_id')->constrained()->onDelete('cascade');
-            $table->string('model')->nullable();
-            $table->string('transmission');
-            $table->string('plate');
+            $table->string('qualification');
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 
@@ -28,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('vehicles');
+        Schema::dropIfExists('patents');
     }
 };

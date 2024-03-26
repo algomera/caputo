@@ -13,23 +13,39 @@ class VehicleSeeder extends Seeder
      */
     public function run(): void
     {
-        $types = [
-            'Automobile',
-            'Ciclomotore 50cc',
-            'Ciclomotore 125cc',
-            'Ciclomotore Min. 35kW',
-            'Ciclomotore Mag. 35kW',
+        $vehicles = [
+            [
+                'type' => 'Automobile',
+                'patent_id' => 6
+            ],
+            [
+                'type' => 'Ciclomotore 50cc',
+                'patent_id' => 1
+            ],
+            [
+                'type' => 'Ciclomotore 125cc',
+                'patent_id' => 2
+            ],
+            [
+                'type' => 'Ciclomotore Min. 35kW',
+                'patent_id' => 3
+            ],
+            [
+                'type' => 'Ciclomotore Mag. 35kW',
+                'patent_id' => 4
+            ],
         ];
 
         $transmissions = [
             'Manuale',
-            'Automatico'
+            'Automatica'
         ];
 
         foreach ($transmissions as $transmission) {
-            foreach ($types as $type) {
+            foreach ($vehicles as $vehicle) {
                 Vehicle::create([
-                    'type' => $type,
+                    'type' => $vehicle['type'],
+                    'patent_id' => $vehicle['patent_id'],
                     'model' => fake()->word(),
                     'transmission' => $transmission,
                     'plate' => fake()->regexify('[A-Z]{2}[0-9]{3}[A-Z]{2}')

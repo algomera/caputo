@@ -44,7 +44,7 @@
                             <td class="border-r-2 border-color-efefef px-3 py-4 text-color-2c2c2c font-medium capitalize">
                                 <div class="flex flex-col items-center justify-center">
                                     {{$customer->registrations()->where('training_id', $training->id)->first()->state}}
-                                    @if (count($training->customerMissingData($customer->id)))
+                                    @if (count(json_decode($training->customerMissingData($customer->id))))
                                         <span title="Mandare in accettazione" class="px-3 text-sm font-medium text-red-500 underline cursor-default">Dati Mancanti!</span>
                                     @endif
                                 </div>

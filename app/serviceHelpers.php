@@ -72,6 +72,12 @@ if (! function_exists('get_step')) {
     }
 }
 
+if (! function_exists('get_patent')) {
+    function get_patent($patent) {
+        return \App\Models\Patent::find($patent);
+    }
+}
+
 if (! function_exists('get_registrationType')) {
     function get_registrationType($id) {
         return \App\Models\RegistrationType::find($id);

@@ -23,7 +23,10 @@
             @if ($training->ends)
                 <x-submit-button wire:click='cancel' class="bg-red-500/70">Annulla lezione</x-submit-button>
             @endif
-            <x-submit-button wire:click='presences' class="bg-color-347af2">Gestione presenze</x-submit-button>
+
+            @if (count($training->customers()->where('branch', 'teoria')->get()))
+                <x-submit-button wire:click='presences' class="bg-color-347af2">Gestione presenze</x-submit-button>
+            @endif
         </div>
     @endif
 </div>

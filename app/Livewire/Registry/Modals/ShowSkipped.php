@@ -133,7 +133,7 @@ class ShowSkipped extends ModalComponent
 
                 $this->dispatch('updateDocument', customer: $this->registration->customer_id);
             } elseif ($this->stepSkipped == 9) {
-                $this->documentForm->medicalVisitScan($this->scans, $this->registration->id);
+                $this->documentForm->medicalVisitScan($this->scans, $this->registration->id, $this->stepSkipped);
 
                 $this->removeStepSkipped();
 
@@ -167,7 +167,7 @@ class ShowSkipped extends ModalComponent
     }
 
     public function removeStepSkipped() {
-        $arrayStepSkippedId = $this->registration->step_skipped;
+        $arrayStepSkippedId = json_decode($this->registration->step_skipped);
         $key = array_search($this->stepSkipped, $arrayStepSkippedId);
 
         if ($key !== false) {
@@ -175,7 +175,7 @@ class ShowSkipped extends ModalComponent
         }
 
         $this->registration->update([
-            'step_skipped' => array_values($arrayStepSkippedId)
+            'step_skipped' => json_encode(array_values($arrayStepSkippedId))
         ]);
     }
 

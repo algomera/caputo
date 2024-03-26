@@ -8,7 +8,7 @@
         <div>
             <div class="flex items-center gap-2">
                 <h1 class="text-3xl font-bold text-color-17489f">{{$registration->customer->full_name}}</h1>
-                @if (count($registration->step_skipped))
+                @if (count(json_decode($registration->step_skipped)))
                     <span title="Mandare in accettazione" class="px-3 text-sm font-medium text-red-500 underline cursor-default">Dati Mancanti!</span>
                 @endif
             </div>

@@ -113,7 +113,7 @@ class DocumentForm extends Form
         }
     }
 
-    public function updateScan($id, $scan) {
+    public function updateScan($id, $scan, $paymentFor = null) {
         $document = Document::find($id);
         $type = $document->documentable_type;
         $documentClass = new ReflectionClass($type);
@@ -135,11 +135,17 @@ class DocumentForm extends Form
             ]);
         } elseif ($className == 'Payment') {
             $payment = Payment::find($document->documentable_id);
-            $registration = $payment->registration;
+
+            if ($paymentFor == 'iscrizione') {
+                $registration = $payment->registration;
+            } elseif ($paymentFor == 'guide') {
+                $registration = $payment->driving->registration;
+            }
+
             $path = Storage::disk('public')->putFileAs('customers/customer-'.$registration->customer_id.'/'.$registration->course->slug.'/payments', $scan, str_replace(' ', '_', $scan->getClientOriginalName()));
 
             $registration->chronologies()->create([
-                'title' => 'Aggiornamento '. $document->type
+                'title' => 'Aggiornamento '. $document->type . ' ID-'.$id
             ]);
         }
 

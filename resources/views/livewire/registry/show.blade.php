@@ -143,7 +143,16 @@
                     <x-input-text disabled="{{!$modify}}" type="date" wire:model="identificationDocumentForm.document_release" width="w-1/6" name="identificationDocumentForm.document_release" label="Rilasciata il" />
                     <x-input-text disabled="{{!$modify}}" wire:model="identificationDocumentForm.document_from" width="w-1/6" name="identificationDocumentForm.document_from" label="Ente di rilascio" />
                     <x-input-text disabled="{{!$modify}}" type="date" wire:model="identificationDocumentForm.document_expiration" width="w-1/6" name="identificationDocumentForm.document_expiration" label="Scade il" />
-                    <x-input-text disabled wire:model="identificationDocumentForm.qualification" width="w-1/6" name="identificationDocumentForm.qualification" label="Abilitazioni" />
+                    <div class="flex flex-col relative w-1/6">
+                        <span class="text-sm font-light text-color-2c2c2c mb-1 w-fit ml-2">Abilitazioni</span>
+                        <div class="h-[54px] bg-white border px-4 rounded-md p-0 border-color-dfdfdf focus:!border-dfdfdf focus:ring-0 placeholder:text-color-afafaf flex items-center">
+                            @if ($identificationDocumentForm->qualification)
+                                @foreach (json_decode($identificationDocumentForm->qualification) as $patent)
+                                    {{get_patent($patent)->qualification}},
+                                @endforeach
+                            @endif
+                        </div>
+                    </div>
                     {{-- @if ($modify)
                     <div wire:click="$dispatch('openModal', { component: 'registry.modals.document', arguments: {customer: {{$customerForm->customer->id}}, document: {{$identificationDocumentForm->patent->id}}, action: 'edit'} })" class="hover:scale-105 transition-all duration-300 cursor-pointer">
                         <x-icons name="b-edit" />
@@ -200,7 +209,7 @@
                                     @endif
                                 </span>
                             </p>
-                            @if (count($registration->step_skipped))
+                            @if (count(json_decode($registration->step_skipped)))
                                 <button wire:click="$dispatch('openModal', { component: 'registry.modals.show-skipped', arguments: {registration: {{$registration->id}}} })" class="px-4 py-[2px] flex items-center gap-2 text-color-2c2c2c font-medium capitalize rounded-full bg-red-500/30 hover:scale-105 transition-all duration-300">
                                     <x-icons name="error" />
                                     Dati mancanti

@@ -26,7 +26,7 @@
                                     <td colspan="4" class="border-r-2 border-color-efefef text-left px-3 py-4 text-color-2c2c2c capitalize">
                                         <div class="flex items-center justify-between">
                                             {{$customer->full_name}}
-                                            @if (count($training->customerMissingData($customer->id)))
+                                            @if (count(json_decode($training->customerMissingData($customer->id))))
                                                 <span title="Mandare in accettazione" class="px-3 pt-1 text-sm font-medium text-red-500 underline cursor-default">Dati Mancanti!</span>
                                             @endif
                                         </div>
@@ -69,7 +69,7 @@
                                                 </td>
                                             @endforeach
                                         @else
-                                            <td scope="col" class="border-r-2 border-color-efefef text-left font-medium px-3 pt-5 pb-4 text-color-2c2c2c capitalize"></td>
+                                            <td scope="col" class="border-r-2 border-color-efefef text-left font-medium px-3 py-4 text-color-2c2c2c capitalize">&nbsp;</td>
                                         @endif
                                     @endforeach
                                 </tr>

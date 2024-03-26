@@ -16,15 +16,15 @@
         <table class="min-w-full divide-y-2 divide-color-efefef border-b-2 border-color-efefef">
             <thead class="customHead">
                 <tr class="text-center text-color-545454">
-                    <th scope="col" class="px-3 py-3.5 font-light">ID</th>
+                    <th scope="col" class="w-20 px-3 py-3.5 font-light">ID</th>
                     <th colspan="3" class="px-3 py-3.5 font-light text-left">Iscritto</th>
                     <th scope="col" class="px-3 py-3.5 font-light text-left"></th>
                 </tr>
             </thead>
             <tbody class="bg-white customBody no-scrollbar !max-h-[470px]">
-                @foreach($lessonPlanning->training->customers()->get() as $customer)
+                @foreach($lessonPlanning->training->customers()->where('branch', 'teoria')->get() as $customer)
                     <tr class="text-center even:bg-color-f7f7f7">
-                        <td scope="col" class="border-r-2 border-color-efefef font-medium px-3 py-4 text-color-2c2c2c">{{$customer->id}}</td>
+                        <td scope="col" class="w-20 border-r-2 border-color-efefef font-medium px-3 py-4 text-color-2c2c2c">{{$customer->id}}</td>
                         <td colspan="3" class="border-r-2 border-color-efefef text-left font-medium px-3 py-4 text-color-2c2c2c capitalize">{{$customer->full_name}}</td>
                         <td scope="col" class="border-r-2 border-color-efefef text-left font-medium px-3 py-4 text-color-2c2c2c capitalize">
                             <div class="w-full flex items-center justify-center gap-4">

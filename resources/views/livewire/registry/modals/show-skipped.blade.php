@@ -215,7 +215,7 @@
                     </tr>
                 </thead>
                 <tbody class="bg-white customBody no-scrollbar !max-h-[470px]">
-                    @if (count($registration->step_skipped))
+                    @if (count(json_decode($registration->step_skipped)))
                         @foreach($registration->getStepSkipped() as $step)
                             <tr class="text-center even:bg-color-f7f7f7">
                                 <td colspan="3" class="border-r-2 border-color-efefef text-left font-medium px-3 py-4 text-color-2c2c2c">{{$step->name}}</td>

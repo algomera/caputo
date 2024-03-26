@@ -62,6 +62,12 @@ class OptionSeeder extends Seeder
                 'price' => 20.00
             ],
             [
+                'name' => 'Cambio trasmissione',
+                'type' => 'opzionale',
+                'registration_type_id' => 4,
+                'price' => 10.20
+            ],
+            [
                 'name' => 'Presentazione domanda in motorizzazione',
                 'type' => 'fisso',
                 'registration_type_id' => 2,

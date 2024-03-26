@@ -31,7 +31,7 @@ class Show extends Component
 
 
         foreach ($this->registrations as $registration) {
-            if (count($registration->step_skipped)) {
+            if (count(json_decode($registration->step_skipped))) {
                 $this->alertRegistrations[] = $registration->id;
             }
         }
@@ -64,7 +64,7 @@ class Show extends Component
             $this->customerForm->photo($this->photo);
 
             foreach ($this->registrations as $registration) {
-                $arrayStepSkippedId = $registration->step_skipped;
+                $arrayStepSkippedId = json_decode($registration->step_skipped);
                 $key = array_search(4, $arrayStepSkippedId);
 
                 if ($key !== false) {
@@ -72,7 +72,7 @@ class Show extends Component
                 }
 
                 $registration->update([
-                    'step_skipped' => array_values($arrayStepSkippedId)
+                    'step_skipped' => json_encode(array_values($arrayStepSkippedId))
                 ]);
             }
         }

@@ -56,14 +56,12 @@ class ShowLessonPresences extends ModalComponent
             ]);
         }
 
-        $this->forceClose()->closeModalWithEvents([
-            Calendar::class => 'planningUpdate',
-        ]);
+        $this->forceClose()->closeModal();
     }
 
     public static function modalMaxWidthClass(): string
     {
-        return 'max-w-screen-xl 2xl:max-w-screen-2xl';
+        return 'max-w-screen-lg';
     }
 
     public function render()

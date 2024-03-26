@@ -146,46 +146,55 @@ class CoursesSeeder extends Seeder
         $patents = [
             [
                 'name' => 'Patente AM',
+                'patent_id' => 1,
                 'type_visit' => 'rilascio',
                 'registration_types' => [1,4],
             ],
             [
                 'name' => 'Patente A1',
+                'patent_id' => 2,
                 'type_visit' => 'rilascio',
                 'registration_types' => [1,4],
             ],
             [
                 'name' => 'Patente A2',
+                'patent_id' => 3,
                 'type_visit' => 'rilascio',
                 'registration_types' => [1,2,4],
             ],
             [
                 'name' => 'Patente A',
+                'patent_id' => 4,
                 'type_visit' => 'rilascio',
                 'registration_types' => [1,2,4],
             ],
             [
                 'name' => 'Guida accompagnata',
+                'patent_id' => 6,
                 'type_visit' => 'rilascio',
                 'registration_types' => [2],
             ],
             [
                 'name' => 'Patente B1',
+                'patent_id' => 5,
                 'type_visit' => 'rilascio',
                 'registration_types' => [1,4],
             ],
             [
                 'name' => 'Patente B',
+                'patent_id' => 6,
                 'type_visit' => 'rilascio',
                 'registration_types' => [1,2,3,4],
             ],
             [
                 'name' => 'Patente B codice 96',
+                'patent_id' => 6,
                 'type_visit' => 'rilascio',
                 'registration_types' => [1,4],
             ],
             [
                 'name' => 'Patente BE',
+                'patent_id' => 11,
                 'type_visit' => 'rilascio',
                 'registration_types' => [1,4],
             ],
@@ -354,6 +363,7 @@ class CoursesSeeder extends Seeder
                     foreach ($service_cond as $value) {
                         $course = Course::create([
                             'service_id' => $service->id,
+                            'patent_id' => $value['patent_id'] ?? null,
                             'type' => 'service',
                             'name' => $value['name'],
                             'slug' => Str::slug($value['name']),
@@ -369,6 +379,7 @@ class CoursesSeeder extends Seeder
                     foreach ($patents as $value) {
                         $course = Course::create([
                             'service_id' => $service->id,
+                            'patent_id' => $value['patent_id'] ?? null,
                             'type' => $value['type'] ?? 'training',
                             'name' => $value['name'],
                             'slug' => Str::slug($value['name']),
@@ -403,6 +414,7 @@ class CoursesSeeder extends Seeder
                     foreach ($trainings as $value) {
                         $course = Course::create([
                             'service_id' => $service->id,
+                            'patent_id' => $value['patent_id'] ?? null,
                             'type' => $value['type'] ?? 'service',
                             'name' => $value['name'],
                             'slug' => Str::slug($value['name']),
@@ -419,6 +431,7 @@ class CoursesSeeder extends Seeder
                     foreach ($prof_patents as $value) {
                         $course = Course::create([
                             'service_id' => $service->id,
+                            'patent_id' => $value['patent_id'] ?? null,
                             'type' => $value['type'] ?? 'training',
                             'name' => $value['name'],
                             'slug' => Str::slug($value['name']),
@@ -435,6 +448,7 @@ class CoursesSeeder extends Seeder
                     foreach ($courses as $value) {
                         $course = Course::create([
                             'service_id' => $service->id,
+                            'patent_id' => $value['patent_id'] ?? null,
                             'type' => $value['type'] ?? 'training',
                             'name' => $value['name'],
                             'slug' => Str::slug($value['name']),

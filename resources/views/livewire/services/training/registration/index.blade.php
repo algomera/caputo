@@ -64,8 +64,10 @@
                 <p>Non ci sono guide obbligatorie.</p>
             @endif
 
-            <x-custom-radio wire:model='transmission' label="Cambio automatico" name="transmission" value="automatico" />
-            <x-custom-radio wire:model='transmission' label="Cambio manuale" name="transmission" value="manuale" />
+            @if (session('course')['registration_type'] != 4 || $changeTransmission)
+                <x-custom-radio wire:model='transmission' label="Cambio automatico" name="transmission" value="automatico" />
+                <x-custom-radio wire:model='transmission' label="Cambio manuale" name="transmission" value="manuale" />
+            @endif
         </div>
 
         <small @class(["font-medium", 'text-color-'.get_color($selectedCourse->service->name)])>N.B. é necessario che il candidato prenda confidenza con il veicolo e che sia preparato alla prova in circuito chiuso e ad un percorso cittadino</small>

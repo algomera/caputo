@@ -23,8 +23,10 @@ class ShowPayment extends ModalComponent
     public $amount;
     public $document;
     public $newScan;
+    public $paymentFor;
 
-    public function mount($payment, $registration) {
+    public function mount($paymentFor, $payment, $registration) {
+        $this->paymentFor = $paymentFor;
         $this->registration = Registration::find($registration);
         $this->payment = Payment::find($payment);
         $this->setPayment();
@@ -64,13 +66,13 @@ class ShowPayment extends ModalComponent
 
         if ($this->newScan) {
             if ($this->document) {
-                $this->documentForm->updateScan($this->document->id, $this->newScan);
+                $this->documentForm->updateScan($this->document->id, $this->newScan, $this->paymentFor);
             } else {
-                $path = Storage::disk('public')->putFileAs('customers/customer-'.$this->registration->customer_id, $this->newScan, str_replace(' ', '_', $this->newScan->getClientOriginalName()));
+                $path = Storage::disk('public')->putFileAs('customers/customer-'.$this->registration->customer_id.'/'.$this->registration->course->slug.'/payments', $this->newScan, str_replace(' ', '_', $this->newScan->getClientOriginalName()));
 
                 $this->payment->document()->create([
                     'type' => 'Pagamento',
-                    'path' => $path
+                    'path' => 'storage/'.$path
                 ]);
             }
         }
