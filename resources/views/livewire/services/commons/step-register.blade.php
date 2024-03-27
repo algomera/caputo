@@ -24,6 +24,7 @@
             </div>
 
             @switch($currentStep)
+
                 @case('dati')
                     <x-container-step>
                         <p class="text-xl font-light text-color-2c2c2c">
@@ -54,6 +55,33 @@
                                 <x-input-text x-mask="aa" wire:model="customerForm.province" width="w-1/4" name="customerForm.province" label="Provincia" uppercase="uppercase" required="true" />
                                 <x-input-text x-mask="99999" wire:model="customerForm.postcode" width="w-1/12" name="customerForm.postcode" label="Cap" required="true" />
                             </div>
+                            <div class="flex flex-wrap gap-2 relative">
+                                <x-input-text type="email" wire:model="customerForm.email" width="w-1/4" name="customerForm.email" label="Email" required="true" />
+                                <x-input-text x-mask="999 9999999" wire:model="customerForm.phone_1" width="w-1/4" name="customerForm.phone_1" label="1° Cellulare" required="true" />
+                                <x-input-text x-mask="999 9999999" wire:model="customerForm.phone_2" width="w-1/4" name="customerForm.phone_2" label="2° Cellulare" />
+                            </div>
+                        </div>
+
+                        <x-submit-button wire:click='nextStep' @class(["ml-auto",'bg-color-'.get_color(session()->get('serviceName'))])>Prosegui</x-submit-button>
+                    </x-container-step>
+                @break
+
+                @case('recapiti')
+                    <x-container-step>
+                        <p class="text-xl font-light text-color-2c2c2c">
+                            Confermare <span class="font-bold">Residenza</span> e inserire i <span class="font-bold">Recapiti</span> del cliente per proseguire.
+                        </p>
+
+                        <div class="flex flex-col gap-5">
+                            <div class="flex flex-wrap gap-4">
+                                <x-input-text wire:model="customerForm.city" width="grow" name="customerForm.city" label="Città" uppercase="capitalize" required="true" />
+                                <x-input-text wire:model="customerForm.province" width="grow" name="customerForm.province" label="Provincia" uppercase="uppercase" required="true" />
+                                <x-input-text x-mask="99999" wire:model="customerForm.postcode" width="grow" name="customerForm.postcode" label="Cap" uppercase="uppercase" required="true" />
+                                <x-input-text wire:model="customerForm.toponym" width="grow" name="customerForm.toponym" label="Toponimo" uppercase="capitalize" />
+                                <x-input-text wire:model="customerForm.address" width="grow" name="customerForm.address" label="Indirizzo" uppercase="capitalize" required="true" />
+                                <x-input-text x-mask="99999" wire:model="customerForm.civic" width="w-fit" name="customerForm.civic" label="N. Civico" uppercase="uppercase" required="true" />
+                            </div>
+
                             <div class="flex flex-wrap gap-2 relative">
                                 <x-input-text type="email" wire:model="customerForm.email" width="w-1/4" name="customerForm.email" label="Email" required="true" />
                                 <x-input-text x-mask="999 9999999" wire:model="customerForm.phone_1" width="w-1/4" name="customerForm.phone_1" label="1° Cellulare" required="true" />
@@ -357,29 +385,6 @@
                     </div>
                 @break
 
-                @case('residenza')
-                    <x-container-step>
-                        <div class="p-10 flex flex-col text-center justify-center gap-10 relative">
-                            <h1 class="text-4xl font-medium text-color-2c2c2c">Conferma residenza</h1>
-
-                            <div class="flex flex-wrap gap-4">
-                                <x-input-text wire:model="customerForm.city" width="grow" name="customerForm.city" label="Città" uppercase="capitalize" required="true" />
-                                <x-input-text wire:model="customerForm.province" width="grow" name="customerForm.province" label="Provincia" uppercase="uppercase" required="true" />
-                                <x-input-text wire:model="customerForm.postcode" width="grow" name="customerForm.postcode" label="Cap" uppercase="uppercase" required="true" />
-                                <x-input-text wire:model="customerForm.toponym" width="grow" name="customerForm.toponym" label="Toponimo" uppercase="capitalize" />
-                                <x-input-text wire:model="customerForm.address" width="grow" name="customerForm.address" label="Indirizzo" uppercase="capitalize" required="true" />
-                                <x-input-text wire:model="customerForm.civic" width="grow" name="customerForm.civic" label="N. Civico" uppercase="uppercase" required="true" />
-                            </div>
-
-                            <div class="flex justify-between">
-                                <button wire:click="backStep" class="w-fit text-2xl inline-flex items-center px-6 py-2 border border-transparent rounded-md font-light text-color-545454 tracking-widest bg-color-dfdfdf hover:bg-gray-700 hover:text-white active:bg-gray-900 transition ease-in-out duration-150 disabled:opacity-50 disabled:cursor-not-allowed">
-                                    Indietro
-                                </button>
-                                <x-submit-button wire:click='nextStep' @class(['bg-color-'.get_color(session()->get('serviceName'))])>Prosegui</x-submit-button>
-                            </div>
-                        </div>
-                    </x-container-step>
-                @break
             @endswitch
         </div>
     </div>

@@ -9,14 +9,12 @@ use App\Models\CourseRegistrationStep;
 class RegistrationType extends ModalComponent
 {
     public Course $course;
-    public $registrationCondition;
     public $selectedRegistrationType = false;
     public $existingVariant;
     public $variant = false;
 
     public function mount($course) {
         $this->course = $course;
-        $this->registrationCondition = CourseRegistrationStep::where('course_id', $this->course->id)->where('registration_type_id', 2)->first();
         $this->existingVariant = count($this->course->courseRegistrationSteps()->where('variant_id', '!=', null)->get());
 
         session()->put('course', [
@@ -32,9 +30,14 @@ class RegistrationType extends ModalComponent
                 return $this->closeModal();
                 break;
             case 2:
-                $this->addSession($type_id, $variant_id, 'guide');
-                $this->dispatch('setCourse');
-                return $this->closeModal();
+                if (session('course')['id'] == 12 || session('course')['id'] == 13) {
+                    $this->addSession($type_id, $variant_id);
+                    $this->selectedRegistrationType = true;
+                } else {
+                    $this->addSession($type_id, $variant_id, 'guide');
+                    $this->dispatch('setCourse');
+                    return $this->closeModal();
+                }
                 break;
             case 3:
                 $this->addSession($type_id, $variant_id, 'guide');

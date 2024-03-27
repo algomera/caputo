@@ -13,7 +13,9 @@ class GetFiscalCode extends ModalComponent
     public CustomerForm $customerForm;
 
     public $fiscalCode;
-    public $message = null;
+    public $next = null;
+    public $verifiedFiscalCode = null;
+    public $verifiedPatent = null;
 
     public function verifyData() {
         Validator::make(
@@ -22,11 +24,15 @@ class GetFiscalCode extends ModalComponent
             ['required' => 'Il campo non può essere vuoto']
         )->validate();
 
-        if ($this->message) {
+        if ($this->next) {
             $this->next();
         }
 
-        $this->message = 'Nessuna marca operativa trovata';
+        $this->verifiedFiscalCode = 'Nessuna marca operativa trovata';
+        if (session('course')['registration_type'] != 2) {
+            $this->verifiedPatent = 'Nessuna patente trovata';
+        }
+        $this->next = true;
 
         //Todo in caso di ritorno dati positivo registrare un nuovo customer e salvare id in sessione
     }

@@ -12,6 +12,7 @@ class CustomerForm extends Form
     public $customer;
     public $newCustomer;
     public $currentStep = 1;
+    public $stepName = '';
 
     public $name;
     public $lastName;
@@ -26,6 +27,7 @@ class CustomerForm extends Form
     public $address;
     public $civic;
     public $postcode;
+    public $toponym;
     public $email;
     public $phone_1;
     public $phone_2;
@@ -51,24 +53,38 @@ class CustomerForm extends Form
                 'phone_2' => 'nullable',
             ];
         } else {
-            return [
-                'name' => 'required',
-                'lastName' => 'required',
-                'sex' => 'required',
-                'fiscal_code' => ['required','unique:customers,fiscal_code'],
-                'date_of_birth' => 'required',
-                'birth_place' => 'required',
-                'country_of_birth' => 'required',
-                'country' => 'required',
-                'city' => 'required',
-                'province' => 'required',
-                'address' => 'required',
-                'civic' => 'required',
-                'postcode' => 'required',
-                'email' => ['required','unique:customers,email'],
-                'phone_1' => 'required',
-                'phone_2' => 'nullable',
-            ];
+            if ($this->stepName == 'dati') {
+                return [
+                    'name' => 'required',
+                    'lastName' => 'required',
+                    'sex' => 'required',
+                    'fiscal_code' => ['required','unique:customers,fiscal_code'],
+                    'date_of_birth' => 'required',
+                    'birth_place' => 'required',
+                    'country_of_birth' => 'required',
+                    'country' => 'required',
+                    'city' => 'required',
+                    'province' => 'required',
+                    'address' => 'required',
+                    'civic' => 'required',
+                    'postcode' => 'required',
+                    'email' => ['required','unique:customers,email'],
+                    'phone_1' => 'required',
+                    'phone_2' => 'nullable',
+                ];
+            } elseif ($this->stepName == 'recapiti') {
+                return [
+                    'city' => 'required',
+                    'province' => 'required',
+                    'address' => 'required',
+                    'civic' => 'required',
+                    'postcode' => 'required',
+                    'toponym' => 'nullable',
+                    'email' => ['required','unique:customers,email'],
+                    'phone_1' => 'required',
+                    'phone_2' => 'nullable',
+                ];
+            }
         }
     }
 

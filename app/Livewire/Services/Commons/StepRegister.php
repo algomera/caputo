@@ -95,6 +95,8 @@ class StepRegister extends Component
     public function setSteps() {
         $courseRegistrationSteps = CourseRegistrationStep::where('course_id', session('course')['id'])->where('registration_type_id', session('course')['registration_type'])->first()->getSteps();
         $this->currentStep = $courseRegistrationSteps->first()->short_name;
+        $this->customerForm->stepName = $this->currentStep;
+
 
         foreach ($courseRegistrationSteps as $key => $step) {
             $this->steps[$key+1] = [
@@ -127,7 +129,9 @@ class StepRegister extends Component
         if ($this->customerForm->currentStep == count($this->steps)) {
             $this->dispatch('openModal', 'services.commons.modals.registration');
         } else {
-            $this->customerForm->validation();
+            if ($this->currentStep == 'dati' || $this->currentStep == 'recapiti') {
+                $this->customerForm->validation();
+            }
 
             foreach ($this->skipped as $value) {
                 if ($this->steps[($this->customerForm->currentStep)]['id'] == $value) {
@@ -141,6 +145,7 @@ class StepRegister extends Component
 
             $this->customerForm->currentStep += 1;
             $this->currentStep = $this->steps[$this->customerForm->currentStep]['short_name'];
+            $this->customerForm->stepName = $this->currentStep;
         }
     }
 

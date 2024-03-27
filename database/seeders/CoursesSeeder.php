@@ -74,23 +74,23 @@ class CoursesSeeder extends Seeder
         $steps = [];
         switch ($type) {
             case 1: // prima patente
-                $steps = [1,2,3,4,5];
+                $steps = [1,3,4,5,6];
 
                 if (in_array($course_id, ['10','11','14','15'])) {
-                    $steps[] = 6;
+                    $steps[] = 7;
                 }
                 if ($course_id == 14) {
-                    $steps[] = 7;
+                    $steps[] = 8;
                 }
                 break;
             case 2: // possessore di patente
-                $steps = [3,4,5];
+                $steps = [2,4,5,6];
                 break;
             case 3: // possessore guida accomagnata
-                $steps = [3,4,5];
+                $steps = [2,4,5,6];
                 break;
             case 4: // cambio codice
-                $steps = [3,4,5,8];
+                $steps = [2,4,5,6];
                 break;
         }
 
