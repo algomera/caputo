@@ -66,11 +66,11 @@ class RegistrationType extends ModalComponent
         $this->closeModal();
     }
 
-    public function addSession($registration_type_id, $courseVariant_id = null, $branch = null) {
+    public function addSession($registration_type_id, $courseVariant_id = null, $branch_id = null) {
         $session = session()->get('course', []);
         $session['course_variant'] = $courseVariant_id;
         $session['registration_type'] = $registration_type_id;
-        $session['branch'] = $branch;
+        $session['branch'] = $branch_id;
 
         session()->put('course', $session);
     }
