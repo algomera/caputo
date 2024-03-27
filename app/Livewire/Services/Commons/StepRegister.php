@@ -163,7 +163,7 @@ class StepRegister extends Component
     }
 
     #[On('newRegistration')]
-    public function registration($trainingId, $type, $variant = null) {
+    public function registration($trainingId, $type) {
         $this->customerForm->setSchool(auth()->user()->schools()->first()->id);
         $this->customerForm->store();
         $this->setCustomer($this->customerForm->newCustomer->id);
@@ -191,7 +191,7 @@ class StepRegister extends Component
                 'training_id' => $trainingId,
                 'customer_id' => $this->customerForm->newCustomer->id,
                 'registration_type_id' => session()->get('course')['registration_type'],
-                'branch' => session()->get('course')['branch'],
+                'branch_id' => session()->get('course')['branch'],
                 'transmission' => session()->get('course')['transmission'],
                 'optionals' => json_encode(session()->get('course')['selected_options']),
                 'step_skipped' => json_encode($this->skipped),

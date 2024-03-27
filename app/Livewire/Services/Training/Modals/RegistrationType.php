@@ -25,7 +25,7 @@ class RegistrationType extends ModalComponent
     public function setRegistrationType($type_id, $variant_id = null) {
         switch ($type_id) {
             case 1:
-                $this->addSession($type_id, $variant_id, 'teoria');
+                $this->addSession($type_id, $variant_id, 1);
                 $this->dispatch('setCourse');
                 return $this->closeModal();
                 break;
@@ -34,13 +34,13 @@ class RegistrationType extends ModalComponent
                     $this->addSession($type_id, $variant_id);
                     $this->selectedRegistrationType = true;
                 } else {
-                    $this->addSession($type_id, $variant_id, 'guide');
+                    $this->addSession($type_id, $variant_id, 2);
                     $this->dispatch('setCourse');
                     return $this->closeModal();
                 }
                 break;
             case 3:
-                $this->addSession($type_id, $variant_id, 'guide');
+                $this->addSession($type_id, $variant_id, 2);
                 $this->dispatch('setCourse');
                 return $this->closeModal();
                 break;

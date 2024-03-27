@@ -31,28 +31,17 @@
         </div>
 
         <div class="flex flex-wrap items-center justify-center gap-5 py-24">
-            <div wire:click='setBranch("guide")' class="px-24 h-24 flex items-center justify-center border rounded-md shadow-lg hover:scale-105 transition-all duration-300 cursor-pointer">
-                <p class="text-lg text-color-2c2c2c whitespace-nowrap">Gestione guide</p>
-            </div>
 
-            @if (session('course')['registration_type'] == 4)
-                <div wire:click='setBranch("teoria")' class="px-24 h-24 flex items-center justify-center border rounded-md shadow-lg hover:scale-105 transition-all duration-300 cursor-pointer">
-                    <p class="text-lg text-color-2c2c2c whitespace-nowrap">Gestione teoria</p>
+            @foreach ($course->branchCourses()->get() as $branchCourse )
+                <div wire:click='setBranch({{$branchCourse->branch->id}})' class="px-24 h-24 flex flex-col items-center justify-center border rounded-md shadow-lg hover:scale-105 transition-all duration-300 cursor-pointer">
+                    <p class="text-lg text-color-2c2c2c whitespace-nowrap capitalize">Gestione {{$branchCourse->branch->name}}</p>
+                    @if (session('course')['id'] == 12 && $branchCourse->branch_id == 3)
+                        <small>(Senza esame per possessori di A1 da piu di 2 anni)</small>
+                    @elseif (session('course')['id'] == 13 && $branchCourse->branch_id == 3)
+                        <small>(Senza esame per possessori di A2 da piu di 2 anni)</small>
+                    @endif
                 </div>
-            @endif
-
-            @if (session('course')['id'] == 12 || session('course')['id'] == 13)
-                <div wire:click='setBranch("guide/s.esame")' class="px-24 h-24 flex items-center justify-center border rounded-md shadow-lg hover:scale-105 transition-all duration-300 cursor-pointer">
-                    <div class="text-center relative">
-                        <p class="text-lg text-color-2c2c2c whitespace-nowrap">Gestione guide</p>
-                        @if (session('course')['id'] == 12)
-                            <small>(Senza esame per possessori di A1 da piu di 2 anni)</small>
-                        @elseif (session('course')['id'] == 13)
-                            <small>(Senza esame per possessori di A2 da piu di 2 anni)</small>
-                        @endif
-                    </div>
-                </div>
-            @endif
+            @endforeach
         </div>
     @endif
 </div>

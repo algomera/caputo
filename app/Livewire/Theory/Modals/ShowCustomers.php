@@ -26,9 +26,9 @@ class ShowCustomers extends ModalComponent
             $this->variant = 'course';
         }
 
-        $this->allCustomers = $this->training->customers()->where('branch', 'teoria')->get();
-        $this->currentCustomers = $this->training->customers()->where('branch', 'teoria')->where('state', 'aperta')->get();
-        $this->oldCustomers = $this->training->customers()->where('branch', 'teoria')->where('state', 'chiusa')->get();
+        $this->allCustomers = $this->training->customers()->where('branch_id', 1)->get();
+        $this->currentCustomers = $this->training->customers()->where('branch_id', 1)->where('state', 'aperta')->get();
+        $this->oldCustomers = $this->training->customers()->where('branch_id', 1)->where('state', 'chiusa')->get();
         $this->customers = $this->currentCustomers;
         $this->customersShow = 'currentCustomers';
     }

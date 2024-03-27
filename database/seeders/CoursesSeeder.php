@@ -369,7 +369,6 @@ class CoursesSeeder extends Seeder
                             'slug' => Str::slug($value['name']),
                             'description' => fake()->paragraph(),
                             'type_visit' => $value['type_visit'],
-                            'absences' => 3
                         ]);
                         $this->createLessons($course->id, null);
                         $this->createPrice($course->id, null);
@@ -385,8 +384,6 @@ class CoursesSeeder extends Seeder
                             'slug' => Str::slug($value['name']),
                             'description' => fake()->paragraph(),
                             'type_visit' => $value['type_visit'],
-                            'absences' => 3,
-                            'guides' => $value['name'] == 'Guida accompagnata' ? 10 : 0
                         ]);
 
                         $this->createLessons($course->id, null);
@@ -401,7 +398,6 @@ class CoursesSeeder extends Seeder
                                 'slug' => Str::slug($value['name'] .' '. $i),
                                 'description' => fake()->paragraph(),
                                 'type_visit' => $value['type_visit'],
-                                'absences' => 3
                             ]);
                             $this->createLessons($course->id, $variant->id);
                             $this->createCourseRegistrationStep($course->id, $variant->id, $value['registration_types'] ?? []);
@@ -421,7 +417,6 @@ class CoursesSeeder extends Seeder
                             'label' => $value['label'] ?? null,
                             'description' => fake()->paragraph(),
                             'type_visit' => $value['type_visit'],
-                            'absences' => 3,
                         ]);
                         $this->createLessons($course->id, null);
                         $this->createPrice($course->id, null);
@@ -437,8 +432,6 @@ class CoursesSeeder extends Seeder
                             'slug' => Str::slug($value['name']),
                             'description' => fake()->paragraph(),
                             'type_visit' => $value['type_visit'],
-                            'absences' => 3,
-                            'guides' => 0
                         ]);
                         $this->createLessons($course->id, null);
                         $this->createPrice($course->id, null);
@@ -455,7 +448,6 @@ class CoursesSeeder extends Seeder
                             'label' => $value['label'] ?? null,
                             'description' => fake()->paragraph(),
                             'type_visit' => $value['type_visit'],
-                            'absences' => 3
                         ]);
                         $this->createLessons($course->id, null);
                         $this->createPrice($course->id, null);
@@ -468,7 +460,6 @@ class CoursesSeeder extends Seeder
                                 'slug' => Str::slug($value['name'] .' '. $i),
                                 'description' => fake()->paragraph(),
                                 'type_visit' => $value['type_visit'],
-                                'absences' => 3
                             ]);
                             $this->createLessons($course->id, $variant->id);
                             $this->createPrice($course->id, $variant->id);

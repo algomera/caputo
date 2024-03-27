@@ -27,6 +27,7 @@ class Index extends Component
         } else {
             $this->selectedCourse = $this->course;
         }
+
         $this->total += $this->selectedCourse->prices()->where('registration_type_id', $this->type)->first()->price;
 
         foreach ($this->selectedCourse->getOptions()->where('type', 'fisso')->where('registration_type_id', $this->type)->get() as  $option) {
@@ -41,9 +42,7 @@ class Index extends Component
     public function updated() {
         $this->total = 0;
 
-        if (session()->get('course')['branch'] == 'teoria') {
-            $this->total += $this->selectedCourse->prices()->first()->price;
-        }
+        $this->total +=  $this->selectedCourse->prices()->where('registration_type_id', $this->type)->first()->price;
 
         foreach ($this->selectedCourse->getOptions()->where('type', 'fisso')->where('registration_type_id', $this->type)->get() as  $option) {
             $this->total += $option->price;

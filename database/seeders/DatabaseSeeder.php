@@ -23,7 +23,9 @@ class DatabaseSeeder extends Seeder
             PatentSeeder::class,
             StepSeeder::class,
             RegistrationTypeSeeder::class,
+            BranchSeeder::class,
             CoursesSeeder::class,
+            BranchCourseSeeder::class,
             OptionSeeder::class,
             VehicleSeeder::class
         ]);

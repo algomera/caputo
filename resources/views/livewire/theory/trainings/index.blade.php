@@ -70,7 +70,7 @@
                             </td>
                             <td class="border-r-2 border-color-efefef px-3 py-4 text-color-2c2c2c hidden xl:table-cell">
                                 <div class="flex items-start justify-center gap-1">
-                                    <span class="font-medium text-color-545454">{{count($training->registrations()->where('branch', 'teoria')->get())}}</span>
+                                    <span class="font-medium text-color-545454">{{count($training->registrations()->where('branch_id', 1)->get())}}</span>
                                     <x-icons name="user" class="text-color-347af2 " />
                                 </div>
                             </td>

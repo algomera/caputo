@@ -25,7 +25,7 @@ class ShowTrainingPresences extends ModalComponent
     public function render()
     {
         $customers = $this->training->customers()
-        ->where('branch', 'teoria')
+        ->where('branch_id', 1)
         ->filter('name', $this->name)
         ->filter('lastName', $this->lastName)
         ->get();

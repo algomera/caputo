@@ -116,8 +116,8 @@ class Registration extends ModalComponent
         $this->selectedOption = null;
     }
 
-    public function putRegistration($trainingId, $type, $variant = null) {
-        $this->dispatch('newRegistration', $trainingId, $type, $variant);
+    public function putRegistration($trainingId, $type) {
+        $this->dispatch('newRegistration', $trainingId, $type);
     }
 
     public static function modalMaxWidthClass(): string

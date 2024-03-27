@@ -58,8 +58,8 @@
                 <p @class(["text-xl font-bold", 'text-color-'.get_color($selectedCourse->service->name)])>{{$selectedCourse->getOptions()->where('type', 'guide')->first()->price}} €</p>
             </div>
 
-            @if ($selectedCourse->guides)
-                <p>Ci sono {{$selectedCourse->guides}} guide obbligatorie.</p>
+            @if ($selectedCourse->branchCourses()->where('branch_id', session('course')['branch'])->first()->guides)
+                <p>Ci sono {{$selectedCourse->branchCourses()->where('branch_id', session('course')['branch'])->first()->guides}} guide obbligatorie.</p>
             @else
                 <p>Non ci sono guide obbligatorie.</p>
             @endif

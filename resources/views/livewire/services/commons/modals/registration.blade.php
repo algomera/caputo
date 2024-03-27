@@ -44,36 +44,17 @@
             <table class="min-w-full divide-y divide-gray-200 border">
                 <thead>
                     <tr class="text-center text-color-545454">
-                        <th scope="col" class="border-r py-3.5 px-3 hidden xl:table-cell">
-                            ID
-                        </th>
-                        <th scope="col" class="border-r py-3.5 px-3 2xl:max-w-none">
-                            Corso
-                        </th>
-                        <th scope="col" class="border-r py-3.5 px-3 2xl:max-w-none">
-                            Insegnante
-                        </th>
-                        <th scope="col" class="border-r px-3 py-3.5">
-                            Inizio
-                        </th>
-                        <th scope="col" class="border-r px-3 py-3.5">
-                            Orario
-                        </th>
-                        <th scope="col" class="border-r px-3 py-3.5">
-                            Fine
-                        </th>
-                        <th scope="col" class="border-r px-3 py-3.5 hidden xl:table-cell">
-                            N° Lezioni
-                        </th>
-                        <th scope="col" class="border-r px-3 py-3.5 hidden xl:table-cell">
-                            Tot. (H:M)
-                        </th>
-                        <th scope="col" class="border-r px-3 py-3.5">
-                            Ass. max
-                        </th>
-                        <th scope="col" class="border-r px-3 py-3.5">
-                            Iscritti
-                        </th>
+                        <th scope="col" class="border-r py-3.5 px-3 hidden xl:table-cell">ID</th>
+                        <th scope="col" class="border-r py-3.5 px-3 2xl:max-w-none">Corso</th>
+                        <th scope="col" class="border-r py-3.5 px-3 2xl:max-w-none">Insegnante</th>
+                        <th scope="col" class="border-r px-3 py-3.5">Inizio</th>
+                        <th scope="col" class="border-r px-3 py-3.5">Orario</th>
+                        <th scope="col" class="border-r px-3 py-3.5">Fine</th>
+                        <th scope="col" class="border-r px-3 py-3.5 hidden xl:table-cell">N° Lezioni</th>
+                        <th scope="col" class="border-r px-3 py-3.5 hidden xl:table-cell">Tot. (H:M)</th>
+                        <th scope="col" class="border-r px-3 py-3.5">Ass. max</th>
+                        <th scope="col" class="border-r px-3 py-3.5">Iscritti Guide</th>
+                        <th scope="col" class="border-r px-3 py-3.5">Iscritti Teoria</th>
                         <th scope="col" class="px-3 py-3.5 text-center">Azioni</th>
                     </tr>
                 </thead>
@@ -100,8 +81,9 @@
                             </td>
                             <td class="border-r whitespace-nowrap px-3 py-4 font-light text-color-2c2c2c hidden xl:table-cell">{{count($training->course->lessons)}}</td>
                             <td class="border-r whitespace-nowrap px-3 py-4 font-light text-color-2c2c2c hidden xl:table-cell">{{$training->course->duration}}</td>
-                            <td class="border-r whitespace-nowrap px-3 py-4 font-light text-color-2c2c2c">{{$training->course->absences}}</td>
-                            <td class="border-r whitespace-nowrap px-3 py-4 font-light text-color-2c2c2c">{{count($training->registrations()->get())}}</td>
+                            <td class="border-r whitespace-nowrap px-3 py-4 font-light text-color-2c2c2c">{{$training->course->getAbsences(session('course')['branch'])}}</td>
+                            <td class="border-r whitespace-nowrap px-3 py-4 font-light text-color-2c2c2c">{{count($training->registrations()->where('branch_id', 2)->get())}}</td>
+                            <td class="border-r whitespace-nowrap px-3 py-4 font-light text-color-2c2c2c">{{count($training->registrations()->where('branch_id', 1)->get())}}</td>
                             <td class="whitespace-nowrap px-3 py-4 text-sm font-light text-color-2c2c2c">
                                 <div class="flex items-center justify-center gap-2 px-5">
                                     <button wire:click="putRegistration({{$training->id}}, '{{$selectedOption}}')" @class(["px-6 pt-1 text-lg font-medium text-white rounded-full ", 'bg-color-'.get_color($course->service->name)])>Aggiungi</button>
