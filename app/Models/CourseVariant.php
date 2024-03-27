@@ -46,6 +46,10 @@ class CourseVariant extends Model
         return $this->hasMany(InterestedCourses::class);
     }
 
+    public function courseRegistrationSteps(): HasMany {
+        return $this->hasMany(CourseRegistrationStep::class, 'variant_id');
+    }
+
     public function getOptions(): MorphToMany {
         return $this->morphToMany(Option::class, 'costs');
     }

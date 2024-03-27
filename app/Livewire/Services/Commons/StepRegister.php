@@ -93,10 +93,12 @@ class StepRegister extends Component
     }
 
     public function setSteps() {
-        $courseRegistrationSteps = CourseRegistrationStep::where('course_id', session('course')['id'])->where('registration_type_id', session('course')['registration_type'])->first()->getSteps();
+        $courseRegistrationSteps = $this->course->courseRegistrationSteps()
+        ->where('registration_type_id', session('course')['registration_type'])
+        ->first()->getSteps();
+
         $this->currentStep = $courseRegistrationSteps->first()->short_name;
         $this->customerForm->stepName = $this->currentStep;
-
 
         foreach ($courseRegistrationSteps as $key => $step) {
             $this->steps[$key+1] = [

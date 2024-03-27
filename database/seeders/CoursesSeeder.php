@@ -50,8 +50,10 @@ class CoursesSeeder extends Seeder
                 $condition = null;
 
                 if ($registrationType == 2) {
-                    if (in_array($course_id, ['12','13'])) {
+                    if ($course_id == 12) {
                         $condition = 'A1, B1, B';
+                    } elseif ($course_id == 13) {
+                        $condition = 'A2, B1, B';
                     } elseif ($course_id == 14) {
                         $condition = 'A2';
                     } elseif ($course_id == 16) {
