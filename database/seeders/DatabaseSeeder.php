@@ -25,7 +25,6 @@ class DatabaseSeeder extends Seeder
             RegistrationTypeSeeder::class,
             BranchSeeder::class,
             CoursesSeeder::class,
-            BranchCourseSeeder::class,
             OptionSeeder::class,
             VehicleSeeder::class
         ]);

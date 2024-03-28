@@ -50,7 +50,7 @@ class TrainingSeeder extends Seeder
 
                     $costs = $course->getOptions()->where('type', 'fisso')->where('registration_type_id', 1)->get();
                     $optionals = $course->getOptions()->where('type', 'opzionale')->where('registration_type_id', 1)->get()->random(3);
-                    $priceCourse = $course->prices()->where('registration_type_id', 1)->first();
+                    $priceCourse = $course->courseRegistrationSteps()->first()->branchCourses()->first()->price;
                     $total = $priceCourse->price ?? 0;
 
                     foreach ($costs as $cost) {
@@ -60,11 +60,13 @@ class TrainingSeeder extends Seeder
                         $total += $optional->price;
                     }
 
+                    $branchCourse = $course->courseRegistrationSteps()->first()->branchCourses()->get();
+
                     Registration::create([
                         'training_id' => $training->id,
                         'customer_id' => $customers->random()->id,
                         'registration_type_id' => fake()->numberBetween(1,4),
-                        'branch_id' => random_int(1,3),
+                        'branch_course_id' => $branchCourse->random()->id,
                         'transmission' => fake()->randomElement(['manuale', 'automatica']),
                         'optionals' => $optionals->pluck('id')->toJson(),
                         'step_skipped' => json_encode([]),
@@ -75,7 +77,7 @@ class TrainingSeeder extends Seeder
                         'training_id' => $trainingLoop->id,
                         'customer_id' => $customers->random()->id,
                         'registration_type_id' => fake()->numberBetween(1,4),
-                        'branch_id' => random_int(1,3),
+                        'branch_course_id' => $branchCourse->random()->id,
                         'transmission' => fake()->randomElement(['manuale', 'automatica']),
                         'optionals' => $optionals->pluck('id')->toJson(),
                         'step_skipped' => json_encode([]),

@@ -22,7 +22,7 @@
                 </tr>
             </thead>
             <tbody class="bg-white customBody no-scrollbar !max-h-[470px]">
-                @foreach($lessonPlanning->training->customers()->where('branch_id', 1)->get() as $customer)
+                @foreach($lessonPlanning->training->getRegistrationCustomerBranch(1)->get()->pluck('customer')->unique() as $customer)
                     <tr class="text-center even:bg-color-f7f7f7">
                         <td scope="col" class="w-20 border-r-2 border-color-efefef font-medium px-3 py-4 text-color-2c2c2c">{{$customer->id}}</td>
                         <td colspan="3" class="border-r-2 border-color-efefef text-left font-medium px-3 py-4 text-color-2c2c2c capitalize">{{$customer->full_name}}</td>

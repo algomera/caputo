@@ -5,7 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -30,10 +29,6 @@ class CourseVariant extends Model
         return $this->belongsToMany(Option::class, 'costs')->using(Cost::class);
     }
 
-    public function prices(): HasMany {
-        return $this->hasMany(CoursePrice::class, 'variant_id');
-    }
-
     public function lessons(): HasMany {
         return $this->hasMany(Lesson::class, 'variant_id');
     }
@@ -52,10 +47,6 @@ class CourseVariant extends Model
 
     public function getOptions(): MorphToMany {
         return $this->morphToMany(Option::class, 'costs');
-    }
-
-    public function branchCourses(): MorphMany {
-        return $this->MorphMany(BranchCourse::class, 'branch_courseable');
     }
 
     public function getDurationAttribute() {

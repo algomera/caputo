@@ -15,10 +15,10 @@
 
     <div class="w-full flex items-end justify-end">
         <div class="flex gap-3">
-            @if (count($training->registrations()->where('branch_id', 1)->get()))
+            @if (count($training->getRegistrationBranch(1)))
                 <button wire:click="customers" class="px-4 py-1 bg-color-538ef4 text-white font-semibold rounded-md hover:scale-105 transition-all duration-300">Iscritti al corso</button>
             @endif
-            @if ($training->ends && count($training->registrations()->where('branch_id', 1)->get()))
+            @if ($training->ends && count($training->getRegistrationBranch(1)))
                 <button wire:click="presences" class="px-4 py-1 bg-color-347af2 text-white font-semibold rounded-md hover:scale-105 transition-all duration-300">visualizza presenze</button>
             @endif
             <button wire:click="calendar" class="px-4 py-1 bg-color-17489f text-white font-semibold rounded-md hover:scale-105 transition-all duration-300">Vai al calendario</button>

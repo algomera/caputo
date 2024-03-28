@@ -2,12 +2,11 @@
 
 namespace Database\Seeders;
 
+use App\Models\BranchCourse;
 use App\Models\Course;
-use App\Models\CoursePrice;
 use App\Models\CourseRegistrationStep;
 use App\Models\CourseVariant;
 use App\Models\Lesson;
-use App\Models\RegistrationType;
 use App\Models\Service;
 use Illuminate\Support\Str;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -25,20 +24,6 @@ class CoursesSeeder extends Seeder
                 'subject' => fake()->name(),
                 'description' => fake()->paragraph(),
                 'duration' => fake()->randomElement([30, 60, 90, 120]),
-            ]);
-        }
-    }
-
-    public function createPrice($course_id, $variant_id = null) {
-
-        $courseRegistrations = CourseRegistrationStep::where('course_id', $course_id)->where('variant_id', $variant_id)->get();
-
-        foreach ($courseRegistrations as $courseRegistration) {
-            CoursePrice::create([
-                'course_id' => $course_id,
-                'variant_id' => $variant_id,
-                'registration_type_id' => $courseRegistration->registration_type_id,
-                'price' => fake()->numberBetween(200, 1800)
             ]);
         }
     }
@@ -61,13 +46,25 @@ class CoursesSeeder extends Seeder
                     }
                 }
 
-                CourseRegistrationStep::create([
+                $courseRegistrationStep = CourseRegistrationStep::create([
                     'course_id' => $course_id,
                     'variant_id' => $variant_id,
                     'registration_type_id' => $registrationType,
                     'steps_id' => json_encode($this->getCourseStep($registrationType, $course_id)),
                     'condition' => $condition
                 ]);
+
+                if ($registrationType == 1) {
+                    $branchId = [1];
+                } elseif ($registrationType == 2) {
+                    $branchId = [2,3];
+                } elseif ($registrationType == 3) {
+                    $branchId = [1];
+                } elseif ($registrationType == 4) {
+                    $branchId = [1,2,3];
+                }
+
+                $this->createBranchCourseRegistration($courseRegistrationStep->id, $branchId);
             }
         }
     }
@@ -97,6 +94,43 @@ class CoursesSeeder extends Seeder
         }
 
         return $steps;
+    }
+
+    public function createBranchCourseRegistration($courseRegistrationStepId, $branchesId = []) {
+        $courseRegistrationStep = CourseRegistrationStep::find($courseRegistrationStepId);
+
+        foreach ($branchesId as $branchId) {
+            $condition = null;
+
+            if ($branchId == 3 && in_array($courseRegistrationStep->course_id , [12,13,14])) {
+
+                if ($courseRegistrationStep->course_id == 12 && $courseRegistrationStep->registration_type_id == 2) {
+                    $condition = 'Senza esame per possessori di A1 da piu di 2 anni';
+                } elseif ($courseRegistrationStep->course_id == 13 && $courseRegistrationStep->registration_type_id == 2) {
+                    $condition = 'Senza esame per possessori di A2 da piu di 2 anni';
+                }
+
+                BranchCourse::create([
+                    'course_registration_step_id' => $courseRegistrationStepId,
+                    'branch_id' => $branchId,
+                    'condition' => $condition,
+                    'absences' => $branchId == 1 ? 3 : 0,
+                    'guides' => 10,
+                    'price' => fake()->numberBetween(200, 1800)
+                ]);
+            }
+
+            if ($branchId == 1 || $branchId == 2) {
+                BranchCourse::create([
+                    'course_registration_step_id' => $courseRegistrationStepId,
+                    'branch_id' => $branchId,
+                    'condition' => $condition,
+                    'absences' => $branchId == 1 ? 3 : 0,
+                    'guides' => in_array($courseRegistrationStep->course_id , [14, 16]) ? 10 : 0,
+                    'price' => fake()->numberBetween(200, 1800)
+                ]);
+            }
+        }
     }
 
 
@@ -372,8 +406,8 @@ class CoursesSeeder extends Seeder
                             'description' => fake()->paragraph(),
                             'type_visit' => $value['type_visit'],
                         ]);
+
                         $this->createLessons($course->id, null);
-                        $this->createPrice($course->id, null);
                     }
                     break;
                 case 'Patenti':
@@ -390,7 +424,6 @@ class CoursesSeeder extends Seeder
 
                         $this->createLessons($course->id, null);
                         $this->createCourseRegistrationStep($course->id, null, $value['registration_types'] ?? []);
-                        $this->createPrice($course->id, null);
 
                         for ($i=0; $i < 2; $i++) {
                             $variant = CourseVariant::create([
@@ -401,9 +434,9 @@ class CoursesSeeder extends Seeder
                                 'description' => fake()->paragraph(),
                                 'type_visit' => $value['type_visit'],
                             ]);
+
                             $this->createLessons($course->id, $variant->id);
                             $this->createCourseRegistrationStep($course->id, $variant->id, $value['registration_types'] ?? []);
-                            $this->createPrice($course->id, $variant->id);
                         }
 
                     }
@@ -420,8 +453,8 @@ class CoursesSeeder extends Seeder
                             'description' => fake()->paragraph(),
                             'type_visit' => $value['type_visit'],
                         ]);
+
                         $this->createLessons($course->id, null);
-                        $this->createPrice($course->id, null);
                     }
                     break;
                 case 'Patenti professionali':
@@ -435,8 +468,8 @@ class CoursesSeeder extends Seeder
                             'description' => fake()->paragraph(),
                             'type_visit' => $value['type_visit'],
                         ]);
+
                         $this->createLessons($course->id, null);
-                        $this->createPrice($course->id, null);
                     }
                     break;
                 case 'Corsi':
@@ -451,8 +484,8 @@ class CoursesSeeder extends Seeder
                             'description' => fake()->paragraph(),
                             'type_visit' => $value['type_visit'],
                         ]);
+
                         $this->createLessons($course->id, null);
-                        $this->createPrice($course->id, null);
 
                         for ($i=0; $i < 2; $i++) {
                             $variant = CourseVariant::create([
@@ -463,12 +496,11 @@ class CoursesSeeder extends Seeder
                                 'description' => fake()->paragraph(),
                                 'type_visit' => $value['type_visit'],
                             ]);
+
                             $this->createLessons($course->id, $variant->id);
-                            $this->createPrice($course->id, $variant->id);
                         }
                     }
                     break;
-
             }
         }
     }

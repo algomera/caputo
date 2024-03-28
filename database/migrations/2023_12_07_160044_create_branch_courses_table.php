@@ -13,11 +13,12 @@ return new class extends Migration
     {
         Schema::create('branch_courses', function (Blueprint $table) {
             $table->id();
-            $table->string('branch_courseable_type');
-            $table->integer('branch_courseable_id');
+            $table->foreignId('course_registration_step_id')->constrained()->onDelete('cascade');
             $table->foreignId('branch_id')->constrained()->onDelete('cascade');
-            $table->string('absences')->nullable();
-            $table->string('guides')->nullable();
+            $table->string('condition')->nullable();
+            $table->smallInteger('absences')->nullable();
+            $table->smallInteger('guides')->nullable();
+            $table->decimal('price');
             $table->timestamps();
         });
     }

@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Services\Commons\Modals;
 
+use App\Models\BranchCourse;
 use App\Models\Course;
 use App\Models\CourseVariant;
 use App\Models\LessonPlanning;
@@ -18,6 +19,7 @@ class Registration extends ModalComponent
     public $trainingBegins;
     public $trainingEnds;
     public $trainingTimeStart;
+    public $branchCourse;
     public $loopTraining = false;
 
     public function mount() {
@@ -32,6 +34,8 @@ class Registration extends ModalComponent
             $trainings = Training::where('school_id', auth()->user()->schools()->first()->id)->where('course_id', $this->course->id)->where('ends', '>', now()->format('Y-m-d'))->get();
             $this->trainings = $loopTrainings->merge($trainings);
         }
+
+        $this->branchCourse = BranchCourse::find(session('course')['branch']);
     }
 
     public function rules() {

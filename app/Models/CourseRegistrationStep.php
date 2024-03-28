@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class CourseRegistrationStep extends Model
 {
@@ -31,6 +33,10 @@ class CourseRegistrationStep extends Model
 
     public function courseVariant(): BelongsTo {
         return $this->BelongsTo(CourseVariant::class, 'variant_id');
+    }
+
+    public function branchCourses(): HasMany {
+        return $this->HasMany(BranchCourse::class);
     }
 
 }

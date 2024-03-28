@@ -32,14 +32,14 @@ class UpdateRegistration extends ModalComponent
             'price' => $priceUpdated
         ]);
 
-        if ($id == 15) {
+        if ($id == 16) {
             MedicalPlanning::where('registration_id', $this->registration->id)->delete();
 
             $arrayStepSkippedId = json_decode($this->registration->step_skipped);
-            $key = array_search($id, $arrayStepSkippedId);
+            $key = array_search(9, $arrayStepSkippedId);
 
-            if ($key !== false) {
-                unset($arrayStepSkippedId[$key]);
+            if ($key == false) {
+                $arrayStepSkippedId[] = 9;
             }
 
             $this->registration->update([
@@ -66,13 +66,13 @@ class UpdateRegistration extends ModalComponent
             'price' => $priceUpdated
         ]);
 
-        if ($id == 15) {
+        if ($id == 16) {
             MedicalPlanning::create([
                 'registration_id' => $this->registration->id
             ]);
 
             $arrayStepSkippedId = json_decode($this->registration->step_skipped);
-            $key = array_search($id, $arrayStepSkippedId);
+            $key = array_search(9, $arrayStepSkippedId);
 
             if ($key !== false) {
                 unset($arrayStepSkippedId[$key]);

@@ -59,4 +59,16 @@ class Training extends Model
         }
         return $presences;
     }
+
+    public function getRegistrationBranch($branchId) {
+        return $this->registrations()->whereHas('branchCourse', function($q) use ($branchId) {
+            $q->where('branch_id', $branchId);
+        })->get();
+    }
+
+    public function getRegistrationCustomerBranch($branchId) {
+        return $this->registrations()->whereHas('branchCourse', function($q) use ($branchId) {
+            $q->where('branch_id', $branchId);
+        })->with('customer');
+    }
 }

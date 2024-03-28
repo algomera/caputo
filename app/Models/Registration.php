@@ -24,6 +24,10 @@ class Registration extends Model
         return $this->belongsTo(Training::class);
     }
 
+    public function branchCourse(): BelongsTo {
+        return $this->belongsTo(BranchCourse::class);
+    }
+
     public function medicalPlanning(): HasOne {
         return $this->HasOne(MedicalPlanning::class);
     }

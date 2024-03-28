@@ -58,7 +58,7 @@
                                     @foreach ($lessonPlannings as $lessonPlanning)
                                         @if (count($lessonPlanning->presences()->where('customer_id', $customer->id)->get()) > 0)
                                             @foreach ($lessonPlanning->presences()->where('customer_id', $customer->id)->get() as $presence )
-                                                <td scope="col" class="border-r-2 border-color-efefef text-left font-medium px-3 pt-5 pb-4 text-color-2c2c2c capitalize">
+                                                <td scope="col" class="border-r-2 border-color-efefef text-left font-medium px-3 pt-[21px] pb-4 text-color-2c2c2c capitalize">
                                                     <div class="w-full flex items-center justify-center gap-4">
                                                         @if ($presence->followed)
                                                             <x-icons name="check_presence" />

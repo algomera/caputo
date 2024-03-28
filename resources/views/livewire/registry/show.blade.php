@@ -209,26 +209,35 @@
                                     @endif
                                 </span>
                             </p>
+
                             @if (count(json_decode($registration->step_skipped)))
                                 <button wire:click="$dispatch('openModal', { component: 'registry.modals.show-skipped', arguments: {registration: {{$registration->id}}} })" class="px-4 py-[2px] flex items-center gap-2 text-color-2c2c2c font-medium capitalize rounded-full bg-red-500/30 hover:scale-105 transition-all duration-300">
                                     <x-icons name="error" />
                                     Dati mancanti
                                 </button>
-                            @else
-                                <button class="px-4 py-1 text-color-2c2c2c font-medium capitalize rounded-full bg-color-ffb205/30 hover:scale-105 transition-all duration-300">continua accettazione</button>
                             @endif
-                            @if (count($registration->course->getOptions()->where('type', 'opzionale')->where('registration_type_id', $registration->registration_type_id)->whereNot('name', 'Supporto audio')->get()) > 0)
+
+                            @if ($registration->medicalPlanning)
+                                @if ($registration->medicalPlanning->protocol)
+                                    <button class="px-4 py-1 text-color-2c2c2c font-medium capitalize rounded-full bg-color-ffb205/30 hover:scale-105 transition-all duration-300">continua accettazione</button>
+                                @else
+                                    <div class="px-4 py-1 text-color-2c2c2c font-medium capitalize rounded-full bg-color-ffdbc1 cursor-default">In attesa di visita medica</div>
+                                @endif
+                            @endif
+
+                            @if (count($registration->course->getOptions()->where('type', 'opzionale')->where('registration_type_id', $registration->registration_type_id)->whereNot('name', 'Supporto audio')->get()))
                                 <button wire:click="$dispatch('openModal', { component: 'registry.modals.update-registration', arguments: {registration: {{$registration->id}}} })" class="flex items-center gap-2 px-4 py-1 text-color-2c2c2c font-medium capitalize rounded-full bg-color-347af2/30 hover:scale-105 transition-all duration-300">
                                     <x-icons name="option" /> opzioni
                                 </button>
                             @endif
                         </div>
+
                         <div class="flex gap-2">
                             <button wire:click="$dispatch('openModal', { component: 'registry.modals.scans', arguments: {registration: {{$registration->id}}} })" class="flex items-center gap-2 px-4 py-1 text-color-2c2c2c font-medium capitalize rounded-full bg-color-ffb205/30 hover:scale-105 transition-all duration-300">
                                 <x-icons name="small_upload" /> Scansioni/Firme
                             </button>
                             <button wire:click="$dispatch('openModal', { component: 'registry.modals.payments', arguments: {registration: {{$registration->id}}} })" class="flex items-center gap-2 px-4 py-1 text-color-2c2c2c font-medium capitalize rounded-full bg-color-ffb205/30 hover:scale-105 transition-all duration-300">
-                                <x-icons name="small_money" />pagamenti
+                                <x-icons name="small_money" /> pagamenti
                             </button>
                             <button wire:click="$dispatch('openModal', { component: 'registry.modals.chronology', arguments: {registration: {{$registration->id}}} })" class="flex items-center gap-2 px-4 py-1 text-color-2c2c2c font-medium capitalize rounded-full bg-color-ffb205/30 hover:scale-105 transition-all duration-300">
                                 <x-icons name="time" /> cronologia

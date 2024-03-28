@@ -22,7 +22,7 @@
                         <td scope="col" class="border-r-2 border-color-efefef font-medium px-3 py-4 text-color-2c2c2c">€ {{$option->price}}</td>
                         <td scope="col" class="border-r-2 border-color-efefef text-left font-medium px-3 py-4 text-color-2c2c2c capitalize">
                             @if (in_array($option->id, $selectedOptions))
-                                @if ($option->id == 15 && $registration->medicalPlanning->welded || $option->id == 15 && $existingDocumentVisit)
+                                @if ($option->id == 16 && $registration->medicalPlanning->welded || $option->id == 16 && $existingDocumentVisit)
                                     <div class="w-full flex items-center justify-center">
                                         <button class="px-4 py-1 text-white font-medium capitalize rounded-full bg-color-2c2c2c cursor-not-allowed">Non removibile</button>
                                     </div>
@@ -32,7 +32,7 @@
                                     </div>
                                 @endif
                             @else
-                                @if ($option->id == 15 || $existingDocumentVisit)
+                                @if ($option->id == 16 || $existingDocumentVisit)
                                     <div class="w-full flex items-center justify-center">
                                         <button wire:click="add({{$option->id}})" class="px-4 py-1 text-color-2c2c2c font-medium capitalize rounded-full bg-color-01a53a/30 hover:scale-105 transition-all duration-300">inserisci</button>
                                     </div>

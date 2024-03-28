@@ -4,7 +4,6 @@ namespace App\Livewire\Services\Training\Modals;
 
 use App\Models\Course;
 use LivewireUI\Modal\ModalComponent;
-use App\Models\CourseRegistrationStep;
 
 class RegistrationType extends ModalComponent
 {
@@ -17,37 +16,20 @@ class RegistrationType extends ModalComponent
         $this->course = $course;
         $this->existingVariant = count($this->course->courseRegistrationSteps()->where('variant_id', '!=', null)->get());
 
-        session()->put('course', [
-            'id' => $this->course->id,
-        ]);
+        session()->put('course', ['id' => $this->course->id]);
     }
 
     public function setRegistrationType($type_id, $variant_id = null) {
-        switch ($type_id) {
-            case 1:
-                $this->addSession($type_id, $variant_id, 1);
-                $this->dispatch('setCourse');
-                return $this->closeModal();
-                break;
-            case 2:
-                if (session('course')['id'] == 12 || session('course')['id'] == 13) {
-                    $this->addSession($type_id, $variant_id);
-                    $this->selectedRegistrationType = true;
-                } else {
-                    $this->addSession($type_id, $variant_id, 2);
-                    $this->dispatch('setCourse');
-                    return $this->closeModal();
-                }
-                break;
-            case 3:
-                $this->addSession($type_id, $variant_id, 2);
-                $this->dispatch('setCourse');
-                return $this->closeModal();
-                break;
-            case 4:
-                $this->addSession($type_id, $variant_id);
-                $this->selectedRegistrationType = true;
-                break;
+        $branches = $this->course->courseRegistrationSteps()->where('registration_type_id', $type_id)->first()->branchCourses()->get();
+
+        if (count($branches) > 1) {
+            $this->addSession($type_id, $variant_id);
+            $this->selectedRegistrationType = $this->course->courseRegistrationSteps()->where('registration_type_id', $type_id)->first();
+
+        } else {
+            $this->addSession($type_id, $variant_id, $branches->first()->id);
+            $this->dispatch('setCourse');
+            return $this->closeModal();
         }
     }
 

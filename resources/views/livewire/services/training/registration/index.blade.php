@@ -45,10 +45,9 @@
             <p @class(["text-xl font-bold", 'text-color-'.get_color($selectedCourse->service->name)])>Corso</p>
             <div class="grow h-[2px] bg-color-dfdfdf mb-2"></div>
             <p @class(["text-xl font-bold", 'text-color-'.get_color($selectedCourse->service->name)])>
-                {{$selectedCourse->prices()->where('registration_type_id', $type)->first()->price}} €
+                {{$branchCourse->price}} €
             </p>
         </div>
-        {{$selectedCourse->service->name}}
         <p>{{$selectedCourse->description}}</p>
 
         <div class="mb-2 space-y-1">
@@ -58,8 +57,8 @@
                 <p @class(["text-xl font-bold", 'text-color-'.get_color($selectedCourse->service->name)])>{{$selectedCourse->getOptions()->where('type', 'guide')->first()->price}} €</p>
             </div>
 
-            @if ($selectedCourse->branchCourses()->where('branch_id', session('course')['branch'])->first()->guides)
-                <p>Ci sono {{$selectedCourse->branchCourses()->where('branch_id', session('course')['branch'])->first()->guides}} guide obbligatorie.</p>
+            @if ($branchCourse->guides)
+                <p>Ci sono {{$branchCourse->guides}} guide obbligatorie.</p>
             @else
                 <p>Non ci sono guide obbligatorie.</p>
             @endif

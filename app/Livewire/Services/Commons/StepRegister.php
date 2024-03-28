@@ -13,6 +13,7 @@ use App\Models\InterestedCourses;
 use App\Models\IdentificationType;
 use App\Livewire\Forms\CustomerForm;
 use App\Livewire\Forms\DocumentForm;
+use App\Models\BranchCourse;
 use App\Models\CourseRegistrationStep;
 use App\Models\CourseVariant;
 use App\Models\IdentificationDocument;
@@ -185,7 +186,7 @@ class StepRegister extends Component
         }
 
         if ($type == 'esistente') {
-            if (!in_array(15, array_values(session()->get('course')['selected_options']))) {
+            if (!in_array(16, array_values(session()->get('course')['selected_options']))) {
                 $this->skipped[] = 9;
             }
 
@@ -193,7 +194,7 @@ class StepRegister extends Component
                 'training_id' => $trainingId,
                 'customer_id' => $this->customerForm->newCustomer->id,
                 'registration_type_id' => session()->get('course')['registration_type'],
-                'branch_id' => session()->get('course')['branch'],
+                'branch_course_id' => session()->get('course')['branch'],
                 'transmission' => session()->get('course')['transmission'],
                 'optionals' => json_encode(session()->get('course')['selected_options']),
                 'step_skipped' => json_encode($this->skipped),

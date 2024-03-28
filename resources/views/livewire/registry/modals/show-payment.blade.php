@@ -4,10 +4,12 @@
         <span class="text-lg text-color-808080 group-hover:underline">Indietro</span>
     </div>
 
+    <div wire:dirty class="absolute top-10 right-14 text-red-500/70 font-medium">Modifiche non salvate...</div>
+
     <div class="flex gap-4 min-w-min ">
         <div class="grow">
-            <h1 class="text-3xl font-bold text-color-17489f capitalize">Pagamento
-                {{-- <span class="ml-2 text-xl underline">{{date("d/m/Y H:i", strtotime($drivingPlanning->begins))}}</span> --}}
+            <h1 class="text-3xl font-bold text-color-17489f capitalize">Pagamento del
+                <span class="ml-2 text-lg font-medium">{{date("d/m/Y H:i", strtotime($payment->updated_at))}}</span>
             </h1>
             <div class="flex items-center gap-3 mb-10 mt-5">
                 <x-custom-select wire:model="type" name="type" label="metodo di pagamento" width="grow" >

@@ -81,9 +81,9 @@
                             </td>
                             <td class="border-r whitespace-nowrap px-3 py-4 font-light text-color-2c2c2c hidden xl:table-cell">{{count($training->course->lessons)}}</td>
                             <td class="border-r whitespace-nowrap px-3 py-4 font-light text-color-2c2c2c hidden xl:table-cell">{{$training->course->duration}}</td>
-                            <td class="border-r whitespace-nowrap px-3 py-4 font-light text-color-2c2c2c">{{$training->course->getAbsences(session('course')['branch'])}}</td>
-                            <td class="border-r whitespace-nowrap px-3 py-4 font-light text-color-2c2c2c">{{count($training->registrations()->where('branch_id', 2)->get())}}</td>
-                            <td class="border-r whitespace-nowrap px-3 py-4 font-light text-color-2c2c2c">{{count($training->registrations()->where('branch_id', 1)->get())}}</td>
+                            <td class="border-r whitespace-nowrap px-3 py-4 font-light text-color-2c2c2c">{{$branchCourse->absences}}</td>
+                            <td class="border-r whitespace-nowrap px-3 py-4 font-light text-color-2c2c2c">{{count($training->getRegistrationBranch(2))}}</td>
+                            <td class="border-r whitespace-nowrap px-3 py-4 font-light text-color-2c2c2c">{{count($training->getRegistrationBranch(1))}}</td>
                             <td class="whitespace-nowrap px-3 py-4 text-sm font-light text-color-2c2c2c">
                                 <div class="flex items-center justify-center gap-2 px-5">
                                     <button wire:click="putRegistration({{$training->id}}, '{{$selectedOption}}')" @class(["px-6 pt-1 text-lg font-medium text-white rounded-full ", 'bg-color-'.get_color($course->service->name)])>Aggiungi</button>

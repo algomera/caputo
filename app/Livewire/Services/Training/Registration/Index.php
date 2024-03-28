@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Services\Training\Registration;
 
+use App\Models\BranchCourse;
 use App\Models\Option;
 use Livewire\Component;
 use Livewire\Attributes\Validate;
@@ -15,6 +16,7 @@ class Index extends Component
     public $branch;
     public $type;
     public $selectedOptions = [];
+    public $branchCourse;
     public $total = 0;
     public $changeTransmission = false;
 
@@ -28,7 +30,9 @@ class Index extends Component
             $this->selectedCourse = $this->course;
         }
 
-        $this->total += $this->selectedCourse->prices()->where('registration_type_id', $this->type)->first()->price;
+        $this->branchCourse = BranchCourse::find($this->branch);
+
+        $this->total += $this->branchCourse->price;
 
         foreach ($this->selectedCourse->getOptions()->where('type', 'fisso')->where('registration_type_id', $this->type)->get() as  $option) {
             $this->total += $option->price;
@@ -42,7 +46,7 @@ class Index extends Component
     public function updated() {
         $this->total = 0;
 
-        $this->total +=  $this->selectedCourse->prices()->where('registration_type_id', $this->type)->first()->price;
+        $this->total +=  $this->branchCourse->price;
 
         foreach ($this->selectedCourse->getOptions()->where('type', 'fisso')->where('registration_type_id', $this->type)->get() as  $option) {
             $this->total += $option->price;

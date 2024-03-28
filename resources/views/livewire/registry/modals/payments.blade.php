@@ -101,7 +101,7 @@
                                 </td>
                                 @role('admin|responsabile sede')
                                 <td>
-                                    <button wire:click="$dispatch('openModal', { component: 'registry.modals.show-payment', arguments: {payment: {{$payment->id}}, registration: {{$registration->id}}} })" class="hover:underline cursor-pointer">
+                                    <button wire:click="$dispatch('openModal', { component: 'registry.modals.show-payment', arguments: {paymentFor: 'iscrizione', payment: {{$payment->id}}, registration: {{$registration->id}}} })" class="hover:underline cursor-pointer">
                                         Apri
                                     </button>
                                 </td>
