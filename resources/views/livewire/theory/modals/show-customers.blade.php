@@ -41,7 +41,14 @@
                             <td class="border-r-2 border-color-efefef py-4 px-3 text-color-2c2c2c capitalize">{{$customer->name}}</td>
                             <td class="border-r-2 border-color-efefef px-3 py-4 text-color-017c67 font-medium">{{$customer->phone_1}}</td>
                             <td class="border-r-2 border-color-efefef px-3 py-4 text-color-347af2 font-medium">{{$training->customerPresence($customer->id)}}</td>
-                            <td class="border-r-2 border-color-efefef px-3 py-4 text-color-2c2c2c font-medium capitalize">{{$customer->registrations()->where('training_id', $training->id)->first()->state}}</td>
+                            <td class="border-r-2 border-color-efefef px-3 py-4 text-color-2c2c2c font-medium capitalize">
+                                <div class="flex flex-col items-center justify-center">
+                                    {{$customer->registrations()->where('training_id', $training->id)->first()->state}}
+                                    @if (count(json_decode($training->customerMissingData($customer->id))))
+                                        <span title="Mandare in accettazione" class="px-3 text-sm font-medium text-red-500 underline cursor-default">Dati Mancanti!</span>
+                                    @endif
+                                </div>
+                            </td>
                             @role('admin|responsabile sede|segretaria')
                             <td class="px-3 py-4 text-color-2c2c2c">
                                 <div class="flex items-center justify-center gap-4">

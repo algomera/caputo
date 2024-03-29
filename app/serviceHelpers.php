@@ -68,31 +68,19 @@ if (! function_exists('get_color')) {
 
 if (! function_exists('get_step')) {
     function get_step($step) {
-        $description = '';
+        return \App\Models\Step::find($step);
+    }
+}
 
-        switch ($step) {
-            case 'documenti':
-                $description = 'Documenti di riconoscimento cliente';
-                break;
-            case 'scansioni':
-                $description = 'Scansione documenti cliente';
-                break;
-            case 'fototessera':
-                $description = 'Fototessera cliente';
-                break;
-            case 'genitore/tutore':
-                $description = 'Documenti e firma Genitore/Tutore';
-                break;
-            case 'accompagnatori':
-                $description = 'Documenti e firma accompagnatori';
-                break;
-            case 'visita':
-                $description = 'Certificato visita medica';
-                break;
+if (! function_exists('get_patent')) {
+    function get_patent($patent) {
+        return \App\Models\Patent::find($patent);
+    }
+}
 
-        }
-
-        return $description;
+if (! function_exists('get_registrationType')) {
+    function get_registrationType($id) {
+        return \App\Models\RegistrationType::find($id);
     }
 }
 

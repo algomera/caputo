@@ -24,10 +24,14 @@ class ShowTrainingPresences extends ModalComponent
 
     public function render()
     {
-        $customers = $this->training->customers()
-        ->filter('name', $this->name)
-        ->filter('lastName', $this->lastName)
-        ->get();
+        $customers = $this->training->getRegistrationCustomerBranch(1)
+        ->whereHas('customer', function($q) {
+            $q->filter('name', $this->name);
+        })
+        ->whereHas('customer', function($q) {
+            $q->filter('lastName', $this->lastName);
+        })
+        ->get()->pluck('customer')->unique();
 
         return view('livewire.theory.modals.show-training-presences', [
             'customers' => $customers

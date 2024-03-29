@@ -9,6 +9,7 @@ use Livewire\WithFileUploads;
 use App\Livewire\Forms\DocumentForm;
 use App\Models\Registration;
 use Illuminate\Support\Facades\Storage;
+use Livewire\Attributes\Validate;
 use LivewireUI\Modal\ModalComponent;
 
 class ShowPayment extends ModalComponent
@@ -19,43 +20,46 @@ class ShowPayment extends ModalComponent
     public $payment;
     public $registration;
     public $note;
-    public $type;
-    public $amount;
     public $document;
     public $newScan;
+    public $paymentFor;
 
-    public function mount($payment, $registration) {
+    #[Validate('required', message: 'Seleziona metodo di pagamento')]
+    public $type;
+    #[Validate('required', message: 'Inserisci importo')]
+    public $amount;
+
+    public $oldData;
+
+    public function mount($paymentFor, $payment, $registration) {
+        $this->paymentFor = $paymentFor;
         $this->registration = Registration::find($registration);
         $this->payment = Payment::find($payment);
+
         $this->setPayment();
     }
-
-    // public function updated($property) {
-    //     if ($property == 'newScan') {
-    //         if ($this->document) {
-    //             $this->documentForm->updateScan($this->document->id, $this->newScan);
-    //         } else {
-    //             $path = Storage::disk('public')->putFileAs('customers/customer-'.$this->registration->customer_id, $this->newScan, str_replace(' ', '_', $this->newScan->getClientOriginalName()));
-
-    //             $this->document = $this->payment->document()->create([
-    //                 'type' => 'Pagamento',
-    //                 'path' => $path
-    //             ]);
-    //         }
-
-    //         $this->documentForm->updateScan($this->document->id, $this->newScan);
-    //         $this->mount($this->payment->id, $this->registration->id);
-    //     }
-    // }
 
     public function setPayment() {
         $this->fill(
             $this->payment->only('note', 'type', 'amount')
         );
         $this->document = $this->payment->document()->first();
+
+        $this->oldData = [
+            'type' => $this->type,
+            'amount' => $this->amount
+        ];
     }
 
     public function update() {
+        $this->validate();
+
+        if ($this->type != $this->oldData['type'] || ($this->amount != $this->oldData['amount'])) {
+            $this->registration->chronologies()->create([
+                'title' => 'Modifica pagamento da € '.$this->oldData['amount'].' con '. $this->oldData['type']. ' in € ' .$this->amount .' con '.$this->type
+            ]);
+        }
+
         $this->payment->update([
             'note' => $this->note,
             'type' => $this->type,
@@ -64,13 +68,13 @@ class ShowPayment extends ModalComponent
 
         if ($this->newScan) {
             if ($this->document) {
-                $this->documentForm->updateScan($this->document->id, $this->newScan);
+                $this->documentForm->updateScan($this->document->id, $this->newScan, $this->paymentFor);
             } else {
-                $path = Storage::disk('public')->putFileAs('customers/customer-'.$this->registration->customer_id, $this->newScan, str_replace(' ', '_', $this->newScan->getClientOriginalName()));
+                $path = Storage::disk('public')->putFileAs('customers/customer-'.$this->registration->customer_id.'/'.$this->registration->course->slug.'/payments', $this->newScan, str_replace(' ', '_', $this->newScan->getClientOriginalName()));
 
                 $this->payment->document()->create([
                     'type' => 'Pagamento',
-                    'path' => $path
+                    'path' => 'storage/'.$path
                 ]);
             }
         }

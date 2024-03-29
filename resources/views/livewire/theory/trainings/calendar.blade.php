@@ -2,7 +2,7 @@
     <p wire:click='back' class="underline text-color-808080 cursor-pointer mb-5">Indietro</p>
 
     <div class="px-10 absolute top-9 left-1/2 transform -translate-x-1/2">
-        <h1 class="text-3xl font-bold text-[#01a53a]">{{$training->$variant->name}}</h1>
+        <h1 wire:click="goCourse" class="text-3xl font-bold text-[#01a53a] cursor-pointer hover:underline">{{$training->$variant->name}}</h1>
     </div>
 
     <div wire:ignore id='calendarLesson'></div>
@@ -84,15 +84,24 @@
                     <div class="p-2 w-full fc-event-main-frame border border-[`+event.event.extendedProps.customBorderColor+`] bg-[`+event.event.backgroundColor+`]">
                         <div class="fc-event-title-container">
                             <div class="fc-event-title fc-sticky">
-                                <p class="flex font-medium gap-2 text-[`+event.event.extendedProps.customBorderColor+`]">
-                                    <x-icons name="time" class="!text-[`+event.event.extendedProps.customBorderColor+`]"/>
-                                    `+moment(event.event.startStr).format('HH:mm')+ ' - ' +moment(event.event.endStr).format('HH:mm')+`
-                                </p>
+                                <div class="flex items-center justify-between">
+                                    <p class="flex font-medium gap-2 text-[`+event.event.extendedProps.customBorderColor+`]">
+                                        <x-icons name="time" class="!text-[`+event.event.extendedProps.customBorderColor+`]"/>
+                                        `+moment(event.event.startStr).format('HH:mm')+ ' - ' +moment(event.event.endStr).format('HH:mm')+`
+                                    </p>
+                                    @role ('admin|insegnante')
+                                        <p class="text-xs font-light">
+                                            Scuola: <span class="uppercase font-normal">`+event.event.extendedProps.school+`</span>
+                                        </p>
+                                    @endrole
+                                </div>
+
                                 @role ('admin|responsabile sede|segretaria')
                                     <p class="text-lg font-medium capitalize text-color-2c2c2c">
                                         <span class="font-semibold text-base">Insegnate: </span> `+event.event.extendedProps.teacher+`
                                     </p>
                                 @endrole
+
                                 <p class="text-base font-medium text-color-2c2c2c">
                                     <span class="font-semibold text-base">Corso: </span> `+event.event.title+`
                                 </p>

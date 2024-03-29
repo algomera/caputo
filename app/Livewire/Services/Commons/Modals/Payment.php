@@ -72,11 +72,11 @@ class Payment extends ModalComponent
             ]);
 
             $this->registration->chronologies()->create([
-                'title' => 'Saldo iscrizione di € '. $this->amount
+                'title' => 'Saldo iscrizione di € '. $this->amount .' con '. $this->paymentSelected
             ]);
         } else {
             $this->registration->chronologies()->create([
-                'title' => 'Pagamento iscrizione di € '. $this->amount
+                'title' => 'Pagamento iscrizione di € '. $this->amount .' con '. $this->paymentSelected
             ]);
         }
 

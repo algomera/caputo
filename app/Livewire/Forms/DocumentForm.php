@@ -20,12 +20,13 @@ class DocumentForm extends Form
     }
 
     // Scansione Documenti
-    public function scans($scans) {
+    public function scans($scans, $step_id = null) {
         foreach ($scans as $scan) {
             $path = Storage::disk('public')->putFileAs('customers/customer-'.$this->customer->id, $scan, str_replace(' ', '_', $scan->getClientOriginalName()));
             $this->customer->documents()->create([
                 'type' => 'documenti di riconoscimento',
-                'path' => 'storage/'.$path
+                'path' => 'storage/'.$path,
+                'step_id' => $step_id
             ]);
 
             $this->customer->chronologies()->create([
@@ -61,14 +62,15 @@ class DocumentForm extends Form
         }
     }
 
-    public function medicalVisitScan($scans, $registrationId) {
+    public function medicalVisitScan($scans, $registrationId, $step_id = null) {
         $registration = Registration::find($registrationId);
 
         foreach ($scans as $scan) {
             $path = Storage::disk('public')->putFileAs('customers/customer-'.$this->customer->id, $scan, str_replace(' ', '_', $scan->getClientOriginalName()));
             $registration->documents()->create([
                 'type' => 'Certificato visita medica',
-                'path' => 'storage/'.$path
+                'path' => 'storage/'.$path,
+                'step_id' => $step_id
             ]);
 
             $registration->chronologies()->create([
@@ -77,14 +79,15 @@ class DocumentForm extends Form
         }
     }
 
-    public function parentScans($scans, $registrationId) {
+    public function parentScans($scans, $registrationId, $step_id = null) {
         $registration = Registration::find($registrationId);
 
         foreach ($scans as $scan) {
             $path = Storage::disk('public')->putFileAs('customers/customer-'.$this->customer->id.'/parent', $scan, str_replace(' ', '_', $scan->getClientOriginalName()));
             $registration->documents()->create([
                 'type' => 'documenti di riconoscimento genitori',
-                'path' => 'storage/'.$path
+                'path' => 'storage/'.$path,
+                'step_id' => $step_id
             ]);
 
             $registration->chronologies()->create([
@@ -93,14 +96,15 @@ class DocumentForm extends Form
         }
     }
 
-    public function companionsScans($scans, $registrationId) {
+    public function companionsScans($scans, $registrationId, $step_id = null) {
         $registration = Registration::find($registrationId);
 
         foreach ($scans as $key => $scan) {
             $path = Storage::disk('public')->putFileAs('customers/customer-'.$this->customer->id.'/companions/'.'companion-'.$key, $scan, str_replace(' ', '_', $scan->getClientOriginalName()));
             $registration->documents()->create([
                 'type' => 'documenti di riconoscimento accompagnatore-'.$key,
-                'path' => 'storage/'.$path
+                'path' => 'storage/'.$path,
+                'step_id' => $step_id
             ]);
 
             $registration->chronologies()->create([
@@ -109,7 +113,7 @@ class DocumentForm extends Form
         }
     }
 
-    public function updateScan($id, $scan) {
+    public function updateScan($id, $scan, $paymentFor = null) {
         $document = Document::find($id);
         $type = $document->documentable_type;
         $documentClass = new ReflectionClass($type);
@@ -131,11 +135,17 @@ class DocumentForm extends Form
             ]);
         } elseif ($className == 'Payment') {
             $payment = Payment::find($document->documentable_id);
-            $registration = $payment->registration;
+
+            if ($paymentFor == 'iscrizione') {
+                $registration = $payment->registration;
+            } elseif ($paymentFor == 'guide') {
+                $registration = $payment->driving->registration;
+            }
+
             $path = Storage::disk('public')->putFileAs('customers/customer-'.$registration->customer_id.'/'.$registration->course->slug.'/payments', $scan, str_replace(' ', '_', $scan->getClientOriginalName()));
 
             $registration->chronologies()->create([
-                'title' => 'Aggiornamento '. $document->type
+                'title' => 'Aggiornamento '. $document->type . ' ID-'.$id
             ]);
         }
 
@@ -171,13 +181,14 @@ class DocumentForm extends Form
     }
 
     // Firme
-    public function signature($signature) {
+    public function signature($signature, $step_id = null) {
         $path = Storage::disk('public')->putFileAs('customers/customer-'.$this->customer->id, $signature, 'firma.png');
         $this->customer->documents()->updateOrCreate(
             ['type' => 'firma'],
             [
                 'type' => 'firma',
-                'path' => 'storage/'.$path
+                'path' => 'storage/'.$path,
+                'step_id' => $step_id
             ]
         );
 
@@ -186,7 +197,7 @@ class DocumentForm extends Form
         ]);
     }
 
-    public function parentSignature($signature, $registrationId) {
+    public function parentSignature($signature, $registrationId, $step_id = null) {
         $registration = Registration::find($registrationId);
 
         $path = Storage::disk('public')->putFileAs('customers/customer-'.$this->customer->id.'/parent', $signature, 'firma_genitore.png');
@@ -194,7 +205,8 @@ class DocumentForm extends Form
             ['type' => 'firma genitore'],
             [
                 'type' => 'firma genitore',
-                'path' => 'storage/'.$path
+                'path' => 'storage/'.$path,
+                'step_id' => $step_id
             ]
         );
 
@@ -203,7 +215,7 @@ class DocumentForm extends Form
         ]);
     }
 
-    public function companionsSignature($signatures, $registrationId) {
+    public function companionsSignature($signatures, $registrationId, $step_id = null) {
         $registration = Registration::find($registrationId);
 
         foreach ($signatures as $key => $signature) {
@@ -213,7 +225,8 @@ class DocumentForm extends Form
                 ['type' => 'firma accompagnatore-'.$key],
                 [
                     'type' => 'firma accompagnatore-'.$key,
-                    'path' => 'storage/'.$path
+                    'path' => 'storage/'.$path,
+                    'step_id' => $step_id
                 ]
             );
 
@@ -223,14 +236,15 @@ class DocumentForm extends Form
         }
     }
 
-    public function newSignature($signature, $registrationId) {
+    public function newSignature($signature, $registrationId, $step_id = null) {
         $registration = Registration::find($registrationId);
 
         $path = Storage::disk('public')->putFileAs('customers/customer-'.$this->customer->id.'/parent', $signature, 'firma_parente.png');
 
         $registration->documents()->create([
             'type' => 'firma parente',
-            'path' => 'storage/'.$path
+            'path' => 'storage/'.$path,
+            'step_id' => $step_id
         ]);
 
         $registration->chronologies()->create([

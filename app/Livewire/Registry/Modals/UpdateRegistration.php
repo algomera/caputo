@@ -12,11 +12,13 @@ class UpdateRegistration extends ModalComponent
     public $registration;
     public $options;
     public $selectedOptions = [];
+    public $existingDocumentVisit = false;
 
     public function mount($registration) {
         $this->registration = Registration::find($registration);
-        $this->options = $this->registration->course->getOptions()->where('type', 'opzionale')->where('option', $this->registration->option)->whereNot('name', 'Supporto audio')->get();
+        $this->options = $this->registration->course->getOptions()->where('type', 'opzionale')->where('registration_type_id', $this->registration->registration_type_id)->whereNotIn('option_id', [8,18])->get();
         $this->selectedOptions = json_decode($this->registration->optionals);
+        $this->existingDocumentVisit =  $this->registration->documents()->where('step_id', 9)->first();
     }
 
     public function remove($id) {
@@ -30,13 +32,18 @@ class UpdateRegistration extends ModalComponent
             'price' => $priceUpdated
         ]);
 
-        if (strpos($option->name, 'medico')) {
+        if ($id == 16) {
             MedicalPlanning::where('registration_id', $this->registration->id)->delete();
 
-            $stepSkipped = json_decode($this->registration->step_skipped);
-            $stepSkipped[] = 'visita';
+            $arrayStepSkippedId = json_decode($this->registration->step_skipped);
+            $key = array_search(9, $arrayStepSkippedId);
+
+            if ($key == false) {
+                $arrayStepSkippedId[] = 9;
+            }
+
             $this->registration->update([
-                'step_skipped' => json_encode(array_values($stepSkipped))
+                'step_skipped' => array_values($arrayStepSkippedId)
             ]);
         }
 
@@ -59,16 +66,20 @@ class UpdateRegistration extends ModalComponent
             'price' => $priceUpdated
         ]);
 
-        if (strpos($option->name, 'medico')) {
+        if ($id == 16) {
             MedicalPlanning::create([
                 'registration_id' => $this->registration->id
             ]);
 
-            $stepSkipped = json_decode($this->registration->step_skipped);
-            $step = array_search('visita', $stepSkipped);
-            unset($stepSkipped[$step]);
+            $arrayStepSkippedId = json_decode($this->registration->step_skipped);
+            $key = array_search(9, $arrayStepSkippedId);
+
+            if ($key !== false) {
+                unset($arrayStepSkippedId[$key]);
+            }
+
             $this->registration->update([
-                'step_skipped' => json_encode(array_values($stepSkipped))
+                'step_skipped' => array_values($arrayStepSkippedId)
             ]);
         }
 

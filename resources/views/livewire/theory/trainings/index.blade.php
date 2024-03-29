@@ -8,8 +8,8 @@
             @if (auth()->user()->role->name != 'insegnante')
                 <x-input-text wire:model.live="user" width="w-fit" name="user" placeholder="Insegnante" uppercase="shadow" />
             @endif
-            @role('admin')
-                <x-input-text wire:model.live="code" width="w-fit" name="code" placeholder="Codice" uppercase="shadow" />
+            @role('admin|insegnante')
+                <x-input-text wire:model.live="code" width="w-fit" name="code" placeholder="Codice Autoscuola" uppercase="shadow uppercase" />
             @endrole
         </div>
         @if (auth()->user()->role->name != 'insegnante')
@@ -25,7 +25,7 @@
             <thead class="customHead">
                 <tr class="text-color-545454">
                     <th scope="col" class="w-20 text-center px-3 py-3.5 font-semibold hidden xl:table-cell">ID</th>
-                    @role('admin')
+                    @role('admin|insegnante')
                         <th scope="col" class="py-3.5 px-3 font-light">Codice</th>
                     @endrole
                     <th scope="col" class="text-left  px-3 py-3.5 font-light">Corso</th>
@@ -45,7 +45,7 @@
                     @foreach($trainings as $training)
                         <tr class="text-center even:bg-color-f7f7f7">
                             <td class="w-20 border-r-2 border-color-efefef py-4 px-3 text-color-17489f capitalize font-semibold hidden xl:table-cell">{{$training->id}}</td>
-                            @role('admin')
+                            @role('admin|insegnante')
                                 <td class="border-r-2 border-color-efefef py-4 px-3 font-bold text-color-347af2 uppercase">{{$training->school->code}}</td>
                             @endrole
                             <td class="border-r-2 border-color-efefef py-4 px-3 text-color-2c2c2c capitalize text-left text-sm 2xl:text-base">{{$training->course->name}}</td>
@@ -70,7 +70,7 @@
                             </td>
                             <td class="border-r-2 border-color-efefef px-3 py-4 text-color-2c2c2c hidden xl:table-cell">
                                 <div class="flex items-start justify-center gap-1">
-                                    <span class="font-medium text-color-545454">{{count($training->registrations()->get())}}</span>
+                                    <span class="font-medium text-color-545454">{{count($training->getRegistrationBranch(1))}}</span>
                                     <x-icons name="user" class="text-color-347af2 " />
                                 </div>
                             </td>

@@ -2,58 +2,65 @@
 
 namespace App\Livewire\Services\Training\Registration;
 
+use App\Models\BranchCourse;
 use App\Models\Option;
 use Livewire\Component;
+use Livewire\Attributes\Validate;
 use Livewire\Attributes\On;
 
 class Index extends Component
 {
     public $course;
+    public $variant;
+    public $selectedCourse;
     public $branch;
     public $type;
-    public $transmission;
     public $selectedOptions = [];
+    public $branchCourse;
     public $total = 0;
+    public $changeTransmission = false;
+
+    #[Validate('required', message: 'Scelta obbligatoria')]
+    public $transmission;
 
     public function mount() {
-        if (session()->get('course')['registration_type'] == 'teoria') {
-            $this->total += $this->course->prices()->where('licenses', null)->first()->price;
-        } elseif (session()->get('course')['registration_type'] == 'guide') {
-            // if (session()->get('course')['option'] != 'possessore di patente') {
-            //     $this->total += $this->course->prices()->where('licenses', null)->first()->price;
-            // }
+        if ($this->variant) {
+            $this->selectedCourse = $this->variant;
+        } else {
+            $this->selectedCourse = $this->course;
         }
 
-        foreach ($this->course->getOptions()->where('type', 'fisso')->where('option', $this->branch)->get() as  $option) {
+        $this->branchCourse = BranchCourse::find($this->branch);
+
+        $this->total += $this->branchCourse->price;
+
+        foreach ($this->selectedCourse->getOptions()->where('type', 'fisso')->where('registration_type_id', $this->type)->get() as  $option) {
             $this->total += $option->price;
         }
-    }
 
-    public function rules() {
-        return [
-            'transmission' => 'required'
-        ];
-    }
-    public function messages() {
-        return [
-            'transmission.required' => 'Scelta obbligatoria'
-        ];
+        if (session('course')['registration_type'] == 4) {
+            $this->transmission = 'manuale';
+        }
     }
 
     public function updated() {
         $this->total = 0;
 
-        if (session()->get('course')['registration_type'] == 'teoria') {
-            $this->total += $this->course->prices()->first()->price;
-        }
+        $this->total +=  $this->branchCourse->price;
 
-        foreach ($this->course->getOptions()->where('type', 'fisso')->where('option', $this->branch)->get() as  $option) {
+        foreach ($this->selectedCourse->getOptions()->where('type', 'fisso')->where('registration_type_id', $this->type)->get() as  $option) {
             $this->total += $option->price;
         }
 
         foreach ($this->selectedOptions as $id) {
             $option = Option::find($id);
             $this->total += $option->price;
+        }
+
+        if (in_array(8, $this->selectedOptions)) {
+            $this->changeTransmission = true;
+        } else {
+            $this->changeTransmission = false;
         }
     }
 
@@ -71,15 +78,15 @@ class Index extends Component
         $this->validate();
 
         $session = session()->get('course', []);
-        $session['selected_cost'] = [];
+        $session['selected_options'] = [];
         foreach ($this->selectedOptions as $optionId) {
-            $session['selected_cost'][] = intval($optionId);
+            $session['selected_options'][] = intval($optionId);
         }
         $session['transmission'] = $this->transmission;
         $session['price'] = $this->total;
         session()->put('course', $session);
 
-        if (session()->get('course')['option'] != 'cambio codice') {
+        if (session()->get('course')['registration_type'] != 4) {
             $this->dispatch('openModal', 'services.training.modals.get-fiscal-code');
         } else {
             $this->dispatch('openModal', 'services.training.modals.remind-t-t2112');

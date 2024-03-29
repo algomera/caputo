@@ -43,7 +43,13 @@
                                 <span>{{$registration->customer->full_name}}</span>
                                 @endrole
                             </td>
-                            <td class="border-r-2 border-color-efefef py-4 px-3 font-medium text-color-2c2c2c uppercase text-center">{{$registration->course->name}}</td>
+                            <td class="border-r-2 border-color-efefef py-4 px-3 font-medium text-color-2c2c2c uppercase text-center">
+                                @if ($registration->courseVariant)
+                                    {{$registration->courseVariant->name}}
+                                @else
+                                    {{$registration->course->name}}
+                                @endif
+                            </td>
                             <td class="border-r-2 border-color-efefef py-4 px-3 text-color-2c2c2c text-center">{{$registration->course->guides}}</td>
                             <td class="border-r-2 border-color-efefef px-3 py-4 text-color-2c2c2c text-center">{{count($registration->drivingPlanning)}}</td>
                             <td class="border-r-2 border-color-efefef px-3 py-4 text-color-017c67 text-center">{{count($registration->performedGuides)}}</td>

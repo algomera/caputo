@@ -2,15 +2,15 @@
 
 namespace Database\Seeders;
 
+use App\Models\BranchCourse;
 use App\Models\Course;
-use App\Models\CoursePrice;
+use App\Models\CourseRegistrationStep;
 use App\Models\CourseVariant;
 use App\Models\Lesson;
 use App\Models\Service;
 use Illuminate\Support\Str;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Stringable;
 
 class CoursesSeeder extends Seeder
 {
@@ -28,30 +28,125 @@ class CoursesSeeder extends Seeder
         }
     }
 
-    public function createPrice($course_id, $variant_id) {
-        $licenses = [
-            ['AM'],
-            ['A1'],
-            ['A2'],
-            ['B', 'A2'],
-            ['B']
-        ];
+    public function createCourseRegistrationStep($course_id, $variant_id = null, $registration_types = []) {
 
-        CoursePrice::create([
-            'course_id' => $course_id,
-            'variant_id' => $variant_id,
-            'price' => fake()->numberBetween(200, 1800)
-        ]);
+        if (count($registration_types)) {
+            foreach ($registration_types as $registrationType) {
+                $condition = null;
 
-        foreach ($licenses as $license) {
-            CoursePrice::create([
-                'course_id' => $course_id,
-                'variant_id' => $variant_id,
-                'licenses' => json_encode($license),
-                'price' => fake()->numberBetween(200, 1800)
-            ]);
+                if ($registrationType == 2) {
+                    if ($course_id == 12) {
+                        $condition = 'A1, B1, B';
+                    } elseif ($course_id == 13) {
+                        $condition = 'A2, B1, B';
+                    } elseif ($course_id == 14) {
+                        $condition = 'A2';
+                    } elseif ($course_id == 16) {
+                        $condition = 'A1, A2, A, B1';
+                    } elseif ($course_id == 17) {
+                        $condition = 'A1, B1, B';
+                    } elseif ($course_id == 18) {
+                        $condition = 'B';
+                    }
+                }
+
+                $courseRegistrationStep = CourseRegistrationStep::create([
+                    'course_id' => $course_id,
+                    'variant_id' => $variant_id,
+                    'registration_type_id' => $registrationType,
+                    'steps_id' => json_encode($this->getCourseStep($registrationType, $course_id)),
+                    'condition' => $condition
+                ]);
+
+                if ($registrationType == 1) {
+                    $branchId = [1];
+                } elseif ($registrationType == 2) {
+                    $branchId = [2,3];
+                } elseif ($registrationType == 3) {
+                    $branchId = [1];
+                } elseif ($registrationType == 4) {
+                    $branchId = [1,2,3];
+                }
+
+                $this->createBranchCourseRegistration($courseRegistrationStep->id, $branchId);
+            }
         }
     }
+
+    public function getCourseStep($type, $course_id) {
+        $steps = [];
+        switch ($type) {
+            case 1: // prima patente
+                $steps = [1,3,4,5,6];
+
+                if (in_array($course_id, ['10','11','14','15'])) {
+                    $steps[] = 7;
+                }
+                if ($course_id == 14) {
+                    $steps[] = 8;
+                }
+                break;
+            case 2: // possessore di patente
+                $steps = [2,4,5,6];
+                break;
+            case 3: // possessore guida accomagnata
+                $steps = [2,4,5,6];
+                break;
+            case 4: // cambio codice
+                $steps = [2,4,5,6];
+                break;
+        }
+
+        return $steps;
+    }
+
+    public function createBranchCourseRegistration($courseRegistrationStepId, $branchesId = []) {
+        $courseRegistrationStep = CourseRegistrationStep::find($courseRegistrationStepId);
+
+        foreach ($branchesId as $branchId) {
+            $condition = null;
+
+            if ($branchId == 3 && in_array($courseRegistrationStep->course_id , [12,13,14])) {
+
+                if ($courseRegistrationStep->course_id == 12 && $courseRegistrationStep->registration_type_id == 2) {
+                    $condition = 'Senza esame per possessori di A1 da piu di 2 anni';
+                } elseif ($courseRegistrationStep->course_id == 13 && $courseRegistrationStep->registration_type_id == 2) {
+                    $condition = 'Senza esame per possessori di A2 da piu di 2 anni';
+                }
+
+                BranchCourse::create([
+                    'course_registration_step_id' => $courseRegistrationStepId,
+                    'branch_id' => $branchId,
+                    'condition' => $condition,
+                    'absences' => $branchId == 1 ? 3 : 0,
+                    'guides' => 10,
+                    'price' => fake()->numberBetween(200, 1800)
+                ]);
+            }
+
+            if ($branchId == 1 || $branchId == 2) {
+                $guides = 0;
+
+                if (in_array($courseRegistrationStep->course_id , [14, 16])) {
+                    if ($courseRegistrationStep->registration_type_id == 3) {
+                        $guides = 0;
+                    } else {
+                        $guides = 10;
+                    }
+                }
+
+                BranchCourse::create([
+                    'course_registration_step_id' => $courseRegistrationStepId,
+                    'branch_id' => $branchId,
+                    'condition' => $condition,
+                    'absences' => $branchId == 1 ? 3 : 0,
+                    'guides' => $guides,
+                    'price' => fake()->numberBetween(200, 1800)
+                ]);
+            }
+        }
+    }
+
 
     /**
      * Run the database seeds.
@@ -59,6 +154,7 @@ class CoursesSeeder extends Seeder
     public function run(): void
     {
         $services = Service::all();
+
         $service_cond = [
             [
                 'name' => 'Conferma patente',
@@ -100,39 +196,57 @@ class CoursesSeeder extends Seeder
         $patents = [
             [
                 'name' => 'Patente AM',
-                'type_visit' => 'rilascio'
+                'patent_id' => 1,
+                'type_visit' => 'rilascio',
+                'registration_types' => [1,4],
             ],
             [
                 'name' => 'Patente A1',
-                'type_visit' => 'rilascio'
+                'patent_id' => 2,
+                'type_visit' => 'rilascio',
+                'registration_types' => [1,4],
             ],
             [
                 'name' => 'Patente A2',
-                'type_visit' => 'rilascio'
+                'patent_id' => 3,
+                'type_visit' => 'rilascio',
+                'registration_types' => [1,2,4],
             ],
             [
                 'name' => 'Patente A',
-                'type_visit' => 'rilascio'
+                'patent_id' => 4,
+                'type_visit' => 'rilascio',
+                'registration_types' => [1,2,4],
             ],
             [
                 'name' => 'Guida accompagnata',
-                'type_visit' => 'rilascio'
+                'patent_id' => 6,
+                'type_visit' => 'rilascio',
+                'registration_types' => [2],
             ],
             [
                 'name' => 'Patente B1',
-                'type_visit' => 'rilascio'
+                'patent_id' => 5,
+                'type_visit' => 'rilascio',
+                'registration_types' => [1,4],
             ],
             [
                 'name' => 'Patente B',
-                'type_visit' => 'rilascio'
+                'patent_id' => 6,
+                'type_visit' => 'rilascio',
+                'registration_types' => [1,2,3,4],
             ],
             [
                 'name' => 'Patente B codice 96',
-                'type_visit' => 'rilascio'
+                'patent_id' => 6,
+                'type_visit' => 'rilascio',
+                'registration_types' => [1,2,4],
             ],
             [
                 'name' => 'Patente BE',
-                'type_visit' => 'rilascio'
+                'patent_id' => 11,
+                'type_visit' => 'rilascio',
+                'registration_types' => [2,4],
             ],
             [
                 'name' => 'Guide di perfezionamento',
@@ -299,81 +413,33 @@ class CoursesSeeder extends Seeder
                     foreach ($service_cond as $value) {
                         $course = Course::create([
                             'service_id' => $service->id,
+                            'patent_id' => $value['patent_id'] ?? null,
                             'type' => 'service',
                             'name' => $value['name'],
                             'slug' => Str::slug($value['name']),
                             'description' => fake()->paragraph(),
                             'type_visit' => $value['type_visit'],
-                            'absences' => 3
                         ]);
+
                         $this->createLessons($course->id, null);
-                        $this->createPrice($course->id, null);
                     }
                     break;
                 case 'Patenti':
                     foreach ($patents as $value) {
                         $course = Course::create([
                             'service_id' => $service->id,
+                            'patent_id' => $value['patent_id'] ?? null,
                             'type' => $value['type'] ?? 'training',
                             'name' => $value['name'],
                             'slug' => Str::slug($value['name']),
                             'description' => fake()->paragraph(),
                             'type_visit' => $value['type_visit'],
-                            'absences' => 3,
-                            'guides' => rand(0, 10)
                         ]);
-                        $this->createLessons($course->id, null);
-                        $this->createPrice($course->id, null);
-                    }
-                    break;
-                case 'Formazione professionale':
-                    foreach ($trainings as $value) {
-                        $course = Course::create([
-                            'service_id' => $service->id,
-                            'type' => $value['type'] ?? 'service',
-                            'name' => $value['name'],
-                            'slug' => Str::slug($value['name']),
-                            'label' => $value['label'] ?? null,
-                            'description' => fake()->paragraph(),
-                            'type_visit' => $value['type_visit'],
-                            'absences' => 3,
-                        ]);
-                        $this->createLessons($course->id, null);
-                        $this->createPrice($course->id, null);
-                    }
-                    break;
-                case 'Patenti professionali':
-                    foreach ($prof_patents as $value) {
-                        $course = Course::create([
-                            'service_id' => $service->id,
-                            'type' => $value['type'] ?? 'training',
-                            'name' => $value['name'],
-                            'slug' => Str::slug($value['name']),
-                            'description' => fake()->paragraph(),
-                            'type_visit' => $value['type_visit'],
-                            'absences' => 3,
-                            'guides' => rand(0, 10)
-                        ]);
-                        $this->createLessons($course->id, null);
-                        $this->createPrice($course->id, null);
-                    }
-                    break;
-                case 'Corsi':
-                    foreach ($courses as $value) {
-                        $course = Course::create([
-                            'service_id' => $service->id,
-                            'type' => $value['type'] ?? 'training',
-                            'name' => $value['name'],
-                            'slug' => Str::slug($value['name']),
-                            'label' => $value['label'] ?? null,
-                            'description' => fake()->paragraph(),
-                            'type_visit' => $value['type_visit'],
-                            'absences' => 3
-                        ]);
-                        $this->createLessons($course->id, null);
-                        $this->createPrice($course->id, null);
 
-                        for ($i=0; $i < 3; $i++) {
+                        $this->createLessons($course->id, null);
+                        $this->createCourseRegistrationStep($course->id, null, $value['registration_types'] ?? []);
+
+                        for ($i=0; $i < 2; $i++) {
                             $variant = CourseVariant::create([
                                 'course_id' => $course->id,
                                 'type' => $value['type'] ?? 'training',
@@ -381,14 +447,74 @@ class CoursesSeeder extends Seeder
                                 'slug' => Str::slug($value['name'] .' '. $i),
                                 'description' => fake()->paragraph(),
                                 'type_visit' => $value['type_visit'],
-                                'absences' => 3
                             ]);
+
                             $this->createLessons($course->id, $variant->id);
-                            $this->createPrice($course->id, $variant->id);
+                            $this->createCourseRegistrationStep($course->id, $variant->id, $value['registration_types'] ?? []);
+                        }
+
+                    }
+                    break;
+                case 'Formazione professionale':
+                    foreach ($trainings as $value) {
+                        $course = Course::create([
+                            'service_id' => $service->id,
+                            'patent_id' => $value['patent_id'] ?? null,
+                            'type' => $value['type'] ?? 'service',
+                            'name' => $value['name'],
+                            'slug' => Str::slug($value['name']),
+                            'label' => $value['label'] ?? null,
+                            'description' => fake()->paragraph(),
+                            'type_visit' => $value['type_visit'],
+                        ]);
+
+                        $this->createLessons($course->id, null);
+                    }
+                    break;
+                case 'Patenti professionali':
+                    foreach ($prof_patents as $value) {
+                        $course = Course::create([
+                            'service_id' => $service->id,
+                            'patent_id' => $value['patent_id'] ?? null,
+                            'type' => $value['type'] ?? 'training',
+                            'name' => $value['name'],
+                            'slug' => Str::slug($value['name']),
+                            'description' => fake()->paragraph(),
+                            'type_visit' => $value['type_visit'],
+                        ]);
+
+                        $this->createLessons($course->id, null);
+                    }
+                    break;
+                case 'Corsi':
+                    foreach ($courses as $value) {
+                        $course = Course::create([
+                            'service_id' => $service->id,
+                            'patent_id' => $value['patent_id'] ?? null,
+                            'type' => $value['type'] ?? 'training',
+                            'name' => $value['name'],
+                            'slug' => Str::slug($value['name']),
+                            'label' => $value['label'] ?? null,
+                            'description' => fake()->paragraph(),
+                            'type_visit' => $value['type_visit'],
+                        ]);
+
+                        $this->createLessons($course->id, null);
+
+                        for ($i=0; $i < 2; $i++) {
+                            $variant = CourseVariant::create([
+                                'course_id' => $course->id,
+                                'type' => $value['type'] ?? 'training',
+                                'name' => $value['name'] .' '. $i,
+                                'slug' => Str::slug($value['name'] .' '. $i),
+                                'description' => fake()->paragraph(),
+                                'type_visit' => $value['type_visit'],
+                            ]);
+
+                            $this->createLessons($course->id, $variant->id);
                         }
                     }
                     break;
-
             }
         }
     }

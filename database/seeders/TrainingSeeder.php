@@ -48,10 +48,10 @@ class TrainingSeeder extends Seeder
                         'time_start' => sprintf("%02d:%02d:00", $hour, $minute)
                     ]);
 
-                    $costs = $course->getOptions()->where('type', 'fisso')->get();
-                    $optionals = $course->getOptions()->where('type', 'opzionale')->get()->random(3);
-                    $priceCourse = $course->prices()->where('licenses', null)->first();
-                    $total = $priceCourse->price;
+                    $costs = $course->getOptions()->where('type', 'fisso')->where('registration_type_id', 1)->get();
+                    $optionals = $course->getOptions()->where('type', 'opzionale')->where('registration_type_id', 1)->get()->random(3);
+                    $priceCourse = $course->courseRegistrationSteps()->first()->branchCourses()->first()->price;
+                    $total = $priceCourse->price ?? 0;
 
                     foreach ($costs as $cost) {
                         $total += $cost->price;
@@ -60,11 +60,13 @@ class TrainingSeeder extends Seeder
                         $total += $optional->price;
                     }
 
+                    $branchCourse = $course->courseRegistrationSteps()->first()->branchCourses()->get();
+
                     Registration::create([
                         'training_id' => $training->id,
                         'customer_id' => $customers->random()->id,
-                        'option' => fake()->randomElement(['iscrizione', 'cambio codice', 'possessore di patente']),
-                        'type' => fake()->randomElement(['teoria', 'pratica', 'pratica/s.esame']),
+                        'registration_type_id' => fake()->numberBetween(1,4),
+                        'branch_course_id' => $branchCourse->random()->id,
                         'transmission' => fake()->randomElement(['manuale', 'automatica']),
                         'optionals' => $optionals->pluck('id')->toJson(),
                         'step_skipped' => json_encode([]),
@@ -74,8 +76,8 @@ class TrainingSeeder extends Seeder
                     Registration::create([
                         'training_id' => $trainingLoop->id,
                         'customer_id' => $customers->random()->id,
-                        'option' => fake()->randomElement(['iscrizione', 'cambio codice', 'possessore di patente']),
-                        'type' => fake()->randomElement(['teoria', 'pratica', 'pratica/s.esame']),
+                        'registration_type_id' => fake()->numberBetween(1,4),
+                        'branch_course_id' => $branchCourse->random()->id,
                         'transmission' => fake()->randomElement(['manuale', 'automatica']),
                         'optionals' => $optionals->pluck('id')->toJson(),
                         'step_skipped' => json_encode([]),
@@ -106,9 +108,9 @@ class TrainingSeeder extends Seeder
             //     ]);
 
             //     foreach ($customers as $customer) {
-            //         $costs = $variant->getOptions()->where('type', 'fisso')->get();
-            //         $optionals = $variant->getOptions()->where('type', 'opzionale')->get()->random(3);
-            //         $priceCourseVariant = $variant->prices()->where('licenses', null)->first();
+            //         $costs = $variant->getOptions()->where('type', 'fisso')->where('registration_type_id', 1)->get();
+            //         $optionals = $variant->getOptions()->where('type', 'opzionale')->where('registration_type_id', 1)->get()->random(3);
+            //         $priceCourseVariant = $variant->prices()->where('registration_type_id', 1)->first();
             //         $total = $priceCourseVariant->price;
 
             //         foreach ($costs as $cost) {
@@ -121,8 +123,8 @@ class TrainingSeeder extends Seeder
             //         Registration::create([
             //             'training_id' => $training->id,
             //             'customer_id' => $customer->id,
-            //             'option' => fake()->randomElement(['iscrizione', 'cambio codice', 'possessore di patente']),
-            //             'type' => fake()->randomElement(['teoria', 'pratica', 'pratica/s.esame']),
+            //             'registration_type_id' => fake()->numberBetween(1,4),
+            //             'branch_id' => random_int(1,3),
             //             'transmission' => fake()->randomElement(['manuale', 'automatica']),
             //             'optionals' => $optionals->pluck('id')->toJson(),
             //             'step_skipped' => json_encode([]),
@@ -132,8 +134,8 @@ class TrainingSeeder extends Seeder
             //         Registration::create([
             //             'training_id' => $trainingLoop->id,
             //             'customer_id' => $customer->id,
-            //             'option' => fake()->randomElement(['iscrizione', 'cambio codice', 'possessore di patente']),
-            //             'type' => fake()->randomElement(['teoria', 'pratica', 'pratica/s.esame']),
+            //             'registration_type_id' => fake()->numberBetween(1,4),
+            //             'branch_id' => random_int(1,3),
             //             'transmission' => fake()->randomElement(['manuale', 'automatica']),
             //             'optionals' => $optionals->pluck('id')->toJson(),
             //             'step_skipped' => json_encode([]),

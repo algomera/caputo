@@ -23,7 +23,7 @@
                         <th scope="col" class="px-3 py-3.5 font-medium"></th>
                         <th scope="col" class="px-3 py-3.5 font-medium">Totale</th>
                         @foreach ($lessons as $key => $lesson)
-                            <th scope="col" title="{{$lesson->subject}}" class="px-3 py-3.5 font-light whitespace-nowrap hover:underline cursor-pointer">Lezione-{{$key+1}}</th>
+                            <th scope="col" title="{{$lesson->subject}}" wire:click="$dispatch('openModal', { component: 'theory.modals.show-lesson', arguments: {lessonId: {{ $lesson->id }}} })" class="px-3 py-3.5 font-light whitespace-nowrap hover:underline cursor-pointer">Lezione-{{$key+1}}</th>
                         @endforeach
                     </tr>
                 </thead>

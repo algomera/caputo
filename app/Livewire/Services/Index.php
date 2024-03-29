@@ -3,6 +3,7 @@
 namespace App\Livewire\Services;
 
 use App\Models\Course;
+use App\Models\CourseVariant;
 use App\Models\Service;
 use Livewire\Component;
 use Livewire\Attributes\On;
@@ -13,6 +14,7 @@ class Index extends Component
     public $selectedService = null;
     public $courses = null;
     public $course;
+    public $courseVariant;
     public $branch;
     public $type;
     public $signature;
@@ -30,10 +32,11 @@ class Index extends Component
     }
 
     #[On('setCourse')]
-    public function setCourse($course, $branch, $type) {
-        $this->course = Course::find($course);
-        $this->branch = $branch;
-        $this->type = $type;
+    public function setCourse() {
+        $this->course = Course::find(session('course')['id']);
+        $this->courseVariant = CourseVariant::find(session('course')['course_variant']);
+        $this->branch = session()->get('course')['branch'];
+        $this->type = session()->get('course')['registration_type'];
         $this->step += 1;
     }
 
@@ -51,22 +54,12 @@ class Index extends Component
         if ($id == 14) {
             session()->put('course', [
                 'id' => $id,
-                'option' => 'guida accompagnata',
-                'registration_type' => 'guide'
+                'branch' => 'guida accompagnata',
+                'registration_type' => 1
             ]);
 
-            $this->setCourse($id,'guida accompagnata', session()->get('course')['registration_type']);
+            $this->setCourse();
         }
-    }
-
-    public function addSession($option, $type, $except = null) {
-        $session = session()->get('course', []);
-        $session['option'] = $option;
-        $session['registration_type'] = $type;
-        if ($except) {
-            $session['conseguimento'] = $except;
-        }
-        session()->put('course', $session);
     }
 
     public function getSignature() {

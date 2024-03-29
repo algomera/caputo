@@ -101,7 +101,7 @@
                                 </td>
                                 @role('admin|responsabile sede')
                                 <td>
-                                    <button wire:click="$dispatch('openModal', { component: 'registry.modals.show-payment', arguments: {payment: {{$payment->id}}, registration: {{$registration->id}}} })" class="hover:underline cursor-pointer">
+                                    <button wire:click="$dispatch('openModal', { component: 'registry.modals.show-payment', arguments: {paymentFor: 'iscrizione', payment: {{$payment->id}}, registration: {{$registration->id}}} })" class="hover:underline cursor-pointer">
                                         Apri
                                     </button>
                                 </td>
@@ -198,7 +198,7 @@
                                                             <td class="border-r-2 border-color-efefef py-4 px-3 text-sm">
                                                                 <div class="flex items-center justify-center">
                                                                     @if ($payment->document()->first())
-                                                                        <button wire:click="$dispatch('openModal', { component: 'registry.modals.showScan', arguments: {scan: {{$payment->document()->first()->id}}} })" class="bg-color-347af2/30 flex items-center justify-center px-3 py-2 rounded-full">
+                                                                        <button wire:click="$dispatch('openModal', { component: 'registry.modals.showScan', arguments: {paymentFor: '{{$type}}', scan: {{$payment->document()->first()->id}}} })" class="bg-color-347af2/30 flex items-center justify-center px-3 py-2 rounded-full">
                                                                             <x-icons name="show" class="w-5" />
                                                                         </button>
                                                                     @else
@@ -208,7 +208,7 @@
                                                             </td>
                                                             @role('admin|responsabile sede')
                                                             <td>
-                                                                <button wire:click="$dispatch('openModal', { component: 'registry.modals.show-payment', arguments: {payment: {{$payment->id}}, registration: {{$registration->id}}} })" class="hover:underline cursor-pointer">
+                                                                <button wire:click="$dispatch('openModal', { component: 'registry.modals.show-payment', arguments: {paymentFor: '{{$type}}', payment: {{$payment->id}}, registration: {{$registration->id}}} })" class="hover:underline cursor-pointer">
                                                                     Apri
                                                                 </button>
                                                             </td>

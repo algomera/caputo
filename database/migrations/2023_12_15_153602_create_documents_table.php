@@ -17,6 +17,7 @@ return new class extends Migration
             $table->integer('documentable_id');
             $table->string('type')->nullable();
             $table->string('path')->nullable();
+            $table->foreignId('step_id')->nullable()->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }

@@ -2,16 +2,18 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class CourseVariant extends Model
 {
     use HasFactory;
+    use \Znck\Eloquent\Traits\BelongsToThrough;
+
 
     protected $guarded = [];
 
@@ -19,12 +21,12 @@ class CourseVariant extends Model
         return $this->belongsTo(Course::class);
     }
 
-    public function options(): BelongsToMany {
-        return $this->belongsToMany(Option::class, 'costs')->using(Cost::class);
+    public function service() {
+        return $this->BelongsToThrough(Service::class, Course::class);
     }
 
-    public function prices(): HasMany {
-        return $this->hasMany(CoursePrice::class, 'variant_id');
+    public function options(): BelongsToMany {
+        return $this->belongsToMany(Option::class, 'costs')->using(Cost::class);
     }
 
     public function lessons(): HasMany {
@@ -39,6 +41,10 @@ class CourseVariant extends Model
         return $this->hasMany(InterestedCourses::class);
     }
 
+    public function courseRegistrationSteps(): HasMany {
+        return $this->hasMany(CourseRegistrationStep::class, 'variant_id');
+    }
+
     public function getOptions(): MorphToMany {
         return $this->morphToMany(Option::class, 'costs');
     }
@@ -51,5 +57,9 @@ class CourseVariant extends Model
             $duration += $lesson->duration;
         }
         return (floor($duration / 60).':'. ($duration % 60));
+    }
+
+    public function getStepCourse($registrationTypeId) {
+        return CourseRegistrationStep::where('course_id', $this->id)->where('registration_type_id', $registrationTypeId)->first();
     }
 }

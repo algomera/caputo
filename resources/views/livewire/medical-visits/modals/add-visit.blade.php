@@ -7,14 +7,17 @@
             <x-input-text wire:model.live="name" width="w-fit" name="name" placeholder="Nome" uppercase="shadow" />
             <x-input-text wire:model.live="lastName" width="w-fit" name="lastName" placeholder="Cognome" uppercase="shadow" />
         </div>
-        <div>
-            <x-custom-select wire:model="doctor" name="doctor" label="Medico" width="w-fit" >
-                <option value="">Seleziona medico</option>
-                @foreach ($doctors as $doctor)
-                    <option value="{{$doctor->id}}" class="capitalize">{{$doctor->full_name}}</option>
-                @endforeach
-            </x-custom-select>
-        </div>
+
+        @if (auth()->user()->role->name != 'medico')
+            <div>
+                <x-custom-select wire:model="doctor" name="doctor" label="Medico" width="w-fit" >
+                    <option value="">Seleziona medico</option>
+                    @foreach ($doctors as $doctor)
+                        <option value="{{$doctor->id}}" class="capitalize">{{$doctor->full_name}}</option>
+                    @endforeach
+                </x-custom-select>
+            </div>
+        @endif
     </div>
 
     <div class="p-11 pt-5 bg-color-f7f7f7 shadow-shadow-card">

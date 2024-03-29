@@ -18,6 +18,10 @@ class LessonPlanning extends Model
         return $this->belongsTo(Training::class);
     }
 
+    public function school() {
+        return $this->BelongsToThrough(School::class, Training::class);
+    }
+
     public function lesson(): BelongsTo {
         return $this->belongsTo(Lesson::class);
     }
@@ -35,6 +39,6 @@ class LessonPlanning extends Model
     }
 
     public function courseVariant() {
-        return $this->BelongsToThrough(CourseVariant::class, Training::class);
+        return $this->BelongsToThrough(CourseVariant::class, Training::class, foreignKeyLookup: [CourseVariant::class => 'variant_id']);
     }
 }

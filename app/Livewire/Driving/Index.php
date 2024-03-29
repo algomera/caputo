@@ -28,7 +28,7 @@ class Index extends Component
         $this->dispatch('addDriving', $driving);
     }
 
-    public function drivingUpdate($id, $start) {
+    public function drivingUpdate($id, $start, $end) {
         $drivingPlanning = DrivingPlanning::find($id);
         $registration = Registration::find($drivingPlanning->registration_id);
 
@@ -40,7 +40,8 @@ class Index extends Component
         ]);
 
         $drivingPlanning->update([
-            'begins' => Carbon::parse($start)->addHour()
+            'begins' => Carbon::parse($start)->addHour(),
+            'end' => Carbon::parse($end)->addHour()
         ]);
     }
 
@@ -77,7 +78,8 @@ class Index extends Component
                 'instructor' => $driving->instructor->full_name,
                 'vehicle_type' => $driving->vehicle->type,
                 'plate' => $driving->vehicle->plate,
-                'start' => $driving->begins
+                'start' => $driving->begins,
+                'end' => $driving->end,
             ];
         }
 

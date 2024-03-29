@@ -2,15 +2,16 @@
 
 namespace App\Livewire\Driving\Modals;
 
+use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Vehicle;
 use App\Models\Registration;
 use App\Models\DrivingPlanning;
 use Livewire\Attributes\Validate;
-use App\Livewire\Driving\Modals\ShowRegistrationGuides;
+use LivewireUI\Modal\ModalComponent;
 use App\Livewire\Driving\Modals\PlanDriving;
 use App\Livewire\Driving\Index as DrivingIndex;
-use LivewireUI\Modal\ModalComponent;
+use App\Livewire\Driving\Modals\ShowRegistrationGuides;
 
 class AddGuide extends ModalComponent
 {
@@ -44,8 +45,10 @@ class AddGuide extends ModalComponent
             'vehicle_id' => $this->vehicle,
             'type' => $this->type,
             'begins' => session()->get('dateTimeSelected'),
+            'end' => Carbon::parse(session()->get('dateTimeSelected'))->addMinutes($this->registration->course->getOptions()->where('type', 'guide')->first()->duration),
             'note' => $this->note
         ]);
+
 
         $scheduleDriving = [
             'id' => $newDriving->id,
@@ -54,7 +57,8 @@ class AddGuide extends ModalComponent
             'instructor' => $newDriving->instructor->full_name,
             'vehicle_type' => $newDriving->vehicle->type,
             'plate' => $newDriving->vehicle->plate,
-            'start' => $newDriving->begins
+            'start' => $newDriving->begins,
+            'end' => Carbon::parse($newDriving->begins)->addMinutes($this->registration->course->getOptions()->where('type', 'guide')->first()->duration),
         ];
 
         $this->registration->chronologies()->create([
@@ -81,7 +85,7 @@ class AddGuide extends ModalComponent
     public function render()
     {
         $instructors = User::role('istruttore')->get();
-        $vehicles = Vehicle::all();
+        $vehicles = Vehicle::where('patent_id', $this->registration->course->patent_id)->where('transmission', $this->registration->transmission)->get();
 
         return view('livewire.driving.modals.add-guide', [
             'instructors' => $instructors,

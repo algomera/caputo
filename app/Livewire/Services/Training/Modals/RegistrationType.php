@@ -8,75 +8,52 @@ use LivewireUI\Modal\ModalComponent;
 class RegistrationType extends ModalComponent
 {
     public Course $course;
-    public $selectedOption = null;
+    public $selectedRegistrationType = false;
+    public $existingVariant;
+    public $variant = false;
 
     public function mount($course) {
         $this->course = $course;
+        $this->existingVariant = count($this->course->courseRegistrationSteps()->where('variant_id', '!=', null)->get());
 
-        session()->put('course', [
-            'id' => $this->course->id,
-        ]);
+        session()->put('course', ['id' => $this->course->id]);
     }
 
-    public function setOption($option) {
-        if (session()->get('course')['id'] == 10 AND $option == 'iscrizione') {
-            $this->addSession($option, 'teoria');
+    public function setRegistrationType($type_id, $variant_id = null) {
+        $branches = $this->course->courseRegistrationSteps()->where('registration_type_id', $type_id)->first()->branchCourses()->get();
 
-            $this->dispatch('setCourse',
-                course: $this->course->id,
-                branch: $option,
-                type  : session()->get('course')['registration_type']
-            );
-            return $this->closeModal();
-        }
+        if (count($branches) > 1) {
+            $this->addSession($type_id, $variant_id);
+            $this->selectedRegistrationType = $this->course->courseRegistrationSteps()->where('registration_type_id', $type_id)->first();
 
-        if (session()->get('course')['id'] == 16 AND $option == 'possessore di patente' OR $option == 'guida accompagnata') {
-            $this->addSession($option, 'guide');
-
-            $this->dispatch('setCourse',
-                course: $this->course->id,
-                branch: $option,
-                type  : session()->get('course')['registration_type']
-            );
-            return $this->closeModal();
-        }
-
-        if ($option == 'possessore di patente') {
-            $this->addSession($option, 'guide');
-            $this->selectedOption = 'guide';
         } else {
-            $this->addSession($option, $option);
+            $this->addSession($type_id, $variant_id, $branches->first()->id);
+            $this->dispatch('setCourse');
+            return $this->closeModal();
         }
+    }
 
-        $this->selectedOption = $option;
+    public function showVariant() {
+        $this->variant = !$this->variant;
     }
 
     public function resetOption() {
-        $this->selectedOption = null;
+        $this->selectedRegistrationType = false;
     }
 
-    public function setType($type) {
-        if ($type == 'guide/s.esame') {
-            $this->addSession($this->selectedOption, 'guide', 's.esame');
-        } else {
-            $this->addSession($this->selectedOption, $type);
-        }
+    public function setBranch($branch) {
+        $this->addSession(session('course')['registration_type'], session('course')['course_variant'], $branch);
 
-        $this->dispatch('setCourse',
-            course: $this->course->id,
-            branch: $this->selectedOption,
-            type  : session()->get('course')['registration_type']
-        );
+        $this->dispatch('setCourse');
         $this->closeModal();
     }
 
-    public function addSession($option, $type, $except = null) {
+    public function addSession($registration_type_id, $courseVariant_id = null, $branch_id = null) {
         $session = session()->get('course', []);
-        $session['option'] = $option;
-        $session['registration_type'] = $type;
-        if ($except) {
-            $session['conseguimento'] = $except;
-        }
+        $session['course_variant'] = $courseVariant_id;
+        $session['registration_type'] = $registration_type_id;
+        $session['branch'] = $branch_id;
+
         session()->put('course', $session);
     }
 
@@ -87,6 +64,14 @@ class RegistrationType extends ModalComponent
 
     public function render()
     {
-        return view('livewire.services.training.modals.registration-type');
+        if ($this->variant) {
+            $courseRegistrationTypes = $this->course->courseRegistrationSteps()->where('variant_id', '!=', null)->get();
+        } else {
+            $courseRegistrationTypes = $this->course->courseRegistrationSteps()->where('variant_id', null)->get();
+        }
+
+        return view('livewire.services.training.modals.registration-type', [
+            'courseRegistrationTypes' => $courseRegistrationTypes
+        ]);
     }
 }

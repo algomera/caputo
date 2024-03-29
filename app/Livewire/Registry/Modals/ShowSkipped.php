@@ -114,41 +114,28 @@ class ShowSkipped extends ModalComponent
     public function save() {
         $this->customerForm->setCustomer($this->registration->customer_id);
         $this->documentForm->setCustomer($this->registration->customer_id);
-        $stepSkipped = json_decode($this->registration->step_skipped);
 
         if ($this->scans) {
-            if (strpos($this->stepSkipped, 'cliente')) {
-                $this->documentForm->scans($this->scans);
+            if ($this->stepSkipped == 3) {
+                $this->documentForm->scans($this->scans, $this->stepSkipped);
 
-                $step = array_search('scansioni', $stepSkipped);
-                unset($stepSkipped[$step]);
-                $this->registration->update([
-                    'step_skipped' => json_encode(array_values($stepSkipped))
-                ]);
+                $this->removeStepSkipped();
 
                 $this->dispatch('updateDocument', customer: $this->registration->customer_id);
-            } elseif (strpos($this->stepSkipped, 'Genitore')) {
-                $this->documentForm->parentScans($this->scans, $this->registration->id);
+            } elseif ($this->stepSkipped == 6) {
+                $this->documentForm->parentScans($this->scans, $this->registration->id, $this->stepSkipped);
 
                 if ($this->signature) {
-                    $this->documentForm->parentSignature($this->signature, $this->registration->id);
+                    $this->documentForm->parentSignature($this->signature, $this->registration->id, $this->stepSkipped);
                 }
 
-                $step = array_search('genitore/tutore', $stepSkipped);
-                unset($stepSkipped[$step]);
-                $this->registration->update([
-                    'step_skipped' => json_encode(array_values($stepSkipped))
-                ]);
+                $this->removeStepSkipped();
 
                 $this->dispatch('updateDocument', customer: $this->registration->customer_id);
-            } elseif (strpos($this->stepSkipped, 'visita')) {
-                $this->documentForm->medicalVisitScan($this->scans, $this->registration->id);
+            } elseif ($this->stepSkipped == 9) {
+                $this->documentForm->medicalVisitScan($this->scans, $this->registration->id, $this->stepSkipped);
 
-                $step = array_search('visita', $stepSkipped);
-                unset($stepSkipped[$step]);
-                $this->registration->update([
-                    'step_skipped' => json_encode(array_values($stepSkipped))
-                ]);
+                $this->removeStepSkipped();
 
                 $this->dispatch('updateDocument', customer: $this->registration->customer_id);
             }
@@ -170,17 +157,26 @@ class ShowSkipped extends ModalComponent
             $this->documentForm->companionsSignature($signatures, $this->registration->id);
             $this->documentForm->companionsScans($scans, $this->registration->id);
 
-            $step = array_search('accompagnatori', $stepSkipped);
-            unset($stepSkipped[$step]);
-            $this->registration->update([
-                'step_skipped' => json_encode(array_values($stepSkipped))
-            ]);
+            $this->removeStepSkipped();
 
             $this->dispatch('updateDocument', customer: $this->registration->customer_id);
         }
 
         $this->mount($this->registration->id);
         $this->back();
+    }
+
+    public function removeStepSkipped() {
+        $arrayStepSkippedId = json_decode($this->registration->step_skipped);
+        $key = array_search($this->stepSkipped, $arrayStepSkippedId);
+
+        if ($key !== false) {
+            unset($arrayStepSkippedId[$key]);
+        }
+
+        $this->registration->update([
+            'step_skipped' => json_encode(array_values($arrayStepSkippedId))
+        ]);
     }
 
     public static function modalMaxWidth(): string

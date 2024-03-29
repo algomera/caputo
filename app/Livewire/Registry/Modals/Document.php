@@ -30,12 +30,16 @@ class Document extends ModalComponent
         $registrations = $this->customer->registrations()->get();
         if (count($registrations)) {
             foreach ($registrations as $registration) {
-                $stepSkipped = json_decode($registration->step_skipped);
-                $step = array_search('fototessera', $stepSkipped);
-                unset($stepSkipped[$step]);
+
+                $arrayStepSkippedId = json_decode($registration->step_skipped);
+                $key = array_search(2, $arrayStepSkippedId);
+
+                if ($key !== false) {
+                    unset($arrayStepSkippedId[$key]);
+                }
 
                 $registration->update([
-                    'step_skipped' => json_encode(array_values($stepSkipped))
+                    'step_skipped' => json_encode(array_values($arrayStepSkippedId))
                 ]);
             }
         }

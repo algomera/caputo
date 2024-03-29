@@ -6,7 +6,12 @@
 
     <div class="flex items-end justify-between">
         <div>
-            <h1 class="text-3xl font-bold text-color-17489f">{{$registration->customer->full_name}}</h1>
+            <div class="flex items-center gap-2">
+                <h1 class="text-3xl font-bold text-color-17489f">{{$registration->customer->full_name}}</h1>
+                @if (count(json_decode($registration->step_skipped)))
+                    <span title="Mandare in accettazione" class="px-3 text-sm font-medium text-red-500 underline cursor-default">Dati Mancanti!</span>
+                @endif
+            </div>
             <h3 class="text-lg text-color-545454 font-medium">{{$registration->course->name}}</h3>
         </div>
         <button wire:click="$dispatch('openModal', { component: 'driving.modals.add-guide', arguments: { registration: {{$registration->id}} }})" class="w-fit px-6 py-2 bg-color-01a53a/50 text-white rounded-md font-medium">Aggiungi Guida</button>

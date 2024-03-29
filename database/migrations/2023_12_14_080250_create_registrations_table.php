@@ -16,8 +16,8 @@ return new class extends Migration
             $table->foreignId('training_id')->constrained()->onDelete('cascade');
             $table->boolean('special')->default(false);
             $table->foreignId('customer_id')->constrained()->onDelete('cascade');
-            $table->string('option');
-            $table->string('type');
+            $table->foreignId('registration_type_id')->constrained()->onDelete('cascade');
+            $table->foreignId('branch_course_id')->constrained()->onDelete('cascade');
             $table->string('transmission')->nullable();
             $table->json('optionals')->nullable();
             $table->json('step_skipped')->nullable();

@@ -17,6 +17,7 @@ class Show extends Component
     public IdentificationDocumentForm $identificationDocumentForm;
     public $registrations;
     public $registration;
+    public $alertRegistrations = [];
     public $modify = false;
     public $photo = null;
     public $signature;
@@ -27,6 +28,13 @@ class Show extends Component
         $this->identificationDocumentForm->setPatent($customer);
         $this->identificationDocumentForm->getDocuments($customer);
         $this->registrations = $this->customerForm->customer->registrations()->where('state', 'aperta')->with('medicalPlanning', 'course', 'pinkSheet')->get();
+
+
+        foreach ($this->registrations as $registration) {
+            if (count(json_decode($registration->step_skipped))) {
+                $this->alertRegistrations[] = $registration->id;
+            }
+        }
     }
 
     public function updated($property) {
@@ -35,6 +43,12 @@ class Show extends Component
         }
         if ($property == 'signature') {
             $this->dispatch('uploadSignature', signature: $this->signature);
+        }
+    }
+
+    public function showMissingData() {
+        if (count($this->alertRegistrations)) {
+            $this->dispatch('openModal', 'registry.modals.alert-missing-data', ['registrations' => $this->alertRegistrations]);
         }
     }
 
@@ -50,12 +64,15 @@ class Show extends Component
             $this->customerForm->photo($this->photo);
 
             foreach ($this->registrations as $registration) {
-                $stepSkipped = json_decode($registration->step_skipped);
-                $step = array_search('fototessera', $stepSkipped);
-                unset($stepSkipped[$step]);
+                $arrayStepSkippedId = json_decode($registration->step_skipped);
+                $key = array_search(4, $arrayStepSkippedId);
+
+                if ($key !== false) {
+                    unset($arrayStepSkippedId[$key]);
+                }
 
                 $registration->update([
-                    'step_skipped' => json_encode(array_values($stepSkipped))
+                    'step_skipped' => json_encode(array_values($arrayStepSkippedId))
                 ]);
             }
         }

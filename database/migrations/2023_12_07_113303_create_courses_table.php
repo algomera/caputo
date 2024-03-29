@@ -14,14 +14,13 @@ return new class extends Migration
         Schema::create('courses', function (Blueprint $table) {
             $table->id();
             $table->foreignId('service_id')->constrained()->onDelete('cascade');
+            $table->foreignId('patent_id')->nullable()->constrained()->onDelete('cascade');
             $table->string('type')->nullable();
             $table->string('name');
             $table->string('label')->nullable();
             $table->string('slug')->nullable();
             $table->longText('description')->nullable();
             $table->string('type_visit')->nullable();
-            $table->string('absences')->nullable();
-            $table->string('guides')->nullable();
             $table->timestamps();
         });
     }

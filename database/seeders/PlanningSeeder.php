@@ -68,6 +68,7 @@ class PlanningSeeder extends Seeder
                 'vehicle_id' => $vehicle->random()->id,
                 'type' => fake()->randomElement(['notturna', 'extraurbana', 'autostrada']),
                 'begins' => date('Y-m-d', $randomDate). " " . sprintf("%02d:%02d:00", $hour, $minute),
+                'end' => date('Y-m-d', $randomDate). " " . sprintf("%02d:%02d:00", $hour+1, $minute),
                 'welded' => fake()->boolean(),
             ]);
         }

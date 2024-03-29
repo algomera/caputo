@@ -1,4 +1,4 @@
-<div class="w-full h-full py-10 px-8 2xl:px-14">
+<div x-init="$wire.showMissingData" class="w-full h-full py-10 px-8 2xl:px-14">
 
     <div class="flex items-center gap-5">
         <div wire:click='back' class="w-12 h-12 rounded-full shadow-shadow-card flex items-center justify-center cursor-pointer group">
@@ -7,7 +7,7 @@
         <h1 class="text-5xl font-bold text-color-17489f capitalize">{{$customerForm->lastName}} {{$customerForm->name}}</h1>
     </div>
 
-    <div class="mt-10 p-4 w-full flex flex-col gap-4 shadow-shadow-card bg-color-f7f7f7">
+    <div class="mt-10 p-4 w-full flex flex-col gap-4 shadow-shadow-card bg-color-f7f7f7 relative">
         {{-- Autoscuola --}}
         <div class="flex items-end justify-between gap-5 border-b pb-4">
             <div class="flex items-center gap-4">
@@ -15,6 +15,11 @@
                 <x-fake-input width="w-fit" label="Sede" uppercase="">{{$customerForm->customer->school->address}}</x-fake-input>
                 <x-fake-input width="w-48" label="Data acquisizione" uppercase="">{{date("d/m/Y", strtotime($customerForm->customer->created_at))}}</x-fake-input>
             </div>
+
+            @if ($modify)
+                <div wire:dirty class="absolute top-5 right-4 text-red-500/70 font-medium">Modifiche non salvate...</div>
+            @endif
+
             <div class="flex items-center gap-2">
                 <button wire:click="$dispatch('openModal', { component: 'registry.modals.chronology', arguments: {customer: {{$customerForm->customer->id}}} })" class="flex items-center gap-2 px-4 py-1 text-color-2c2c2c font-medium capitalize rounded-full bg-color-ffb205/30 hover:scale-105 transition-all duration-300">
                     <x-icons name="time" /> Cronologia
@@ -108,12 +113,12 @@
                     <x-input-text disabled="{{!$modify}}" x-mask="aa" wire:model="customerForm.province" width="w-20" name="customerForm.province" label="Provincia" uppercase="uppercase" />
                     <x-input-text disabled="{{!$modify}}" x-mask="99999" wire:model="customerForm.postcode" width="w-20" name="customerForm.postcode" label="Cap" />
                     <x-input-text disabled="{{!$modify}}" wire:model="customerForm.country" width="2xl:grow" name="customerForm.country" label="Cittadinanza" />
-                    <x-input-text disabled="{{!$modify}}" wire:model="customerForm.aire" width="2xl:grow" name="customerForm.aire" label="Iscritto Aire" />
                 </div>
                 <div class="flex items-center gap-2">
                     <x-input-text disabled="{{!$modify}}" x-mask="999 9999999" wire:model="customerForm.phone_1" width="w-1/4" name="customerForm.phone_1" label="1° Cellulare" />
                     <x-input-text disabled="{{!$modify}}" x-mask="999 9999999" wire:model="customerForm.phone_2" width="w-1/4" name="customerForm.phone_2" label="2° Cellulare" />
                     <x-input-text disabled="{{!$modify}}" type="email" wire:model="customerForm.email" width="w-1/4" name="customerForm.email" label="Email" />
+                    <x-input-text disabled="{{!$modify}}" wire:model="customerForm.aire" width="2xl:grow" name="customerForm.aire" label="Iscritto Aire" />
                 </div>
             </div>
         </div>
@@ -143,7 +148,16 @@
                     <x-input-text disabled="{{!$modify}}" type="date" wire:model="identificationDocumentForm.document_release" width="w-1/6" name="identificationDocumentForm.document_release" label="Rilasciata il" />
                     <x-input-text disabled="{{!$modify}}" wire:model="identificationDocumentForm.document_from" width="w-1/6" name="identificationDocumentForm.document_from" label="Ente di rilascio" />
                     <x-input-text disabled="{{!$modify}}" type="date" wire:model="identificationDocumentForm.document_expiration" width="w-1/6" name="identificationDocumentForm.document_expiration" label="Scade il" />
-                    <x-input-text disabled wire:model="identificationDocumentForm.qualification" width="w-1/6" name="identificationDocumentForm.qualification" label="Abilitazioni" />
+                    <div class="flex flex-col relative w-1/6">
+                        <span class="text-sm font-light text-color-2c2c2c mb-1 w-fit ml-2">Abilitazioni</span>
+                        <div class="h-[54px] bg-white border px-4 rounded-md p-0 border-color-dfdfdf focus:!border-dfdfdf focus:ring-0 placeholder:text-color-afafaf flex items-center">
+                            @if ($identificationDocumentForm->qualification)
+                                @foreach (json_decode($identificationDocumentForm->qualification) as $patent)
+                                    {{get_patent($patent)->qualification}},
+                                @endforeach
+                            @endif
+                        </div>
+                    </div>
                     {{-- @if ($modify)
                     <div wire:click="$dispatch('openModal', { component: 'registry.modals.document', arguments: {customer: {{$customerForm->customer->id}}, document: {{$identificationDocumentForm->patent->id}}, action: 'edit'} })" class="hover:scale-105 transition-all duration-300 cursor-pointer">
                         <x-icons name="b-edit" />
@@ -164,9 +178,11 @@
                                     <x-icons name="b-edit" />
                                 </div>
                                 @role('admin|responsabile sede')
-                                <div wire:click="$dispatch('openModal', { component: 'registry.modals.delete-document', arguments: {document: {{$document->id}}} })" class="hover:scale-105 transition-all duration-300 cursor-pointer">
-                                    <x-icons name="b-delete" />
-                                </div>
+                                    @if ($document->identificationType->id != 1)
+                                        <div wire:click="$dispatch('openModal', { component: 'registry.modals.delete-document', arguments: {document: {{$document->id}}} })" class="hover:scale-105 transition-all duration-300 cursor-pointer">
+                                            <x-icons name="b-delete" />
+                                        </div>
+                                    @endif
                                 @endrole
                             </div>
                             @endif
@@ -198,26 +214,35 @@
                                     @endif
                                 </span>
                             </p>
-                            @if (count(json_decode($registration->step_skipped)) < 1)
-                                <button class="px-4 py-1 text-color-2c2c2c font-medium capitalize rounded-full bg-color-ffb205/30 hover:scale-105 transition-all duration-300">continua accettazione</button>
-                            @else
+
+                            @if (count(json_decode($registration->step_skipped)))
                                 <button wire:click="$dispatch('openModal', { component: 'registry.modals.show-skipped', arguments: {registration: {{$registration->id}}} })" class="px-4 py-[2px] flex items-center gap-2 text-color-2c2c2c font-medium capitalize rounded-full bg-red-500/30 hover:scale-105 transition-all duration-300">
                                     <x-icons name="error" />
                                     Dati mancanti
                                 </button>
                             @endif
-                            @if (count($registration->course->getOptions()->where('type', 'opzionale')->where('option', $registration->option)->whereNot('name', 'Supporto audio')->get()) > 0)
+
+                            @if ($registration->medicalPlanning)
+                                @if ($registration->medicalPlanning->protocol)
+                                    <button class="px-4 py-1 text-color-2c2c2c font-medium capitalize rounded-full bg-color-ffb205/30 hover:scale-105 transition-all duration-300">continua accettazione</button>
+                                @else
+                                    <div class="px-4 py-1 text-color-2c2c2c font-medium capitalize rounded-full bg-color-ffdbc1 cursor-default">In attesa di visita medica</div>
+                                @endif
+                            @endif
+
+                            @if (count($registration->course->getOptions()->where('type', 'opzionale')->where('registration_type_id', $registration->registration_type_id)->whereNot('name', 'Supporto audio')->get()))
                                 <button wire:click="$dispatch('openModal', { component: 'registry.modals.update-registration', arguments: {registration: {{$registration->id}}} })" class="flex items-center gap-2 px-4 py-1 text-color-2c2c2c font-medium capitalize rounded-full bg-color-347af2/30 hover:scale-105 transition-all duration-300">
                                     <x-icons name="option" /> opzioni
                                 </button>
                             @endif
                         </div>
+
                         <div class="flex gap-2">
                             <button wire:click="$dispatch('openModal', { component: 'registry.modals.scans', arguments: {registration: {{$registration->id}}} })" class="flex items-center gap-2 px-4 py-1 text-color-2c2c2c font-medium capitalize rounded-full bg-color-ffb205/30 hover:scale-105 transition-all duration-300">
                                 <x-icons name="small_upload" /> Scansioni/Firme
                             </button>
                             <button wire:click="$dispatch('openModal', { component: 'registry.modals.payments', arguments: {registration: {{$registration->id}}} })" class="flex items-center gap-2 px-4 py-1 text-color-2c2c2c font-medium capitalize rounded-full bg-color-ffb205/30 hover:scale-105 transition-all duration-300">
-                                <x-icons name="small_money" />pagamenti
+                                <x-icons name="small_money" /> pagamenti
                             </button>
                             <button wire:click="$dispatch('openModal', { component: 'registry.modals.chronology', arguments: {registration: {{$registration->id}}} })" class="flex items-center gap-2 px-4 py-1 text-color-2c2c2c font-medium capitalize rounded-full bg-color-ffb205/30 hover:scale-105 transition-all duration-300">
                                 <x-icons name="time" /> cronologia

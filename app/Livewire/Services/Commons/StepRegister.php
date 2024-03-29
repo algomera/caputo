@@ -2,27 +2,31 @@
 
 namespace App\Livewire\Services\Commons;
 
-use App\Livewire\Forms\CustomerForm;
-use App\Livewire\Forms\DocumentForm;
 use App\Models\Course;
+use Livewire\Component;
 use App\Models\Customer;
-use App\Models\IdentificationDocument;
-use App\Models\IdentificationType;
-use App\Models\InterestedCourses;
-use App\Models\MedicalPlanning;
+use Livewire\Attributes\On;
 use App\Models\Registration;
 use Livewire\WithFileUploads;
-use Livewire\Component;
-use Livewire\Attributes\On;
+use App\Models\MedicalPlanning;
+use App\Models\InterestedCourses;
+use App\Models\IdentificationType;
+use App\Livewire\Forms\CustomerForm;
+use App\Livewire\Forms\DocumentForm;
+use App\Models\BranchCourse;
+use App\Models\CourseRegistrationStep;
+use App\Models\CourseVariant;
+use App\Models\IdentificationDocument;
+use App\Models\Patent;
 
 class StepRegister extends Component
 {
     use WithFileUploads;
 
-    public Course $course;
     public CustomerForm $customerForm;
     public DocumentForm $documentForm;
 
+    public $course;
     public $patent = null;
     public $customer = null;
     public $photo;
@@ -37,12 +41,21 @@ class StepRegister extends Component
     public $parentScanUploaded = false;
     public $steps = [];
     public $skipped = [];
-    public $typePatents = ['AM', 'A1', 'A2', 'A', 'B1','B', 'C1', 'C', 'D1', 'D', 'BE', 'C1E', 'CE', 'D1E', 'DE'];
+    public $patents;
     public $typeDocuments = [];
     public $companions = null;
     public $companionUploaded = false;
+    public $currentStep;
 
     public function mount() {
+        $this->patents = Patent::all();
+
+        if (session('course')['course_variant']) {
+            $this->course = CourseVariant::find(session('course')['course_variant']);
+        } else {
+            $this->course = Course::find(session('course')['id']);
+        }
+
         if (session('patent')) {
             $this->patent = IdentificationDocument::where('n_document', session()->get('patent'))->first();
 
@@ -81,32 +94,21 @@ class StepRegister extends Component
     }
 
     public function setSteps() {
-        $course = Course::find(session()->get('course')['id']);
-        if ($course->type == 'service') {
-            $this->steps= [
-                'dati',
-                'documenti',
-                'scansioni',
-                'fototessera',
-                'firma',
-                'anamnestico'
-            ];
-        } else {
-            $this->steps = [
-                'dati',
-                'documenti',
-                'scansioni',
-                'fototessera',
-                'firma',
+        $courseRegistrationSteps = $this->course->courseRegistrationSteps()
+        ->where('registration_type_id', session('course')['registration_type'])
+        ->first()->getSteps();
+
+        $this->currentStep = $courseRegistrationSteps->first()->short_name;
+        $this->customerForm->stepName = $this->currentStep;
+
+        foreach ($courseRegistrationSteps as $key => $step) {
+            $this->steps[$key+1] = [
+                'id' => $step->id,
+                'short_name' => $step->short_name
             ];
         }
 
-        if (in_array($course->id, ['10','11','14','15'])) {
-            $this->steps[] = 'genitore/tutore';
-        }
-
-        if ($course->id == 14) {
-            $this->steps[] = 'accompagnatori';
+        if (session()->get('course')['id'] == 14) {
             $this->companions = [
                 1 => [
                     'signature' => null,
@@ -123,38 +125,48 @@ class StepRegister extends Component
 
     public function backStep() {
         $this->customerForm->currentStep -= 1;
+        $this->currentStep = $this->steps[$this->customerForm->currentStep]['short_name'];
     }
 
     public function nextStep() {
         if ($this->customerForm->currentStep == count($this->steps)) {
             $this->dispatch('openModal', 'services.commons.modals.registration');
         } else {
-            $this->customerForm->validation();
+            if ($this->currentStep == 'dati' || $this->currentStep == 'recapiti') {
+                $this->customerForm->validation();
+            }
 
-            foreach ($this->skipped as $key => $value) {
-                if ($this->steps[($this->customerForm->currentStep - 1)] == $value) {
-                    unset($this->skipped[$key]);
+            foreach ($this->skipped as $value) {
+                if ($this->steps[($this->customerForm->currentStep)]['id'] == $value) {
+                    $key = array_search($value, $this->skipped);
+
+                    if ($key !== false) {
+                        array_splice($this->skipped, $key, 1);
+                    }
                 }
             }
 
             $this->customerForm->currentStep += 1;
+            $this->currentStep = $this->steps[$this->customerForm->currentStep]['short_name'];
+            $this->customerForm->stepName = $this->currentStep;
         }
     }
 
     public function skip() {
-        if (!in_array($this->steps[($this->customerForm->currentStep - 1)], $this->skipped)) {
-            $this->skipped[] = $this->steps[($this->customerForm->currentStep - 1)];
+        if (!in_array($this->steps[($this->customerForm->currentStep)], $this->skipped)) {
+            $this->skipped[] = $this->steps[($this->customerForm->currentStep)]['id'];
         }
 
         if ($this->customerForm->currentStep == count($this->steps)) {
             $this->dispatch('openModal', 'services.commons.modals.registration');
         } else {
             $this->customerForm->currentStep += 1;
+            $this->currentStep = $this->steps[$this->customerForm->currentStep]['short_name'];
         }
     }
 
     #[On('newRegistration')]
-    public function registration($trainingId, $type, $variant = null) {
+    public function registration($trainingId, $type) {
         $this->customerForm->setSchool(auth()->user()->schools()->first()->id);
         $this->customerForm->store();
         $this->setCustomer($this->customerForm->newCustomer->id);
@@ -174,17 +186,17 @@ class StepRegister extends Component
         }
 
         if ($type == 'esistente') {
-            if (!in_array(15, array_values(session()->get('course')['selected_cost']))) {
-                $this->skipped[] = 'visita';
+            if (!in_array(16, array_values(session()->get('course')['selected_options']))) {
+                $this->skipped[] = 9;
             }
 
             $registration = Registration::create([
                 'training_id' => $trainingId,
                 'customer_id' => $this->customerForm->newCustomer->id,
-                'option' => session()->get('course')['option'],
-                'type' => session()->get('course')['registration_type'],
+                'registration_type_id' => session()->get('course')['registration_type'],
+                'branch_course_id' => session()->get('course')['branch'],
                 'transmission' => session()->get('course')['transmission'],
-                'optionals' => json_encode(session()->get('course')['selected_cost']),
+                'optionals' => json_encode(session()->get('course')['selected_options']),
                 'step_skipped' => json_encode($this->skipped),
                 'price' => session()->get('course')['price']
             ]);
@@ -214,23 +226,15 @@ class StepRegister extends Component
                 $this->documentForm->companionsScans($scans, $registration->id);
             }
         } elseif ($type == 'interessato') {
-            if ($variant) {
-                InterestedCourses::create([
-                    'customer_id' => $this->customerForm->newCustomer->id,
-                    'course_id' => session()->get('course')['id'],
-                    'variant_id' => $variant,
-                    'confirm' => 'in attesa'
-                ]);
-            } else {
-                InterestedCourses::create([
-                    'customer_id' => $this->customerForm->newCustomer->id,
-                    'course_id' => session()->get('course')['id'],
-                    'confirm' => 'in attesa'
-                ]);
-            }
+            $registration = InterestedCourses::create([
+                'customer_id' => $this->customerForm->newCustomer->id,
+                'course_id' => session()->get('course')['id'],
+                'variant_id' => session()->get('course')['course_variant'],
+                'confirm' => 'in attesa'
+            ]);
         }
 
-        foreach (session()->get('course')['selected_cost'] as $key => $cost) {
+        foreach (session()->get('course')['selected_options'] as $key => $cost) {
             if ($cost == 15) {
                 MedicalPlanning::create([
                     'registration_id' => $registration->id
@@ -238,7 +242,11 @@ class StepRegister extends Component
             }
         }
 
-        $this->dispatch('openModal', 'services.commons.modals.payment', ['registration' => $registration->id]);
+        if ($type == 'esistente') {
+            $this->dispatch('openModal', 'services.commons.modals.payment', ['registration' => $registration->id]);
+        } else {
+            return redirect()->route('registry.show', ['customer' => $registration->customer_id]);
+        }
     }
 
     public function addDocument() {

@@ -20,10 +20,13 @@
 
     @if ($training->id === $lessonPlanning->training_id && $lessonPlanning->begin > now())
         <div class="w-full flex items-center justify-between mt-5">
-            @if ($training->ends)
+            @if ($training->ends && !$dayIsPast)
                 <x-submit-button wire:click='cancel' class="bg-red-500/70">Annulla lezione</x-submit-button>
             @endif
-            <x-submit-button wire:click='presences' class="bg-color-347af2">Gestione presenze</x-submit-button>
+
+            @if (count($training->getRegistrationCustomerBranch(1)->get()->pluck('customer')->unique()) && $today)
+                <x-submit-button wire:click='presences' class="bg-color-347af2">Gestione presenze</x-submit-button>
+            @endif
         </div>
     @endif
 </div>

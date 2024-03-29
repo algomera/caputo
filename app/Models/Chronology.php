@@ -10,7 +10,6 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 class Chronology extends Model
 {
     use HasFactory;
-    use \Znck\Eloquent\Traits\BelongsToThrough;
 
     protected $guarded = [];
 

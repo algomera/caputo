@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('vehicles', function (Blueprint $table) {
             $table->id();
             $table->string('type');
+            $table->foreignId('patent_id')->constrained()->onDelete('cascade');
             $table->string('model')->nullable();
             $table->string('transmission');
             $table->string('plate');

@@ -44,10 +44,9 @@ class Calendar extends Component
     public function render()
     {
         $visits = [];
-
-        if ($this->user->role == 'medico') {
+        if ($this->user->role->name == 'medico') {
             $medicalPlannings = MedicalPlanning::where('user_id', $this->user->id)->with('school', 'training', 'user', 'customer')->get();
-        } elseif ($this->user->role == 'admin') {
+        } elseif ($this->user->role->name == 'admin') {
             $medicalPlannings = MedicalPlanning::where('booked', '!=', null)->with('school', 'training', 'user', 'customer')->get();
         } else {
             $medicalPlannings = MedicalPlanning::where('booked', '!=', null)->with('school', 'training', 'user', 'customer')

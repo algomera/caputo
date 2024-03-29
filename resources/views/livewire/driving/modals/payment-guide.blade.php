@@ -17,7 +17,7 @@
     <div class="space-y-7">
         <div class="flex items-end justify-between">
             <div class="flex items-end gap-3">
-                <x-custom-select wire:model="type" name="type" label="metodo di pagamento" width="w-fit" >
+                <x-custom-select wire:model="type" name="type" label="Metodo di pagamento" width="w-fit" >
                     <option value="">Seleziona</option>
                     <option value="contanti" class="capitalize">contanti</option>
                     <option value="carta" class="capitalize">carta</option>

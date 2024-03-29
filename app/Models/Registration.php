@@ -24,6 +24,10 @@ class Registration extends Model
         return $this->belongsTo(Training::class);
     }
 
+    public function branchCourse(): BelongsTo {
+        return $this->belongsTo(BranchCourse::class);
+    }
+
     public function medicalPlanning(): HasOne {
         return $this->HasOne(MedicalPlanning::class);
     }
@@ -67,6 +71,9 @@ class Registration extends Model
     public function course() {
         return $this->BelongsToThrough(Course::class, Training::class);
     }
+    public function courseVariant() {
+        return $this->BelongsToThrough(CourseVariant::class, Training::class, foreignKeyLookup: [CourseVariant::class => 'variant_id']);
+    }
 
     public function school() {
         return $this->BelongsToThrough(School::class, Training::class);
@@ -74,6 +81,12 @@ class Registration extends Model
 
     public function getPerformedGuidesAttribute() {
         return $this->drivingPlanning()->where('performed', 'svolta')->get();
+    }
+
+    public function getStepSkipped() {
+        return Step::where(function ($q) {
+            $q->whereIn('id', json_decode($this->step_skipped));
+        })->get();
     }
 
     public function getFinalPriceAttribute() {

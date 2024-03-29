@@ -13,11 +13,25 @@ class ShowLessonPlanning extends ModalComponent
     public $training;
     public $lessonPlanning;
     public $endLesson;
+    public $today = false;
+    public $dayIsPast = false;
 
     public function mount($training, $lessonPlanningId) {
         $this->training = Training::find($training);
         $this->lessonPlanning = LessonPlanning::find($lessonPlanningId)->first();
         $this->endLesson = Carbon::parse($this->lessonPlanning->begin)->addMinutes($this->lessonPlanning->lesson->duration);
+
+        $startLesson = Carbon::parse($this->lessonPlanning->begin);
+        $today = Carbon::today();
+
+        if ($startLesson->isSameDay($today)) {
+            $this->today = true;
+        }
+
+        if ($startLesson->isPast()) {
+            $this->dayIsPast = true;
+        }
+
     }
 
     public function cancel() {

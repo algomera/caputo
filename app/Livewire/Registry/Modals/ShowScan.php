@@ -13,17 +13,19 @@ class ShowScan extends ModalComponent
 
     public DocumentForm $documentForm;
     public $scan;
+    public $paymentFor;
 
     public $newScan;
 
-    public function mount($scan) {
+    public function mount($paymentFor, $scan) {
+        $this->paymentFor = $paymentFor;
         $this->scan = Document::find($scan);
     }
 
     public function updated($property) {
         if ($property == 'newScan') {
-            $this->documentForm->updateScan($this->scan->id, $this->newScan);
-            $this->mount($this->scan->id);
+            $this->documentForm->updateScan($this->scan->id, $this->newScan, $this->paymentFor);
+            $this->mount($this->paymentFor, $this->scan->id);
         }
     }
 

@@ -15,17 +15,17 @@
                     <p class="text-lg text-color-2c2c2c">Crea un nuovo <b>corso ({{$course->name}})</b></p>
                 </div>
             @endif
-            @if (count($course->variants()->get()) > 0)
+            {{-- @if (count($course->variants()->get()) > 0)
                 <div wire:click='setOption("interessato")' class="w-full h-24 flex flex-col gap-1 items-center justify-center border rounded-md shadow-shadow-card hover:scale-105 transition-all duration-300 cursor-pointer">
                     <p class="text-lg text-color-2c2c2c">Inserisci come <b>interessato al corso</b></p>
                     <small>(Verranno salvati solo i dati relativi al cliente)</small>
                 </div>
             @else
-                <div wire:click="putRegistration({{$course->id}}, 'interessato')" class="w-full h-24 flex flex-col gap-1 items-center justify-center border rounded-md shadow-shadow-card hover:scale-105 transition-all duration-300 cursor-pointer">
-                    <p class="text-lg text-color-2c2c2c">Inserisci come <b>interessato al corso ({{$course->name}})</b></p>
-                    <small>(Verranno salvati solo i dati relativi al cliente)</small>
-                </div>
-            @endif
+            @endif --}}
+            <div wire:click="putRegistration({{$course->id}}, 'interessato')" class="w-full h-24 flex flex-col gap-1 items-center justify-center border rounded-md shadow-shadow-card hover:scale-105 transition-all duration-300 cursor-pointer">
+                <p class="text-lg text-color-2c2c2c">Inserisci come <b>interessato al corso ({{$course->name}})</b></p>
+                <small>(Verranno salvati solo i dati relativi al cliente)</small>
+            </div>
         </div>
     @endif
 
@@ -44,36 +44,17 @@
             <table class="min-w-full divide-y divide-gray-200 border">
                 <thead>
                     <tr class="text-center text-color-545454">
-                        <th scope="col" class="border-r py-3.5 px-3 hidden xl:table-cell">
-                            ID
-                        </th>
-                        <th scope="col" class="border-r py-3.5 px-3 2xl:max-w-none">
-                            Corso
-                        </th>
-                        <th scope="col" class="border-r py-3.5 px-3 2xl:max-w-none">
-                            Insegnante
-                        </th>
-                        <th scope="col" class="border-r px-3 py-3.5">
-                            Inizio
-                        </th>
-                        <th scope="col" class="border-r px-3 py-3.5">
-                            Orario
-                        </th>
-                        <th scope="col" class="border-r px-3 py-3.5">
-                            Fine
-                        </th>
-                        <th scope="col" class="border-r px-3 py-3.5 hidden xl:table-cell">
-                            N° Lezioni
-                        </th>
-                        <th scope="col" class="border-r px-3 py-3.5 hidden xl:table-cell">
-                            Tot. (H:M)
-                        </th>
-                        <th scope="col" class="border-r px-3 py-3.5">
-                            Ass. max
-                        </th>
-                        <th scope="col" class="border-r px-3 py-3.5">
-                            Iscritti
-                        </th>
+                        <th scope="col" class="border-r py-3.5 px-3 hidden xl:table-cell">ID</th>
+                        <th scope="col" class="border-r py-3.5 px-3 2xl:max-w-none">Corso</th>
+                        <th scope="col" class="border-r py-3.5 px-3 2xl:max-w-none">Insegnante</th>
+                        <th scope="col" class="border-r px-3 py-3.5">Inizio</th>
+                        <th scope="col" class="border-r px-3 py-3.5">Orario</th>
+                        <th scope="col" class="border-r px-3 py-3.5">Fine</th>
+                        <th scope="col" class="border-r px-3 py-3.5 hidden xl:table-cell">N° Lezioni</th>
+                        <th scope="col" class="border-r px-3 py-3.5 hidden xl:table-cell">Tot. (H:M)</th>
+                        <th scope="col" class="border-r px-3 py-3.5">Ass. max</th>
+                        <th scope="col" class="border-r px-3 py-3.5">Iscritti Guide</th>
+                        <th scope="col" class="border-r px-3 py-3.5">Iscritti Teoria</th>
                         <th scope="col" class="px-3 py-3.5 text-center">Azioni</th>
                     </tr>
                 </thead>
@@ -100,8 +81,9 @@
                             </td>
                             <td class="border-r whitespace-nowrap px-3 py-4 font-light text-color-2c2c2c hidden xl:table-cell">{{count($training->course->lessons)}}</td>
                             <td class="border-r whitespace-nowrap px-3 py-4 font-light text-color-2c2c2c hidden xl:table-cell">{{$training->course->duration}}</td>
-                            <td class="border-r whitespace-nowrap px-3 py-4 font-light text-color-2c2c2c">{{$training->course->absences}}</td>
-                            <td class="border-r whitespace-nowrap px-3 py-4 font-light text-color-2c2c2c">{{count($training->registrations()->get())}}</td>
+                            <td class="border-r whitespace-nowrap px-3 py-4 font-light text-color-2c2c2c">{{$branchCourse->absences}}</td>
+                            <td class="border-r whitespace-nowrap px-3 py-4 font-light text-color-2c2c2c">{{count($training->getRegistrationBranch(2))}}</td>
+                            <td class="border-r whitespace-nowrap px-3 py-4 font-light text-color-2c2c2c">{{count($training->getRegistrationBranch(1))}}</td>
                             <td class="whitespace-nowrap px-3 py-4 text-sm font-light text-color-2c2c2c">
                                 <div class="flex items-center justify-center gap-2 px-5">
                                     <button wire:click="putRegistration({{$training->id}}, '{{$selectedOption}}')" @class(["px-6 pt-1 text-lg font-medium text-white rounded-full ", 'bg-color-'.get_color($course->service->name)])>Aggiungi</button>
@@ -126,18 +108,10 @@
             <table class="min-w-full divide-y divide-gray-200 border mt-5">
                 <thead>
                     <tr class="text-center text-color-545454">
-                        <th scope="col" class="text-left border-r py-3.5 px-3 2xl:max-w-none">
-                            Corso
-                        </th>
-                        <th scope="col" class="border-r px-3 py-3.5 hidden xl:table-cell">
-                            N° Lezioni
-                        </th>
-                        <th scope="col" class="border-r px-3 py-3.5">
-                            Tot. (H:M)
-                        </th>
-                        <th scope="col" class="border-r px-3 py-3.5 hidden xl:table-cell">
-                            Ass. consentite
-                        </th>
+                        <th scope="col" class="text-left border-r py-3.5 px-3 2xl:max-w-none">Corso</th>
+                        <th scope="col" class="border-r px-3 py-3.5 hidden xl:table-cell">N° Lezioni</th>
+                        <th scope="col" class="border-r px-3 py-3.5">Tot. (H:M)</th>
+                        <th scope="col" class="border-r px-3 py-3.5 hidden xl:table-cell">Ass. consentite</th>
                         <th scope="col" class="px-3 py-3.5 text-center">Azioni</th>
                     </tr>
                 </thead>
@@ -153,7 +127,7 @@
                             </div>
                         </td>
                     </tr>
-                    @foreach($course->variants()->get() as $variant)
+                    {{-- @foreach($course->variants()->get() as $variant)
                         <tr class="text-center">
                             <td class="border-r whitespace-nowrap text-left py-4 pl-4 pr-3 font-light text-color-2c2c2c capitalize 2xl:max-w-none truncate">{{$variant->name}}</td>
                             <td class="border-r whitespace-nowrap px-3 py-4 font-light text-color-2c2c2c hidden xl:table-cell">{{count($variant->lessons)}}</td>
@@ -165,7 +139,7 @@
                                 </div>
                             </td>
                         </tr>
-                    @endforeach
+                    @endforeach --}}
                 </tbody>
             </table>
         </div>
@@ -186,14 +160,6 @@
             </div>
 
             <div class="flex gap-2 border rounded-md relative p-4 bg-color-f7f7f7">
-                @if (count($course->variants()->get()) > 0)
-                    <x-custom-select wire:model="trainingCourseVariant" name="trainingCourseVariant" label="Corso" width="grow" required="true">
-                        <option value="">{{$course->name}}</option>
-                        @foreach ($course->variants()->get() as $variant)
-                            <option value="{{$variant->id}}" class="capitalize">{{$variant->name}}</option>
-                        @endforeach
-                    </x-custom-select>
-                @endif
                 <x-custom-select wire:model="trainingUser" name="trainingUser" label="Insegnante" width="grow" required="true">
                     <option value="">Seleziona</option>
                     @foreach ($users as $user )
