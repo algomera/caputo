@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('type');
             $table->foreignId('registration_type_id')->constrained()->onDelete('cascade');
+            $table->string('duration')->nullable();
             $table->decimal('price');
             $table->timestamps();
         });

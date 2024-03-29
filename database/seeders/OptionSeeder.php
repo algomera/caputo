@@ -148,6 +148,7 @@ class OptionSeeder extends Seeder
             [
                 'name' => 'Guide standard',
                 'type' => 'guide',
+                'duration' => 30,
                 'registration_type_id' => 1,
                 'price' => 20.00
             ],
@@ -155,6 +156,7 @@ class OptionSeeder extends Seeder
                 'name' => 'Guide professionali',
                 'type' => 'guide',
                 'registration_type_id' => 1,
+                'duration' => 60,
                 'price' => 35.00
             ],
             [
@@ -170,6 +172,7 @@ class OptionSeeder extends Seeder
                 'name' => $value['name'],
                 'type' => $value['type'],
                 'registration_type_id' => $value['registration_type_id'],
+                'duration' => $value['duration'] ?? null,
                 'price' => $value['price']
             ]);
 

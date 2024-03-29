@@ -45,6 +45,7 @@ class AddGuide extends ModalComponent
             'vehicle_id' => $this->vehicle,
             'type' => $this->type,
             'begins' => session()->get('dateTimeSelected'),
+            'end' => Carbon::parse(session()->get('dateTimeSelected'))->addMinutes($this->registration->course->getOptions()->where('type', 'guide')->first()->duration),
             'note' => $this->note
         ]);
 
@@ -57,7 +58,7 @@ class AddGuide extends ModalComponent
             'vehicle_type' => $newDriving->vehicle->type,
             'plate' => $newDriving->vehicle->plate,
             'start' => $newDriving->begins,
-            'end' => Carbon::parse($newDriving->begins)->addMinutes(30),
+            'end' => Carbon::parse($newDriving->begins)->addMinutes($this->registration->course->getOptions()->where('type', 'guide')->first()->duration),
         ];
 
         $this->registration->chronologies()->create([

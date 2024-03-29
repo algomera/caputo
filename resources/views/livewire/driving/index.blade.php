@@ -77,7 +77,7 @@
                             <div class="fc-event-title fc-sticky">
                                 <div class="flex items-center justify-between">
                                     <p class="flex font-medium gap-2 text-white">
-                                        <x-icons name="time" class="text-white"/>`+moment(event.event.startStr).format('HH:mm')+`
+                                        <x-icons name="time" class="text-white"/>`+moment(event.event.startStr).format('HH:mm')+` - `+moment(event.event.endStr).format('HH:mm')+`
                                     </p>
                                     @role ('admin')
                                         <p class="text-sm text-white">
@@ -144,7 +144,7 @@
                             data.revert();
                             alert('Non è possibile spostare la guida fuori dal range del calendario.');
                         } else {
-                            @this.drivingUpdate(data.event.id, moment(data.event.start, 'YYYY-MM-DDTHH:mm'))
+                            @this.drivingUpdate(data.event.id, moment(data.event.start, 'YYYY-MM-DDTHH:mm'), moment(data.event.end, 'YYYY-MM-DDTHH:mm'))
                         }
                     }
                 },
@@ -179,9 +179,8 @@
                             data.revert();
                             alert('Non è possibile spostare la guida fuori dal range del calendario.');
                         } else {
-                            @this.drivingUpdate(data.event.id, moment(data.event.start, 'YYYY-MM-DDTHH:mm'))
+                            @this.drivingUpdate(data.event.id, moment(data.event.start, 'YYYY-MM-DDTHH:mm'), moment(data.event.end, 'YYYY-MM-DDTHH:mm'))
                         }
-
                     }
                 },
             },

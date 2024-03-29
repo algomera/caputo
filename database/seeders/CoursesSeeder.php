@@ -43,6 +43,10 @@ class CoursesSeeder extends Seeder
                         $condition = 'A2';
                     } elseif ($course_id == 16) {
                         $condition = 'A1, A2, A, B1';
+                    } elseif ($course_id == 17) {
+                        $condition = 'A1, B1, B';
+                    } elseif ($course_id == 18) {
+                        $condition = 'B';
                     }
                 }
 
@@ -236,13 +240,13 @@ class CoursesSeeder extends Seeder
                 'name' => 'Patente B codice 96',
                 'patent_id' => 6,
                 'type_visit' => 'rilascio',
-                'registration_types' => [1,4],
+                'registration_types' => [1,2,4],
             ],
             [
                 'name' => 'Patente BE',
                 'patent_id' => 11,
                 'type_visit' => 'rilascio',
-                'registration_types' => [1,4],
+                'registration_types' => [2,4],
             ],
             [
                 'name' => 'Guide di perfezionamento',
