@@ -157,6 +157,12 @@ class OptionSeeder extends Seeder
                 'registration_type_id' => 1,
                 'price' => 35.00
             ],
+            [
+                'name' => 'Certificato medico con marca da bollo',
+                'type' => 'opzionale',
+                'registration_type_id' => 3,
+                'price' => 64.40
+            ],
         ];
 
         foreach ($options as $value) {

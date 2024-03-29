@@ -49,6 +49,7 @@ class Calendar extends Component
 
                     $this->lessons[] = [
                         'id' => $lessonPlanning->id,
+                        'school' => $lessonPlanning->school->code,
                         'training' => $training->id,
                         'teacher' => $lessonPlanning->user->full_name,
                         'lesson' => $lessonPlanning->lesson_id,
@@ -66,8 +67,24 @@ class Calendar extends Component
     }
 
     public function getTrainingsBetweenDates($startDate, $endDate) {
-        if ($this->user->role->name == 'admin' || $this->user->role->name == 'insegnante') {
+        if ($this->user->role->name == 'admin') {
             $trainings = Training::where(function ($query) use ($startDate, $endDate) {
+                if ($endDate) {
+                    $query->whereBetween('begins', [$startDate, $endDate])->orWhere(function ($query) use ($endDate) {
+                        $query->where('begins', '<', $endDate)->where(function ($query) use ($endDate) {
+                            $query->whereNull('ends')->orWhere('ends', '>', Carbon::now())->where('ends', '<=', $endDate);
+                        });
+                    });
+                } else {
+                    $query->Where(function ($query) use ($startDate) {
+                        $query->where('begins', '<=', $startDate)->where(function ($query) {
+                            $query->whereNull('ends')->orWhere('ends', '>=', Carbon::now()->toDateString());
+                        });
+                    });
+                }
+            })->get();
+        } elseif ($this->user->role->name == 'insegnante') {
+            $trainings = Training::where('user_id', $this->user->id)->where(function ($query) use ($startDate, $endDate) {
                 if ($endDate) {
                     $query->whereBetween('begins', [$startDate, $endDate])->orWhere(function ($query) use ($endDate) {
                         $query->where('begins', '<', $endDate)->where(function ($query) use ($endDate) {
@@ -105,6 +122,10 @@ class Calendar extends Component
 
     public function back() {
         return redirect()->route('theory.trainings.index');
+    }
+
+    public function goCourse() {
+        return redirect()->route('theory.lessons.index', ['training' => $this->trainingId]);
     }
 
     public function show($lesson) {

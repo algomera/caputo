@@ -77,7 +77,8 @@ class Index extends Component
                 'instructor' => $driving->instructor->full_name,
                 'vehicle_type' => $driving->vehicle->type,
                 'plate' => $driving->vehicle->plate,
-                'start' => $driving->begins
+                'start' => $driving->begins,
+                'end' => Carbon::parse($driving->begins)->addMinutes(30),
             ];
         }
 

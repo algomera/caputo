@@ -2,15 +2,16 @@
 
 namespace App\Livewire\Driving\Modals;
 
+use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Vehicle;
 use App\Models\Registration;
 use App\Models\DrivingPlanning;
 use Livewire\Attributes\Validate;
-use App\Livewire\Driving\Modals\ShowRegistrationGuides;
+use LivewireUI\Modal\ModalComponent;
 use App\Livewire\Driving\Modals\PlanDriving;
 use App\Livewire\Driving\Index as DrivingIndex;
-use LivewireUI\Modal\ModalComponent;
+use App\Livewire\Driving\Modals\ShowRegistrationGuides;
 
 class AddGuide extends ModalComponent
 {
@@ -47,6 +48,7 @@ class AddGuide extends ModalComponent
             'note' => $this->note
         ]);
 
+
         $scheduleDriving = [
             'id' => $newDriving->id,
             'school' => $newDriving->school()->first()->code,
@@ -54,7 +56,8 @@ class AddGuide extends ModalComponent
             'instructor' => $newDriving->instructor->full_name,
             'vehicle_type' => $newDriving->vehicle->type,
             'plate' => $newDriving->vehicle->plate,
-            'start' => $newDriving->begins
+            'start' => $newDriving->begins,
+            'end' => Carbon::parse($newDriving->begins)->addMinutes(30),
         ];
 
         $this->registration->chronologies()->create([

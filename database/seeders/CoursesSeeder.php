@@ -121,12 +121,22 @@ class CoursesSeeder extends Seeder
             }
 
             if ($branchId == 1 || $branchId == 2) {
+                $guides = 0;
+
+                if (in_array($courseRegistrationStep->course_id , [14, 16])) {
+                    if ($courseRegistrationStep->registration_type_id == 3) {
+                        $guides = 0;
+                    } else {
+                        $guides = 10;
+                    }
+                }
+
                 BranchCourse::create([
                     'course_registration_step_id' => $courseRegistrationStepId,
                     'branch_id' => $branchId,
                     'condition' => $condition,
                     'absences' => $branchId == 1 ? 3 : 0,
-                    'guides' => in_array($courseRegistrationStep->course_id , [14, 16]) ? 10 : 0,
+                    'guides' => $guides,
                     'price' => fake()->numberBetween(200, 1800)
                 ]);
             }

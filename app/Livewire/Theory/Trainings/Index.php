@@ -24,7 +24,8 @@ class Index extends Component
     public function render()
     {
         $user = auth()->user();
-        if ($user->role->name != 'admin') {
+
+        if ($user->role->name != 'admin' && $user->role->name != 'insegnante') {
             $schoolId = $user->schools()->first()->id;
         }
 
@@ -40,9 +41,12 @@ class Index extends Component
                 $q->filter('code', $this->code);
             })->orderBy('id', 'DESC')->get();
         } elseif ($user->role->name == 'insegnante') {
-            $trainings = Training::where('school_id', $schoolId)->where('user_id', $user->id)->with('course', 'courseVariant')
+            $trainings = Training::where('user_id', $user->id)->with('course', 'courseVariant')
             ->whereHas('course', function($q) {
                 $q->filter('name', $this->course);
+            })
+            ->whereHas('school', function($q) {
+                $q->filter('code', $this->code);
             })->orderBy('id', 'DESC')->get();
         } else {
             $trainings = Training::where('school_id', $schoolId)->with('course', 'courseVariant', 'user')

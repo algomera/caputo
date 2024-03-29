@@ -72,7 +72,7 @@
             },
             eventContent: function(event) {
                 var main = {html:`
-                    <div class="p-2 w-full fc-event-main-frame border bg-color-347af2/80">
+                    <div title="Istruttore: `+event.event.extendedProps.instructor+`" class="p-2 w-full fc-event-main-frame border bg-color-347af2/80">
                         <div class="fc-event-title-container">
                             <div class="fc-event-title fc-sticky">
                                 <div class="flex items-center justify-between">
@@ -194,7 +194,6 @@
         });
 
         @this.on('addDriving', driving => {
-            console.log(driving);
             calendar.addEvent(driving[0])
         });
 

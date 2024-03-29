@@ -7,7 +7,7 @@
         <h1 class="text-5xl font-bold text-color-17489f capitalize">{{$customerForm->lastName}} {{$customerForm->name}}</h1>
     </div>
 
-    <div class="mt-10 p-4 w-full flex flex-col gap-4 shadow-shadow-card bg-color-f7f7f7">
+    <div class="mt-10 p-4 w-full flex flex-col gap-4 shadow-shadow-card bg-color-f7f7f7 relative">
         {{-- Autoscuola --}}
         <div class="flex items-end justify-between gap-5 border-b pb-4">
             <div class="flex items-center gap-4">
@@ -15,6 +15,11 @@
                 <x-fake-input width="w-fit" label="Sede" uppercase="">{{$customerForm->customer->school->address}}</x-fake-input>
                 <x-fake-input width="w-48" label="Data acquisizione" uppercase="">{{date("d/m/Y", strtotime($customerForm->customer->created_at))}}</x-fake-input>
             </div>
+
+            @if ($modify)
+                <div wire:dirty class="absolute top-5 right-4 text-red-500/70 font-medium">Modifiche non salvate...</div>
+            @endif
+
             <div class="flex items-center gap-2">
                 <button wire:click="$dispatch('openModal', { component: 'registry.modals.chronology', arguments: {customer: {{$customerForm->customer->id}}} })" class="flex items-center gap-2 px-4 py-1 text-color-2c2c2c font-medium capitalize rounded-full bg-color-ffb205/30 hover:scale-105 transition-all duration-300">
                     <x-icons name="time" /> Cronologia
