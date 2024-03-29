@@ -65,7 +65,7 @@ class CoursesSeeder extends Seeder
                 } elseif ($registrationType == 3) {
                     $branchId = [1];
                 } elseif ($registrationType == 4) {
-                    $branchId = [1,2,3];
+                    $branchId = [1,2];
                 }
 
                 $this->createBranchCourseRegistration($courseRegistrationStep->id, $branchId);

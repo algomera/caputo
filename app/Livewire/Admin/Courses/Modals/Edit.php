@@ -25,7 +25,7 @@ class Edit extends ModalComponent
 
     public static function modalMaxWidth(): string
     {
-        return '5xl';
+        return '7xl';
     }
 
     public function render()
