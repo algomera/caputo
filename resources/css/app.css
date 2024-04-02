@@ -53,6 +53,10 @@ select::-webkit-scrollbar { /*For WebKit Browsers*/
     table-layout:fixed;
 }
 
+.focus_none {
+    @apply !border-transparent focus-visible:!border-transparent focus:!border-transparent focus-visible:!ring-0  focus:!ring-0 focus-visible:!outline-none
+}
+
 /* Full Calendar */
 
 .fc-view-harness {

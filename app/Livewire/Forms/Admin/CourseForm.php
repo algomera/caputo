@@ -14,8 +14,6 @@ class CourseForm extends Form
     public $slug;
     public $label;
     public $description;
-    public $absences = 0;
-    public $guides = 0;
     public $type_visit;
 
     public function rules() {
@@ -24,8 +22,6 @@ class CourseForm extends Form
             'slug' => 'nullable',
             'label' => 'nullable',
             'description' => 'nullable',
-            'absences' => 'required',
-            'guides' => 'required',
             'type_visit' => 'required',
         ];
     }
@@ -33,8 +29,6 @@ class CourseForm extends Form
     public function messages() {
         return [
             'name.required' => 'Campo richiesto',
-            'absences.required' => 'Campo richiesto',
-            'guides.required' => 'Campo richiesto',
             'type_visit.required' => 'Campo richiesto',
         ];
     }
@@ -44,8 +38,6 @@ class CourseForm extends Form
         $this->name = $this->course->name;
         $this->label = $this->course->label;
         $this->description = $this->course->description;
-        $this->absences = $this->course->absences;
-        $this->guides = $this->course->guides;
         $this->type_visit = $this->course->type_visit;
     }
 

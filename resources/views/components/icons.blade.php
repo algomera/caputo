@@ -14,11 +14,11 @@
         </svg>
         @break
     @case('arrow_back')
-        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="15.631" height="16.459"
+        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" stroke="currentColor" width="15.631" height="16.459"
         {{ $attributes->merge(['class']) }} viewBox="0 0 15.631 16.459">
             <g id="Icon_feather-arrow-left" data-name="Icon feather-arrow-left" transform="translate(-6.5 -6.086)">
-            <path id="Tracciato_1216" data-name="Tracciato 1216" d="M21.131,18H7.5" transform="translate(0 -3.685)" fill="none" stroke="gray" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
-            <path id="Tracciato_1217" data-name="Tracciato 1217" d="M14.315,21.131,7.5,14.315,14.315,7.5" fill="none" stroke="gray" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+                <path id="Tracciato_1216" data-name="Tracciato 1216" d="M21.131,18H7.5" transform="translate(0 -3.685)" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+                <path id="Tracciato_1217" data-name="Tracciato 1217" d="M14.315,21.131,7.5,14.315,14.315,7.5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
             </g>
         </svg>
         @break

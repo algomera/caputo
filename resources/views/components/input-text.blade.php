@@ -2,7 +2,7 @@
 
 <div @class(["flex flex-col relative", $width ])>
     <label for="{{ $name }}" class="text-sm font-light text-color-2c2c2c mb-1 w-fit ml-2">
-        {{$label}} @if ($required)*@endif
+        {{$label}} @if ($required)<span class="text-red-500">*</span>@endif
     </label>
     <input @if($disabled) disabled @endif type="{{$type}}" name="{{ $name }}" {{ $attributes }} placeholder="{{$placeholder}}"
         @class(["h-[54px] px-4 rounded-md p-0 border-color-dfdfdf focus:!border-dfdfdf focus:ring-0 placeholder:text-color-afafaf", $uppercase])

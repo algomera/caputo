@@ -51,7 +51,7 @@
                                             <span class="capitalize font-medium text-color-545454">{{$course->name}}</span>
                                             <div class="flex items-center gap-2">
                                                 <x-icons name="b-edit" class="cursor-pointer hover:brightness-90"
-                                                    wire:click="$dispatch('openModal', { component: 'admin.courses.modals.edit', arguments: {service: {{ $service->id }}, course: {{$course->id}}} })"
+                                                    wire:click="$dispatch('openModal', { component: 'admin.courses.modals.edit', arguments: {course: {{$course->id}}} })"
                                                 />
                                                 {{-- <x-icons name="b-delete" class="cursor-pointer hover:brightness-90"
                                                     wire:click="$dispatch('openModal', { component: 'admin.courses.modals.delete', arguments: {course: {{ $course->id }}} })"
@@ -61,7 +61,7 @@
                                     @endforeach
                                 </div>
                             @else
-                                <p class="text-xl font-semibold text-gray-400 uppercase text-center">Nessun corso prente!..</p>
+                                <p class="text-xl font-semibold text-gray-400 uppercase text-center">Nessun corso presente!..</p>
                             @endif
                         </div>
                     </div>

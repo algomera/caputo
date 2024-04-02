@@ -2,7 +2,7 @@
 
 <div @class(["flex flex-col relative", $width])>
     <label for="{{ $name }}" class="text-sm font-light text-color-2c2c2c mb-1 ml-2">
-        {{ $label }}@if ($required)*@endif
+        {{ $label }} @if ($required)<span class="text-red-500">*</span>@endif
     </label>
 
     <div @class(["relative", $height])>
