@@ -1,7 +1,7 @@
 <div class="w-full h-full py-14 2xl:px-28">
 
     @switch($step)
-    {{-- Scelta Servizio --}}
+        {{-- Scelta Servizio --}}
         @case(0)
             <h1 class="text-5xl font-bold text-color-2c2c2c capitalize text-center">Servizi</h1>
 
@@ -11,7 +11,8 @@
                 @endforeach
             </div>
             @break
-    {{-- Scelta Corso e tipologia --}}
+
+        {{-- Scelta Corso e tipologia --}}
         @case(1)
             <div class="px-10 2xl:px-0">
                 <div class="flex items-center gap-5">
@@ -24,36 +25,29 @@
                 <div class="flex flex-wrap items-center justify-center gap-x-7 gap-y-12 mt-28">
                     @foreach ($courses as $course )
                         @if ($course->type == 'training')
-                            @if ($course->id != 14)
-                                <div wire:click="$dispatch('openModal', { component: 'services.training.modals.registration-type', arguments: {course: {{ $course->id }}} })"
-                                    class="min-w-[345px] h-24 shadow-shadow-card flex items-center justify-center hover:scale-105 transition-all duration-300 cursor-pointer"
-                                >
-                                    <span class="text-2xl font-light text-color-2c2c2c">{{$course->name}}</span>
-                                </div>
-                            @else
-                                <div wire:click="next({{$course->id}})"
-                                    class="min-w-[345px] h-24 shadow-shadow-card flex items-center justify-center hover:scale-105 transition-all duration-300 cursor-pointer"
-                                >
-                                    <span class="text-2xl font-light text-color-2c2c2c">{{$course->name}}</span>
-                                </div>
-                            @endif
-                        @elseif ($course->type == 'service')
-                            <div wire:click="redirectService({{$course->id}})"
-                                class="min-w-[345px] h-24 shadow-shadow-card flex items-center justify-center hover:scale-105 transition-all duration-300 cursor-pointer"
+                            <div wire:click="$dispatch('openModal', { component: 'services.training.modals.registration-type', arguments: {course: {{ $course->id }}} })"
+                                class="min-w-[345px] h-24 shadow-shadow-card flex flex-col items-center justify-center hover:scale-105 transition-all duration-300 cursor-pointer"
                             >
                                 <span class="text-2xl font-light text-color-2c2c2c">{{$course->name}}</span>
+                                <span class="text-color-545454">{{$course->label}}</span>
+                            </div>
+                        @elseif ($course->type == 'service')
+                            <div wire:click="redirectService({{$course->id}})"
+                                class="min-w-[345px] h-24 shadow-shadow-card flex flex-col items-center justify-center hover:scale-105 transition-all duration-300 cursor-pointer"
+                            >
+                                <span class="text-2xl font-light text-color-2c2c2c">{{$course->name}}</span>
+                                <span class="text-color-545454">{{$course->label}}</span>
                             </div>
                         @endif
                     @endforeach
                 </div>
             </div>
             @break
-    {{-- Scelta opzioni corso --}}
+
+        {{-- Scelta opzioni corso --}}
         @case(2)
             <livewire:services.training.registration.index :course="$course" :variant="$courseVariant" :branch="$branch" :type="$type" />
             @break
-
-        @default
     @endswitch
 </div>
 

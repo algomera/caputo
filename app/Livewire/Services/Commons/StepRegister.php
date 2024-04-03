@@ -166,8 +166,8 @@ class StepRegister extends Component
     }
 
     #[On('newRegistration')]
-    public function registration($trainingId, $type) {
-        $this->customerForm->setSchool(auth()->user()->schools()->first()->id);
+    public function registration($schoolId, $trainingId, $type) {
+        $this->customerForm->setSchool($schoolId);
         $this->customerForm->store();
         $this->setCustomer($this->customerForm->newCustomer->id);
 

@@ -1,37 +1,53 @@
 <div class="p-4 pb-16">
-    @if (!$selectedOption)
+    @if ($schools && !$schoolId)
         <div class="w-full flex justify-between">
-            <h1 @class(["text-4xl font-semibold", 'text-color-'.get_color($course->service->name)])>Registrazione al corso</h1>
-            <small class="text-gray-400 font-bold">{{$course->name}}</small>
+            <h1 @class(["text-4xl font-semibold", 'text-color-'.get_color($course->service->name)])>Seleziona Scuola</h1>
         </div>
 
         <div class="m-auto flex flex-col gap-4 px-20 xl:px-56 mt-16">
-            @if (count($trainings) > 0)
-                <div wire:click='setOption("esistente")' class="w-full h-24 flex items-center justify-center border rounded-md shadow-shadow-card hover:scale-105 transition-all duration-300 cursor-pointer">
-                    <p class="text-lg text-color-2c2c2c">Iserisci a <b>corso esistente</b></p>
+            @foreach ($schools as $school )
+                <div wire:click='setSchool({{$school->id}})' class="w-full py-4 flex flex-col gap-2 items-center justify-center border rounded-md shadow-shadow-card hover:scale-105 transition-all duration-300 cursor-pointer">
+                    <p class="text-lg text-color-2c2c2c font-semibold">{{$school->code}}</p>
+                    <p class="text-color-2c2c2c font-medium">{{$school->city}}</p>
+                    <p class="text-color-2c2c2c">{{$school->address}}</p>
                 </div>
-            @else
-                <div wire:click='setOption("nuovo")' class="w-full h-24 flex items-center justify-center border rounded-md shadow-shadow-card hover:scale-105 transition-all duration-300 cursor-pointer">
-                    <p class="text-lg text-color-2c2c2c">Crea un nuovo <b>corso ({{$course->name}})</b></p>
+            @endforeach
+        </div>
+    @endif
+
+    @if (!$selectedOption && $schoolId)
+        <div class="flex flex-col gap-5">
+            <div class="w-full flex justify-between">
+                <div wire:click='resetSchool' class="w-fit flex items-center gap-2 group cursor-pointer ">
+                    <x-icons name="arrow_back" class="group-hover:-translate-x-1 transition-all duration-300" />
+                    <span class="text-lg text-color-808080 group-hover:underline">Indietro</span>
                 </div>
-            @endif
-            {{-- @if (count($course->variants()->get()) > 0)
-                <div wire:click='setOption("interessato")' class="w-full h-24 flex flex-col gap-1 items-center justify-center border rounded-md shadow-shadow-card hover:scale-105 transition-all duration-300 cursor-pointer">
-                    <p class="text-lg text-color-2c2c2c">Inserisci come <b>interessato al corso</b></p>
+                <small class="text-gray-400 font-bold">{{$course->name}}</small>
+            </div>
+
+            <h1 @class(["text-4xl font-semibold", 'text-color-'.get_color($course->service->name)])>Registrazione al corso</h1>
+
+            <div class="m-auto w-full flex flex-col gap-4 px-20 xl:px-56 mt-16">
+                @if (count($trainings) > 0)
+                    <div wire:click='setOption("esistente")' class="w-full h-24 flex items-center justify-center border rounded-md shadow-shadow-card hover:scale-105 transition-all duration-300 cursor-pointer">
+                        <p class="text-lg text-color-2c2c2c">Iserisci a <b>corso esistente</b></p>
+                    </div>
+                @else
+                    <div wire:click='setOption("nuovo")' class="w-full h-24 flex items-center justify-center border rounded-md shadow-shadow-card hover:scale-105 transition-all duration-300 cursor-pointer">
+                        <p class="text-lg text-color-2c2c2c">Crea un nuovo <b>corso ({{$course->name}})</b></p>
+                    </div>
+                @endif
+                <div wire:click="putRegistration({{$course->id}}, 'interessato')" class="w-full h-24 flex flex-col gap-1 items-center justify-center border rounded-md shadow-shadow-card hover:scale-105 transition-all duration-300 cursor-pointer">
+                    <p class="text-lg text-color-2c2c2c">Inserisci come <b>interessato al corso ({{$course->name}})</b></p>
                     <small>(Verranno salvati solo i dati relativi al cliente)</small>
                 </div>
-            @else
-            @endif --}}
-            <div wire:click="putRegistration({{$course->id}}, 'interessato')" class="w-full h-24 flex flex-col gap-1 items-center justify-center border rounded-md shadow-shadow-card hover:scale-105 transition-all duration-300 cursor-pointer">
-                <p class="text-lg text-color-2c2c2c">Inserisci come <b>interessato al corso ({{$course->name}})</b></p>
-                <small>(Verranno salvati solo i dati relativi al cliente)</small>
             </div>
         </div>
     @endif
 
     @if ($selectedOption == 'esistente')
         <div class="flex flex-col gap-5">
-            <div wire:click='resetOption' class="flex items-center gap-2 group cursor-pointer ">
+            <div wire:click='resetOption' class="w-fit flex items-center gap-2 group cursor-pointer ">
                 <x-icons name="arrow_back" class="group-hover:-translate-x-1 transition-all duration-300" />
                 <span class="text-lg text-color-808080 group-hover:underline">Indietro</span>
             </div>

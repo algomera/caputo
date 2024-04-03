@@ -17,7 +17,7 @@ class Lesson extends ModalComponent
     public function update() {
         $this->lessonForm->update();
         $this->closeModal();
-        $this->dispatch('newLesson', $this->lessonForm->course_id);
+        $this->dispatch('newLesson', $this->lessonForm->course_id, $this->lessonForm->variant_id);
     }
 
     public static function modalMaxWidth(): string

@@ -84,6 +84,16 @@ if (! function_exists('get_registrationType')) {
     }
 }
 
+if (! function_exists('get_course')) {
+    function get_course($courseId, $variantId = null) {
+        if ($variantId) {
+            return \App\Models\CourseVariant::find($variantId);
+        } else {
+            return \App\Models\Course::find($courseId);
+        }
+    }
+}
+
 if (! function_exists('get_guide')) {
     function get_guide($guide) {
         $icon = '';

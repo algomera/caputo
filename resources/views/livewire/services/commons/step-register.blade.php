@@ -303,7 +303,7 @@
                             <button wire:click="backStep" class="w-fit text-2xl inline-flex items-center px-6 py-2 border border-transparent rounded-md font-light text-color-545454 tracking-widest bg-color-dfdfdf hover:bg-gray-700 hover:text-white active:bg-gray-900 transition ease-in-out duration-150 disabled:opacity-50 disabled:cursor-not-allowed">
                                 Indietro
                             </button>
-                            @if ($parentSignature)
+                            @if ($parentSignature && $parentScans)
                                 <x-submit-button wire:click='nextStep' @class(["ml-auto",'bg-color-'.get_color(session()->get('serviceName'))])>Prosegui</x-submit-button>
                             @endif
                         </div>

@@ -40,7 +40,7 @@ class CoursesSeeder extends Seeder
                     } elseif ($course_id == 13) {
                         $condition = 'A2, B1, B';
                     } elseif ($course_id == 14) {
-                        $condition = 'A2';
+                        $condition = 'A1';
                     } elseif ($course_id == 16) {
                         $condition = 'A1, A2, A, B1';
                     } elseif ($course_id == 17) {
@@ -61,7 +61,11 @@ class CoursesSeeder extends Seeder
                 if ($registrationType == 1) {
                     $branchId = [1];
                 } elseif ($registrationType == 2) {
-                    $branchId = [2,3];
+                    if ($course_id == 14) {
+                        $branchId = [3];
+                    } else {
+                        $branchId = [2,3];
+                    }
                 } elseif ($registrationType == 3) {
                     $branchId = [1];
                 } elseif ($registrationType == 4) {
@@ -87,10 +91,14 @@ class CoursesSeeder extends Seeder
                 }
                 break;
             case 2: // possessore di patente
-                $steps = [2,4,5,6];
+                if ($course_id == 14) {
+                    $steps = [2,4,5,6,7,8];
+                } else {
+                    $steps = [2,4,5,6];
+                }
                 break;
             case 3: // possessore guida accomagnata
-                $steps = [2,4,5,6];
+                $steps = [2,4,5,6,];
                 break;
             case 4: // cambio codice
                 $steps = [2,4,5,6];

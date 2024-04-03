@@ -2,7 +2,6 @@
 
 namespace App\Livewire\Admin\Courses\Modals;
 
-use App\Models\Course;
 use LivewireUI\Modal\ModalComponent;
 use App\Livewire\Forms\Admin\LessonForm;
 
@@ -10,16 +9,20 @@ class LessonCreate extends ModalComponent
 {
     public LessonForm $lessonForm;
     public $course;
+    public $courseId;
+    public $variantId = null;
 
-    public function mount($course) {
-        $this->course = Course::find($course);
+    public function mount($course, $variant = null) {
+        $this->course = get_course($course, $variant);
+        $this->courseId = $course;
+        $this->variantId = $variant;
         $this->lessonForm->type = 'teoria';
     }
 
     public function store() {
-        $this->lessonForm->store($this->course->id);
+        $this->lessonForm->store($this->courseId, $this->variantId);
+        $this->dispatch('newLesson', $this->courseId, $this->variantId);
         $this->closeModal();
-        $this->dispatch('newLesson', $this->course->id);
     }
 
     public static function modalMaxWidth(): string

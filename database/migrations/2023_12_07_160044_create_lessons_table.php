@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('variant_id')->nullable()->constrained('course_variants')->onDelete('cascade');
             $table->string('type');
             $table->string('subject');
-            $table->longText('description');
+            $table->longText('description')->nullable();
             $table->string('duration')->nullable();
             $table->timestamps();
         });

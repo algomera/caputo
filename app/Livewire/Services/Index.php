@@ -42,24 +42,16 @@ class Index extends Component
 
     public function redirectService($id) {
         $course = Course::find($id);
+        dd('Da vedere con Nicola');
 
         session()->put('course', [
             'id' => $id,
+            'course_variant' => '',
+            'registration_type' => '',
+            'branch' => ''
         ]);
 
         return redirect()->route('service.driver', ['course' => $course]);
-    }
-
-    public function next($id) {
-        if ($id == 14) {
-            session()->put('course', [
-                'id' => $id,
-                'branch' => 'guida accompagnata',
-                'registration_type' => 1
-            ]);
-
-            $this->setCourse();
-        }
     }
 
     public function getSignature() {

@@ -1,4 +1,4 @@
-<nav class="min-h-[calc(100vh-96px)] w-72 2xl:w-80 bg-white py-6 shadow-md fixed left-0">
+<nav class="min-h-[calc(100vh-96px)] w-60 bg-white py-6 shadow-md fixed left-0">
     <div class="h-full px-4 flex flex-col justify-between">
         {{-- Profile --}}
         <div class="space-y-1">

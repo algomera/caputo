@@ -71,7 +71,7 @@
 
         <small @class(["font-medium", 'text-color-'.get_color($selectedCourse->service->name)])>N.B. é necessario che il candidato prenda confidenza con il veicolo e che sia preparato alla prova in circuito chiuso e ad un percorso cittadino</small>
 
-        <div class="w-full flex justify-end">
+        <div class="w-full flex justify-end mt-5">
             <x-submit-button wire:click='next' @class(['bg-color-'.get_color($selectedCourse->service->name)])>Prosegui</x-submit-button>
         </div>
     </div>

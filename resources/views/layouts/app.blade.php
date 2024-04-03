@@ -36,7 +36,7 @@
                         <livewire:admin.navbar />
                     </div>
 
-                    <div class="grow min-h-[calc(100vh-96px)] pl-72 2xl:pl-80">
+                    <div class="grow min-h-[calc(100vh-96px)] pl-60">
                         {{ $slot }}
                     </div>
                 @else

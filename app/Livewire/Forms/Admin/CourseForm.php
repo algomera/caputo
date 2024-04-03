@@ -3,6 +3,7 @@
 namespace App\Livewire\Forms\Admin;
 
 use App\Models\Course;
+use App\Models\CourseVariant;
 use Livewire\Attributes\Validate;
 use Illuminate\Support\Str;
 use Livewire\Form;
@@ -33,8 +34,12 @@ class CourseForm extends Form
         ];
     }
 
-    public function setCourse($id) {
-        $this->course = Course::find($id);
+    public function setCourse($courseId, $variantId = null) {
+        if ($variantId) {
+            $this->course = CourseVariant::find($variantId);
+        } else {
+            $this->course = Course::find($courseId);
+        }
         $this->name = $this->course->name;
         $this->label = $this->course->label;
         $this->description = $this->course->description;
@@ -46,7 +51,6 @@ class CourseForm extends Form
         $validateData['slug'] = Str::slug($validateData['name']);
 
         $this->course->update($validateData);
-        $this->reset();
     }
 
 }

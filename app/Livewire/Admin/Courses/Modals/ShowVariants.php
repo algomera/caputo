@@ -7,12 +7,17 @@ use LivewireUI\Modal\ModalComponent;
 
 class ShowVariants extends ModalComponent
 {
-    public $courses;
+    public $course;
+    public $variants;
 
     public function mount($courseId) {
-        $course = Course::find($courseId);
+        $this->course = Course::find($courseId);
+        $this->variants = $this->course->variants()->get();
+    }
 
-        $this->courses = $course->variants()->get();
+    public function setVariant($variant) {
+        $this->dispatch('setCourseVariant', $this->course->id, $variant);
+        $this->closeModal();
     }
 
     public static function modalMaxWidth(): string
