@@ -47,7 +47,7 @@
                             <td class="border-r-2 border-color-efefef px-3 py-4 text-color-347af2 text-center">{{$guide->vehicle->plate}}</td>
                             <td class="border-r-2 border-color-efefef px-3 py-4 text-center capitalize">
                                 <div class="flex items-center justify-center gap-2 text-sm">
-                                    <x-icons name="{{get_guide($guide->type)}}" />
+                                    <x-icons name="{{get_type_guide($guide->type)}}" />
                                     {{$guide->type}}
                                 </div>
                             </td>

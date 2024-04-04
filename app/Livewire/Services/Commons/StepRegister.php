@@ -96,7 +96,7 @@ class StepRegister extends Component
     public function setSteps() {
         $courseRegistrationSteps = $this->course->courseRegistrationSteps()
         ->where('registration_type_id', session('course')['registration_type'])
-        ->first()->getSteps();
+        ->first()->getSteps()->get();
 
         $this->currentStep = $courseRegistrationSteps->first()->short_name;
         $this->customerForm->stepName = $this->currentStep;

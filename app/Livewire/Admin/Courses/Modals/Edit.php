@@ -70,9 +70,9 @@ class Edit extends ModalComponent
 
     }
 
-    public static function modalMaxWidth(): string
+    public static function modalMaxWidthClass(): string
     {
-        return '7xl';
+        return 'max-w-screen-xl 2xl:max-w-screen-2xl';
     }
 
     public static function closeModalOnClickAway(): bool

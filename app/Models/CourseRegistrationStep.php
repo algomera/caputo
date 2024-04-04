@@ -5,7 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class CourseRegistrationStep extends Model
@@ -24,7 +23,7 @@ class CourseRegistrationStep extends Model
     }
 
     public function getSteps() {
-        return Step::whereIn('id', json_decode($this->steps_id))->get();
+        return Step::whereIn('id', json_decode($this->steps_id));
     }
 
     public function course(): BelongsTo {

@@ -149,13 +149,13 @@ class OptionSeeder extends Seeder
                 'name' => 'Guide standard',
                 'type' => 'guide',
                 'duration' => 30,
-                'registration_type_id' => 1,
+                'registration_type_id' => null,
                 'price' => 20.00
             ],
             [
                 'name' => 'Guide professionali',
                 'type' => 'guide',
-                'registration_type_id' => 1,
+                'registration_type_id' => null,
                 'duration' => 60,
                 'price' => 35.00
             ],

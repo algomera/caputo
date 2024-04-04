@@ -95,7 +95,23 @@ if (! function_exists('get_course')) {
 }
 
 if (! function_exists('get_guide')) {
-    function get_guide($guide) {
+    function get_guide($courseId, $variantId = null) {
+        if ($variantId) {
+            return \App\Models\CourseVariant::find($variantId)->getOptions()->where('type', 'guide')->first();
+        } else {
+            return \App\Models\Course::find($courseId)->getOptions()->where('type', 'guide')->first();
+        }
+    }
+}
+
+if (! function_exists('get_branch_course')) {
+    function get_branch_course($registration_step_id, $branch_id) {
+        return \App\Models\BranchCourse::where('course_registration_step_id', $registration_step_id)->where('branch_id', $branch_id)->first();
+    }
+}
+
+if (! function_exists('get_type_guide')) {
+    function get_type_guide($guide) {
         $icon = '';
 
         switch ($guide) {

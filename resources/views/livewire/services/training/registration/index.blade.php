@@ -25,7 +25,7 @@
 
         @foreach ($selectedCourse->getOptions()->where('type', 'opzionale')->where('registration_type_id', $type)->get() as $option )
             <div class="flex items-end gap-2 my-1">
-                @if ($option->id == 17 AND array_search(17, $selectedOptions) === false)
+                @if ($option->id == 18 AND array_search(18, $selectedOptions) === false)
                     <x-custom-checkbox
                         wire:click="$dispatch('openModal', { component: 'services.training.modals.audio-support'})"
                         wire:model.live="selectedOptions"

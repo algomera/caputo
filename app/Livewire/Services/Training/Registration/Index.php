@@ -70,7 +70,7 @@ class Index extends Component
 
     #[On('removeSupport')]
     public function removeSupport() {
-        $this->selectedOptions = array_diff($this->selectedOptions, [17]);
+        $this->selectedOptions = array_diff($this->selectedOptions, [18]);
         $this->dispatch('closeModal');
     }
 

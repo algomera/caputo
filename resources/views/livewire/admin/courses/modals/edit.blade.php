@@ -7,6 +7,7 @@
         <x-icons wire:click="$dispatch('closeModal')" name="x_close" class="w-8 text-gray-400 cursor-pointer hover:text-color-2c2c2c transition-all duration-200" />
     </div>
 
+    {{-- Navigazione --}}
     <div class="sticky top-0 left-0 w-full flex items-end justify-between gap-5 pt-5 pb-2.5 border-b-2 ">
 
         <div class="flex flex-col justify-start items-start gap-2">
@@ -66,6 +67,7 @@
             </div>
         </div>
 
+        {{-- Lezioni Corso --}}
         @if ($currentTab == 'Lezioni')
             <div>
                 <div class="flex items-center justify-between mb-2 mr-4">
@@ -142,6 +144,7 @@
             </div>
         @endif
 
+        {{-- Registrazioni corso --}}
         @if ($currentTab == 'Registrazioni')
             <div>
                 <div class="flex items-center justify-between mb-2 mr-4">
@@ -165,7 +168,7 @@
                                         />
 
                                         <x-icons name="b-edit" class="cursor-pointer"
-                                            wire:click="$dispatch('openModal', { component: 'admin.courses.modals.lesson', arguments: {lesson: {{ $registration->id }}} })"
+                                            wire:click="$dispatch('openModal', { component: 'admin.courses.modals.registration', arguments: {registration: {{ $registration->id }}} })"
                                         />
 
                                         <div x-show="open !== {{ $key }}" x-on:click="open = {{ $key }}" class="flex items-center justify-end gap-2 px-5 cursor-pointer">
@@ -177,50 +180,137 @@
                                     </div>
                                 </div>
 
-                                <div x-show="open === {{ $key }}" x-transition.duration.300ms class="py-4 pr-4 border-t-2 ml-20 overflow-hidden transition-all duration-300">
+                                <div x-show="open === {{ $key }}" x-transition.duration.300ms class="py-4 pr-4 border-t-2 ml-20 overflow-hidden transition-all duration-300 relative">
+                                    {{-- step --}}
                                     <div>
                                         <h3 class="text-center text-lg capitalize font-medium text-color-347af2 ">Step di registrazione</h3>
                                         <div class="flex items-start justify-center gap-1 scale-75">
-                                            @foreach ($registration->getSteps() as $key => $step)
+                                            @foreach ($registration->getSteps()->get() as $key => $step)
                                                 <x-steps
                                                     color="afafaf"
                                                     currentStep="0"
                                                     number="{{$key+1}}"
                                                     step="{{$step->short_name}}"
                                                 />
-                                                @if ($key+1 < $registration->getSteps()->count())
+                                                @if ($key+1 < $registration->getSteps()->get()->count())
                                                     <div class="h-1 grow max-w-[138px] rounded-full shadow mt-4 bg-color-afafaf"></div>
                                                 @endif
                                             @endforeach
                                         </div>
                                     </div>
 
-                                    <div class="mt-5">
-                                        <h3 class="text-center text-lg capitalize font-medium text-color-347af2">Opzioni e costi inseriti</h3>
+                                    {{-- guide --}}
+                                    <div class="absolute top-5 right-5">
+                                        @if ($courseForm->course->course)
+                                            @if (get_guide($courseForm->course->course->id, $courseForm->course->id))
+                                                @php
+                                                    $guide = get_guide($courseForm->course->course->id, $courseForm->course->id);
+                                                @endphp
+                                                <div class="px-3 py-1 border shadow rounded-md bg-white">
+                                                    <span class="text-center text-color-545454">{{ $guide->name }}</span>
+                                                    <div class="mx-auto space-x-4">
+                                                        <small>{{ $guide->duration }}Min.</small>
+                                                        <small>{{ $guide->price }}€</small>
+                                                    </div>
+                                                </div>
+                                            @endif
+                                        @else
+                                            @if (get_guide($courseForm->course->id))
+                                                @php
+                                                    $guide = get_guide($courseForm->course->id);
+                                                @endphp
+                                                <div class="px-3 py-1 border shadow rounded-md bg-white">
+                                                    <span class="text-center text-color-545454">{{ $guide->name }}</span>
+                                                    <div class="w-full flex items-center justify-center gap-3">
+                                                        <small>{{ $guide->duration }}Min.</small>
+                                                        <small>{{ $guide->price }}€</small>
+                                                    </div>
+                                                </div>
+                                            @endif
+                                        @endif
+                                    </div>
 
-                                        <div class="mt-3 flex justify-center gap-10">
-                                            <div class="p-2 border rounded-md shadow bg-white">
-                                                <h4 class="uppercase font-medium text-color-2c2c2c">Opzioni</h4>
-                                                <ul>
-                                                    @foreach ($courseForm->course->getOptions()->where('type', 'opzionale')->where('registration_type_id', $registration->registration_type_id)->get() as $option)
-                                                    <li class="font-light text-color-545454 flex items-center gap-1">
-                                                        <x-icons name="circle" class="text-color-347af2 " />
-                                                        <span class="pt-1">{{$option->name}}</span>
-                                                    </li>
-                                                    @endforeach
-                                                </ul>
+                                    <div class="w-full flex gap-10 mt-5 border-t-4 border-white">
+                                        {{-- opzioni e costi --}}
+                                        <div class="w-1/2 border-r-4 border-white pr-10 pt-5">
+                                            <h3 class="text-center text-lg capitalize font-medium text-color-347af2">Costi e opzioni inseriti</h3>
+
+                                            <div class="mt-3 flex flex-col justify-center gap-10">
+                                                <div class="p-2 min-w-[360px] border rounded-md shadow bg-white">
+                                                    <h4 class="uppercase font-medium text-color-2c2c2c">costi</h4>
+                                                    <ul>
+                                                        @foreach ($courseForm->course->getOptions()->where('type', 'fisso')->where('registration_type_id', $registration->registration_type_id)->get() as $option)
+                                                        <li>
+                                                            <div class="flex items-end gap-2">
+                                                                <div class="font-light text-color-545454 flex items-center gap-1">
+                                                                    <x-icons name="circle" class="text-color-347af2 " />
+                                                                    <span class="pt-1">{{$option->name}}</span>
+                                                                </div>
+                                                                <div class="grow h-[1px] bg-color-dfdfdf mb-2"></div>
+                                                                <span class="font-medium text-color-2c2c2c">{{$option->price}} €</span>
+                                                            </div>
+                                                        </li>
+                                                        @endforeach
+                                                    </ul>
+                                                </div>
+
+                                                <div class="p-2 min-w-[360px] border rounded-md shadow bg-white">
+                                                    <h4 class="uppercase font-medium text-color-2c2c2c">Opzioni</h4>
+                                                    <ul>
+                                                        @foreach ($courseForm->course->getOptions()->where('type', 'opzionale')->where('registration_type_id', $registration->registration_type_id)->get() as $option)
+                                                        <li>
+                                                            <div class="flex items-end gap-2">
+                                                                <div class="font-light text-color-545454 flex items-center gap-1">
+                                                                    <x-icons name="circle" class="text-color-347af2 " />
+                                                                    <span class="pt-1">{{$option->name}}</span>
+                                                                </div>
+                                                                <div class="grow h-[1px] bg-color-dfdfdf mb-2"></div>
+                                                                <span class="font-medium text-color-2c2c2c">{{$option->price}} €</span>
+                                                            </div>
+                                                        </li>
+                                                        @endforeach
+                                                    </ul>
+                                                </div>
                                             </div>
+                                        </div>
 
-                                            <div class="p-2 border rounded-md shadow bg-white">
-                                                <h4 class="uppercase font-medium text-color-2c2c2c">costi fissi</h4>
-                                                <ul>
-                                                    @foreach ($courseForm->course->getOptions()->where('type', 'fisso')->where('registration_type_id', $registration->registration_type_id)->get() as $option)
-                                                    <li class="font-light text-color-545454 flex items-center gap-1">
-                                                        <x-icons name="circle" class="text-color-347af2 " />
-                                                        <span class="pt-1">{{$option->name}}</span>
-                                                    </li>
-                                                    @endforeach
-                                                </ul>
+                                        {{-- tipi di iscrizioni --}}
+                                        <div class="w-1/2 pt-5">
+                                            <h3 class="text-center text-lg capitalize font-medium text-color-347af2">Tipi di iscrizioni</h3>
+
+                                            <div class="grid grid-cols-2 gap-5 mt-3">
+                                                @foreach ($registration->branchCourses()->get() as $branchCourse)
+                                                    <div class="bg-white flex flex-col gap-1 p-2 border rounded-md shadow text-color-545454">
+                                                        <div class="flex items-end gap-2">
+                                                            <div class="font-light text-color-545454">
+                                                                <span class="pt-1">Ramo iscrizione</span>
+                                                            </div>
+                                                            <div class="grow h-[1px] bg-color-dfdfdf mb-2"></div>
+                                                            <span class="font-medium text-color-2c2c2c capitalize">{{$branchCourse->branch->name}}</span>
+                                                        </div>
+                                                        <div class="flex items-end gap-2">
+                                                            <div class="font-light text-color-545454">
+                                                                <span class="pt-1">Assenze massime</span>
+                                                            </div>
+                                                            <div class="grow h-[1px] bg-color-dfdfdf mb-2"></div>
+                                                            <span class="font-medium text-color-2c2c2c">{{$branchCourse->absences}}</span>
+                                                        </div>
+                                                        <div class="flex items-end gap-2">
+                                                            <div class="font-light text-color-545454">
+                                                                <span class="pt-1">Guide obbligatorie</span>
+                                                            </div>
+                                                            <div class="grow h-[1px] bg-color-dfdfdf mb-2"></div>
+                                                            <span class="font-medium text-color-2c2c2c">{{$branchCourse->guides}}</span>
+                                                        </div>
+                                                        <div class="flex items-end gap-2">
+                                                            <div class="font-light text-color-545454">
+                                                                <span class="pt-1">Prezzo iscrizione</span>
+                                                            </div>
+                                                            <div class="grow h-[1px] bg-color-dfdfdf mb-2"></div>
+                                                            <span class="font-medium text-green-500/70 ">{{$branchCourse->price}} €</span>
+                                                        </div>
+                                                    </div>
+                                                @endforeach
                                             </div>
                                         </div>
                                     </div>
