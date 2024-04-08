@@ -13,11 +13,12 @@
 
         <div class="m-auto flex flex-col gap-4 px-20 2xl:px-56 mt-16">
             @foreach ($courseRegistrationTypes as $key => $type)
-                <div wire:key="type-{{$key}}" wire:click="setRegistrationType({{$type->registration_type_id}}, {{$type->variant_id}})" class="w-full h-24 flex flex-col items-center justify-center border rounded-md shadow-shadow-card hover:scale-105 transition-all duration-300 cursor-pointer">
-                    <p class="text-lg text-color-2c2c2c font-semibold capitalize">{{$type->registrationType->name}} {{$type->condition}}</p>
+                <div wire:key="type-{{$key}}" wire:click="setRegistrationType({{$type->registration_type_id}}, {{$type->variant_id}})" class="w-full min-h-[96px] flex flex-col items-center justify-center border rounded-md shadow-shadow-card hover:scale-105 transition-all duration-300 cursor-pointer">
+                    <p class="text-lg text-color-2c2c2c font-semibold capitalize">{{$type->registrationType->name}}</p>
                     @if ($variant)
-                        <small class="font-semibold text-gray-400 text-center">{{$type->courseVariant->name}}</small>
+                        <span class="font-semibold text-gray-600 text-center capitalize">{{$type->courseVariant->name}}</span>
                     @endif
+                    <small class="font-semibold text-gray-400 text-center capitalize">{{$type->condition}}</small>
                 </div>
             @endforeach
         </div>

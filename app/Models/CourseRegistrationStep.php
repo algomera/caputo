@@ -17,7 +17,6 @@ class CourseRegistrationStep extends Model
         'steps_id' => 'array',
     ];
 
-
     public function registrationType(): BelongsTo {
         return $this->BelongsTo(RegistrationType::class);
     }

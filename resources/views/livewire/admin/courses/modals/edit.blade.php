@@ -231,7 +231,7 @@
                                     </div>
 
                                     <div class="w-full flex gap-10 mt-5 border-t-4 border-white">
-                                        {{-- opzioni e costi --}}
+                                        {{-- costi e opzioni --}}
                                         <div class="w-1/2 border-r-4 border-white pr-10 pt-5">
                                             <h3 class="text-center text-lg capitalize font-medium text-color-347af2">Costi e opzioni inseriti</h3>
 
@@ -314,10 +314,8 @@
                                             </div>
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
-
                         @endforeach
                     @else
                         <p>Nessun tipo di registrazione definito</p>
